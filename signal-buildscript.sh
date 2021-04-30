@@ -10,6 +10,7 @@ pushd /libsignal-client
 cargo update -p neon
 yarn install
 mkdir -p /libsignal-client-node/build/
+sleep 1s # For some reason this file seems to appear a little late.
 echo "Entering /libsignal-client-node"
 cp /libsignal-cilent/build/Release/libsignal_client_linux_arm64.node /libsignal-client-node/build/libsignal_client_linux_arm64.node
 popd
@@ -26,8 +27,6 @@ yarn install --frozen-lockfile
 sed -r 's#("@journeyapps/sqlcipher": ").*"#\1file:../sqlcipher"#' -i package.json
 ## Force local (arm) build of libsignal-client
 cd /Signa/-Desktop; sed -r 's#("libsignal-client": ").*"#\1file:../libsignal-client-node"#' -i package.json
-## Force newer zkgroup dependancy to support arm.
-yarn upgrade "zkgroup@https://github.com/signalapp/signal-zkgroup-node.git#7ecf70be85e5a485ec870c1723b1c6247b9d549e"
 yarn install --frozen-lockfile
 yarn grunt
 yarn build:webpack
