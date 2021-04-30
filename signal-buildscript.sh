@@ -1,7 +1,7 @@
 # Apply sqlcipher patch to use local (dynamic) libraries
 echo "Entering /sqlcipher"
 pushd /sqlcipher
-patch ../sqlcipher.patch
+patch -Np1 -i ../sqlcipher.patch
 popd
 
 # Build and replace arm version of libsignal-client-node
@@ -20,6 +20,8 @@ echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
 # Drop "--no-sandbox" commit from build
+git config --user.name "local"
+git config --user.email "local@localhost"
 git revert 1ca0d821078286d5953cf0d598e6b97710f816ef
 # Dry run
 yarn install --frozen-lockfile
