@@ -36,8 +36,8 @@ echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
 # Drop "--no-sandbox" commit from build
-git config --local --user.name "local"
-git config --local --user.email "local@localhost"
+git config --local user.name "local"
+git config --local user.email "local@localhost"
 git revert 1ca0d821078286d5953cf0d598e6b97710f816ef
 # Dry run
 yarn install --frozen-lockfile
