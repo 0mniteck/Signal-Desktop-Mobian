@@ -1,0 +1,69 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index f8ac5c8..183e206 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -284,8 +284,8 @@ dependencies = [
+ 
+ [[package]]
+ name = "curve25519-dalek"
+-version = "2.0.0"
+-source = "git+https://github.com/signalapp/curve25519-dalek.git?branch=lizard2#477356e017c7cc2aa168f956786b34690870768f"
++version = "2.1.0"
++source = "git+https://github.com/signalapp/curve25519-dalek.git?branch=lizard2#3fc47ef8675c6c14d26b366bbe4b35767cfceffa"
+ dependencies = [
+  "byteorder 1.3.4 (registry+https://github.com/rust-lang/crates.io-index)",
+  "digest 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
+@@ -488,7 +488,7 @@ name = "poksho"
+ version = "0.7.0"
+ source = "git+https://github.com/signalapp/poksho.git?tag=v0.7.0#8bb8c61c18e7bbe93c094ed91be52b9f96c1c5cd"
+ dependencies = [
+- "curve25519-dalek 2.0.0 (git+https://github.com/signalapp/curve25519-dalek.git?branch=lizard2)",
++ "curve25519-dalek 2.1.0 (git+https://github.com/signalapp/curve25519-dalek.git?branch=lizard2)",
+  "hmac 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
+  "sha2 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ ]
+@@ -839,7 +839,7 @@ dependencies = [
+  "aes-gcm-siv 0.4.1 (registry+https://github.com/rust-lang/crates.io-index)",
+  "bincode 1.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+  "criterion 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
+- "curve25519-dalek 2.0.0 (git+https://github.com/signalapp/curve25519-dalek.git?branch=lizard2)",
++ "curve25519-dalek 2.1.0 (git+https://github.com/signalapp/curve25519-dalek.git?branch=lizard2)",
+  "hex 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
+  "jni 0.16.0 (registry+https://github.com/rust-lang/crates.io-index)",
+  "poksho 0.7.0 (git+https://github.com/signalapp/poksho.git?tag=v0.7.0)",
+@@ -879,7 +879,7 @@ dependencies = [
+ "checksum crypto-mac 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)" = "4434400df11d95d556bac068ddfedd482915eb18fe8bea89bc80b6e4b1c179e5"
+ "checksum csv 1.1.3 (registry+https://github.com/rust-lang/crates.io-index)" = "00affe7f6ab566df61b4be3ce8cf16bc2576bca0963ceb0955e45d514bf9a279"
+ "checksum csv-core 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)" = "2b2466559f260f48ad25fe6317b3c8dac77b5bdb5763ac7d9d6103530663bc90"
+-"checksum curve25519-dalek 2.0.0 (git+https://github.com/signalapp/curve25519-dalek.git?branch=lizard2)" = "<none>"
++"checksum curve25519-dalek 2.1.0 (git+https://github.com/signalapp/curve25519-dalek.git?branch=lizard2)" = "<none>"
+ "checksum digest 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)" = "f3d0c8c8752312f9713efd397ff63acb9f85585afbf179282e720e7704954dd5"
+ "checksum either 1.5.3 (registry+https://github.com/rust-lang/crates.io-index)" = "bb1f6b1ce1c140482ea30ddd3335fc0024ac7ee112895426e0a629a6c20adfe3"
+ "checksum error-chain 0.12.2 (registry+https://github.com/rust-lang/crates.io-index)" = "d371106cc88ffdfb1eabd7111e432da544f16f3e2d7bf1dfe8bf575f1df045cd"
+diff --git a/rust/src/crypto/profile_key_encryption.rs b/rust/src/crypto/profile_key_encryption.rs
+index 8aaddaf..0806bd1 100644
+--- a/rust/src/crypto/profile_key_encryption.rs
++++ b/rust/src/crypto/profile_key_encryption.rs
+@@ -7,6 +7,8 @@
+ 
+ #![allow(non_snake_case)]
+ 
++extern crate subtle;
++
+ use crate::common::errors::*;
+ use crate::common::sho::*;
+ use crate::common::simple_types::*;
+diff --git a/rust/src/crypto/profile_key_struct.rs b/rust/src/crypto/profile_key_struct.rs
+index ad93263..f0fc278 100644
+--- a/rust/src/crypto/profile_key_struct.rs
++++ b/rust/src/crypto/profile_key_struct.rs
+@@ -7,6 +7,8 @@
+ 
+ #![allow(non_snake_case)]
+ 
++extern crate subtle;
++
+ use crate::common::constants::*;
+ use crate::common::sho::*;
+ use crate::common::simple_types::*;
+
