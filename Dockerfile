@@ -23,14 +23,18 @@ COPY sqlcipher.patch /
 # Copy manually patched version of sqlcipher (drops static linking). See sqlcipher.patch.
 #COPY /home/user/src/node-sqlcipher /sqlcipher
 RUN git clone https://github.com/signalapp/libsignal-client.git
-RUN git clone https://github.com/JoshuaWize/better-sqlite3.git
+RUN git clone https://github.com/signalapp/libsignal-client-node.git
+RUN git clone https://github.com/JoshuaWise/better-sqlite3.git
 #RUN git clone https://github.com/signalapp/libsignal-client-node.git
 #RUN git clone https://github.com/lsfxz/ringrtc
 #RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 #ENV PATH=/depot_tools:$PATH
 
 RUN git clone https://github.com/signalapp/zkgroup.git
+RUN git clone https://github.com/signalapp/signal-zkgroup-node.git
 COPY zkgroup.patch /
+
+# The same as above will have to happen for ringrtc once it is building
 
 # NODE
 # Goes last because docker build can't cache the tar.
