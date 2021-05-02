@@ -24,3 +24,5 @@ https://gitlab.com/ohfp/pinebookpro-things/-/tree/master/signal-desktop
 # Successful builds:
 * 5.0.0-beta1
 * 5.1.0-beta.5
+    * Builds and runs, but fails to read/create a SQLITE DB
+    * https://github.com/signalapp/Signal-Desktop/issues/4513
