@@ -15,6 +15,9 @@ sleep 5s # For some reason this file seems to appear a little late.
 echo "Entering /libsignal-client-node"
 cp build/Release/libsignal_client_linux_arm64.node /libsignal-client-node/build/
 popd
+pushd /libsignal-client-node
+git switch jack/release-0.3.3
+popd
 
 # Build better-sqlite3 (it's worse)
 echo "Entering /better-sqlite3"
