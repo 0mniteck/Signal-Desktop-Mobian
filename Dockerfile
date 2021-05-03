@@ -2,7 +2,7 @@ FROM arm64v8/debian:bullseye
 RUN apt update
 
 # DEPS
-RUN apt install -y vim python gcc python2 g++ make build-essential git git-lfs libffi-dev libssl-dev libglib2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libx11-xcb1 libgdk-pixbuf-2.0-0 libgtk-3-0 libdrm2 libgbm1 ruby ruby-dev curl wget clang llvm lld clang-tools generate-ninja ninja-build pkg-config
+RUN apt install -y vim python gcc python2 g++ make build-essential git git-lfs libffi-dev libssl-dev libglib2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libx11-xcb1 libgdk-pixbuf-2.0-0 libgtk-3-0 libdrm2 libgbm1 ruby ruby-dev curl wget clang llvm lld clang-tools generate-ninja ninja-build pkg-config tcl
 RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
 RUN mkdir -p /usr/include/aarch64-linux-gnu/
@@ -25,6 +25,7 @@ COPY sqlcipher.patch /
 RUN git clone https://github.com/signalapp/libsignal-client.git
 RUN git clone https://github.com/signalapp/libsignal-client-node.git
 RUN git clone https://github.com/signalapp/better-sqlite3.git
+COPY better-sqlite3.patch /
 #RUN git clone https://github.com/signalapp/libsignal-client-node.git
 #RUN git clone https://github.com/lsfxz/ringrtc
 #RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git

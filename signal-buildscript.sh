@@ -19,7 +19,10 @@ popd
 # Build better-sqlite3 (it's worse)
 echo "Entering /better-sqlite3"
 pushd /better-sqlite3
+patch -Np1 -i ../better-sqlite3.patch
+rm Relase/obj/gen/sqlite3/OpenSSL-Linux/libcrypto.a
 npm install node-gyp tar # build depends
+npm run build-release
 yarn install
 popd
 
