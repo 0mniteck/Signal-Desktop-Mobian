@@ -15,10 +15,11 @@ RUN rustup default 1.51.0
 # Buildscripts
 COPY ringrtc-buildscript.sh /
 RUN chmod +x /ringrtc-buildscript.sh
+COPY ringrtc_patches/* /
 
 # Clone ringrtc
 # Fork by privacyshark. You should check this before trusting it.
-RUN git clone https://github.com/lsfxz/ringrtc
+RUN git clone https://github.com/signalapp/ringrtc
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 ENV PATH=/depot_tools:$PATH
 
