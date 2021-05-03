@@ -24,7 +24,7 @@ COPY sqlcipher.patch /
 #COPY /home/user/src/node-sqlcipher /sqlcipher
 RUN git clone https://github.com/signalapp/libsignal-client.git
 RUN git clone https://github.com/signalapp/libsignal-client-node.git
-RUN git clone https://github.com/JoshuaWise/better-sqlite3.git
+RUN git clone https://github.com/signalapp/better-sqlite3.git
 #RUN git clone https://github.com/signalapp/libsignal-client-node.git
 #RUN git clone https://github.com/lsfxz/ringrtc
 #RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
