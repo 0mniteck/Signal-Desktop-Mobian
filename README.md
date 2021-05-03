@@ -3,7 +3,7 @@ This project allows building Signal Desktop for Debian 11 on ARM64.
 It is currently a work in progress, with the goal of building a flatpak
 which provides Signal Desktop.
 
-# Current Status:
+## Current Status:
 * [x] Signal Desktop building
     * Issue getting typescript module for libsignal-client
 * [x] libsignal-client builds
@@ -17,20 +17,28 @@ which provides Signal Desktop.
 * [ ] flatpak
 * [x] Wayland
 
-# Launcher
+## Usage
+1. Build the docker container: `sudo docker build .`
+2. Shell into the docker container: `sudo docker run -it <container>`
+3. Run the build script: `/signal-buildscript.sh`
+5. Copy the output application from the container (from outside container): `sudo docker cp <container>:/Signal-Desktop/release/<output folder>`
+6. Install RingRTC as below.
+7. Copy to your Debian Arm64 device.
+
+## Launcher
 The included `signal` shell script provides both a launcher and sandboxing with Bubblewrap.
 
-# RingRTC
+## RingRTC
 Building RingRTC is hard and will be included in later versions of this repository. 
 For now, `libringrtc.node` can be manually installed to `/opt/signal/resources/app.asar.unpacked/node_modules/ringrtc/build/linux/libringrtc.node`.
 
 If you want to manually build this, instructions are in the snippet below.
 
-# See also:
-https://github.com/lsfxz/ringrtc/tree/aarch64
-https://gitlab.com/undef1/Snippets/-/snippets/2100495
-https://gitlab.com/ohfp/pinebookpro-things/-/tree/master/signal-desktop
+## See also:
+https://github.com/lsfxz/ringrtc/tree/aarch64  
+https://gitlab.com/undef1/Snippets/-/snippets/2100495  
+https://gitlab.com/ohfp/pinebookpro-things/-/tree/master/signal-desktop  
 
-# Successful builds:
+## Successful builds:
 * 5.0.0-beta1
 * 5.1.0-beta.5
