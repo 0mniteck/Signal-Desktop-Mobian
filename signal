@@ -1,0 +1,39 @@
+bwrap \
+ --bind /home/$(id -u)/Downloads/ /home/$(id -u)/Downloads \
+ --ro-bind /usr/bin /usr/bin \
+ --symlink /usr/lib /lib \
+ --ro-bind /opt/signal/ /opt/signal/ \
+ --ro-bind /usr/lib /usr/lib \
+ --ro-bind /usr/share/applications /usr/share/applications \
+ --ro-bind /usr/share/ca-certificates /usr/share/ca-certificates \
+ --ro-bind /usr/share/fonts /usr/share/fonts \
+ --ro-bind /usr/share/glib-2.0 /usr/share/glib-2.0 \
+ --ro-bind /usr/share/glvnd /usr/share/glvnd \
+ --ro-bind /usr/share/icons /usr/share/icons \
+ --ro-bind /usr/share/libdrm /usr/share/libdrm \
+ --ro-bind /usr/share/mime /usr/share/mime \
+ --ro-bind /usr/share/X11/xkb /usr/share/X11/xkb \
+ --ro-bind /usr/share/icons /usr/share/icons \
+ --ro-bind /usr/share/mime /usr/share/mime \
+ --ro-bind /etc/fonts /etc/fonts \
+ --ro-bind /etc/resolv.conf /etc/resolv.conf \
+ --dir /run/user/"$(id -u)" \
+ --ro-bind /run/user/"$(id -u)"/pulse /run/user/"$(id -u)"/pulse \
+ --ro-bind /run/user/"$(id -u)"/wayland-0 /run/user/"$(id -u)"/wayland-0 \
+ --dev /dev \
+ --dev-bind /dev/dri /dev/dri \
+ --ro-bind /sys/dev/char /sys/dev/char \
+ --proc /proc \
+ --symlink usr/bin /bin \
+ --symlink usr/sbin /sbin \
+ --tmpfs /tmp \
+ --bind /home/$(id -u)/.config/Signal /home/$(id -u)/.config/Signal \
+ --unshare-all \
+ --share-net \
+ --hostname RESTRICTED \
+ --setenv HOME /home/$(id -u) \
+ --setenv GTK_THEME Adwaita:dark \
+ --setenv PATH /usr/bin \
+ --die-with-parent \
+ --new-session \
+ /opt/signal/signal-desktop --enable-features=UseOzonePlatform --ozone-platform=wayland "$1"

@@ -15,6 +15,16 @@ which provides Signal Desktop.
 * [x] Bundle zxgroup with Signal-Desktop directory output
 * [ ] Bundle ringrtc with Signal-Desktop directory output
 * [ ] flatpak
+* [x] Wayland
+
+# Launcher
+The included `signal` shell script provides both a launcher and sandboxing with Bubblewrap.
+
+# RingRTC
+Building RingRTC is hard and will be included in later versions of this repository. 
+For now, `libringrtc.node` can be manually installed to `/opt/signal/resources/app.asar.unpacked/node_modules/ringrtc/build/linux/libringrtc.node`.
+
+If you want to manually build this, instructions are in the snippet below.
 
 # See also:
 https://github.com/lsfxz/ringrtc/tree/aarch64
@@ -24,5 +34,3 @@ https://gitlab.com/ohfp/pinebookpro-things/-/tree/master/signal-desktop
 # Successful builds:
 * 5.0.0-beta1
 * 5.1.0-beta.5
-    * Builds and runs, but fails to read/create a SQLITE DB
-    * https://github.com/signalapp/Signal-Desktop/issues/4513
