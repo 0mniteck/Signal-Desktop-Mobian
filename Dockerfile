@@ -54,4 +54,4 @@ RUN npm install --global yarn
 #
 RUN npm pack '@signalapp/signal-client'
 RUN tar xvf signalapp-signal-client-*.tgz
-mv package signal-client
+RUN mv package signal-client
