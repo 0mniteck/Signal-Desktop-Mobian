@@ -10,14 +10,18 @@ pushd /libsignal-client
 #git checkout ts-0.3.0 # Version 0.3.0 as requested in S-D/package.json
 cargo update -p neon
 yarn install
-mkdir -p /libsignal-client-node/build/
+#mkdir -p /libsignal-client-node/build/
 sleep 5s # For some reason this file seems to appear a little late.
 echo "Entering /libsignal-client-node"
-cp build/Release/libsignal_client_linux_arm64.node /libsignal-client-node/build/
+#cp build/Release/libsignal_client_linux_arm64.node /libsignal-client-node/build/
+mkdir -p /signal-client/prebuilts/linux-arm64
+mkdir -p /signal-client/prebuilts/linux-aarch64
+cp build/Release/libsignal_client_linux_arm64.node /signal-client/prebuilts/linux-arm64/node_napi.node
+cp build/Release/libsignal_client_linux_arm64.node /signal-client/prebuilts/linux-aarch64/node_napi.node
 popd
-pushd /libsignal-client-node
-git switch jack/release-0.3.3
-popd
+#pushd /libsignal-client-node
+#git switch jack/release-0.3.3
+#popd
 
 # Build better-sqlite3 (it's worse)
 echo "Entering /better-sqlite3"
@@ -43,16 +47,20 @@ popd
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
+patch -Np1 -i ../0001-Remove-no-sandbox-patch.patch
+patch -Np1 -i ../0001-Minimize-gutter-on-small-screens.patch
 # Drop "--no-sandbox" commit from build
 git config --local user.name "local"
 git config --local user.email "local@localhost"
 git revert 1ca0d821078286d5953cf0d598e6b97710f816ef
 # Dry run
-yarn install --frozen-lockfile
+#yarn install --frozen-lockfile # always hangs
 ## Force local (arm) build of libsignal-client
 # Now hosted in NPM, hopefully build's properly...
-sed -r 's#("libsignal-client": ").*"#\1file:../libsignal-client-node"#' -i package.json
+#sed -r 's#("libsignal-client": ").*"#\1file:../libsignal-client-node"#' -i package.json # old versions
+sed -r 's#"@signalapp/signal-client": ".*",#"@signalapp/signal-client": "file:../signal-client",#' -i package.json
 sed -r 's#("better-sqlite3": ").*"#\1file:../better-sqlite3"#' -i package.json
+sed -r 's#("ringrtc": ").*"#\1file:../signal-ringrtc-node"#' -i package.json
 sed -r 's#("zkgroup": ").*"#\1file:../signal-zkgroup-node"#' -i package.json
 # This may have to be cancelled and run again to get it to actually rebuild deps...
 yarn install # not recommended by signal, but required due to those two sed lines.

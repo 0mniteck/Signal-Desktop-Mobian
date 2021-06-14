@@ -20,10 +20,14 @@ RUN chmod +x /signal-buildscript.sh
 RUN git clone https://github.com/signalapp/Signal-Desktop
 RUN git clone https://github.com/scottnonnenberg-signal/node-sqlcipher -b updates /sqlcipher
 COPY sqlcipher.patch /
+copy 0001-Remove-no-sandbox-patch.patch /
+copy 0001-Minimize-gutter-on-small-screens.patch /
 # Copy manually patched version of sqlcipher (drops static linking). See sqlcipher.patch.
 #COPY /home/user/src/node-sqlcipher /sqlcipher
 RUN git clone https://github.com/signalapp/libsignal-client.git
-RUN git clone https://github.com/signalapp/libsignal-client-node.git
+RUN git clone https://github.com/signalapp/signal-ringrtc-node.git
+COPY libringrtc-arm64.node /signal-ringrtc-node/build/linux/libringrtc-arm64.node
+# RUN git clone https://github.com/signalapp/libsignal-client-node.git # Doesn't work after the move to npm
 RUN git clone https://github.com/signalapp/better-sqlite3.git
 COPY better-sqlite3.patch /
 #RUN git clone https://github.com/signalapp/libsignal-client-node.git
@@ -48,3 +52,6 @@ ENV PATH=/opt/node/bin:$PATH
 RUN npm install --global yarn
 
 #
+RUN npm pack '@signalapp/signal-client'
+RUN tar xvf signalapp-signal-client-*.tgz
+mv package signal-client

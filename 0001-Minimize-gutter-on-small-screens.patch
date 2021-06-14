@@ -1,0 +1,47 @@
+From ea17e88674c276e966959054bbcf7576497af5ac Mon Sep 17 00:00:00 2001
+From: Undef <gitlab@undef.tools>
+Date: Sun, 13 Jun 2021 04:44:39 +0000
+Subject: [PATCH] Minimize gutter on small screens
+
+---
+ stylesheets/_index.scss     | 4 ++++
+ stylesheets/_variables.scss | 2 ++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/stylesheets/_index.scss b/stylesheets/_index.scss
+index 66babfed..9d89f223 100644
+--- a/stylesheets/_index.scss
++++ b/stylesheets/_index.scss
+@@ -46,11 +46,15 @@
+   float: left;
+   width: $left-pane-width;
+   user-select: none;
++  transition: width 0.5s ease-in-out;
+ 
+   .content {
+     overflow-y: scroll;
+     max-height: calc(100% - 88px);
+   }
++
++  @media (max-width: $left-pane-minimize-trigger) {
++    width: $left-pane-min-width;
++  }
+ }
+ 
+ .left-pane-placeholder {
+diff --git a/stylesheets/_variables.scss b/stylesheets/_variables.scss
+index eeea2ec6..da330a49 100644
+--- a/stylesheets/_variables.scss
++++ b/stylesheets/_variables.scss
+@@ -191,6 +191,8 @@ $color-deep-red: #ff261f;
+ // -- A few layout variables used cross-file
+ 
+ $left-pane-width: 320px;
++$left-pane-min-width: 220px;
++$left-pane-minimize-trigger: 799px;
+ $header-height: 52px;
+ 
+ $ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+-- 
+2.30.2
+

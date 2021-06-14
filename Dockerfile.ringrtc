@@ -1,4 +1,4 @@
-FROM arm64v8/debian:bullseye
+FROM debian:bullseye
 RUN apt update
 
 # DEPS
@@ -9,8 +9,6 @@ COPY fficonfig.h /usr/include/aarch64-linux-gnu/
 COPY rustup-init /rustup-init
 RUN chmod +x /rustup-init
 RUN /rustup-init -y
-RUN rustup toolchain install 1.51.0
-RUN rustup default 1.51.0
 
 # Buildscripts
 COPY ringrtc-buildscript.sh /
@@ -26,10 +24,10 @@ ENV PATH=/depot_tools:$PATH
 # NODE
 # Goes last because docker build can't cache the tar.
 # https://nodejs.org/dist/v14.15.5/
-COPY node-v14.16.0-linux-arm64.tar.gz /opt/
+COPY node-v14.16.0-linux-x64.tar.gz /opt/
 RUN mkdir -p /opt/node
-RUN cd /opt/; tar xf node-v14.16.0-linux-arm64.tar.gz
-RUN mv /opt/node-v14.16.0-linux-arm64/* /opt/node/
+RUN cd /opt/; tar xf node-v14.16.0-linux-x64.tar.gz
+RUN mv /opt/node-v14.16.0-linux-x64/* /opt/node/
 ENV PATH=/opt/node/bin:$PATH
 RUN npm install --global yarn
 

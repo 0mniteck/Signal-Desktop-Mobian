@@ -11,19 +11,21 @@ which provides Signal Desktop.
     * Force update neon dependancy.
 * [x] zkgroup builds
     * No patching required. Current release builds fine on arm64
-* [ ] ringrtc builds
+* [x] ringrtc builds (note: this is done on the host)
 * [x] Bundle zxgroup with Signal-Desktop directory output
-* [ ] Bundle ringrtc with Signal-Desktop directory output
+* [x] Bundle ringrtc with Signal-Desktop directory output
 * [ ] flatpak
 * [x] Wayland
 
 ## Usage
-1. Build the docker container: `sudo docker build .`
-2. Shell into the docker container: `sudo docker run -it <container>`
-3. Run the build script: `/signal-buildscript.sh`
-5. Copy the output application from the container (from outside container): `sudo docker cp <container>:/Signal-Desktop/release/<output folder>`
-6. Install RingRTC as below.
-7. Copy to your Debian Arm64 device.
+1. Build ringrtc in the ringrtc directory.
+2. Copy libringrtc-arm64.node to this directory.
+3. Build the docker container: `sudo docker build .`
+4. Shell into the docker container: `sudo docker run -it <container>`
+5. Run the build script: `/signal-buildscript.sh`
+6. Copy the output application from the container (from outside container): `sudo docker cp <container>:/Signal-Desktop/release/<output folder>`
+7. Install RingRTC as below.
+8. Copy to your Debian Arm64 device.
 
 ## Launcher
 The included `signal` shell script provides both a launcher and sandboxing with Bubblewrap.
@@ -42,3 +44,4 @@ https://gitlab.com/ohfp/pinebookpro-things/-/tree/master/signal-desktop
 ## Successful builds:
 * 5.0.0-beta1
 * 5.1.0-beta.5
+* 5.5.0-beta.1 - Note: wayland currently broken on this release
