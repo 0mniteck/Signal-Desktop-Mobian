@@ -3,6 +3,7 @@ stages:
     - build_signal_desktop
       #- build_ringrtc
 
+# Broken: gitlab CI runners don't support QEMU-binfmt
 build_container:
     stage: build_container
     image: docker:latest
@@ -13,3 +14,8 @@ build_container:
         - docker build -t ${CI_REGISTRY}/undef1/signal-desktop-builder:latest -f Dockerfile .
         - docker push ${CI_REGISTRY}/undef1/signal-desktop-builder
 
+build_signal_desktop:
+    stage: build_signal_desktop
+    image: ${CI_REGISTRY}/undef1/signal-desktop-builder:latest
+    script:
+        - /signal-buildscript.sh
