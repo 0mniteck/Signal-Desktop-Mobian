@@ -1,3 +1,4 @@
+set -x
 # Apply sqlcipher patch to use local (dynamic) libraries
 echo "Entering /sqlcipher"
 pushd /sqlcipher
@@ -14,10 +15,8 @@ yarn install
 sleep 5s # For some reason this file seems to appear a little late.
 echo "Entering /libsignal-client-node"
 #cp build/Release/libsignal_client_linux_arm64.node /libsignal-client-node/build/
-mkdir -p /signal-client/prebuilts/linux-arm64
-mkdir -p /signal-client/prebuilts/linux-aarch64
-cp build/Release/libsignal_client_linux_arm64.node /signal-client/prebuilts/linux-arm64/node_napi.node
-cp build/Release/libsignal_client_linux_arm64.node /signal-client/prebuilts/linux-aarch64/node_napi.node
+mkdir -p /signal-client/prebuilds/linux-arm64
+cp build/Release/libsignal_client_linux_arm64.node /signal-client/prebuilds/linux-arm64/node.napi.node
 popd
 #pushd /libsignal-client-node
 #git switch jack/release-0.3.3
@@ -40,7 +39,7 @@ pushd /zkgroup
 #patch -Np1 -i ../zkgroup.patch
 make libzkgroup
 # Copy the output library to the location provided by signal when running it on device...
-cp target/release/libzkgroup.so /signal-zkgroup-node/libzkgroup.so
+cp target/release/libzkgroup.so /signal-zkgroup-node/libzkgroup-arm64.so
 popd
 
 # Signal build requirements
