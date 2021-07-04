@@ -10,6 +10,7 @@ build_container:
     services:
         - docker:dind
     script:
+        - apt update && apt install qemu-user-static
         - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
         - docker build -t ${CI_REGISTRY}/undef1/signal-desktop-builder:latest -f Dockerfile .
         - docker push ${CI_REGISTRY}/undef1/signal-desktop-builder
