@@ -8,7 +8,7 @@ This project builds Signal Desktop for Mobian on Arm64, targeting release 5.7.x.
 * [x] zkgroup builds
 * [x] ringrtc builds
 * [x] Bundle all builds and outputs
-* [?] Launcher works
+* [ ] Launcher works
 
 ## Usage:
 1. Build docker container: `sudo ./buildscript.sh`
