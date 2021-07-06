@@ -14,7 +14,8 @@ The goal of this project is to provide a working .deb package.
 1. Build docker container: `sudo ./buildscript.sh` about 10 minutes.
 2. Build ringrtc: `/ringrtc-buildscript.sh` then `exit` about 1 hour.
 3. Build signal-desktop: `/signal-buildscript.sh` then `exit` about 2 hours.
-4. Copy the output from `builds/release/` to your Mobian Arm64 device.
+4. Copy the output from `builds/release/` to your Mobian Arm64 device and install.
+5. Copy `signal` to /usr/bin, and launch by running `signal`.
 
 ## See also:
 * included .cast files are asciinema demo files watch if you need help.
@@ -23,4 +24,4 @@ The goal of this project is to provide a working .deb package.
 * https://gitlab.com/ohfp/pinebookpro-things/-/tree/master/signal-desktop
 
 ## Successful builds:
-* 5.7.1 (Runs)
+* 5.7.1 (Runs with launcher to sandbox/fix inputs)
