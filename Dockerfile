@@ -26,7 +26,6 @@ RUN git clone https://github.com/signalapp/zkgroup.git
 RUN cd zkgroup; git reset --hard d3cb5dbd3098f1e8f82864974eda20c25f5d7d24
 RUN git clone https://github.com/signalapp/signal-zkgroup-node.git
 RUN cd signal-zkgroup-node; git reset --hard 7ecf70be85e5a485ec870c1723b1c6247b9d549e
-COPY signal /
 
 # NODE
 # Included Node because docker build can't cache the tar, but will convert to nvm.
