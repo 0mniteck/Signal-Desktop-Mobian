@@ -6,14 +6,14 @@ This project builds Signal Desktop for Mobian on Arm64, targeting release 5.7.x.
 * [x] libsignal-client builds
 * [x] better-sqlite3 builds
 * [x] zkgroup builds
-* [x] ringrtc builds
+* [x] ringrtc builds(or use prebuild provided)
 * [x] Bundle all builds and outputs
 * [ ] Launcher works
 
 ## Usage:
-1. Build docker container: `sudo ./buildscript.sh`
-2. Build ringrtc: `/ringrtc-buildscript.sh` then `exit`
-3. Build signal-desktop: `/signal-buildscript.sh` then `exit`
+1. Build docker container: `sudo ./buildscript.sh` about 10 minutes.
+2. Build ringrtc: `/ringrtc-buildscript.sh` then `exit` about 1 hour.
+3. Build signal-desktop: `/signal-buildscript.sh` then `exit` about 2 hours.
 4. Copy the output from `builds/release/` to your Mobian Arm64 device.
 
 ## Launcher: ( Testing )
