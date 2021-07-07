@@ -12,3 +12,4 @@ ls -la
 echo "Build Complete on "$(date)
 echo "If all went well, the files are in builds/release/"
 ls -la builds/release/
+snap remove --purge docker

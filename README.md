@@ -19,7 +19,7 @@ This is it the official release 5.7.1, provided by builds/release/signal-desktop
 5. Copy launcher to `/usr/bin/signal` on your device, and launch by running `signal`.
 
 ## See also:
-* included buildscript-demo.cast file is an asciinema demo file, watch it if you need help.
+* Included buildscript-demo.cast file is an asciinema demo file, watch it if you need help.
 * https://wiki.mobian-project.org/doku.php?id=signal
 * https://gitlab.com/undef1/Snippets/-/snippets/2100495
 * https://gitlab.com/ohfp/pinebookpro-things/-/tree/master/signal-desktop
