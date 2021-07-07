@@ -1,4 +1,6 @@
 # Signal Desktop Builder
+![alt text](https://signal.org/assets/og/og-image-ff2096df535eee499356de64b19fa8cebb9681ab1e78cca7330e7f8b8d5ec6d5.png)
+
 This project builds Signal Desktop for Mobian on Arm64, targeting release 5.7.x.
 
 This is it the official release 5.7.1, provided by builds/release/signal-desktop_5.7.1_arm64.deb.
