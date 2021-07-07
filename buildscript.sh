@@ -7,6 +7,7 @@ echo "Entering ringrtc/"
 pushd ringrtc
 ./re-run.sh
 popd
+ls -la
 ./re-run.sh
 echo "Build Complete on "$(date)
 echo "If all went well, the files are in builds/release/"

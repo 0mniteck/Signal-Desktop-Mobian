@@ -36,6 +36,7 @@ popd
 # Build Signal
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
+patch -Np1 -i ../minimize-on-small-screens.patch
 sed -r 's#("@signalapp/signal-client": ").*"#\1file:../signal-client"#' -i package.json
 sed -r 's#("better-sqlite3": ").*"#\1file:../better-sqlite3"#' -i package.json
 sed -r 's#("ringrtc": ").*"#\1file:../signal-ringrtc-node"#' -i package.json
