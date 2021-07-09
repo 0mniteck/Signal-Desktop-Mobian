@@ -1,6 +1,7 @@
 import { join, resolve } from 'path';
 import { Library } from 'ffi-napi';
 import FFICompatArray, { FFICompatArrayType } from './FFICompatArray';
+import * as process from 'process';
 
 type IntType = number;
 type UInt32Type = number;
@@ -15,7 +16,7 @@ export const RANDOM_LENGTH = 32;
 const rootPath = resolve(`${__dirname}/../../../`);
 
 // We need to do things differently if we are in an app.asar, common in the Electron world
-const libraryPath = join(rootPath.replace('app.asar', 'app.asar.unpacked'), 'libzkgroup');
+const libraryPath = join(rootPath.replace('app.asar', 'app.asar.unpacked'), 'libzkgroup-' + process.arch);
 
 
 interface NativeCalls {

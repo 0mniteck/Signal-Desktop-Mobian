@@ -1,3 +1,9 @@
+#!/bin/bash
+
+source $HOME/.cargo/env
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+nvm use 14.16.0
+
 # Apply sqlcipher patch to use local (dynamic) libraries
 echo "Entering /sqlcipher"
 pushd /sqlcipher
@@ -30,7 +36,7 @@ echo "Entering /zkgroup"
 pushd /zkgroup
 make libzkgroup
 rm -f /signal-zkgroup-node/libzkgroup.so
-cp target/release/libzkgroup.so /signal-zkgroup-node/libzkgroup.so
+cp target/release/libzkgroup.so /signal-zkgroup-node/libzkgroup-arm64.so
 popd
 
 # Build Signal
@@ -45,6 +51,7 @@ yarn install
 yarn install --frozen-lockfile
 yarn grunt
 yarn build:webpack
-yarn build:release --arm64 --linux --dir
 yarn build:release --arm64 --linux deb
+sha512sum release/*.deb && sha512sum release/*.deb > release/release.sha512sum && echo "Build Complete on "$(date) >> release/release.sha512sum && echo "Build Complete on "$(date)
+ls -la release/
 popd

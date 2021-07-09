@@ -1,5 +1,5 @@
 From 2afe7d26c4ff4411153443bebde5112047cbdaa4 Mon Sep 17 00:00:00 2001
-From: Undef <debian@undef.tools>
+From: local <local@localhost>
 Date: Mon, 3 May 2021 04:49:52 +0000
 Subject: [PATCH] Dynamically link libcrypto
 

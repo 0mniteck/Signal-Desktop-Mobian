@@ -9,7 +9,7 @@ export default class ByteArray {
     if (contents.length !== expectedLength) {
         throw new InvalidInputException(`Length of array supplied was ${contents.length} expected ${expectedLength}`);
     }
-    this.contents = contents.slice(0, expectedLength);
+    this.contents = new FFICompatArray(Buffer.from(contents.buffer), expectedLength);
   }
 
   public getContents(): FFICompatArrayType {

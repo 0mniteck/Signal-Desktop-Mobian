@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
 const ffi_napi_1 = require("ffi-napi");
 const FFICompatArray_1 = require("./FFICompatArray");
+const process = require("process");
 exports.FFI_RETURN_OK = 0;
 exports.FFI_RETURN_INTERNAL_ERROR = 1; // ZkGroupError
 exports.FFI_RETURN_INPUT_ERROR = 2;
@@ -10,7 +11,7 @@ exports.RANDOM_LENGTH = 32;
 // One more directory up than expected, since this is run from the dist directory after the Typescript build
 const rootPath = path_1.resolve(`${__dirname}/../../../`);
 // We need to do things differently if we are in an app.asar, common in the Electron world
-const libraryPath = path_1.join(rootPath.replace('app.asar', 'app.asar.unpacked'), 'libzkgroup');
+const libraryPath = path_1.join(rootPath.replace('app.asar', 'app.asar.unpacked'), 'libzkgroup-' + process.arch);
 const library = ffi_napi_1.Library(libraryPath, {
     'FFI_ProfileKey_getCommitment': ['int', [FFICompatArray_1.default, 'uint32', FFICompatArray_1.default, 'uint32', FFICompatArray_1.default, 'uint32',]],
     'FFI_ProfileKey_getProfileKeyVersion': ['int', [FFICompatArray_1.default, 'uint32', FFICompatArray_1.default, 'uint32', FFICompatArray_1.default, 'uint32',]],

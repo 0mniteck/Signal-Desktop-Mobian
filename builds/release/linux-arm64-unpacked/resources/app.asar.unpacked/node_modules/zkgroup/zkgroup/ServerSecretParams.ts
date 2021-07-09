@@ -85,6 +85,6 @@ export default class ServerSecretParams extends ByteArray {
   }
 
   serialize(): FFICompatArrayType {
-    return this.contents.slice(0, this.contents.length);
+    return new FFICompatArray(Buffer.from(this.contents.buffer));
   }
 }

@@ -7,7 +7,7 @@ import VerificationFailedException from './errors/VerificationFailedException';
 import NotarySignature from './NotarySignature';
 import Native, { FFI_RETURN_OK, FFI_RETURN_INPUT_ERROR } from './internal/Native';
 
-import { FFICompatArrayType } from './internal/FFICompatArray'
+import FFICompatArray, { FFICompatArrayType } from './internal/FFICompatArray'
 
 export default class ServerPublicParams extends ByteArray {
 
@@ -40,8 +40,8 @@ export default class ServerPublicParams extends ByteArray {
     }
   }
 
-  serialize() {
-    return this.contents.slice(0, this.contents.length);
+  serialize(): FFICompatArrayType {
+    return new FFICompatArray(Buffer.from(this.contents.buffer));
   }
 
 }

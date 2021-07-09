@@ -59,7 +59,7 @@ class ServerSecretParams extends ByteArray_1.default {
         return new NotarySignature_1.default(newContents);
     }
     serialize() {
-        return this.contents.slice(0, this.contents.length);
+        return new FFICompatArray_1.default(Buffer.from(this.contents.buffer));
     }
 }
 exports.default = ServerSecretParams;

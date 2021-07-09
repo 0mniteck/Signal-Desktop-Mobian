@@ -5,6 +5,7 @@ const IllegalArgumentException_1 = require("./errors/IllegalArgumentException");
 const ZkGroupError_1 = require("./errors/ZkGroupError");
 const VerificationFailedException_1 = require("./errors/VerificationFailedException");
 const Native_1 = require("./internal/Native");
+const FFICompatArray_1 = require("./internal/FFICompatArray");
 class ServerPublicParams extends ByteArray_1.default {
     constructor(contents) {
         super(contents, ServerPublicParams.SIZE, true);
@@ -27,7 +28,7 @@ class ServerPublicParams extends ByteArray_1.default {
         }
     }
     serialize() {
-        return this.contents.slice(0, this.contents.length);
+        return new FFICompatArray_1.default(Buffer.from(this.contents.buffer));
     }
 }
 exports.default = ServerPublicParams;
