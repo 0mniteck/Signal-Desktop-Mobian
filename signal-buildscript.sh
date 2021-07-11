@@ -16,9 +16,7 @@ pushd /libsignal-client
 cargo update -p neon
 yarn install
 mkdir -p /signal-client/prebuilds/linux-arm64
-mkdir -p /signal-client/prebuilds/linux-aarch64
 cp build/Release/libsignal_client_linux_arm64.node /signal-client/prebuilds/linux-arm64/node.napi.node
-cp build/Release/libsignal_client_linux_arm64.node /signal-client/prebuilds/linux-aarch64/node.napi.node
 popd
 
 # Build better-sqlite3
