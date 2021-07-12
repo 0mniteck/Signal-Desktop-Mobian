@@ -18,7 +18,6 @@ This is the final release for 5.8.0, `builds/release/signal-desktop_5.8.0_arm64.
 ## Usage:
 1. Build with docker: `sudo ./buildscript.sh`, it takes about 3 hours.
 2. Copy `builds/release/signal-desktop_5.8.x_arm64.deb` to your device and install.
-3. Copy launcher to `/usr/bin/signal` on your device, and launch by running `signal`.
 
 ## See also:
 * Included buildscript-demo.cast, it's an asciinema demo file.
