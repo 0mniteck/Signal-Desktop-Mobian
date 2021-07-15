@@ -2,10 +2,10 @@
 
 # Signal Desktop Builder
 
-This project builds Signal Desktop for Mobian on Arm64, currently targeting branch 5.8.x,
+This project builds Signal Desktop for Mobian on Arm64, currently targeting branch 5.9.x,
 but the aim is to keep up with the standard release schedule +1 day for build time.
 
-This is the final release for 5.8.0, `builds/release/signal-desktop_5.8.0_arm64.deb`.
+This is the release for 5.9.0, `builds/release/signal-desktop_5.9.0_arm64.deb`.
 
 ## Current Status:
 * [x] Signal Desktop builds
@@ -16,8 +16,8 @@ This is the final release for 5.8.0, `builds/release/signal-desktop_5.8.0_arm64.
 * [x] Bundle all builds and outputs
 
 ## Usage:
-1. Build with docker: `sudo ./buildscript.sh`, it takes about 3 hours.
-2. Copy `builds/release/signal-desktop_5.8.x_arm64.deb` to your device and install.
+1. Build with docker: `sudo ./buildscript.sh`, it takes about 3.5 hours.
+2. Copy `builds/release/signal-desktop_5.9.x_arm64.deb` to your device and install.
 
 ## See also:
 * Included buildscript-demo.cast, it's an asciinema demo file.
@@ -28,3 +28,4 @@ This is the final release for 5.8.0, `builds/release/signal-desktop_5.8.0_arm64.
 ## Successful builds:
 * 5.7.1
 * 5.8.0
+* 5.9.0

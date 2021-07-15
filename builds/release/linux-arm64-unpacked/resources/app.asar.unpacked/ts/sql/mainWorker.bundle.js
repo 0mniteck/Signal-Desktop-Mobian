@@ -27565,6 +27565,11 @@ port.on('message', async ({ seq, request }) => {
             process.exit(0);
             return;
         }
+        if (request.type === 'removeDB') {
+            await Server_1.default.removeDB();
+            respond(seq, undefined, undefined);
+            return;
+        }
         if (request.type === 'sqlCall') {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const method = Server_1.default[request.method];
