@@ -8,6 +8,10 @@ The aim is to keep up with the standard release schedule +1 day for build time.
 
 This is the release for `5.9.0`, `builds/release/signal-desktop_5.9.0_arm64.deb`.
 
+## Usage:
+1. Build with docker: `sudo ./buildscript.sh`, it takes about 3.5 hours.
+2. Copy the `.deb` to your device and `apt install ./signal-desktop_5.9.0_arm64.deb`.
+
 ## Current Status:
 * [x] Signal Desktop builds
 * [x] libsignal-client builds
@@ -15,10 +19,6 @@ This is the release for `5.9.0`, `builds/release/signal-desktop_5.9.0_arm64.deb`
 * [x] zkgroup builds
 * [x] ringrtc builds
 * [x] Bundle all builds and outputs
-
-## Usage:
-1. Build with docker: `sudo ./buildscript.sh`, it takes about 3.5 hours.
-2. Copy `builds/release/signal-desktop_5.9.x_arm64.deb` to your device and install.
 
 ## See also:
 * https://wiki.mobian-project.org/doku.php?id=signaldesktop
