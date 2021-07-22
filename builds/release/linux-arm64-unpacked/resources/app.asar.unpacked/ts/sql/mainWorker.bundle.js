@@ -23396,6 +23396,7 @@ const uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/index.js");
 const lodash_1 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const assert_1 = __webpack_require__(/*! ../util/assert */ "./ts/util/assert.js");
 const combineNames_1 = __webpack_require__(/*! ../util/combineNames */ "./ts/util/combineNames.js");
+const dropNull_1 = __webpack_require__(/*! ../util/dropNull */ "./ts/util/dropNull.js");
 const isNormalNumber_1 = __webpack_require__(/*! ../util/isNormalNumber */ "./ts/util/isNormalNumber.js");
 const isNotNil_1 = __webpack_require__(/*! ../util/isNotNil */ "./ts/util/isNotNil.js");
 // This value needs to be below SQLITE_MAX_VARIABLE_NUMBER.
@@ -23570,7 +23571,7 @@ function rowToConversation(row) {
     return Object.assign(Object.assign({}, parsedJson), { profileLastFetchedAt });
 }
 function rowToSticker(row) {
-    return Object.assign(Object.assign({}, row), { isCoverOnly: Boolean(row.isCoverOnly) });
+    return Object.assign(Object.assign({}, row), { isCoverOnly: Boolean(row.isCoverOnly), emoji: dropNull_1.dropNull(row.emoji) });
 }
 function isRenderer() {
     if (typeof process === 'undefined' || !process) {
@@ -25026,6 +25027,14 @@ function updateToSchemaVersion35(currentVersion, db) {
     })();
     console.log('updateToSchemaVersion35: success!');
 }
+// Reverted
+function updateToSchemaVersion36(currentVersion, db) {
+    if (currentVersion >= 36) {
+        return;
+    }
+    db.pragma('user_version = 36');
+    console.log('updateToSchemaVersion36: success!');
+}
 const SCHEMA_VERSIONS = [
     updateToSchemaVersion1,
     updateToSchemaVersion2,
@@ -25062,6 +25071,7 @@ const SCHEMA_VERSIONS = [
     updateToSchemaVersion33,
     updateToSchemaVersion34,
     updateToSchemaVersion35,
+    updateToSchemaVersion36,
 ];
 function updateSchema(db) {
     const sqliteVersion = getSQLiteVersion(db);
@@ -25862,9 +25872,9 @@ async function hasUserInitiatedMessages(conversationId) {
         .get({ conversationId });
     return row.count !== 0;
 }
-function saveMessageSync(data, options = {}) {
+function saveMessageSync(data, options) {
     const db = getInstance();
-    const { forceSave, alreadyInTransaction } = options;
+    const { forceSave, alreadyInTransaction } = options || {};
     if (!alreadyInTransaction) {
         return db.transaction(() => {
             return assertSync(saveMessageSync(data, Object.assign(Object.assign({}, options), { alreadyInTransaction: true })));
@@ -25974,8 +25984,9 @@ function saveMessageSync(data, options = {}) {
 async function saveMessage(data, options) {
     return saveMessageSync(data, options);
 }
-async function saveMessages(arrayOfMessages, { forceSave } = {}) {
+async function saveMessages(arrayOfMessages, options) {
     const db = getInstance();
+    const { forceSave } = options || {};
     db.transaction(() => {
         for (const message of arrayOfMessages) {
             assertSync(saveMessageSync(message, { forceSave, alreadyInTransaction: true }));
@@ -26797,13 +26808,13 @@ async function createOrUpdateStickerPack(pack) {
       `)
         .all({ id });
     const payload = {
-        attemptedStatus,
+        attemptedStatus: attemptedStatus !== null && attemptedStatus !== void 0 ? attemptedStatus : null,
         author,
         coverStickerId,
         createdAt: createdAt || Date.now(),
         downloadAttempts: downloadAttempts || 1,
         id,
-        installedAt,
+        installedAt: installedAt !== null && installedAt !== void 0 ? installedAt : null,
         key,
         lastUsed: lastUsed || null,
         status,
@@ -26910,7 +26921,7 @@ async function createOrUpdateSticker(sticker) {
       $width
     )
     `).run({
-        emoji,
+        emoji: emoji !== null && emoji !== void 0 ? emoji : null,
         height,
         id,
         isCoverOnly: isCoverOnly ? 1 : 0,
@@ -27772,6 +27783,43 @@ function isCKJV(codePoint) {
         Hangul_Syllables.test(codePoint) ||
         isIdeographic.test(codePoint));
 }
+
+
+/***/ }),
+
+/***/ "./ts/util/dropNull.js":
+/*!*****************************!*\
+  !*** ./ts/util/dropNull.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+/* eslint-disable no-restricted-syntax */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.shallowDropNull = exports.dropNull = void 0;
+function dropNull(value) {
+    if (value === null) {
+        return undefined;
+    }
+    return value;
+}
+exports.dropNull = dropNull;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function shallowDropNull(value) {
+    if (value === null || value === undefined) {
+        return undefined;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = {};
+    for (const [key, propertyValue] of Object.entries(value)) {
+        result[key] = dropNull(propertyValue);
+    }
+    return result;
+}
+exports.shallowDropNull = shallowDropNull;
 
 
 /***/ }),
