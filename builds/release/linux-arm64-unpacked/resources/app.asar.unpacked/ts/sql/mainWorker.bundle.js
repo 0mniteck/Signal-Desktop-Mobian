@@ -23399,6 +23399,7 @@ const combineNames_1 = __webpack_require__(/*! ../util/combineNames */ "./ts/uti
 const dropNull_1 = __webpack_require__(/*! ../util/dropNull */ "./ts/util/dropNull.js");
 const isNormalNumber_1 = __webpack_require__(/*! ../util/isNormalNumber */ "./ts/util/isNormalNumber.js");
 const isNotNil_1 = __webpack_require__(/*! ../util/isNotNil */ "./ts/util/isNotNil.js");
+const parseIntOrThrow_1 = __webpack_require__(/*! ../util/parseIntOrThrow */ "./ts/util/parseIntOrThrow.js");
 // This value needs to be below SQLITE_MAX_VARIABLE_NUMBER.
 const MAX_VARIABLE_COUNT = 100;
 // Because we can't force this module to conform to an interface, we narrow our exports
@@ -23437,6 +23438,16 @@ const dataInterface = {
     removeAllSenderKeys,
     getAllSenderKeys,
     removeSenderKeyById,
+    insertSentProto,
+    deleteSentProtosOlderThan,
+    deleteSentProtoByMessageId,
+    insertProtoRecipients,
+    deleteSentProtoRecipient,
+    getSentProtoByRecipient,
+    removeAllSentProtos,
+    getAllSentProtos,
+    _getAllSentProtoRecipients,
+    _getAllSentProtoMessageIds,
     createOrUpdateSession,
     createOrUpdateSessions,
     commitSessionsAndUnprocessed,
@@ -25035,6 +25046,81 @@ function updateToSchemaVersion36(currentVersion, db) {
     db.pragma('user_version = 36');
     console.log('updateToSchemaVersion36: success!');
 }
+function updateToSchemaVersion37(currentVersion, db) {
+    if (currentVersion >= 37) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      -- Create send log primary table
+
+      CREATE TABLE sendLogPayloads(
+        id INTEGER PRIMARY KEY ASC,
+
+        timestamp INTEGER NOT NULL,
+        contentHint INTEGER NOT NULL,
+        proto BLOB NOT NULL
+      );
+
+      CREATE INDEX sendLogPayloadsByTimestamp ON sendLogPayloads (timestamp);
+
+      -- Create send log recipients table with foreign key relationship to payloads
+
+      CREATE TABLE sendLogRecipients(
+        payloadId INTEGER NOT NULL,
+
+        recipientUuid STRING NOT NULL,
+        deviceId INTEGER NOT NULL,
+
+        PRIMARY KEY (payloadId, recipientUuid, deviceId),
+
+        CONSTRAINT sendLogRecipientsForeignKey
+          FOREIGN KEY (payloadId)
+          REFERENCES sendLogPayloads(id)
+          ON DELETE CASCADE
+      );
+
+      CREATE INDEX sendLogRecipientsByRecipient
+        ON sendLogRecipients (recipientUuid, deviceId);
+
+      -- Create send log messages table with foreign key relationship to payloads
+
+      CREATE TABLE sendLogMessageIds(
+        payloadId INTEGER NOT NULL,
+
+        messageId STRING NOT NULL,
+
+        PRIMARY KEY (payloadId, messageId),
+
+        CONSTRAINT sendLogMessageIdsForeignKey
+          FOREIGN KEY (payloadId)
+          REFERENCES sendLogPayloads(id)
+          ON DELETE CASCADE
+      );
+
+      CREATE INDEX sendLogMessageIdsByMessage
+        ON sendLogMessageIds (messageId);
+
+      -- Recreate messages table delete trigger with send log support
+
+      DROP TRIGGER messages_on_delete;
+
+      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
+        DELETE FROM messages_fts WHERE rowid = old.rowid;
+        DELETE FROM sendLogPayloads WHERE id IN (
+          SELECT payloadId FROM sendLogMessageIds
+          WHERE messageId = old.id
+        );
+      END;
+
+      --- Add messageId column to reactions table to properly track proto associations
+
+      ALTER TABLE reactions ADD column messageId STRING;
+    `);
+        db.pragma('user_version = 37');
+    })();
+    console.log('updateToSchemaVersion37: success!');
+}
 const SCHEMA_VERSIONS = [
     updateToSchemaVersion1,
     updateToSchemaVersion2,
@@ -25072,6 +25158,7 @@ const SCHEMA_VERSIONS = [
     updateToSchemaVersion34,
     updateToSchemaVersion35,
     updateToSchemaVersion36,
+    updateToSchemaVersion37,
 ];
 function updateSchema(db) {
     const sqliteVersion = getSQLiteVersion(db);
@@ -25342,16 +25429,213 @@ async function getSenderKeyById(id) {
 }
 async function removeAllSenderKeys() {
     const db = getInstance();
-    prepare(db, 'DELETE FROM senderKeys').run({});
+    prepare(db, 'DELETE FROM senderKeys').run();
 }
 async function getAllSenderKeys() {
     const db = getInstance();
-    const rows = prepare(db, 'SELECT * FROM senderKeys').all({});
+    const rows = prepare(db, 'SELECT * FROM senderKeys').all();
     return rows;
 }
 async function removeSenderKeyById(id) {
     const db = getInstance();
     prepare(db, 'DELETE FROM senderKeys WHERE id = $id').run({ id });
+}
+async function insertSentProto(proto, options) {
+    const db = getInstance();
+    const { recipients, messageIds } = options;
+    // Note: we use `pluck` in this function to fetch only the first column of returned row.
+    return db.transaction(() => {
+        // 1. Insert the payload, fetching its primary key id
+        const info = prepare(db, `
+      INSERT INTO sendLogPayloads (
+        contentHint,
+        proto,
+        timestamp
+      ) VALUES (
+        $contentHint,
+        $proto,
+        $timestamp
+      );
+      `).run(proto);
+        const id = parseIntOrThrow_1.parseIntOrThrow(info.lastInsertRowid, 'insertSentProto/lastInsertRowid');
+        // 2. Insert a record for each recipient device.
+        const recipientStatement = prepare(db, `
+      INSERT INTO sendLogRecipients (
+        payloadId,
+        recipientUuid,
+        deviceId
+      ) VALUES (
+        $id,
+        $recipientUuid,
+        $deviceId
+      );
+      `);
+        const recipientUuids = Object.keys(recipients);
+        for (const recipientUuid of recipientUuids) {
+            const deviceIds = recipients[recipientUuid];
+            for (const deviceId of deviceIds) {
+                recipientStatement.run({
+                    id,
+                    recipientUuid,
+                    deviceId,
+                });
+            }
+        }
+        // 2. Insert a record for each message referenced by this payload.
+        const messageStatement = prepare(db, `
+      INSERT INTO sendLogMessageIds (
+        payloadId,
+        messageId
+      ) VALUES (
+        $id,
+        $messageId
+      );
+      `);
+        for (const messageId of messageIds) {
+            messageStatement.run({
+                id,
+                messageId,
+            });
+        }
+        return id;
+    })();
+}
+async function deleteSentProtosOlderThan(timestamp) {
+    const db = getInstance();
+    prepare(db, `
+    DELETE FROM sendLogPayloads
+    WHERE
+      timestamp IS NULL OR
+      timestamp < $timestamp;
+    `).run({
+        timestamp,
+    });
+}
+async function deleteSentProtoByMessageId(messageId) {
+    const db = getInstance();
+    prepare(db, `
+    DELETE FROM sendLogPayloads WHERE id IN (
+      SELECT payloadId FROM sendLogMessageIds
+      WHERE messageId = $messageId
+    );
+    `).run({
+        messageId,
+    });
+}
+async function insertProtoRecipients({ id, recipientUuid, deviceIds, }) {
+    const db = getInstance();
+    db.transaction(() => {
+        const statement = prepare(db, `
+      INSERT INTO sendLogRecipients (
+        payloadId,
+        recipientUuid,
+        deviceId
+      ) VALUES (
+        $id,
+        $recipientUuid,
+        $deviceId
+      );
+      `);
+        for (const deviceId of deviceIds) {
+            statement.run({
+                id,
+                recipientUuid,
+                deviceId,
+            });
+        }
+    })();
+}
+async function deleteSentProtoRecipient({ timestamp, recipientUuid, deviceId, }) {
+    const db = getInstance();
+    // Note: we use `pluck` in this function to fetch only the first column of returned row.
+    db.transaction(() => {
+        // 1. Figure out what payload we're talking about.
+        const rows = prepare(db, `
+      SELECT sendLogPayloads.id FROM sendLogPayloads
+      INNER JOIN sendLogRecipients
+        ON sendLogRecipients.payloadId = sendLogPayloads.id
+      WHERE
+        sendLogPayloads.timestamp = $timestamp AND
+        sendLogRecipients.recipientUuid = $recipientUuid AND
+        sendLogRecipients.deviceId = $deviceId;
+     `).all({ timestamp, recipientUuid, deviceId });
+        if (!rows.length) {
+            return;
+        }
+        if (rows.length > 1) {
+            console.warn(`deleteSentProtoRecipient: More than one payload matches recipient and timestamp ${timestamp}. Using the first.`);
+            return;
+        }
+        const { id } = rows[0];
+        // 2. Delete the recipient/device combination in question.
+        prepare(db, `
+      DELETE FROM sendLogRecipients
+      WHERE
+        payloadId = $id AND
+        recipientUuid = $recipientUuid AND
+        deviceId = $deviceId;
+      `).run({ id, recipientUuid, deviceId });
+        // 3. See how many more recipient devices there were for this payload.
+        const remaining = prepare(db, 'SELECT count(*) FROM sendLogRecipients WHERE payloadId = $id;')
+            .pluck(true)
+            .get({ id });
+        if (!lodash_1.isNumber(remaining)) {
+            throw new Error('deleteSentProtoRecipient: select count() returned non-number!');
+        }
+        if (remaining > 0) {
+            return;
+        }
+        // 4. Delete the entire payload if there are no more recipients left.
+        console.info(`deleteSentProtoRecipient: Deleting proto payload for timestamp ${timestamp}`);
+        prepare(db, 'DELETE FROM sendLogPayloads WHERE id = $id;').run({
+            id,
+        });
+    })();
+}
+async function getSentProtoByRecipient({ now, recipientUuid, timestamp, }) {
+    const db = getInstance();
+    const HOUR = 1000 * 60 * 60;
+    const oneDayAgo = now - HOUR * 24;
+    await deleteSentProtosOlderThan(oneDayAgo);
+    const row = prepare(db, `
+    SELECT
+      sendLogPayloads.*,
+      GROUP_CONCAT(DISTINCT sendLogMessageIds.messageId) AS messageIds
+    FROM sendLogPayloads
+    INNER JOIN sendLogRecipients ON sendLogRecipients.payloadId = sendLogPayloads.id
+    LEFT JOIN sendLogMessageIds ON sendLogMessageIds.payloadId = sendLogPayloads.id
+    WHERE
+      sendLogPayloads.timestamp = $timestamp AND
+      sendLogRecipients.recipientUuid = $recipientUuid
+    GROUP BY sendLogPayloads.id;
+    `).get({
+        timestamp,
+        recipientUuid,
+    });
+    if (!row) {
+        return undefined;
+    }
+    const { messageIds } = row;
+    return Object.assign(Object.assign({}, row), { messageIds: messageIds ? messageIds.split(',') : [] });
+}
+async function removeAllSentProtos() {
+    const db = getInstance();
+    prepare(db, 'DELETE FROM sendLogPayloads;').run();
+}
+async function getAllSentProtos() {
+    const db = getInstance();
+    const rows = prepare(db, 'SELECT * FROM sendLogPayloads;').all();
+    return rows;
+}
+async function _getAllSentProtoRecipients() {
+    const db = getInstance();
+    const rows = prepare(db, 'SELECT * FROM sendLogRecipients;').all();
+    return rows;
+}
+async function _getAllSentProtoMessageIds() {
+    const db = getInstance();
+    const rows = prepare(db, 'SELECT * FROM sendLogMessageIds;').all();
+    return rows;
 }
 const SESSIONS_TABLE = 'sessions';
 function createOrUpdateSessionSync(data) {
@@ -25588,7 +25872,7 @@ function updateConversationSync(data) {
         : members
             ? members.join(' ')
             : null;
-    prepare(db, `
+    db.prepare(`
     UPDATE conversations SET
       json = $json,
 
@@ -26134,7 +26418,7 @@ async function getUnreadReactionsAndMarkRead(conversationId, newestUnreadId) {
     return db.transaction(() => {
         const unreadMessages = db
             .prepare(`
-        SELECT targetAuthorUuid, targetTimestamp
+        SELECT targetAuthorUuid, targetTimestamp, messageId
         FROM reactions WHERE
           unread = 1 AND
           conversationId = $conversationId AND
@@ -26186,13 +26470,14 @@ async function markReactionAsRead(targetAuthorUuid, targetTimestamp) {
         return readReaction;
     })();
 }
-async function addReaction({ conversationId, emoji, fromId, messageReceivedAt, targetAuthorUuid, targetTimestamp, }) {
+async function addReaction({ conversationId, emoji, fromId, messageId, messageReceivedAt, targetAuthorUuid, targetTimestamp, }) {
     const db = getInstance();
     await db
         .prepare(`INSERT INTO reactions (
       conversationId,
       emoji,
       fromId,
+      messageId,
       messageReceivedAt,
       targetAuthorUuid,
       targetTimestamp,
@@ -26201,6 +26486,7 @@ async function addReaction({ conversationId, emoji, fromId, messageReceivedAt, t
       $conversationId,
       $emoji,
       $fromId,
+      $messageId,
       $messageReceivedAt,
       $targetAuthorUuid,
       $targetTimestamp,
@@ -26210,6 +26496,7 @@ async function addReaction({ conversationId, emoji, fromId, messageReceivedAt, t
         conversationId,
         emoji,
         fromId,
+        messageId,
         messageReceivedAt,
         targetAuthorUuid,
         targetTimestamp,
@@ -27948,6 +28235,41 @@ const stringify = (value) => {
 // maintenance and system evolution.
 const missingCaseError = (x) => new TypeError(`Unhandled case: ${stringify(x)}`);
 exports.missingCaseError = missingCaseError;
+
+
+/***/ }),
+
+/***/ "./ts/util/parseIntOrThrow.js":
+/*!************************************!*\
+  !*** ./ts/util/parseIntOrThrow.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseIntOrThrow = void 0;
+function parseIntOrThrow(value, message) {
+    let result;
+    switch (typeof value) {
+        case 'number':
+            result = value;
+            break;
+        case 'string':
+            result = parseInt(value, 10);
+            break;
+        default:
+            result = NaN;
+            break;
+    }
+    if (!Number.isInteger(result)) {
+        throw new Error(message);
+    }
+    return result;
+}
+exports.parseIntOrThrow = parseIntOrThrow;
 
 
 /***/ }),
