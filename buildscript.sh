@@ -7,7 +7,7 @@ echo
 
 echo "Entering ringrtc/"
 pushd ringrtc
-# ./re-run.sh
+./re-run.sh
 popd
 ls -la libringrtc-arm64.node
 
