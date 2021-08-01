@@ -21,6 +21,7 @@ RUN mv package signal-client
 # Clone Repos
 # Signal-Desktop v5.11.0
 RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.11.x
+RUN mkdir /Signal-Desktop/release/
 # libsignal-client v0.8.1
 RUN git clone https://github.com/signalapp/libsignal-client.git
 RUN cd libsignal-client; git reset --hard b715e02aa903ac83b2dc03ebd78b7dcbbee906fa
@@ -37,7 +38,9 @@ RUN git clone https://github.com/scottnonnenberg-signal/node-sqlcipher.git -b up
 RUN git clone https://github.com/signalapp/better-sqlite3.git
 
 #Copy Files
-COPY libringrtc-arm64.node /signal-ringrtc-node/build/linux/libringrtc-arm64.node
+COPY libringrtc-arm64.node /signal-ringrtc-node/build/linux/
+# COPY builds/release/private.key /Signal-Desktop/release/
+COPY builds/release/public.key /Signal-Desktop/release/
 COPY fficonfig.h /usr/include/aarch64-linux-gnu/
 COPY signal-buildscript.sh /
 COPY sqlcipher.patch /

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 source $HOME/.cargo/env
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 nvm use 14.16.0
