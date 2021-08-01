@@ -8,6 +8,10 @@ The aim is to keep up with the standard release schedule plus a few hours for bu
 
 This is the signed release for `5.11.0`, `builds/release/signal-desktop_5.11.0_arm64.deb`.
 
+Signature: `builds/release/signal-desktop_5.11.0_arm64.deb.sig`.
+
+Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
+
 ## Usage:
 1. Build with docker: `sudo ./buildscript.sh`, it takes about 3.5 hours.
 2. Copy the `.deb` to your device and `sudo apt install ./signal-desktop_5.11.0_arm64.deb`.
@@ -19,7 +23,7 @@ This is the signed release for `5.11.0`, `builds/release/signal-desktop_5.11.0_a
 * [x] zkgroup builds
 * [x] ringrtc builds
 * [x] Bundle all builds and outputs
-* [x] Sign `.deb` with pgp key
+* [x] Sign `.deb` with keypair
 
 ## Successful Builds:
 * `5.7.1`
@@ -27,9 +31,6 @@ This is the signed release for `5.11.0`, `builds/release/signal-desktop_5.11.0_a
 * `5.9.0`
 * `5.10.0`
 * `5.11.0` - (Signed)
-
-## Public Key:
-`0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## See also:
 * Included buildscript-demo.cast, it's an asciinema demo file.
