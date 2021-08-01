@@ -6,7 +6,7 @@ This project builds Signal Desktop for Mobian on Arm64, currently targeting bran
 
 The aim is to keep up with the standard release schedule plus a few hours for build time.
 
-This is the signed release for `5.11.0`, `builds/release/signal-desktop_5.11.0_arm64.deb`.
+This is the signed release for `5.11.0`: `builds/release/signal-desktop_5.11.0_arm64.deb`.
 
 Signature: `builds/release/signal-desktop_5.11.0_arm64.deb.sig`.
 
