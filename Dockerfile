@@ -19,15 +19,15 @@ RUN tar xvf signalapp-signal-client-0.8.1.tgz
 RUN mv package signal-client
 
 # Clone Repos
-# Signal-Desktop v5.11.0
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.11.x
+# Signal-Desktop v5.12.0
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.12.x
 RUN mkdir /Signal-Desktop/release/
 # libsignal-client v0.8.1
 RUN git clone https://github.com/signalapp/libsignal-client.git
 RUN cd libsignal-client; git reset --hard b715e02aa903ac83b2dc03ebd78b7dcbbee906fa
-# signal-ringrtc-node v2.10.6
+# signal-ringrtc-node v2.10.7
 RUN git clone https://github.com/signalapp/signal-ringrtc-node.git
-RUN cd signal-ringrtc-node; git reset --hard 868f7ecb699b984171b5ad02f9b043bfa55ad804
+RUN cd signal-ringrtc-node; git reset --hard 677ece9c3b1f7ca9abf9f140c9645fb7c7daf5ff
 # zkgroup v0.7.3
 RUN git clone https://github.com/signalapp/zkgroup.git
 RUN cd zkgroup; git reset --hard ff26ac3679329e182772eed3f51797d91f963c3b

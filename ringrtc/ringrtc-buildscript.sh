@@ -14,6 +14,7 @@ EOF
 rustup toolchain install nightly-2021-06-08
 rustup default nightly-2021-06-08
 rustup target add aarch64-unknown-linux-gnu
+
 make electron PLATFORM=unix NODEJS_ARCH=arm64
 ./src/webrtc/src/build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
 make electron PLATFORM=unix NODEJS_ARCH=arm64
