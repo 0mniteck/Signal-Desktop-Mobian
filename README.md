@@ -13,10 +13,12 @@ Signature: `builds/release/signal-desktop_5.12.2_arm64.deb.sig`.
 Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## Usage:
+
 1. Build with docker: `sudo ./buildscript.sh`, it takes about 3 hours.
 2. Copy the `.deb` to your device and `sudo apt install ./signal-desktop_5.12.2_arm64.deb`.
 
 ## Current Status:
+
 * [x] Signal Desktop builds
 * [x] libsignal-client builds
 * [x] better-sqlite3 builds
@@ -26,6 +28,7 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 * [x] Sign `.deb` with keypair
 
 ## Successful Builds:
+
 * `5.7.1`
 * `5.8.0`
 * `5.9.0`
@@ -35,6 +38,7 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 * `5.12.2` - (Signed)
 
 ## See also:
+
 * Included buildscript-demo.cast, it's an asciinema demo file.
 * https://wiki.mobian-project.org/doku.php?id=signaldesktop
 * https://gitlab.com/undef1/Snippets/-/snippets/2100495
