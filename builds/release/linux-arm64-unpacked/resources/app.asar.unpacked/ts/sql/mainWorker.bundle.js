@@ -219,6 +219,64 @@ module.exports.default = is;
 
 /***/ }),
 
+/***/ "./node_modules/aggregate-error/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/aggregate-error/index.js ***!
+  \***********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+const indentString = __webpack_require__(/*! indent-string */ "./node_modules/indent-string/index.js");
+const cleanStack = __webpack_require__(/*! clean-stack */ "./node_modules/clean-stack/index.js");
+
+const cleanInternalStack = stack => stack.replace(/\s+at .*aggregate-error\/index.js:\d+:\d+\)?/g, '');
+
+class AggregateError extends Error {
+	constructor(errors) {
+		if (!Array.isArray(errors)) {
+			throw new TypeError(`Expected input to be an Array, got ${typeof errors}`);
+		}
+
+		errors = [...errors].map(error => {
+			if (error instanceof Error) {
+				return error;
+			}
+
+			if (error !== null && typeof error === 'object') {
+				// Handle plain error objects with message property and/or possibly other metadata
+				return Object.assign(new Error(error.message), error);
+			}
+
+			return new Error(error);
+		});
+
+		let message = errors
+			.map(error => {
+				// The `stack` property is not standardized, so we can't assume it exists
+				return typeof error.stack === 'string' ? cleanInternalStack(cleanStack(error.stack)) : String(error);
+			})
+			.join('\n');
+		message = '\n' + indentString(message, 4);
+		super(message);
+
+		this.name = 'AggregateError';
+
+		Object.defineProperty(this, '_errors', {value: errors});
+	}
+
+	* [Symbol.iterator]() {
+		for (const error of this._errors) {
+			yield error;
+		}
+	}
+}
+
+module.exports = AggregateError;
+
+
+/***/ }),
+
 /***/ "./node_modules/balanced-match/index.js":
 /*!**********************************************!*\
   !*** ./node_modules/balanced-match/index.js ***!
@@ -1010,6 +1068,57 @@ function expand(str, isTop) {
 
 /***/ }),
 
+/***/ "./node_modules/clean-stack/index.js":
+/*!*******************************************!*\
+  !*** ./node_modules/clean-stack/index.js ***!
+  \*******************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+const os = __webpack_require__(/*! os */ "os");
+
+const extractPathRegex = /\s+at.*(?:\(|\s)(.*)\)?/;
+const pathRegex = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:babel-polyfill|pirates)\/.*)?\w+)\.js:\d+:\d+)|native)/;
+const homeDir = typeof os.homedir === 'undefined' ? '' : os.homedir();
+
+module.exports = (stack, options) => {
+	options = Object.assign({pretty: false}, options);
+
+	return stack.replace(/\\/g, '/')
+		.split('\n')
+		.filter(line => {
+			const pathMatches = line.match(extractPathRegex);
+			if (pathMatches === null || !pathMatches[1]) {
+				return true;
+			}
+
+			const match = pathMatches[1];
+
+			// Electron
+			if (
+				match.includes('.app/Contents/Resources/electron.asar') ||
+				match.includes('.app/Contents/Resources/default_app.asar')
+			) {
+				return false;
+			}
+
+			return !pathRegex.test(match);
+		})
+		.filter(line => line.trim() !== '')
+		.map(line => {
+			if (options.pretty) {
+				return line.replace(extractPathRegex, (m, p1) => m.replace(p1, p1.replace(homeDir, '~')));
+			}
+
+			return line;
+		})
+		.join('\n');
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/concat-map/index.js":
 /*!******************************************!*\
   !*** ./node_modules/concat-map/index.js ***!
@@ -1417,6 +1526,52 @@ exports.realpath = function realpath(p, cache, cb) {
     p = pathModule.resolve(resolvedLink, p.slice(pos));
     start();
   }
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/indent-string/index.js":
+/*!*********************************************!*\
+  !*** ./node_modules/indent-string/index.js ***!
+  \*********************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = (string, count = 1, options) => {
+	options = {
+		indent: ' ',
+		includeEmptyLines: false,
+		...options
+	};
+
+	if (typeof string !== 'string') {
+		throw new TypeError(
+			`Expected \`input\` to be a \`string\`, got \`${typeof string}\``
+		);
+	}
+
+	if (typeof count !== 'number') {
+		throw new TypeError(
+			`Expected \`count\` to be a \`number\`, got \`${typeof count}\``
+		);
+	}
+
+	if (typeof options.indent !== 'string') {
+		throw new TypeError(
+			`Expected \`options.indent\` to be a \`string\`, got \`${typeof options.indent}\``
+		);
+	}
+
+	if (count === 0) {
+		return string;
+	}
+
+	const regex = options.includeEmptyLines ? /^/gm : /^(?!\s*$)/gm;
+
+	return string.replace(regex, options.indent.repeat(count));
 };
 
 
@@ -20973,6 +21128,144 @@ function onceStrict (fn) {
 
 /***/ }),
 
+/***/ "./node_modules/p-props/index.js":
+/*!***************************************!*\
+  !*** ./node_modules/p-props/index.js ***!
+  \***************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+const pMap = __webpack_require__(/*! p-map */ "./node_modules/p-props/node_modules/p-map/index.js");
+
+const map = async (map, mapper, options) => {
+	const awaitedEntries = [...map.entries()].map(async ([key, value]) => [key, await value]);
+	const values = await pMap(awaitedEntries, ([key, value]) => mapper(value, key), options);
+	const result = new Map();
+
+	for (const [index, key] of [...map.keys()].entries()) {
+		result.set(key, values[index]);
+	}
+
+	return result;
+};
+
+const object = async (map, mapper, options) => {
+	const awaitedEntries = Object.entries(map).map(async ([key, value]) => [key, await value]);
+	const values = await pMap(awaitedEntries, ([key, value]) => mapper(value, key), options);
+	const result = {};
+
+	for (const [index, key] of Object.keys(map).entries()) {
+		result[key] = values[index];
+	}
+
+	return result;
+};
+
+// eslint-disable-next-line default-param-last
+const pProps = (input, mapper = (value => value), options) => {
+	return input instanceof Map ?
+		map(input, mapper, options) :
+		object(input, mapper, options);
+};
+
+module.exports = pProps;
+
+
+/***/ }),
+
+/***/ "./node_modules/p-props/node_modules/p-map/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/p-props/node_modules/p-map/index.js ***!
+  \**********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+const AggregateError = __webpack_require__(/*! aggregate-error */ "./node_modules/aggregate-error/index.js");
+
+module.exports = async (
+	iterable,
+	mapper,
+	{
+		concurrency = Infinity,
+		stopOnError = true
+	} = {}
+) => {
+	return new Promise((resolve, reject) => {
+		if (typeof mapper !== 'function') {
+			throw new TypeError('Mapper function is required');
+		}
+
+		if (!((Number.isSafeInteger(concurrency) || concurrency === Infinity) && concurrency >= 1)) {
+			throw new TypeError(`Expected \`concurrency\` to be an integer from 1 and up or \`Infinity\`, got \`${concurrency}\` (${typeof concurrency})`);
+		}
+
+		const result = [];
+		const errors = [];
+		const iterator = iterable[Symbol.iterator]();
+		let isRejected = false;
+		let isIterableDone = false;
+		let resolvingCount = 0;
+		let currentIndex = 0;
+
+		const next = () => {
+			if (isRejected) {
+				return;
+			}
+
+			const nextItem = iterator.next();
+			const index = currentIndex;
+			currentIndex++;
+
+			if (nextItem.done) {
+				isIterableDone = true;
+
+				if (resolvingCount === 0) {
+					if (!stopOnError && errors.length !== 0) {
+						reject(new AggregateError(errors));
+					} else {
+						resolve(result);
+					}
+				}
+
+				return;
+			}
+
+			resolvingCount++;
+
+			(async () => {
+				try {
+					const element = await nextItem.value;
+					result[index] = await mapper(element, index);
+					resolvingCount--;
+					next();
+				} catch (error) {
+					if (stopOnError) {
+						isRejected = true;
+						reject(error);
+					} else {
+						errors.push(error);
+						resolvingCount--;
+						next();
+					}
+				}
+			})();
+		};
+
+		for (let i = 0; i < concurrency; i++) {
+			next();
+
+			if (isIterableDone) {
+				break;
+			}
+		}
+	});
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/path-is-absolute/index.js":
 /*!************************************************!*\
   !*** ./node_modules/path-is-absolute/index.js ***!
@@ -23208,7 +23501,7 @@ function wrappy (fn, cb) {
 // Copyright 2021 Signal Messenger, LLC
 // SPDX-License-Identifier: AGPL-3.0-only
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.parseEnvironment = exports.setEnvironment = exports.getEnvironment = exports.Environment = void 0;
+exports.isTestEnvironment = exports.parseEnvironment = exports.setEnvironment = exports.getEnvironment = exports.Environment = void 0;
 const enum_1 = __webpack_require__(/*! ./util/enum */ "./ts/util/enum.js");
 // Many places rely on this enum being a string.
 var Environment;
@@ -23242,6 +23535,31 @@ function setEnvironment(env) {
 }
 exports.setEnvironment = setEnvironment;
 exports.parseEnvironment = enum_1.makeEnumParser(Environment, Environment.Production);
+const isTestEnvironment = (env) => env === Environment.Test || env === Environment.TestLib;
+exports.isTestEnvironment = isTestEnvironment;
+
+
+/***/ }),
+
+/***/ "./ts/logging/formatCountForLogging.js":
+/*!*********************************************!*\
+  !*** ./ts/logging/formatCountForLogging.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.formatCountForLogging = void 0;
+const formatCountForLogging = (count) => {
+    if (count === 0 || Number.isNaN(count)) {
+        return String(count);
+    }
+    return `at least ${10 ** Math.floor(Math.log10(count))}`;
+};
+exports.formatCountForLogging = formatCountForLogging;
 
 
 /***/ }),
@@ -23301,10 +23619,20 @@ exports.setLogAtLevel = setLogAtLevel;
 // Copyright 2021 Signal Messenger, LLC
 // SPDX-License-Identifier: AGPL-3.0-only
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.cleanArgs = exports.getLogLevelString = exports.isLogEntry = exports.LogLevel = void 0;
+exports.cleanArgs = exports.getLogLevelString = exports.isLogEntry = exports.LogLevel = exports.isFetchLogIpcData = void 0;
+const isRecord_1 = __webpack_require__(/*! ../util/isRecord */ "./ts/util/isRecord.js");
 const privacy_1 = __webpack_require__(/*! ../util/privacy */ "./ts/util/privacy.js");
 const missingCaseError_1 = __webpack_require__(/*! ../util/missingCaseError */ "./ts/util/missingCaseError.js");
 const reallyJsonStringify_1 = __webpack_require__(/*! ../util/reallyJsonStringify */ "./ts/util/reallyJsonStringify.js");
+// We don't use Zod here because it'd be slow parsing all of the log entries.
+//   Unfortunately, Zod is a bit slow even with `z.array(z.unknown())`.
+const isFetchLogIpcData = (data) => isRecord_1.isRecord(data) &&
+    isRecord_1.isRecord(data.capabilities) &&
+    isRecord_1.isRecord(data.remoteConfig) &&
+    isRecord_1.isRecord(data.statistics) &&
+    isRecord_1.isRecord(data.user) &&
+    Array.isArray(data.logEntries);
+exports.isFetchLogIpcData = isFetchLogIpcData;
 // These match [Pino's recommendations][0].
 // [0]: https://getpino.io/#/docs/api?id=loggerlevels-object
 var LogLevel;
@@ -23320,7 +23648,7 @@ var LogLevel;
 // whenever we want to send the debug log. We can't use `zod` because it clones
 // the data on successful parse and ruins the performance.
 const isLogEntry = (data) => {
-    if (data === null || typeof data !== 'object') {
+    if (!isRecord_1.isRecord(data)) {
         return false;
     }
     const { level, msg, time } = data;
@@ -23392,6 +23720,7 @@ const path_1 = __webpack_require__(/*! path */ "path");
 const mkdirp_1 = __importDefault(__webpack_require__(/*! mkdirp */ "./node_modules/mkdirp/index.js"));
 const rimraf_1 = __importDefault(__webpack_require__(/*! rimraf */ "./node_modules/rimraf/rimraf.js"));
 const better_sqlite3_1 = __importDefault(__webpack_require__(/*! better-sqlite3 */ "./node_modules/better-sqlite3/lib/index.js"));
+const p_props_1 = __importDefault(__webpack_require__(/*! p-props */ "./node_modules/p-props/index.js"));
 const uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/index.js");
 const lodash_1 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const assert_1 = __webpack_require__(/*! ../util/assert */ "./ts/util/assert.js");
@@ -23400,6 +23729,7 @@ const dropNull_1 = __webpack_require__(/*! ../util/dropNull */ "./ts/util/dropNu
 const isNormalNumber_1 = __webpack_require__(/*! ../util/isNormalNumber */ "./ts/util/isNormalNumber.js");
 const isNotNil_1 = __webpack_require__(/*! ../util/isNotNil */ "./ts/util/isNotNil.js");
 const parseIntOrThrow_1 = __webpack_require__(/*! ../util/parseIntOrThrow */ "./ts/util/parseIntOrThrow.js");
+const formatCountForLogging_1 = __webpack_require__(/*! ../logging/formatCountForLogging */ "./ts/logging/formatCountForLogging.js");
 // This value needs to be below SQLITE_MAX_VARIABLE_NUMBER.
 const MAX_VARIABLE_COUNT = 100;
 // Because we can't force this module to conform to an interface, we narrow our exports
@@ -23538,6 +23868,7 @@ const dataInterface = {
     getJobsInQueue,
     insertJob,
     deleteJob,
+    getStatisticsForLogging,
     // Server-only
     initialize,
     initializeRenderer,
@@ -25121,6 +25452,39 @@ function updateToSchemaVersion37(currentVersion, db) {
     })();
     console.log('updateToSchemaVersion37: success!');
 }
+function updateToSchemaVersion38(currentVersion, db) {
+    if (currentVersion >= 38) {
+        return;
+    }
+    db.transaction(() => {
+        // TODO: Remove deprecated columns once sqlcipher is updated to support it
+        db.exec(`
+      DROP INDEX IF EXISTS messages_duplicate_check;
+
+      ALTER TABLE messages
+        RENAME COLUMN sourceDevice TO deprecatedSourceDevice;
+      ALTER TABLE messages
+        ADD COLUMN sourceDevice INTEGER;
+
+      UPDATE messages
+      SET
+        sourceDevice = CAST(deprecatedSourceDevice AS INTEGER),
+        deprecatedSourceDevice = NULL;
+
+      ALTER TABLE unprocessed
+        RENAME COLUMN sourceDevice TO deprecatedSourceDevice;
+      ALTER TABLE unprocessed
+        ADD COLUMN sourceDevice INTEGER;
+
+      UPDATE unprocessed
+      SET
+        sourceDevice = CAST(deprecatedSourceDevice AS INTEGER),
+        deprecatedSourceDevice = NULL;
+    `);
+        db.pragma('user_version = 38');
+    })();
+    console.log('updateToSchemaVersion38: success!');
+}
 const SCHEMA_VERSIONS = [
     updateToSchemaVersion1,
     updateToSchemaVersion2,
@@ -25159,6 +25523,7 @@ const SCHEMA_VERSIONS = [
     updateToSchemaVersion35,
     updateToSchemaVersion36,
     updateToSchemaVersion37,
+    updateToSchemaVersion38,
 ];
 function updateSchema(db) {
     const sqliteVersion = getSQLiteVersion(db);
@@ -25783,16 +26148,20 @@ async function getAllFromTable(table) {
         .all();
     return rows.map(row => jsonToObject(row.json));
 }
+function getCountFromTable(table) {
+    const db = getInstance();
+    const result = db
+        .prepare(`SELECT count(*) from ${table};`)
+        .pluck(true)
+        .get();
+    if (lodash_1.isNumber(result)) {
+        return result;
+    }
+    throw new Error(`getCountFromTable: Unable to get count from table ${table}`);
+}
 // Conversations
 async function getConversationCount() {
-    const db = getInstance();
-    const row = db
-        .prepare('SELECT count(*) from conversations;')
-        .get();
-    if (!row) {
-        throw new Error('getConversationCount: Unable to get count of conversations');
-    }
-    return row['count(*)'];
+    return getCountFromTable('conversations');
 }
 function saveConversationSync(data, db = getInstance()) {
     const { active_at, e164, groupId, id, members, membersV2, name, profileFamilyName, profileName, profileLastFetchedAt, type, uuid, } = data;
@@ -26107,20 +26476,17 @@ async function searchMessagesInConversation(query, conversationId, { limit = 100
     return searchMessages(query, { conversationId, limit });
 }
 async function getMessageCount(conversationId) {
+    if (conversationId === undefined) {
+        return getCountFromTable('messages');
+    }
     const db = getInstance();
-    let row;
-    if (conversationId !== undefined) {
-        row = db
-            .prepare(`
+    const row = db
+        .prepare(`
         SELECT count(*)
         FROM messages
         WHERE conversationId = $conversationId;
         `)
-            .get({ conversationId });
-    }
-    else {
-        row = db.prepare('SELECT count(*) FROM messages;').get();
-    }
+        .get({ conversationId });
     if (!row) {
         throw new Error('getMessageCount: Unable to get count of messages');
     }
@@ -26146,7 +26512,8 @@ async function hasUserInitiatedMessages(conversationId) {
                 'message-history-unsynced',
                 'keychange',
                 'group-v1-migration',
-                'universal-timer-notification'
+                'universal-timer-notification',
+                'change-number-notification'
               )
             ) AND
             json_extract(json, '$.expirationTimerUpdate') IS NULL
@@ -26632,7 +26999,8 @@ async function getLastConversationActivity({ conversationId, ourConversationId, 
             'message-history-unsynced',
             'keychange',
             'group-v1-migration',
-            'universal-timer-notification'
+            'universal-timer-notification',
+            'change-number-notification'
           )
         ) AND
         (
@@ -26672,7 +27040,8 @@ async function getLastConversationPreview({ conversationId, ourConversationId, }
             'verified-change',
             'message-history-unsynced',
             'group-v1-migration',
-            'universal-timer-notification'
+            'universal-timer-notification',
+            'change-number-notification'
           )
         ) AND NOT
         (
@@ -26971,12 +27340,7 @@ async function getUnprocessedById(id) {
     return row;
 }
 async function getUnprocessedCount() {
-    const db = getInstance();
-    const row = db.prepare('SELECT count(*) from unprocessed;').get();
-    if (!row) {
-        throw new Error('getUnprocessedCount: Unable to get count of unprocessed');
-    }
-    return row['count(*)'];
+    return getCountFromTable('unprocessed');
 }
 async function getAllUnprocessed() {
     const db = getInstance();
@@ -27297,7 +27661,7 @@ async function deleteStickerPackReference(messageId, packId) {
         }
         const count = countRow['count(*)'];
         if (count > 0) {
-            return [];
+            return undefined;
         }
         const packRow = db
             .prepare(`
@@ -27307,11 +27671,11 @@ async function deleteStickerPackReference(messageId, packId) {
             .get({ packId });
         if (!packRow) {
             console.log('deleteStickerPackReference: did not find referenced pack');
-            return [];
+            return undefined;
         }
         const { status } = packRow;
         if (status === 'installed') {
-            return [];
+            return undefined;
         }
         const stickerPathRows = db
             .prepare(`
@@ -27361,12 +27725,7 @@ async function deleteStickerPack(packId) {
         .immediate();
 }
 async function getStickerCount() {
-    const db = getInstance();
-    const row = db.prepare('SELECT count(*) from stickers;').get();
-    if (!row) {
-        throw new Error('getStickerCount: Unable to get count of stickers');
-    }
-    return row['count(*)'];
+    return getCountFromTable('stickers');
 }
 async function getAllStickerPacks() {
     const db = getInstance();
@@ -27804,6 +28163,15 @@ async function deleteJob(id) {
     const db = getInstance();
     db.prepare('DELETE FROM jobs WHERE id = $id').run({ id });
 }
+async function getStatisticsForLogging() {
+    const counts = await p_props_1.default({
+        messageCount: getMessageCount(),
+        conversationCount: getConversationCount(),
+        sessionCount: getCountFromTable('sessions'),
+        senderKeyCount: getCountFromTable('senderKeys'),
+    });
+    return lodash_1.mapValues(counts, formatCountForLogging_1.formatCountForLogging);
+}
 async function updateAllConversationColors(conversationColor, customColorData) {
     const db = getInstance();
     db.prepare(`
@@ -28191,6 +28559,24 @@ exports.isNotNil = isNotNil;
 
 /***/ }),
 
+/***/ "./ts/util/isRecord.js":
+/*!*****************************!*\
+  !*** ./ts/util/isRecord.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.isRecord = void 0;
+const isRecord = (value) => typeof value === 'object' && !Array.isArray(value) && value !== null;
+exports.isRecord = isRecord;
+
+
+/***/ }),
+
 /***/ "./ts/util/missingCaseError.js":
 /*!*************************************!*\
   !*** ./ts/util/missingCaseError.js ***!
@@ -28488,6 +28874,17 @@ module.exports = require("events");;
 
 "use strict";
 module.exports = require("fs");;
+
+/***/ }),
+
+/***/ "os":
+/*!*********************!*\
+  !*** external "os" ***!
+  \*********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("os");;
 
 /***/ }),
 
