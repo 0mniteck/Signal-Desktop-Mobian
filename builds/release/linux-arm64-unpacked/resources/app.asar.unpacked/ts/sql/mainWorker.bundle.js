@@ -27828,7 +27828,6 @@ async function removeAll() {
 // Anything that isn't user-visible data
 async function removeAllConfiguration() {
     const db = getInstance();
-    const patch = { senderKeyInfo: undefined };
     db.transaction(() => {
         db.exec(`
       DELETE FROM identityKeys;
@@ -27840,9 +27839,7 @@ async function removeAllConfiguration() {
       DELETE FROM unprocessed;
       DELETE FROM jobs;
     `);
-        db.prepare('UPDATE conversations SET json = json_patch(json, $patch);').run({
-            patch: JSON.stringify(patch),
-        });
+        db.exec("UPDATE conversations SET json = json_remove(json, '$.senderKeyInfo');");
     })();
 }
 async function getMessagesNeedingUpgrade(limit, { maxVersion }) {
