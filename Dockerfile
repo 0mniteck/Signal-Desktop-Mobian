@@ -19,8 +19,8 @@ RUN tar xvf signalapp-signal-client-0.8.1.tgz
 RUN mv package signal-client
 
 # Clone Repos
-# Signal-Desktop v5.13.1
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.13.x
+# Signal-Desktop v5.14.0
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.14.x
 RUN mkdir /Signal-Desktop/release/
 # libsignal-client v0.8.1
 RUN git clone https://github.com/signalapp/libsignal-client.git
@@ -39,7 +39,7 @@ RUN git clone https://github.com/signalapp/better-sqlite3.git
 
 #Copy Files
 COPY libringrtc-arm64.node /signal-ringrtc-node/build/linux/
-# COPY builds/release/private.key /Signal-Desktop/release/
+COPY builds/release/private.key /Signal-Desktop/release/
 COPY builds/release/public.key /Signal-Desktop/release/
 COPY fficonfig.h /usr/include/aarch64-linux-gnu/
 COPY signal-buildscript.sh /

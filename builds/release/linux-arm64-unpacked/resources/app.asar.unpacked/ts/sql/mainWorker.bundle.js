@@ -23803,7 +23803,6 @@ const dataInterface = {
     searchMessages,
     searchMessagesInConversation,
     getMessageCount,
-    hasUserInitiatedMessages,
     saveMessage,
     saveMessages,
     removeMessage,
@@ -23827,8 +23826,7 @@ const dataInterface = {
     getOlderMessagesByConversation,
     getNewerMessagesByConversation,
     getMessageMetricsForConversation,
-    getLastConversationActivity,
-    getLastConversationPreview,
+    getLastConversationMessages,
     hasGroupCallHistoryMessage,
     migrateConversationMessages,
     getUnprocessedCount,
@@ -26492,8 +26490,7 @@ async function getMessageCount(conversationId) {
     }
     return row['count(*)'];
 }
-// Called only for private conversations
-async function hasUserInitiatedMessages(conversationId) {
+function hasUserInitiatedMessages(conversationId) {
     const db = getInstance();
     // We apply the limit in the sub-query so that `json_extract` wouldn't run
     // for additional messages.
@@ -26513,10 +26510,10 @@ async function hasUserInitiatedMessages(conversationId) {
                 'keychange',
                 'group-v1-migration',
                 'universal-timer-notification',
-                'change-number-notification'
+                'change-number-notification',
+                'group-v2-change'
               )
-            ) AND
-            json_extract(json, '$.expirationTimerUpdate') IS NULL
+            )
           LIMIT 1
         );
       `)
@@ -26985,7 +26982,7 @@ function getNewestMessageForConversation(conversationId) {
     }
     return row;
 }
-async function getLastConversationActivity({ conversationId, ourConversationId, }) {
+function getLastConversationActivity({ conversationId, ourConversationId, }) {
     const db = getInstance();
     const row = prepare(db, `
       SELECT json FROM messages
@@ -27026,7 +27023,7 @@ async function getLastConversationActivity({ conversationId, ourConversationId, 
     }
     return jsonToObject(row.json);
 }
-async function getLastConversationPreview({ conversationId, ourConversationId, }) {
+function getLastConversationPreview({ conversationId, ourConversationId, }) {
     const db = getInstance();
     const row = prepare(db, `
       SELECT json FROM messages
@@ -27061,6 +27058,22 @@ async function getLastConversationPreview({ conversationId, ourConversationId, }
         return undefined;
     }
     return jsonToObject(row.json);
+}
+async function getLastConversationMessages({ conversationId, ourConversationId, }) {
+    const db = getInstance();
+    return db.transaction(() => {
+        return {
+            activity: getLastConversationActivity({
+                conversationId,
+                ourConversationId,
+            }),
+            preview: getLastConversationPreview({
+                conversationId,
+                ourConversationId,
+            }),
+            hasUserInitiatedMessages: hasUserInitiatedMessages(conversationId),
+        };
+    })();
 }
 function getOldestUnreadMessageForConversation(conversationId) {
     const db = getInstance();

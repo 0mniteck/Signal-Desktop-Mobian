@@ -29,9 +29,11 @@ win:
     - node_modules/zkgroup/libzkgroup.*
     - node_modules/@signalapp/signal-client/build/*.node
   artifactName: ${name}-win-${version}.${ext}
-  certificateSubjectName: Signal (Quiet Riddle Ventures, LLC)
-  certificateSha1: 77B2AA4421E5F377454B8B91E573746592D1543D
-  publisherName: Signal (Quiet Riddle Ventures, LLC)
+  certificateSubjectName: Signal Messenger, LLC
+  certificateSha1: 8C9A0B5C852EC703D83EF7BFBCEB54B796073759
+  signingHashAlgorithms:
+    - sha256
+  publisherName: Signal Messenger, LLC
   icon: build/icons/win/icon.ico
   publish:
     - provider: generic
@@ -66,6 +68,7 @@ protocols:
     - sgnl
     - signalcaptcha
 asarUnpack:
+  - ts/workers/heicConverter.bundle.js
   - ts/sql/mainWorker.bundle.js
   - node_modules/better-sqlite3/build/Release/better_sqlite3.node
 files:
