@@ -39,7 +39,7 @@ RUN git clone https://github.com/signalapp/better-sqlite3.git
 
 #Copy Files
 COPY libringrtc-arm64.node /signal-ringrtc-node/build/linux/
-COPY builds/release/private.key /Signal-Desktop/release/
+# COPY builds/release/private.key /Signal-Desktop/release/
 COPY builds/release/public.key /Signal-Desktop/release/
 COPY fficonfig.h /usr/include/aarch64-linux-gnu/
 COPY signal-buildscript.sh /
