@@ -23696,6 +23696,44 @@ exports.cleanArgs = cleanArgs;
 
 /***/ }),
 
+/***/ "./ts/messages/MessageReadStatus.js":
+/*!******************************************!*\
+  !*** ./ts/messages/MessageReadStatus.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.maxReadStatus = exports.ReadStatus = void 0;
+/**
+ * `ReadStatus` represents your local read/viewed status of a single incoming message.
+ * Messages go from Unread to Read to Viewed; they never go "backwards".
+ *
+ * Note that a conversation can be marked unread, which is not at the message level.
+ *
+ * Be careful when changing these values, as they are persisted. Notably, we previously
+ * had a field called "unread", which is why Unread corresponds to 1 and Read to 0.
+ */
+var ReadStatus;
+(function (ReadStatus) {
+    ReadStatus[ReadStatus["Unread"] = 1] = "Unread";
+    ReadStatus[ReadStatus["Read"] = 0] = "Read";
+    ReadStatus[ReadStatus["Viewed"] = 2] = "Viewed";
+})(ReadStatus = exports.ReadStatus || (exports.ReadStatus = {}));
+const STATUS_NUMBERS = {
+    [ReadStatus.Unread]: 0,
+    [ReadStatus.Read]: 1,
+    [ReadStatus.Viewed]: 2,
+};
+const maxReadStatus = (a, b) => STATUS_NUMBERS[a] > STATUS_NUMBERS[b] ? a : b;
+exports.maxReadStatus = maxReadStatus;
+
+
+/***/ }),
+
 /***/ "./ts/sql/Server.js":
 /*!**************************!*\
   !*** ./ts/sql/Server.js ***!
@@ -23723,6 +23761,7 @@ const better_sqlite3_1 = __importDefault(__webpack_require__(/*! better-sqlite3 
 const p_props_1 = __importDefault(__webpack_require__(/*! p-props */ "./node_modules/p-props/index.js"));
 const uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/index.js");
 const lodash_1 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+const MessageReadStatus_1 = __webpack_require__(/*! ../messages/MessageReadStatus */ "./ts/messages/MessageReadStatus.js");
 const assert_1 = __webpack_require__(/*! ../util/assert */ "./ts/util/assert.js");
 const combineNames_1 = __webpack_require__(/*! ../util/combineNames */ "./ts/util/combineNames.js");
 const dropNull_1 = __webpack_require__(/*! ../util/dropNull */ "./ts/util/dropNull.js");
@@ -25483,6 +25522,16 @@ function updateToSchemaVersion38(currentVersion, db) {
     })();
     console.log('updateToSchemaVersion38: success!');
 }
+function updateToSchemaVersion39(currentVersion, db) {
+    if (currentVersion >= 39) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec('ALTER TABLE messages RENAME COLUMN unread TO readStatus;');
+        db.pragma('user_version = 39');
+    })();
+    console.log('updateToSchemaVersion39: success!');
+}
 const SCHEMA_VERSIONS = [
     updateToSchemaVersion1,
     updateToSchemaVersion2,
@@ -25522,6 +25571,7 @@ const SCHEMA_VERSIONS = [
     updateToSchemaVersion36,
     updateToSchemaVersion37,
     updateToSchemaVersion38,
+    updateToSchemaVersion39,
 ];
 function updateSchema(db) {
     const sqliteVersion = getSQLiteVersion(db);
@@ -25620,15 +25670,14 @@ async function initializeRenderer({ configDir, key, }) {
     }
 }
 async function close() {
-    if (!globalInstance) {
-        return;
+    for (const dbRef of [globalInstanceRenderer, globalInstance]) {
+        // SQLLite documentation suggests that we run `PRAGMA optimize` right
+        // before closing the database connection.
+        dbRef === null || dbRef === void 0 ? void 0 : dbRef.pragma('optimize');
+        dbRef === null || dbRef === void 0 ? void 0 : dbRef.close();
     }
-    const dbRef = globalInstance;
     globalInstance = undefined;
-    // SQLLite documentation suggests that we run `PRAGMA optimize` right before
-    // closing the database connection.
-    dbRef.pragma('optimize');
-    dbRef.close();
+    globalInstanceRenderer = undefined;
 }
 async function removeDB() {
     if (globalInstance) {
@@ -26528,7 +26577,7 @@ function saveMessageSync(data, options) {
             return assertSync(saveMessageSync(data, Object.assign(Object.assign({}, options), { alreadyInTransaction: true })));
         })();
     }
-    const { body, conversationId, hasAttachments, hasFileAttachments, hasVisualMediaAttachments, id, isErased, isViewOnce, received_at, schemaVersion, sent_at, serverGuid, source, sourceUuid, sourceDevice, type, unread, expireTimer, expirationStartTimestamp, } = data;
+    const { body, conversationId, hasAttachments, hasFileAttachments, hasVisualMediaAttachments, id, isErased, isViewOnce, received_at, schemaVersion, sent_at, serverGuid, source, sourceUuid, sourceDevice, type, readStatus, expireTimer, expirationStartTimestamp, } = data;
     const payload = {
         id,
         json: objectToJSON(data),
@@ -26549,7 +26598,7 @@ function saveMessageSync(data, options) {
         sourceUuid: sourceUuid || null,
         sourceDevice: sourceDevice || null,
         type: type || null,
-        unread: unread ? 1 : 0,
+        readStatus: readStatus !== null && readStatus !== void 0 ? readStatus : null,
     };
     if (id && !forceSave) {
         prepare(db, `
@@ -26574,7 +26623,7 @@ function saveMessageSync(data, options) {
         sourceUuid = $sourceUuid,
         sourceDevice = $sourceDevice,
         type = $type,
-        unread = $unread
+        readStatus = $readStatus
       WHERE id = $id;
       `).run(payload);
         return id;
@@ -26602,7 +26651,7 @@ function saveMessageSync(data, options) {
       sourceUuid,
       sourceDevice,
       type,
-      unread
+      readStatus
     ) values (
       $id,
       $json,
@@ -26624,7 +26673,7 @@ function saveMessageSync(data, options) {
       $sourceUuid,
       $sourceDevice,
       $type,
-      $unread
+      $readStatus
     );
     `).run(Object.assign(Object.assign({}, payload), { id: toCreate.id, json: objectToJSON(toCreate) }));
     return toCreate.id;
@@ -26701,7 +26750,7 @@ async function getUnreadCountForConversation(conversationId) {
     const row = db
         .prepare(`
       SELECT COUNT(*) AS unreadCount FROM messages
-      WHERE unread = 1 AND
+      WHERE readStatus = ${MessageReadStatus_1.ReadStatus.Unread} AND
       conversationId = $conversationId AND
       type = 'incoming';
       `)
@@ -26739,34 +26788,32 @@ async function getUnreadByConversationAndMarkRead(conversationId, newestUnreadId
         SELECT id, json FROM messages
         INDEXED BY messages_unread
         WHERE
-          unread = $unread AND
+          readStatus = ${MessageReadStatus_1.ReadStatus.Unread} AND
           conversationId = $conversationId AND
           received_at <= $newestUnreadId
         ORDER BY received_at DESC, sent_at DESC;
         `)
             .all({
-            unread: 1,
             conversationId,
             newestUnreadId,
         });
         db.prepare(`
         UPDATE messages
         SET
-          unread = 0,
+          readStatus = ${MessageReadStatus_1.ReadStatus.Read},
           json = json_patch(json, $jsonPatch)
         WHERE
-          unread = $unread AND
+          readStatus = ${MessageReadStatus_1.ReadStatus.Unread} AND
           conversationId = $conversationId AND
           received_at <= $newestUnreadId;
         `).run({
             conversationId,
-            jsonPatch: JSON.stringify({ unread: 0 }),
+            jsonPatch: JSON.stringify({ readStatus: MessageReadStatus_1.ReadStatus.Read }),
             newestUnreadId,
-            unread: 1,
         });
         return rows.map(row => {
             const json = jsonToObject(row.json);
-            return Object.assign({ unread: false }, lodash_1.pick(json, [
+            return Object.assign({ readStatus: MessageReadStatus_1.ReadStatus.Read }, lodash_1.pick(json, [
                 'expirationStartTimestamp',
                 'id',
                 'sent_at',
@@ -27081,7 +27128,7 @@ function getOldestUnreadMessageForConversation(conversationId) {
         .prepare(`
       SELECT * FROM messages WHERE
         conversationId = $conversationId AND
-        unread = 1
+        readStatus = ${MessageReadStatus_1.ReadStatus.Unread}
       ORDER BY received_at ASC, sent_at ASC
       LIMIT 1;
       `)
@@ -27101,7 +27148,7 @@ function getTotalUnreadForConversation(conversationId) {
       FROM messages
       WHERE
         conversationId = $conversationId AND
-        unread = 1;
+        readStatus = ${MessageReadStatus_1.ReadStatus.Unread};
       `)
         .get({
         conversationId,
@@ -27195,8 +27242,9 @@ async function getMessagesUnexpectedlyMissingExpirationStartTimestamp() {
         (
           type IS 'outgoing' OR
           (type IS 'incoming' AND (
-            unread = 0 OR
-            unread IS NULL
+            readStatus = ${MessageReadStatus_1.ReadStatus.Read} OR
+            readStatus = ${MessageReadStatus_1.ReadStatus.Viewed} OR
+            readStatus IS NULL
           ))
         );
       `)
