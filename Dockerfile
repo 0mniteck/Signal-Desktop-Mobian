@@ -13,21 +13,21 @@ ENV USE_SYSTEM_FPM=true
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # Node via NVM
 ENV NVM_DIR="$HOME/.nvm"
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 14.16.0 && nvm use 14.16.0 && npm install --global yarn && npm pack '@signalapp/signal-client@0.8.1'
-# @signalapp/signal-client v0.8.1
-RUN tar xvf signalapp-signal-client-0.8.1.tgz
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 14.16.0 && nvm use 14.16.0 && npm install --global yarn && npm pack '@signalapp/signal-client@0.8.4'
+# @signalapp/signal-client v0.8.4
+RUN tar xvf signalapp-signal-client-0.8.4.tgz
 RUN mv package signal-client
 
 # Clone Repos
-# Signal-Desktop v5.14.0
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.14.x
+# Signal-Desktop v5.15.0
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.15.x
 RUN mkdir /Signal-Desktop/release/
-# libsignal-client v0.8.1
+# libsignal-client v0.8.4
 RUN git clone https://github.com/signalapp/libsignal-client.git
-RUN cd libsignal-client; git reset --hard b715e02aa903ac83b2dc03ebd78b7dcbbee906fa
-# signal-ringrtc-node v2.10.7
+RUN cd libsignal-client; git reset --hard 72ba4e6959d80b4f091fade5373e5d9aae966c01
+# signal-ringrtc-node v2.11.0
 RUN git clone https://github.com/signalapp/signal-ringrtc-node.git
-RUN cd signal-ringrtc-node; git reset --hard 677ece9c3b1f7ca9abf9f140c9645fb7c7daf5ff
+RUN cd signal-ringrtc-node; git reset --hard 800b31c5d43a1436bcea8b7b3f82a4baf4771bfb
 # zkgroup v0.7.3
 RUN git clone https://github.com/signalapp/zkgroup.git
 RUN cd zkgroup; git reset --hard ff26ac3679329e182772eed3f51797d91f963c3b
