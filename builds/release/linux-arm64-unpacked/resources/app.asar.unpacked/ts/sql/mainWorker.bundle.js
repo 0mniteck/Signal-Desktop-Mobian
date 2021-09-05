@@ -23744,6 +23744,25 @@ exports.maxReadStatus = maxReadStatus;
 
 // Copyright 2020-2021 Signal Messenger, LLC
 // SPDX-License-Identifier: AGPL-3.0-only
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -23751,7 +23770,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 /* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const path_1 = __webpack_require__(/*! path */ "path");
@@ -23768,7 +23786,9 @@ const dropNull_1 = __webpack_require__(/*! ../util/dropNull */ "./ts/util/dropNu
 const isNormalNumber_1 = __webpack_require__(/*! ../util/isNormalNumber */ "./ts/util/isNormalNumber.js");
 const isNotNil_1 = __webpack_require__(/*! ../util/isNotNil */ "./ts/util/isNotNil.js");
 const parseIntOrThrow_1 = __webpack_require__(/*! ../util/parseIntOrThrow */ "./ts/util/parseIntOrThrow.js");
+const durations = __importStar(__webpack_require__(/*! ../util/durations */ "./ts/util/durations.js"));
 const formatCountForLogging_1 = __webpack_require__(/*! ../logging/formatCountForLogging */ "./ts/logging/formatCountForLogging.js");
+const Calling_1 = __webpack_require__(/*! ../types/Calling */ "./ts/types/Calling.js");
 // This value needs to be below SQLITE_MAX_VARIABLE_NUMBER.
 const MAX_VARIABLE_COUNT = 100;
 // Because we can't force this module to conform to an interface, we narrow our exports
@@ -23905,6 +23925,9 @@ const dataInterface = {
     getJobsInQueue,
     insertJob,
     deleteJob,
+    processGroupCallRingRequest,
+    processGroupCallRingCancelation,
+    cleanExpiredGroupCallRings,
     getStatisticsForLogging,
     // Server-only
     initialize,
@@ -25532,6 +25555,22 @@ function updateToSchemaVersion39(currentVersion, db) {
     })();
     console.log('updateToSchemaVersion39: success!');
 }
+function updateToSchemaVersion40(currentVersion, db) {
+    if (currentVersion >= 40) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      CREATE TABLE groupCallRings(
+        ringId INTEGER PRIMARY KEY,
+        isActive INTEGER NOT NULL,
+        createdAt INTEGER NOT NULL
+      );
+      `);
+        db.pragma('user_version = 40');
+    })();
+    console.log('updateToSchemaVersion40: success!');
+}
 const SCHEMA_VERSIONS = [
     updateToSchemaVersion1,
     updateToSchemaVersion2,
@@ -25572,6 +25611,7 @@ const SCHEMA_VERSIONS = [
     updateToSchemaVersion37,
     updateToSchemaVersion38,
     updateToSchemaVersion39,
+    updateToSchemaVersion40,
 ];
 function updateSchema(db) {
     const sqliteVersion = getSQLiteVersion(db);
@@ -28221,6 +28261,65 @@ async function deleteJob(id) {
     const db = getInstance();
     db.prepare('DELETE FROM jobs WHERE id = $id').run({ id });
 }
+async function processGroupCallRingRequest(ringId) {
+    const db = getInstance();
+    return db.transaction(() => {
+        let result;
+        const wasRingPreviouslyCanceled = Boolean(db
+            .prepare(`
+          SELECT 1 FROM groupCallRings
+          WHERE ringId = $ringId AND isActive = 0
+          LIMIT 1;
+          `)
+            .pluck(true)
+            .get({ ringId }));
+        if (wasRingPreviouslyCanceled) {
+            result = Calling_1.ProcessGroupCallRingRequestResult.RingWasPreviouslyCanceled;
+        }
+        else {
+            const isThereAnotherActiveRing = Boolean(db
+                .prepare(`
+            SELECT 1 FROM groupCallRings
+            WHERE isActive = 1
+            LIMIT 1;
+            `)
+                .pluck(true)
+                .get());
+            if (isThereAnotherActiveRing) {
+                result = Calling_1.ProcessGroupCallRingRequestResult.ThereIsAnotherActiveRing;
+            }
+            else {
+                result = Calling_1.ProcessGroupCallRingRequestResult.ShouldRing;
+            }
+            db.prepare(`
+        INSERT OR IGNORE INTO groupCallRings (ringId, isActive, createdAt)
+        VALUES ($ringId, 1, $createdAt);
+        `);
+        }
+        return result;
+    })();
+}
+async function processGroupCallRingCancelation(ringId) {
+    const db = getInstance();
+    db.prepare(`
+    INSERT INTO groupCallRings (ringId, isActive, createdAt)
+    VALUES ($ringId, 0, $createdAt)
+    ON CONFLICT (ringId) DO
+    UPDATE SET isActive = 0;
+    `).run({ ringId, createdAt: Date.now() });
+}
+// This age, in milliseconds, should be longer than any group call ring duration. Beyond
+//   that, it doesn't really matter what the value is.
+const MAX_GROUP_CALL_RING_AGE = 30 * durations.MINUTE;
+async function cleanExpiredGroupCallRings() {
+    const db = getInstance();
+    db.prepare(`
+    DELETE FROM groupCallRings
+    WHERE createdAt < $expiredRingTime;
+    `).run({
+        expiredRingTime: Date.now() - MAX_GROUP_CALL_RING_AGE,
+    });
+}
 async function getStatisticsForLogging() {
     const counts = await p_props_1.default({
         messageCount: getMessageCount(),
@@ -28340,6 +28439,89 @@ module.exports = (binding) => {
 
 /***/ }),
 
+/***/ "./ts/types/Calling.js":
+/*!*****************************!*\
+  !*** ./ts/types/Calling.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2020-2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ProcessGroupCallRingRequestResult = exports.CallingDeviceType = exports.GroupCallJoinState = exports.GroupCallConnectionState = exports.CallEndedReason = exports.CallState = exports.CallMode = void 0;
+// These are strings (1) for the database (2) for Storybook.
+var CallMode;
+(function (CallMode) {
+    CallMode["None"] = "None";
+    CallMode["Direct"] = "Direct";
+    CallMode["Group"] = "Group";
+})(CallMode = exports.CallMode || (exports.CallMode = {}));
+// Ideally, we would import many of these directly from RingRTC. But because Storybook
+//   cannot import RingRTC (as it runs in the browser), we have these copies. That also
+//   means we have to convert the "real" enum to our enum in some cases.
+// Must be kept in sync with RingRTC.CallState
+var CallState;
+(function (CallState) {
+    CallState["Prering"] = "init";
+    CallState["Ringing"] = "ringing";
+    CallState["Accepted"] = "connected";
+    CallState["Reconnecting"] = "connecting";
+    CallState["Ended"] = "ended";
+})(CallState = exports.CallState || (exports.CallState = {}));
+// Must be kept in sync with RingRTC.CallEndedReason
+var CallEndedReason;
+(function (CallEndedReason) {
+    CallEndedReason["LocalHangup"] = "LocalHangup";
+    CallEndedReason["RemoteHangup"] = "RemoteHangup";
+    CallEndedReason["RemoteHangupNeedPermission"] = "RemoteHangupNeedPermission";
+    CallEndedReason["Declined"] = "Declined";
+    CallEndedReason["Busy"] = "Busy";
+    CallEndedReason["Glare"] = "Glare";
+    CallEndedReason["ReceivedOfferExpired"] = "ReceivedOfferExpired";
+    CallEndedReason["ReceivedOfferWhileActive"] = "ReceivedOfferWhileActive";
+    CallEndedReason["ReceivedOfferWithGlare"] = "ReceivedOfferWithGlare";
+    CallEndedReason["SignalingFailure"] = "SignalingFailure";
+    CallEndedReason["ConnectionFailure"] = "ConnectionFailure";
+    CallEndedReason["InternalFailure"] = "InternalFailure";
+    CallEndedReason["Timeout"] = "Timeout";
+    CallEndedReason["AcceptedOnAnotherDevice"] = "AcceptedOnAnotherDevice";
+    CallEndedReason["DeclinedOnAnotherDevice"] = "DeclinedOnAnotherDevice";
+    CallEndedReason["BusyOnAnotherDevice"] = "BusyOnAnotherDevice";
+    CallEndedReason["CallerIsNotMultiring"] = "CallerIsNotMultiring";
+})(CallEndedReason = exports.CallEndedReason || (exports.CallEndedReason = {}));
+// Must be kept in sync with RingRTC's ConnectionState
+var GroupCallConnectionState;
+(function (GroupCallConnectionState) {
+    GroupCallConnectionState[GroupCallConnectionState["NotConnected"] = 0] = "NotConnected";
+    GroupCallConnectionState[GroupCallConnectionState["Connecting"] = 1] = "Connecting";
+    GroupCallConnectionState[GroupCallConnectionState["Connected"] = 2] = "Connected";
+    GroupCallConnectionState[GroupCallConnectionState["Reconnecting"] = 3] = "Reconnecting";
+})(GroupCallConnectionState = exports.GroupCallConnectionState || (exports.GroupCallConnectionState = {}));
+// Must be kept in sync with RingRTC's JoinState
+var GroupCallJoinState;
+(function (GroupCallJoinState) {
+    GroupCallJoinState[GroupCallJoinState["NotJoined"] = 0] = "NotJoined";
+    GroupCallJoinState[GroupCallJoinState["Joining"] = 1] = "Joining";
+    GroupCallJoinState[GroupCallJoinState["Joined"] = 2] = "Joined";
+})(GroupCallJoinState = exports.GroupCallJoinState || (exports.GroupCallJoinState = {}));
+var CallingDeviceType;
+(function (CallingDeviceType) {
+    CallingDeviceType[CallingDeviceType["CAMERA"] = 0] = "CAMERA";
+    CallingDeviceType[CallingDeviceType["MICROPHONE"] = 1] = "MICROPHONE";
+    CallingDeviceType[CallingDeviceType["SPEAKER"] = 2] = "SPEAKER";
+})(CallingDeviceType = exports.CallingDeviceType || (exports.CallingDeviceType = {}));
+var ProcessGroupCallRingRequestResult;
+(function (ProcessGroupCallRingRequestResult) {
+    ProcessGroupCallRingRequestResult[ProcessGroupCallRingRequestResult["ShouldRing"] = 0] = "ShouldRing";
+    ProcessGroupCallRingRequestResult[ProcessGroupCallRingRequestResult["RingWasPreviouslyCanceled"] = 1] = "RingWasPreviouslyCanceled";
+    ProcessGroupCallRingRequestResult[ProcessGroupCallRingRequestResult["ThereIsAnotherActiveRing"] = 2] = "ThereIsAnotherActiveRing";
+})(ProcessGroupCallRingRequestResult = exports.ProcessGroupCallRingRequestResult || (exports.ProcessGroupCallRingRequestResult = {}));
+
+
+/***/ }),
+
 /***/ "./ts/util/assert.js":
 /*!***************************!*\
   !*** ./ts/util/assert.js ***!
@@ -28410,7 +28592,7 @@ exports.strictAssert = strictAssert;
 
 "use strict";
 
-// Copyright 2020 Signal Messenger, LLC
+// Copyright 2020-2021 Signal Messenger, LLC
 // SPDX-License-Identifier: AGPL-3.0-only
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.combineNames = void 0;
@@ -28458,7 +28640,6 @@ function combineNames(given, family) {
 }
 exports.combineNames = combineNames;
 function isAllCKJV(name) {
-    // eslint-disable-next-line no-restricted-syntax
     for (const codePoint of name) {
         if (!isCKJV(codePoint)) {
             return false;
@@ -28510,7 +28691,6 @@ function isCKJV(codePoint) {
 
 // Copyright 2021 Signal Messenger, LLC
 // SPDX-License-Identifier: AGPL-3.0-only
-/* eslint-disable no-restricted-syntax */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.shallowDropNull = exports.dropNull = void 0;
 function dropNull(value) {
@@ -28533,6 +28713,27 @@ function shallowDropNull(value) {
     return result;
 }
 exports.shallowDropNull = shallowDropNull;
+
+
+/***/ }),
+
+/***/ "./ts/util/durations.js":
+/*!******************************!*\
+  !*** ./ts/util/durations.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.WEEK = exports.DAY = exports.HOUR = exports.MINUTE = exports.SECOND = void 0;
+exports.SECOND = 1000;
+exports.MINUTE = exports.SECOND * 60;
+exports.HOUR = exports.MINUTE * 60;
+exports.DAY = exports.HOUR * 24;
+exports.WEEK = exports.DAY * 7;
 
 
 /***/ }),
