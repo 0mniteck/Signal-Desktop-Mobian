@@ -4874,7 +4874,7 @@ function respond(uuid, error, response) {
 }
 port.on('message', async ({ uuid, data }) => {
     try {
-        const file = await heic_convert_1.default({
+        const file = await (0, heic_convert_1.default)({
             buffer: new Uint8Array(data),
             format: 'JPEG',
             quality: 0.75,

@@ -23534,7 +23534,7 @@ function setEnvironment(env) {
     environment = env;
 }
 exports.setEnvironment = setEnvironment;
-exports.parseEnvironment = enum_1.makeEnumParser(Environment, Environment.Production);
+exports.parseEnvironment = (0, enum_1.makeEnumParser)(Environment, Environment.Production);
 const isTestEnvironment = (env) => env === Environment.Test || env === Environment.TestLib;
 exports.isTestEnvironment = isTestEnvironment;
 
@@ -23626,11 +23626,11 @@ const missingCaseError_1 = __webpack_require__(/*! ../util/missingCaseError */ "
 const reallyJsonStringify_1 = __webpack_require__(/*! ../util/reallyJsonStringify */ "./ts/util/reallyJsonStringify.js");
 // We don't use Zod here because it'd be slow parsing all of the log entries.
 //   Unfortunately, Zod is a bit slow even with `z.array(z.unknown())`.
-const isFetchLogIpcData = (data) => isRecord_1.isRecord(data) &&
-    isRecord_1.isRecord(data.capabilities) &&
-    isRecord_1.isRecord(data.remoteConfig) &&
-    isRecord_1.isRecord(data.statistics) &&
-    isRecord_1.isRecord(data.user) &&
+const isFetchLogIpcData = (data) => (0, isRecord_1.isRecord)(data) &&
+    (0, isRecord_1.isRecord)(data.capabilities) &&
+    (0, isRecord_1.isRecord)(data.remoteConfig) &&
+    (0, isRecord_1.isRecord)(data.statistics) &&
+    (0, isRecord_1.isRecord)(data.user) &&
     Array.isArray(data.logEntries);
 exports.isFetchLogIpcData = isFetchLogIpcData;
 // These match [Pino's recommendations][0].
@@ -23648,7 +23648,7 @@ var LogLevel;
 // whenever we want to send the debug log. We can't use `zod` because it clones
 // the data on successful parse and ruins the performance.
 const isLogEntry = (data) => {
-    if (!isRecord_1.isRecord(data)) {
+    if (!(0, isRecord_1.isRecord)(data)) {
         return false;
     }
     const { level, msg, time } = data;
@@ -23682,13 +23682,13 @@ function getLogLevelString(value) {
         case LogLevel.Trace:
             return 'trace';
         default:
-            throw missingCaseError_1.missingCaseError(value);
+            throw (0, missingCaseError_1.missingCaseError)(value);
     }
 }
 exports.getLogLevelString = getLogLevelString;
 function cleanArgs(args) {
-    return privacy_1.redactAll(args
-        .map(item => typeof item === 'string' ? item : reallyJsonStringify_1.reallyJsonStringify(item))
+    return (0, privacy_1.redactAll)(args
+        .map(item => typeof item === 'string' ? item : (0, reallyJsonStringify_1.reallyJsonStringify)(item))
         .join(' '));
 }
 exports.cleanArgs = cleanArgs;
@@ -23780,15 +23780,18 @@ const p_props_1 = __importDefault(__webpack_require__(/*! p-props */ "./node_mod
 const uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/index.js");
 const lodash_1 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const MessageReadStatus_1 = __webpack_require__(/*! ../messages/MessageReadStatus */ "./ts/messages/MessageReadStatus.js");
+const StorageUIKeys_1 = __webpack_require__(/*! ../types/StorageUIKeys */ "./ts/types/StorageUIKeys.js");
 const assert_1 = __webpack_require__(/*! ../util/assert */ "./ts/util/assert.js");
 const combineNames_1 = __webpack_require__(/*! ../util/combineNames */ "./ts/util/combineNames.js");
 const dropNull_1 = __webpack_require__(/*! ../util/dropNull */ "./ts/util/dropNull.js");
 const isNormalNumber_1 = __webpack_require__(/*! ../util/isNormalNumber */ "./ts/util/isNormalNumber.js");
 const isNotNil_1 = __webpack_require__(/*! ../util/isNotNil */ "./ts/util/isNotNil.js");
+const missingCaseError_1 = __webpack_require__(/*! ../util/missingCaseError */ "./ts/util/missingCaseError.js");
 const parseIntOrThrow_1 = __webpack_require__(/*! ../util/parseIntOrThrow */ "./ts/util/parseIntOrThrow.js");
 const durations = __importStar(__webpack_require__(/*! ../util/durations */ "./ts/util/durations.js"));
 const formatCountForLogging_1 = __webpack_require__(/*! ../logging/formatCountForLogging */ "./ts/logging/formatCountForLogging.js");
 const Calling_1 = __webpack_require__(/*! ../types/Calling */ "./ts/types/Calling.js");
+const RemoveAllConfiguration_1 = __webpack_require__(/*! ../types/RemoveAllConfiguration */ "./ts/types/RemoveAllConfiguration.js");
 // This value needs to be below SQLITE_MAX_VARIABLE_NUMBER.
 const MAX_VARIABLE_COUNT = 100;
 // Because we can't force this module to conform to an interface, we narrow our exports
@@ -23874,6 +23877,7 @@ const dataInterface = {
     removeReactionFromConversation,
     getMessageBySender,
     getMessageById,
+    getMessagesById,
     _getAllMessages,
     getAllMessageIds,
     getMessagesBySentAt,
@@ -23963,17 +23967,17 @@ function jsonToObject(json) {
 function rowToConversation(row) {
     const parsedJson = JSON.parse(row.json);
     let profileLastFetchedAt;
-    if (isNormalNumber_1.isNormalNumber(row.profileLastFetchedAt)) {
+    if ((0, isNormalNumber_1.isNormalNumber)(row.profileLastFetchedAt)) {
         profileLastFetchedAt = row.profileLastFetchedAt;
     }
     else {
-        assert_1.assert(lodash_1.isNil(row.profileLastFetchedAt), 'profileLastFetchedAt contained invalid data; defaulting to undefined');
+        (0, assert_1.assert)((0, lodash_1.isNil)(row.profileLastFetchedAt), 'profileLastFetchedAt contained invalid data; defaulting to undefined');
         profileLastFetchedAt = undefined;
     }
     return Object.assign(Object.assign({}, parsedJson), { profileLastFetchedAt });
 }
 function rowToSticker(row) {
-    return Object.assign(Object.assign({}, row), { isCoverOnly: Boolean(row.isCoverOnly), emoji: dropNull_1.dropNull(row.emoji) });
+    return Object.assign(Object.assign({}, row), { isCoverOnly: Boolean(row.isCoverOnly), emoji: (0, dropNull_1.dropNull)(row.emoji) });
 }
 function isRenderer() {
     if (typeof process === 'undefined' || !process) {
@@ -23991,7 +23995,7 @@ function getSchemaVersion(db) {
     return db.pragma('schema_version', { simple: true });
 }
 function setUserVersion(db, version) {
-    if (!lodash_1.isNumber(version)) {
+    if (!(0, lodash_1.isNumber)(version)) {
         throw new Error(`setUserVersion: version ${version} is not a number`);
     }
     db.pragma(`user_version = ${version}`);
@@ -24820,10 +24824,10 @@ function updateToSchemaVersion20(currentVersion, db) {
         const allConversations = db
             .prepare('SELECT * FROM conversations;')
             .all();
-        const allConversationsByOldId = lodash_1.keyBy(allConversations, 'id');
+        const allConversationsByOldId = (0, lodash_1.keyBy)(allConversations, 'id');
         for (const row of allConversations) {
             const oldId = row.id;
-            const newId = uuid_1.v4();
+            const newId = (0, uuid_1.v4)();
             allConversationsByOldId[oldId].id = newId;
             const patchObj = { id: newId };
             if (row.type === 'private') {
@@ -24866,7 +24870,7 @@ function updateToSchemaVersion20(currentVersion, db) {
                 else {
                     // We didn't previously have a private conversation for this member,
                     // we need to create one
-                    const id = uuid_1.v4();
+                    const id = (0, uuid_1.v4)();
                     saveConversation({
                         id,
                         e164: m,
@@ -25636,16 +25640,16 @@ async function initialize({ configDir, key, }) {
     if (globalInstance) {
         throw new Error('Cannot initialize more than once!');
     }
-    if (!lodash_1.isString(configDir)) {
+    if (!(0, lodash_1.isString)(configDir)) {
         throw new Error('initialize: configDir is required!');
     }
-    if (!lodash_1.isString(key)) {
+    if (!(0, lodash_1.isString)(key)) {
         throw new Error('initialize: key is required!');
     }
-    indexedDBPath = path_1.join(configDir, 'IndexedDB');
-    const dbDir = path_1.join(configDir, 'sql');
+    indexedDBPath = (0, path_1.join)(configDir, 'IndexedDB');
+    const dbDir = (0, path_1.join)(configDir, 'sql');
     mkdirp_1.default.sync(dbDir);
-    databaseFilePath = path_1.join(dbDir, 'db.sqlite');
+    databaseFilePath = (0, path_1.join)(dbDir, 'db.sqlite');
     let db;
     try {
         db = openAndSetUpSQLCipher(databaseFilePath, { key });
@@ -25683,18 +25687,18 @@ async function initializeRenderer({ configDir, key, }) {
     if (globalInstanceRenderer) {
         throw new Error('Cannot initialize more than once!');
     }
-    if (!lodash_1.isString(configDir)) {
+    if (!(0, lodash_1.isString)(configDir)) {
         throw new Error('initialize: configDir is required!');
     }
-    if (!lodash_1.isString(key)) {
+    if (!(0, lodash_1.isString)(key)) {
         throw new Error('initialize: key is required!');
     }
     if (!indexedDBPath) {
-        indexedDBPath = path_1.join(configDir, 'IndexedDB');
+        indexedDBPath = (0, path_1.join)(configDir, 'IndexedDB');
     }
-    const dbDir = path_1.join(configDir, 'sql');
+    const dbDir = (0, path_1.join)(configDir, 'sql');
     if (!databaseFilePath) {
-        databaseFilePath = path_1.join(dbDir, 'db.sqlite');
+        databaseFilePath = (0, path_1.join)(dbDir, 'db.sqlite');
     }
     let promisified;
     try {
@@ -25734,7 +25738,7 @@ async function removeIndexedDBFiles() {
     if (!indexedDBPath) {
         throw new Error('removeIndexedDBFiles: Need to initialize and set indexedDBPath first!');
     }
-    const pattern = path_1.join(indexedDBPath, '*.leveldb');
+    const pattern = (0, path_1.join)(indexedDBPath, '*.leveldb');
     rimraf_1.default.sync(pattern);
     indexedDBPath = undefined;
 }
@@ -25753,15 +25757,20 @@ function getInstance() {
 function batchMultiVarQuery(values, query) {
     const db = getInstance();
     if (values.length > MAX_VARIABLE_COUNT) {
+        const result = [];
         db.transaction(() => {
             for (let i = 0; i < values.length; i += MAX_VARIABLE_COUNT) {
                 const batch = values.slice(i, i + MAX_VARIABLE_COUNT);
-                query(batch);
+                const batchResult = query(batch);
+                if (Array.isArray(batchResult)) {
+                    result.push(...batchResult);
+                }
             }
         })();
-        return;
+        return result;
     }
-    query(values);
+    const result = query(values);
+    return Array.isArray(result) ? result : [];
 }
 const IDENTITY_KEYS_TABLE = 'identityKeys';
 function createOrUpdateIdentityKey(data) {
@@ -25909,7 +25918,7 @@ async function insertSentProto(proto, options) {
         $timestamp
       );
       `).run(proto);
-        const id = parseIntOrThrow_1.parseIntOrThrow(info.lastInsertRowid, 'insertSentProto/lastInsertRowid');
+        const id = (0, parseIntOrThrow_1.parseIntOrThrow)(info.lastInsertRowid, 'insertSentProto/lastInsertRowid');
         // 2. Insert a record for each recipient device.
         const recipientStatement = prepare(db, `
       INSERT INTO sendLogRecipients (
@@ -25997,51 +26006,58 @@ async function insertProtoRecipients({ id, recipientUuid, deviceIds, }) {
         }
     })();
 }
-async function deleteSentProtoRecipient({ timestamp, recipientUuid, deviceId, }) {
+async function deleteSentProtoRecipient(options) {
     const db = getInstance();
-    // Note: we use `pluck` in this function to fetch only the first column of returned row.
+    const items = Array.isArray(options) ? options : [options];
+    // Note: we use `pluck` in this function to fetch only the first column of
+    // returned row.
     db.transaction(() => {
-        // 1. Figure out what payload we're talking about.
-        const rows = prepare(db, `
-      SELECT sendLogPayloads.id FROM sendLogPayloads
-      INNER JOIN sendLogRecipients
-        ON sendLogRecipients.payloadId = sendLogPayloads.id
-      WHERE
-        sendLogPayloads.timestamp = $timestamp AND
-        sendLogRecipients.recipientUuid = $recipientUuid AND
-        sendLogRecipients.deviceId = $deviceId;
-     `).all({ timestamp, recipientUuid, deviceId });
-        if (!rows.length) {
-            return;
+        for (const item of items) {
+            const { timestamp, recipientUuid, deviceId } = item;
+            // 1. Figure out what payload we're talking about.
+            const rows = prepare(db, `
+        SELECT sendLogPayloads.id FROM sendLogPayloads
+        INNER JOIN sendLogRecipients
+          ON sendLogRecipients.payloadId = sendLogPayloads.id
+        WHERE
+          sendLogPayloads.timestamp = $timestamp AND
+          sendLogRecipients.recipientUuid = $recipientUuid AND
+          sendLogRecipients.deviceId = $deviceId;
+       `).all({ timestamp, recipientUuid, deviceId });
+            if (!rows.length) {
+                continue;
+            }
+            if (rows.length > 1) {
+                console.warn('deleteSentProtoRecipient: More than one payload matches ' +
+                    `recipient and timestamp ${timestamp}. Using the first.`);
+                continue;
+            }
+            const { id } = rows[0];
+            // 2. Delete the recipient/device combination in question.
+            prepare(db, `
+        DELETE FROM sendLogRecipients
+        WHERE
+          payloadId = $id AND
+          recipientUuid = $recipientUuid AND
+          deviceId = $deviceId;
+        `).run({ id, recipientUuid, deviceId });
+            // 3. See how many more recipient devices there were for this payload.
+            const remaining = prepare(db, 'SELECT count(*) FROM sendLogRecipients WHERE payloadId = $id;')
+                .pluck(true)
+                .get({ id });
+            if (!(0, lodash_1.isNumber)(remaining)) {
+                throw new Error('deleteSentProtoRecipient: select count() returned non-number!');
+            }
+            if (remaining > 0) {
+                continue;
+            }
+            // 4. Delete the entire payload if there are no more recipients left.
+            console.info('deleteSentProtoRecipient: ' +
+                `Deleting proto payload for timestamp ${timestamp}`);
+            prepare(db, 'DELETE FROM sendLogPayloads WHERE id = $id;').run({
+                id,
+            });
         }
-        if (rows.length > 1) {
-            console.warn(`deleteSentProtoRecipient: More than one payload matches recipient and timestamp ${timestamp}. Using the first.`);
-            return;
-        }
-        const { id } = rows[0];
-        // 2. Delete the recipient/device combination in question.
-        prepare(db, `
-      DELETE FROM sendLogRecipients
-      WHERE
-        payloadId = $id AND
-        recipientUuid = $recipientUuid AND
-        deviceId = $deviceId;
-      `).run({ id, recipientUuid, deviceId });
-        // 3. See how many more recipient devices there were for this payload.
-        const remaining = prepare(db, 'SELECT count(*) FROM sendLogRecipients WHERE payloadId = $id;')
-            .pluck(true)
-            .get({ id });
-        if (!lodash_1.isNumber(remaining)) {
-            throw new Error('deleteSentProtoRecipient: select count() returned non-number!');
-        }
-        if (remaining > 0) {
-            return;
-        }
-        // 4. Delete the entire payload if there are no more recipients left.
-        console.info(`deleteSentProtoRecipient: Deleting proto payload for timestamp ${timestamp}`);
-        prepare(db, 'DELETE FROM sendLogPayloads WHERE id = $id;').run({
-            id,
-        });
     })();
 }
 async function getSentProtoByRecipient({ now, recipientUuid, timestamp, }) {
@@ -26241,7 +26257,7 @@ function getCountFromTable(table) {
         .prepare(`SELECT count(*) from ${table};`)
         .pluck(true)
         .get();
-    if (lodash_1.isNumber(result)) {
+    if ((0, lodash_1.isNumber)(result)) {
         return result;
     }
     throw new Error(`getCountFromTable: Unable to get count from table ${table}`);
@@ -26294,7 +26310,7 @@ function saveConversationSync(data, db = getInstance()) {
     );
     `).run({
         id,
-        json: objectToJSON(lodash_1.omit(data, ['profileLastFetchedAt', 'unblurredAvatarPath'])),
+        json: objectToJSON((0, lodash_1.omit)(data, ['profileLastFetchedAt', 'unblurredAvatarPath'])),
         e164: e164 || null,
         uuid: uuid || null,
         groupId: groupId || null,
@@ -26304,7 +26320,7 @@ function saveConversationSync(data, db = getInstance()) {
         name: name || null,
         profileName: profileName || null,
         profileFamilyName: profileFamilyName || null,
-        profileFullName: combineNames_1.combineNames(profileName, profileFamilyName) || null,
+        profileFullName: (0, combineNames_1.combineNames)(profileName, profileFamilyName) || null,
         profileLastFetchedAt: profileLastFetchedAt || null,
     });
 }
@@ -26346,7 +26362,7 @@ function updateConversationSync(data) {
     WHERE id = $id;
     `).run({
         id,
-        json: objectToJSON(lodash_1.omit(data, ['profileLastFetchedAt', 'unblurredAvatarPath'])),
+        json: objectToJSON((0, lodash_1.omit)(data, ['profileLastFetchedAt', 'unblurredAvatarPath'])),
         e164: e164 || null,
         uuid: uuid || null,
         active_at: active_at || null,
@@ -26355,7 +26371,7 @@ function updateConversationSync(data) {
         name: name || null,
         profileName: profileName || null,
         profileFamilyName: profileFamilyName || null,
-        profileFullName: combineNames_1.combineNames(profileName, profileFamilyName) || null,
+        profileFullName: (0, combineNames_1.combineNames)(profileName, profileFamilyName) || null,
         profileLastFetchedAt: profileLastFetchedAt || null,
     });
 }
@@ -26611,7 +26627,7 @@ function hasUserInitiatedMessages(conversationId) {
 }
 function saveMessageSync(data, options) {
     const db = getInstance();
-    const { forceSave, alreadyInTransaction } = options || {};
+    const { jobToInsert, forceSave, alreadyInTransaction } = options || {};
     if (!alreadyInTransaction) {
         return db.transaction(() => {
             return assertSync(saveMessageSync(data, Object.assign(Object.assign({}, options), { alreadyInTransaction: true })));
@@ -26666,9 +26682,12 @@ function saveMessageSync(data, options) {
         readStatus = $readStatus
       WHERE id = $id;
       `).run(payload);
+        if (jobToInsert) {
+            insertJobSync(db, jobToInsert);
+        }
         return id;
     }
-    const toCreate = Object.assign(Object.assign({}, data), { id: id || uuid_1.v4() });
+    const toCreate = Object.assign(Object.assign({}, data), { id: id || (0, uuid_1.v4)() });
     prepare(db, `
     INSERT INTO messages (
       id,
@@ -26716,6 +26735,9 @@ function saveMessageSync(data, options) {
       $readStatus
     );
     `).run(Object.assign(Object.assign({}, payload), { id: toCreate.id, json: objectToJSON(toCreate) }));
+    if (jobToInsert) {
+        insertJobSync(db, jobToInsert);
+    }
     return toCreate.id;
 }
 async function saveMessage(data, options) {
@@ -26755,6 +26777,16 @@ async function getMessageById(id) {
         return undefined;
     }
     return jsonToObject(row.json);
+}
+async function getMessagesById(messageIds) {
+    const db = getInstance();
+    return batchMultiVarQuery(messageIds, (batch) => {
+        const query = db.prepare(`SELECT json FROM messages WHERE id IN (${Array(batch.length)
+            .fill('?')
+            .join(',')});`);
+        const rows = query.all(batch);
+        return rows.map(row => jsonToObject(row.json));
+    });
 }
 async function _getAllMessages() {
     const db = getInstance();
@@ -26853,7 +26885,7 @@ async function getUnreadByConversationAndMarkRead(conversationId, newestUnreadId
         });
         return rows.map(row => {
             const json = jsonToObject(row.json);
-            return Object.assign({ readStatus: MessageReadStatus_1.ReadStatus.Read }, lodash_1.pick(json, [
+            return Object.assign({ readStatus: MessageReadStatus_1.ReadStatus.Read }, (0, lodash_1.pick)(json, [
                 'expirationStartTimestamp',
                 'id',
                 'sent_at',
@@ -27204,10 +27236,10 @@ async function getMessageMetricsForConversation(conversationId) {
     const oldestUnread = getOldestUnreadMessageForConversation(conversationId);
     const totalUnread = getTotalUnreadForConversation(conversationId);
     return {
-        oldest: oldest ? lodash_1.pick(oldest, ['received_at', 'sent_at', 'id']) : undefined,
-        newest: newest ? lodash_1.pick(newest, ['received_at', 'sent_at', 'id']) : undefined,
+        oldest: oldest ? (0, lodash_1.pick)(oldest, ['received_at', 'sent_at', 'id']) : undefined,
+        newest: newest ? (0, lodash_1.pick)(newest, ['received_at', 'sent_at', 'id']) : undefined,
         oldestUnread: oldestUnread
-            ? lodash_1.pick(oldestUnread, ['received_at', 'sent_at', 'id'])
+            ? (0, lodash_1.pick)(oldestUnread, ['received_at', 'sent_at', 'id'])
             : undefined,
         totalUnread,
     };
@@ -27320,7 +27352,7 @@ async function getNextTapToViewMessageTimestampToAgeOut() {
     }
     const data = jsonToObject(row.json);
     const result = data.received_at_ms || data.received_at;
-    return isNormalNumber_1.isNormalNumber(result) ? result : undefined;
+    return (0, isNormalNumber_1.isNormalNumber)(result) ? result : undefined;
 }
 async function getTapToViewMessagesNeedingErase() {
     const db = getInstance();
@@ -27646,7 +27678,7 @@ async function clearAllErrorStickerPackAttempts() {
 async function createOrUpdateSticker(sticker) {
     const db = getInstance();
     const { emoji, height, id, isCoverOnly, lastUsed, packId, path, width, } = sticker;
-    if (!lodash_1.isNumber(id)) {
+    if (!(0, lodash_1.isNumber)(id)) {
         throw new Error('createOrUpdateSticker: Provided data did not have a numeric id');
     }
     if (!packId) {
@@ -27927,19 +27959,38 @@ async function removeAll() {
     })();
 }
 // Anything that isn't user-visible data
-async function removeAllConfiguration() {
+async function removeAllConfiguration(mode = RemoveAllConfiguration_1.RemoveAllConfiguration.Full) {
     const db = getInstance();
     db.transaction(() => {
         db.exec(`
       DELETE FROM identityKeys;
-      DELETE FROM items;
       DELETE FROM preKeys;
       DELETE FROM senderKeys;
       DELETE FROM sessions;
       DELETE FROM signedPreKeys;
       DELETE FROM unprocessed;
       DELETE FROM jobs;
-    `);
+      `);
+        if (mode === RemoveAllConfiguration_1.RemoveAllConfiguration.Full) {
+            db.exec(`
+        DELETE FROM items;
+        `);
+        }
+        else if (mode === RemoveAllConfiguration_1.RemoveAllConfiguration.Soft) {
+            const itemIds = db
+                .prepare('SELECT id FROM items')
+                .pluck(true)
+                .all();
+            const allowedSet = new Set(StorageUIKeys_1.STORAGE_UI_KEYS);
+            for (const id of itemIds) {
+                if (!allowedSet.has(id)) {
+                    removeById('items', id);
+                }
+            }
+        }
+        else {
+            throw (0, missingCaseError_1.missingCaseError)(mode);
+        }
         db.exec("UPDATE conversations SET json = json_remove(json, '$.senderKeyInfo');");
     })();
 }
@@ -27988,7 +28039,7 @@ async function getMessagesWithFileAttachments(conversationId, { limit }) {
         conversationId,
         limit,
     });
-    return lodash_1.map(rows, row => jsonToObject(row.json));
+    return (0, lodash_1.map)(rows, row => jsonToObject(row.json));
 }
 async function getMessageServerGuidsForSpam(conversationId) {
     const db = getInstance();
@@ -28010,7 +28061,7 @@ async function getMessageServerGuidsForSpam(conversationId) {
 function getExternalFilesForMessage(message) {
     const { attachments, contact, quote, preview, sticker } = message;
     const files = [];
-    lodash_1.forEach(attachments, attachment => {
+    (0, lodash_1.forEach)(attachments, attachment => {
         const { path: file, thumbnail, screenshot } = attachment;
         if (file) {
             files.push(file);
@@ -28023,7 +28074,7 @@ function getExternalFilesForMessage(message) {
         }
     });
     if (quote && quote.attachments && quote.attachments.length) {
-        lodash_1.forEach(quote.attachments, attachment => {
+        (0, lodash_1.forEach)(quote.attachments, attachment => {
             const { thumbnail } = attachment;
             if (thumbnail && thumbnail.path) {
                 files.push(thumbnail.path);
@@ -28031,7 +28082,7 @@ function getExternalFilesForMessage(message) {
         });
     }
     if (contact && contact.length) {
-        lodash_1.forEach(contact, item => {
+        (0, lodash_1.forEach)(contact, item => {
             const { avatar } = item;
             if (avatar && avatar.avatar && avatar.avatar.path) {
                 files.push(avatar.avatar.path);
@@ -28039,7 +28090,7 @@ function getExternalFilesForMessage(message) {
         });
     }
     if (preview && preview.length) {
-        lodash_1.forEach(preview, item => {
+        (0, lodash_1.forEach)(preview, item => {
             const { image } = item;
             if (image && image.path) {
                 files.push(image.path);
@@ -28068,7 +28119,10 @@ function getExternalFilesForConversation(conversation) {
 function getExternalDraftFilesForConversation(conversation) {
     const draftAttachments = conversation.draftAttachments || [];
     const files = [];
-    lodash_1.forEach(draftAttachments, attachment => {
+    (0, lodash_1.forEach)(draftAttachments, attachment => {
+        if (attachment.pending) {
+            return;
+        }
         const { path: file, screenshotPath } = attachment;
         if (file) {
             files.push(file);
@@ -28081,7 +28135,7 @@ function getExternalDraftFilesForConversation(conversation) {
 }
 async function removeKnownAttachments(allAttachments) {
     const db = getInstance();
-    const lookup = lodash_1.fromPairs(lodash_1.map(allAttachments, file => [file, true]));
+    const lookup = (0, lodash_1.fromPairs)((0, lodash_1.map)(allAttachments, file => [file, true]));
     const chunkSize = 50;
     const total = await getMessageCount();
     console.log(`removeKnownAttachments: About to iterate through ${total} messages`);
@@ -28103,11 +28157,11 @@ async function removeKnownAttachments(allAttachments) {
         const messages = rows.map(row => jsonToObject(row.json));
         messages.forEach(message => {
             const externalFiles = getExternalFilesForMessage(message);
-            lodash_1.forEach(externalFiles, file => {
+            (0, lodash_1.forEach)(externalFiles, file => {
                 delete lookup[file];
             });
         });
-        const lastMessage = lodash_1.last(messages);
+        const lastMessage = (0, lodash_1.last)(messages);
         if (lastMessage) {
             ({ id } = lastMessage);
         }
@@ -28134,14 +28188,14 @@ async function removeKnownAttachments(allAttachments) {
             id,
             chunkSize,
         });
-        const conversations = lodash_1.map(rows, row => jsonToObject(row.json));
+        const conversations = (0, lodash_1.map)(rows, row => jsonToObject(row.json));
         conversations.forEach(conversation => {
             const externalFiles = getExternalFilesForConversation(conversation);
             externalFiles.forEach(file => {
                 delete lookup[file];
             });
         });
-        const lastMessage = lodash_1.last(conversations);
+        const lastMessage = (0, lodash_1.last)(conversations);
         if (lastMessage) {
             ({ id } = lastMessage);
         }
@@ -28153,9 +28207,9 @@ async function removeKnownAttachments(allAttachments) {
 }
 async function removeKnownStickers(allStickers) {
     const db = getInstance();
-    const lookup = lodash_1.fromPairs(lodash_1.map(allStickers, file => [file, true]));
+    const lookup = (0, lodash_1.fromPairs)((0, lodash_1.map)(allStickers, file => [file, true]));
     const chunkSize = 50;
-    const total = getStickerCount();
+    const total = await getStickerCount();
     console.log(`removeKnownStickers: About to iterate through ${total} stickers`);
     let count = 0;
     let complete = false;
@@ -28176,7 +28230,7 @@ async function removeKnownStickers(allStickers) {
         files.forEach(file => {
             delete lookup[file];
         });
-        const lastSticker = lodash_1.last(rows);
+        const lastSticker = (0, lodash_1.last)(rows);
         if (lastSticker) {
             ({ rowid } = lastSticker);
         }
@@ -28188,7 +28242,7 @@ async function removeKnownStickers(allStickers) {
 }
 async function removeKnownDraftAttachments(allStickers) {
     const db = getInstance();
-    const lookup = lodash_1.fromPairs(lodash_1.map(allStickers, file => [file, true]));
+    const lookup = (0, lodash_1.fromPairs)((0, lodash_1.map)(allStickers, file => [file, true]));
     const chunkSize = 50;
     const total = await getConversationCount();
     console.log(`removeKnownDraftAttachments: About to iterate through ${total} conversations`);
@@ -28216,7 +28270,7 @@ async function removeKnownDraftAttachments(allStickers) {
                 delete lookup[file];
             });
         });
-        const lastMessage = lodash_1.last(conversations);
+        const lastMessage = (0, lodash_1.last)(conversations);
         if (lastMessage) {
             ({ id } = lastMessage);
         }
@@ -28240,11 +28294,10 @@ async function getJobsInQueue(queueType) {
         id: row.id,
         queueType,
         timestamp: row.timestamp,
-        data: isNotNil_1.isNotNil(row.data) ? JSON.parse(row.data) : undefined,
+        data: (0, isNotNil_1.isNotNil)(row.data) ? JSON.parse(row.data) : undefined,
     }));
 }
-async function insertJob(job) {
-    const db = getInstance();
+function insertJobSync(db, job) {
     db.prepare(`
       INSERT INTO jobs
       (id, queueType, timestamp, data)
@@ -28254,8 +28307,12 @@ async function insertJob(job) {
         id: job.id,
         queueType: job.queueType,
         timestamp: job.timestamp,
-        data: isNotNil_1.isNotNil(job.data) ? JSON.stringify(job.data) : null,
+        data: (0, isNotNil_1.isNotNil)(job.data) ? JSON.stringify(job.data) : null,
     });
+}
+async function insertJob(job) {
+    const db = getInstance();
+    return insertJobSync(db, job);
 }
 async function deleteJob(id) {
     const db = getInstance();
@@ -28321,13 +28378,13 @@ async function cleanExpiredGroupCallRings() {
     });
 }
 async function getStatisticsForLogging() {
-    const counts = await p_props_1.default({
+    const counts = await (0, p_props_1.default)({
         messageCount: getMessageCount(),
         conversationCount: getConversationCount(),
         sessionCount: getCountFromTable('sessions'),
         senderKeyCount: getCountFromTable('senderKeys'),
     });
-    return lodash_1.mapValues(counts, formatCountForLogging_1.formatCountForLogging);
+    return (0, lodash_1.mapValues)(counts, formatCountForLogging_1.formatCountForLogging);
 }
 async function updateAllConversationColors(conversationColor, customColorData) {
     const db = getInstance();
@@ -28522,6 +28579,68 @@ var ProcessGroupCallRingRequestResult;
 
 /***/ }),
 
+/***/ "./ts/types/RemoveAllConfiguration.js":
+/*!********************************************!*\
+  !*** ./ts/types/RemoveAllConfiguration.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.RemoveAllConfiguration = void 0;
+var RemoveAllConfiguration;
+(function (RemoveAllConfiguration) {
+    RemoveAllConfiguration["Full"] = "Full";
+    RemoveAllConfiguration["Soft"] = "Soft";
+})(RemoveAllConfiguration = exports.RemoveAllConfiguration || (exports.RemoveAllConfiguration = {}));
+
+
+/***/ }),
+
+/***/ "./ts/types/StorageUIKeys.js":
+/*!***********************************!*\
+  !*** ./ts/types/StorageUIKeys.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.STORAGE_UI_KEYS = void 0;
+// Configuration keys that only affect UI
+exports.STORAGE_UI_KEYS = [
+    'always-relay-calls',
+    'audio-notification',
+    'auto-download-update',
+    'badge-count-muted-conversations',
+    'call-ringtone-notification',
+    'call-system-notification',
+    'hide-menu-bar',
+    'system-tray-setting',
+    'incoming-call-notification',
+    'notification-draw-attention',
+    'notification-setting',
+    'spell-check',
+    'theme-setting',
+    'defaultConversationColor',
+    'customColors',
+    'showStickerPickerHint',
+    'showStickersIntroduction',
+    'preferred-video-input-device',
+    'preferred-audio-input-device',
+    'preferred-audio-output-device',
+    'skinTone',
+    'zoomFactor',
+];
+
+
+/***/ }),
+
 /***/ "./ts/util/assert.js":
 /*!***************************!*\
   !*** ./ts/util/assert.js ***!
@@ -28561,8 +28680,8 @@ const log = __importStar(__webpack_require__(/*! ../logging/log */ "./ts/logging
 function assert(condition, message) {
     if (!condition) {
         const err = new Error(message);
-        if (environment_1.getEnvironment() !== environment_1.Environment.Production) {
-            if (environment_1.getEnvironment() === environment_1.Environment.Development) {
+        if ((0, environment_1.getEnvironment)() !== environment_1.Environment.Production) {
+            if ((0, environment_1.getEnvironment)() === environment_1.Environment.Development) {
                 debugger; // eslint-disable-line no-debugger
             }
             throw err;
@@ -28939,7 +29058,7 @@ const is_1 = __importDefault(__webpack_require__(/*! @sindresorhus/is */ "./node
 const path_1 = __webpack_require__(/*! path */ "path");
 const fp_1 = __webpack_require__(/*! lodash/fp */ "./node_modules/lodash/fp.js");
 const lodash_1 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-exports.APP_ROOT_PATH = path_1.join(__dirname, '..', '..');
+exports.APP_ROOT_PATH = (0, path_1.join)(__dirname, '..', '..');
 const PHONE_NUMBER_PATTERN = /\+\d{7,12}(\d{3})/g;
 const UUID_PATTERN = /[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{9}([0-9A-F]{3})/gi;
 const GROUP_ID_PATTERN = /(group\()([^)]+)(\))/g;
@@ -28949,7 +29068,7 @@ const _redactPath = (filePath) => {
     if (!is_1.default.string(filePath)) {
         throw new TypeError("'filePath' must be a string");
     }
-    const filePathPattern = exports._pathToRegExp(filePath);
+    const filePathPattern = (0, exports._pathToRegExp)(filePath);
     return (text) => {
         if (!is_1.default.string(text)) {
             throw new TypeError("'text' must be a string");
@@ -29008,7 +29127,7 @@ const redactGroupIds = (text) => {
 };
 exports.redactGroupIds = redactGroupIds;
 const createRedactSensitivePaths = (paths) => {
-    return fp_1.compose(paths.map(filePath => exports._redactPath(filePath)));
+    return (0, fp_1.compose)(paths.map(filePath => (0, exports._redactPath)(filePath)));
 };
 const sensitivePaths = [];
 let redactSensitivePaths = (text) => text;
@@ -29017,8 +29136,8 @@ const addSensitivePath = (filePath) => {
     redactSensitivePaths = createRedactSensitivePaths(sensitivePaths);
 };
 exports.addSensitivePath = addSensitivePath;
-exports.addSensitivePath(exports.APP_ROOT_PATH);
-exports.redactAll = fp_1.compose((text) => redactSensitivePaths(text), exports.redactGroupIds, exports.redactPhoneNumbers, exports.redactUuids);
+(0, exports.addSensitivePath)(exports.APP_ROOT_PATH);
+exports.redactAll = (0, fp_1.compose)((text) => redactSensitivePaths(text), exports.redactGroupIds, exports.redactPhoneNumbers, exports.redactUuids);
 const removeNewlines = text => text.replace(/\r?\n|\r/g, '');
 
 
