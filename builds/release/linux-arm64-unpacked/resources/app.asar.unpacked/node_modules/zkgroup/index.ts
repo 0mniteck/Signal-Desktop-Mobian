@@ -1,4 +1,6 @@
 // Root
+import exp = require("constants");
+
 export { default as ServerPublicParams } from './zkgroup/ServerPublicParams';
 export { default as ServerSecretParams } from './zkgroup/ServerSecretParams';
 
@@ -35,6 +37,18 @@ export { default as ProfileKey } from './zkgroup/profiles/ProfileKey';
 export { default as ProfileKeyCommitment } from './zkgroup/profiles/ProfileKeyCommitment';
 export { default as ProfileKeyCredential } from './zkgroup/profiles/ProfileKeyCredential';
 export { default as ProfileKeyCredentialPresentation } from './zkgroup/profiles/ProfileKeyCredentialPresentation';
+export { default as ProfileKeyCredentialRequest } from './zkgroup/profiles/ProfileKeyCredentialRequest';
 export { default as ProfileKeyCredentialRequestContext } from './zkgroup/profiles/ProfileKeyCredentialRequestContext';
 export { default as ProfileKeyCredentialResponse } from './zkgroup/profiles/ProfileKeyCredentialResponse';
 export { default as ProfileKeyVersion } from './zkgroup/profiles/ProfileKeyVersion';
+
+// Receipts
+export { default as ClientZkReceiptOperations } from './zkgroup/receipts/ClientZkReceiptOperations';
+export { default as ServerZkReceiptOperations } from './zkgroup/receipts/ServerZkReceiptOperations';
+
+export { default as ReceiptCredential } from './zkgroup/receipts/ReceiptCredential';
+export { default as ReceiptCredentialPresentation } from './zkgroup/receipts/ReceiptCredentialPresentation';
+export { default as ReceiptCredentialRequest } from './zkgroup/receipts/ReceiptCredentialRequest';
+export { default as ReceiptCredentialRequestContext } from './zkgroup/receipts/ReceiptCredentialRequestContext';
+export { default as ReceiptCredentialResponse } from './zkgroup/receipts/ReceiptCredentialResponse';
+export { default as ReceiptSerial } from './zkgroup/receipts/ReceiptSerial'

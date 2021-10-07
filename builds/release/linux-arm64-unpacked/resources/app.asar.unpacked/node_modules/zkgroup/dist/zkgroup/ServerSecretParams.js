@@ -63,4 +63,4 @@ class ServerSecretParams extends ByteArray_1.default {
     }
 }
 exports.default = ServerSecretParams;
-ServerSecretParams.SIZE = 769;
+ServerSecretParams.SIZE = 1121;

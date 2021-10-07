@@ -12,7 +12,7 @@ import NotarySignature from './NotarySignature';
 
 export default class ServerSecretParams extends ByteArray {
 
-  static SIZE = 769;
+  static SIZE = 1121;
 
   static generate(): ServerSecretParams {
     const random = new FFICompatArray(randomBytes(RANDOM_LENGTH));

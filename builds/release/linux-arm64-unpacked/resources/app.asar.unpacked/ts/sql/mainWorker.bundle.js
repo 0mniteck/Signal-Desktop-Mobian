@@ -27026,21 +27026,20 @@ function getExternalDraftFilesForConversation(conversation) {
 async function removeKnownAttachments(allAttachments) {
     const db = getInstance();
     const lookup = (0, lodash_1.fromPairs)((0, lodash_1.map)(allAttachments, file => [file, true]));
-    const chunkSize = 50;
+    const chunkSize = 500;
     const total = await getMessageCount();
     logger.info(`removeKnownAttachments: About to iterate through ${total} messages`);
     let count = 0;
     let complete = false;
     let id = '';
+    const fetchMessages = db.prepare(`
+      SELECT json FROM messages
+      WHERE id > $id
+      ORDER BY id ASC
+      LIMIT $chunkSize;
+    `);
     while (!complete) {
-        const rows = db
-            .prepare(`
-        SELECT json FROM messages
-        WHERE id > $id
-        ORDER BY id ASC
-        LIMIT $chunkSize;
-        `)
-            .all({
+        const rows = fetchMessages.all({
             id,
             chunkSize,
         });
@@ -27066,15 +27065,14 @@ async function removeKnownAttachments(allAttachments) {
     id = 0;
     const conversationTotal = await getConversationCount();
     logger.info(`removeKnownAttachments: About to iterate through ${conversationTotal} conversations`);
+    const fetchConversations = db.prepare(`
+      SELECT json FROM conversations
+      WHERE id > $id
+      ORDER BY id ASC
+      LIMIT $chunkSize;
+    `);
     while (!complete) {
-        const rows = db
-            .prepare(`
-        SELECT json FROM conversations
-        WHERE id > $id
-        ORDER BY id ASC
-        LIMIT $chunkSize;
-        `)
-            .all({
+        const rows = fetchConversations.all({
             id,
             chunkSize,
         });
@@ -27434,14 +27432,13 @@ module.exports = (binding) => {
 /*!**********************************!*\
   !*** ./ts/textsecure/Helpers.js ***!
   \**********************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 // Copyright 2020 Signal Messenger, LLC
 // SPDX-License-Identifier: AGPL-3.0-only
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const stringToArrayBuffer_1 = __webpack_require__(/*! ../util/stringToArrayBuffer */ "./ts/util/stringToArrayBuffer.js");
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-proto */
@@ -27499,7 +27496,6 @@ const utils = {
     isNumberSane: (number) => number[0] === '+' && /^[0-9]+$/.test(number.substring(1)),
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     jsonThing: (thing) => JSON.stringify(ensureStringed(thing)),
-    stringToArrayBuffer: stringToArrayBuffer_1.stringToArrayBuffer,
     unencodeNumber: (number) => number.split('.'),
 };
 exports.default = utils;
@@ -27673,6 +27669,7 @@ exports.STORAGE_UI_KEYS = [
     'preferred-audio-input-device',
     'preferred-audio-output-device',
     'preferredReactionEmoji',
+    'previousAudioDeviceModule',
     'skinTone',
     'zoomFactor',
 ];
@@ -28074,33 +28071,6 @@ function parseIntOrThrow(value, message) {
     return result;
 }
 exports.parseIntOrThrow = parseIntOrThrow;
-
-
-/***/ }),
-
-/***/ "./ts/util/stringToArrayBuffer.js":
-/*!****************************************!*\
-  !*** ./ts/util/stringToArrayBuffer.js ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-// Copyright 2018-2021 Signal Messenger, LLC
-// SPDX-License-Identifier: AGPL-3.0-only
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.stringToArrayBuffer = void 0;
-function stringToArrayBuffer(string) {
-    if (typeof string !== 'string') {
-        throw new TypeError("'string' must be a string");
-    }
-    const array = new Uint8Array(string.length);
-    for (let i = 0; i < string.length; i += 1) {
-        array[i] = string.charCodeAt(i);
-    }
-    return array.buffer;
-}
-exports.stringToArrayBuffer = stringToArrayBuffer;
 
 
 /***/ }),

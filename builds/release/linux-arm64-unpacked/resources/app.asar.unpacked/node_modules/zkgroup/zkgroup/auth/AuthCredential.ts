@@ -8,7 +8,7 @@ import Native, { FFI_RETURN_OK, FFI_RETURN_INPUT_ERROR } from '../internal/Nativ
 
 export default class AuthCredential extends ByteArray {
 
-  static SIZE = 342;
+  static SIZE = 181;
 
   constructor(contents: FFICompatArrayType) {
     super(contents, AuthCredential.SIZE, true);

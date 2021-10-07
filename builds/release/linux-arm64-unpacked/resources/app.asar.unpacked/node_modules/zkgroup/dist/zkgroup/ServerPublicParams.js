@@ -32,4 +32,4 @@ class ServerPublicParams extends ByteArray_1.default {
     }
 }
 exports.default = ServerPublicParams;
-ServerPublicParams.SIZE = 161;
+ServerPublicParams.SIZE = 225;
