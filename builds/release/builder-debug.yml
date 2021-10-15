@@ -24,8 +24,6 @@ arm64:
     - app/*
     - preload.bundle.js
     - preload_utils.js
-    - permissions_popup_preload.js
-    - debug_log_preload.js
     - main.js
     - images/**
     - fonts/**
@@ -97,8 +95,6 @@ arm64:
     - app/*
     - preload.bundle.js
     - preload_utils.js
-    - permissions_popup_preload.js
-    - debug_log_preload.js
     - main.js
     - images/**
     - fonts/**
