@@ -19,8 +19,8 @@ RUN tar xvf signalapp-signal-client-0.9.5.tgz
 RUN mv package signal-client
 
 # Clone Repos
-# Signal-Desktop v5.20.0
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.20.x
+# Signal-Desktop v5.21.0
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.21.x
 RUN mkdir /Signal-Desktop/release/
 # libsignal-client v0.9.5
 RUN git clone https://github.com/signalapp/libsignal-client.git

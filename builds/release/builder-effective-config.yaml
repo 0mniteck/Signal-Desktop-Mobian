@@ -137,4 +137,4 @@ files:
       - '!node_modules/.cache'
 extraMetadata:
   environment: production
-electronVersion: 13.3.0
+electronVersion: 13.5.0

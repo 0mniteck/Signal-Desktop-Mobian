@@ -22352,6 +22352,7 @@ const Helpers_1 = __importDefault(__webpack_require__(/*! ../textsecure/Helpers 
 const StorageUIKeys_1 = __webpack_require__(/*! ../types/StorageUIKeys */ "./ts/types/StorageUIKeys.js");
 const assert_1 = __webpack_require__(/*! ../util/assert */ "./ts/util/assert.js");
 const combineNames_1 = __webpack_require__(/*! ../util/combineNames */ "./ts/util/combineNames.js");
+const consoleLogger_1 = __webpack_require__(/*! ../util/consoleLogger */ "./ts/util/consoleLogger.js");
 const dropNull_1 = __webpack_require__(/*! ../util/dropNull */ "./ts/util/dropNull.js");
 const isNormalNumber_1 = __webpack_require__(/*! ../util/isNormalNumber */ "./ts/util/isNormalNumber.js");
 const isNotNil_1 = __webpack_require__(/*! ../util/isNotNil */ "./ts/util/isNotNil.js");
@@ -22446,6 +22447,7 @@ const dataInterface = {
     markReactionAsRead,
     addReaction,
     removeReactionFromConversation,
+    _getAllReactions,
     getMessageBySender,
     getMessageById,
     getMessagesById,
@@ -24427,6 +24429,56 @@ function updateToSchemaVersion41(currentVersion, db) {
     })();
     logger.info('updateToSchemaVersion41: success!');
 }
+function updateToSchemaVersion42(currentVersion, db) {
+    if (currentVersion >= 42) {
+        return;
+    }
+    db.transaction(() => {
+        // First, recreate messages table delete trigger with reaction support
+        db.exec(`
+      DROP TRIGGER messages_on_delete;
+
+      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
+        DELETE FROM messages_fts WHERE rowid = old.rowid;
+        DELETE FROM sendLogPayloads WHERE id IN (
+          SELECT payloadId FROM sendLogMessageIds
+          WHERE messageId = old.id
+        );
+        DELETE FROM reactions WHERE rowid IN (
+          SELECT rowid FROM reactions
+          WHERE messageId = old.id
+        );
+      END;
+    `);
+        // Then, delete previously-orphaned reactions
+        // Note: we use `pluck` here to fetch only the first column of
+        //   returned row.
+        const messageIdList = db
+            .prepare('SELECT id FROM messages ORDER BY id ASC;')
+            .pluck()
+            .all();
+        const allReactions = db.prepare('SELECT rowid, messageId FROM reactions;').all();
+        const messageIds = new Set(messageIdList);
+        const reactionsToDelete = [];
+        allReactions.forEach(reaction => {
+            if (!messageIds.has(reaction.messageId)) {
+                reactionsToDelete.push(reaction.rowid);
+            }
+        });
+        function deleteReactions(rowids) {
+            db.prepare(`
+        DELETE FROM reactions
+        WHERE rowid IN ( ${rowids.map(() => '?').join(', ')} );
+        `).run(rowids);
+        }
+        if (reactionsToDelete.length > 0) {
+            logger.info(`Deleting ${reactionsToDelete.length} orphaned reactions`);
+            batchMultiVarQuery(reactionsToDelete, deleteReactions, db);
+        }
+        db.pragma('user_version = 42');
+    })();
+    logger.info('updateToSchemaVersion42: success!');
+}
 exports.SCHEMA_VERSIONS = [
     updateToSchemaVersion1,
     updateToSchemaVersion2,
@@ -24469,6 +24521,7 @@ exports.SCHEMA_VERSIONS = [
     updateToSchemaVersion39,
     updateToSchemaVersion40,
     updateToSchemaVersion41,
+    updateToSchemaVersion42,
 ];
 function updateSchema(db) {
     const sqliteVersion = getSQLiteVersion(db);
@@ -24500,28 +24553,7 @@ function getOurUuid(db) {
     return ourUuid;
 }
 let globalInstance;
-/* eslint-disable no-console */
-let logger = {
-    fatal(...args) {
-        console.error(...args);
-    },
-    error(...args) {
-        console.error(...args);
-    },
-    warn(...args) {
-        console.warn(...args);
-    },
-    info(...args) {
-        console.info(...args);
-    },
-    debug(...args) {
-        console.debug(...args);
-    },
-    trace(...args) {
-        console.log(...args);
-    },
-};
-/* eslint-enable no-console */
+let logger = consoleLogger_1.consoleLogger;
 let globalInstanceRenderer;
 let databaseFilePath;
 let indexedDBPath;
@@ -24639,8 +24671,8 @@ function getInstance() {
     }
     return globalInstance;
 }
-function batchMultiVarQuery(values, query) {
-    const db = getInstance();
+function batchMultiVarQuery(values, query, providedDatabase) {
+    const db = providedDatabase || getInstance();
     if (values.length > MAX_VARIABLE_COUNT) {
         const result = [];
         db.transaction(() => {
@@ -25888,6 +25920,10 @@ async function removeReactionFromConversation({ emoji, fromId, targetAuthorUuid,
         targetAuthorUuid,
         targetTimestamp,
     });
+}
+async function _getAllReactions() {
+    const db = getInstance();
+    return db.prepare('SELECT * from reactions;').all();
 }
 async function getOlderMessagesByConversation(conversationId, { limit = 100, receivedAt = Number.MAX_VALUE, sentAt = Number.MAX_VALUE, messageId, } = {}) {
     const db = getInstance();
@@ -27668,6 +27704,7 @@ exports.STORAGE_UI_KEYS = [
     'preferred-video-input-device',
     'preferred-audio-input-device',
     'preferred-audio-output-device',
+    'preferredLeftPaneWidth',
     'preferredReactionEmoji',
     'previousAudioDeviceModule',
     'skinTone',
@@ -27832,6 +27869,44 @@ function isCKJV(codePoint) {
         Hangul_Syllables.test(codePoint) ||
         isIdeographic.test(codePoint));
 }
+
+
+/***/ }),
+
+/***/ "./ts/util/consoleLogger.js":
+/*!**********************************!*\
+  !*** ./ts/util/consoleLogger.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.consoleLogger = void 0;
+/* eslint-disable no-console */
+exports.consoleLogger = {
+    fatal(...args) {
+        console.error(...args);
+    },
+    error(...args) {
+        console.error(...args);
+    },
+    warn(...args) {
+        console.warn(...args);
+    },
+    info(...args) {
+        console.info(...args);
+    },
+    debug(...args) {
+        console.debug(...args);
+    },
+    trace(...args) {
+        console.log(...args);
+    },
+};
+/* eslint-enable no-console */
 
 
 /***/ }),
