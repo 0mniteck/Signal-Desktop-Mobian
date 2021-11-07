@@ -1,7 +1,6 @@
 #!/bin/bash
 source $HOME/.cargo/env
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm use 14.16.0
 
 # Apply sqlcipher patch to use local (dynamic) libraries
 echo "Entering /sqlcipher"
@@ -12,7 +11,9 @@ popd
 # Build libsignal-client
 echo "Entering /libsignal-client"
 pushd /libsignal-client
-cargo update -p neon
+rustup toolchain install nightly-2021-06-08
+rustup default nightly-2021-06-08
+nvm use 12.18.3
 yarn install
 yarn tsc
 mkdir -p /signal-client/prebuilds/linux-arm64
@@ -24,7 +25,8 @@ echo "Entering /better-sqlite3"
 pushd /better-sqlite3
 patch -Np1 -i ../better-sqlite3.patch
 rm -f Relase/obj/gen/sqlite3/OpenSSL-Linux/libcrypto.a
-npm install node-gyp tar
+nvm use 14.16.0
+npm install tar
 npm run build-release
 yarn install
 popd
@@ -32,6 +34,8 @@ popd
 # Build zkgroup
 echo "Entering /zkgroup"
 pushd /zkgroup
+rustup toolchain install nightly-2021-09-19
+rustup default nightly-2021-09-19
 make libzkgroup
 rm -f /signal-zkgroup-node/libzkgroup.so
 cp target/release/libzkgroup.so /signal-zkgroup-node/libzkgroup-arm64.so
@@ -41,11 +45,11 @@ popd
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
-patch -Np1 -i ../minimize-on-small-screens.patch
 sed -r 's#("@signalapp/signal-client": ").*"#\1file:../signal-client"#' -i package.json
 sed -r 's#("better-sqlite3": ").*"#\1file:../better-sqlite3"#' -i package.json
 sed -r 's#("ringrtc": ").*"#\1file:../signal-ringrtc-node"#' -i package.json
 sed -r 's#("zkgroup": ").*"#\1file:../signal-zkgroup-node"#' -i package.json
+nvm use 14.16.0
 yarn install && yarn install --frozen-lockfile
 yarn build:dev && yarn build:release --arm64 --linux deb && debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
 if [ ! -f /Signal-Desktop/release/private.key ]; then

@@ -2,7 +2,7 @@
 
 # Signal Desktop Builder
 
-This project builds Signal Desktop for Mobian on Arm64, currently targeting release `5.21.0`.
+This project builds Signal Desktop for Mobian on Arm64, currently targeting release `5.23.0`.
 
 The aim is to keep up with the standard release schedule for 5.xx.0.
 
@@ -22,7 +22,7 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 * [x] Signal Desktop builds
 * [x] libsignal-client builds
 * [x] better-sqlite3 builds
-* [x] zkgroup builds
+* [ ] zkgroup builds
 * [x] ringrtc builds
 * [x] Bundle all builds and outputs
 * [x] Sign `.deb` with keypair
@@ -30,11 +30,6 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 ## Successful Builds:
 
 ...
-* `5.17.0` - (Signed)
-* `5.18.0` - (Signed)
-* `5.19.0` - (Signed)
-* `5.20.0` - (Signed)
-* `5.21.0` - (Signed)
 
 ## See also:
 

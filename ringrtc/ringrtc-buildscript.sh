@@ -11,8 +11,8 @@ cat << EOF > .cargo/config.toml
 linker = "aarch64-linux-gnu-gcc"
 EOF
 
-rustup toolchain install nightly-2021-06-08
-rustup default nightly-2021-06-08
+rustup toolchain install nightly-2021-09-16
+rustup default nightly-2021-09-16
 rustup target add aarch64-unknown-linux-gnu
 
 make electron PLATFORM=unix NODEJS_ARCH=arm64

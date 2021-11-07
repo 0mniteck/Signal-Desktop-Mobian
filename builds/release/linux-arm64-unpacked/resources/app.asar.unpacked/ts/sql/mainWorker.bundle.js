@@ -144,6 +144,7 @@ const util = __webpack_require__(/*! ./util */ "./node_modules/better-sqlite3/li
 const {
 	Database: CPPDatabase,
 	setErrorConstructor,
+	setCorruptionLogger,
 } = __webpack_require__(/*! bindings */ "./ts/sql/mainWorkerBindings.js")('better_sqlite3.node');
 
 function Database(filenameGiven, options) {
@@ -199,6 +200,7 @@ Database.prototype.close = wrappers.close;
 Database.prototype.defaultSafeIntegers = wrappers.defaultSafeIntegers;
 Database.prototype.unsafeMode = wrappers.unsafeMode;
 Database.prototype[util.inspect] = __webpack_require__(/*! ./methods/inspect */ "./node_modules/better-sqlite3/lib/methods/inspect.js");
+Database.setCorruptionLogger = setCorruptionLogger;
 
 module.exports = Database;
 setErrorConstructor(__webpack_require__(/*! ./sqlite-error */ "./node_modules/better-sqlite3/lib/sqlite-error.js"));
@@ -22335,21 +22337,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.updateSchema = exports.SCHEMA_VERSIONS = void 0;
-/* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 const path_1 = __webpack_require__(/*! path */ "path");
 const mkdirp_1 = __importDefault(__webpack_require__(/*! mkdirp */ "./node_modules/mkdirp/index.js"));
 const rimraf_1 = __importDefault(__webpack_require__(/*! rimraf */ "./node_modules/rimraf/rimraf.js"));
 const better_sqlite3_1 = __importDefault(__webpack_require__(/*! better-sqlite3 */ "./node_modules/better-sqlite3/lib/index.js"));
 const p_props_1 = __importDefault(__webpack_require__(/*! p-props */ "./node_modules/p-props/index.js"));
-const uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/index.js");
 const lodash_1 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const MessageReadStatus_1 = __webpack_require__(/*! ../messages/MessageReadStatus */ "./ts/messages/MessageReadStatus.js");
-const Helpers_1 = __importDefault(__webpack_require__(/*! ../textsecure/Helpers */ "./ts/textsecure/Helpers.js"));
 const StorageUIKeys_1 = __webpack_require__(/*! ../types/StorageUIKeys */ "./ts/types/StorageUIKeys.js");
+const UUID_1 = __webpack_require__(/*! ../types/UUID */ "./ts/types/UUID.js");
 const assert_1 = __webpack_require__(/*! ../util/assert */ "./ts/util/assert.js");
 const combineNames_1 = __webpack_require__(/*! ../util/combineNames */ "./ts/util/combineNames.js");
 const consoleLogger_1 = __webpack_require__(/*! ../util/consoleLogger */ "./ts/util/consoleLogger.js");
@@ -22357,15 +22354,14 @@ const dropNull_1 = __webpack_require__(/*! ../util/dropNull */ "./ts/util/dropNu
 const isNormalNumber_1 = __webpack_require__(/*! ../util/isNormalNumber */ "./ts/util/isNormalNumber.js");
 const isNotNil_1 = __webpack_require__(/*! ../util/isNotNil */ "./ts/util/isNotNil.js");
 const missingCaseError_1 = __webpack_require__(/*! ../util/missingCaseError */ "./ts/util/missingCaseError.js");
-const isValidGuid_1 = __webpack_require__(/*! ../util/isValidGuid */ "./ts/util/isValidGuid.js");
 const parseIntOrThrow_1 = __webpack_require__(/*! ../util/parseIntOrThrow */ "./ts/util/parseIntOrThrow.js");
 const durations = __importStar(__webpack_require__(/*! ../util/durations */ "./ts/util/durations.js"));
 const formatCountForLogging_1 = __webpack_require__(/*! ../logging/formatCountForLogging */ "./ts/logging/formatCountForLogging.js");
 const Calling_1 = __webpack_require__(/*! ../types/Calling */ "./ts/types/Calling.js");
 const RemoveAllConfiguration_1 = __webpack_require__(/*! ../types/RemoveAllConfiguration */ "./ts/types/RemoveAllConfiguration.js");
 const log = __importStar(__webpack_require__(/*! ../logging/log */ "./ts/logging/log.js"));
-// This value needs to be below SQLITE_MAX_VARIABLE_NUMBER.
-const MAX_VARIABLE_COUNT = 100;
+const util_1 = __webpack_require__(/*! ./util */ "./ts/sql/util.js");
+const migrations_1 = __webpack_require__(/*! ./migrations */ "./ts/sql/migrations/index.js");
 // Because we can't force this module to conform to an interface, we narrow our exports
 //   to this one default export, which does conform to the interface.
 // Note: In Javascript, you need to access the .default property when requiring it
@@ -22431,7 +22427,7 @@ const dataInterface = {
     getAllConversations,
     getAllConversationIds,
     getAllPrivateConversations,
-    getAllGroupsInvolvingId,
+    getAllGroupsInvolvingUuid,
     updateAllConversationColors,
     searchConversations,
     searchMessages,
@@ -22507,6 +22503,7 @@ const dataInterface = {
     getMaxMessageCounter,
     getStatisticsForLogging,
     // Server-only
+    getCorruptionLog,
     initialize,
     initializeRenderer,
     removeKnownAttachments,
@@ -22527,15 +22524,6 @@ function prepare(db, query) {
         dbCache.set(query, result);
     }
     return result;
-}
-function assertSync(value) {
-    return value;
-}
-function objectToJSON(data) {
-    return JSON.stringify(data);
-}
-function jsonToObject(json) {
-    return JSON.parse(json);
 }
 function rowToConversation(row) {
     const parsedJson = JSON.parse(row.json);
@@ -22558,21 +22546,6 @@ function isRenderer() {
     }
     return process.type === 'renderer';
 }
-function getSQLiteVersion(db) {
-    const { sqlite_version } = db
-        .prepare('select sqlite_version() AS sqlite_version')
-        .get();
-    return sqlite_version;
-}
-function getSchemaVersion(db) {
-    return db.pragma('schema_version', { simple: true });
-}
-function setUserVersion(db, version) {
-    if (!(0, lodash_1.isNumber)(version)) {
-        throw new Error(`setUserVersion: version ${version} is not a number`);
-    }
-    db.pragma(`user_version = ${version}`);
-}
 function keyDatabase(db, key) {
     // https://www.zetetic.net/sqlcipher/sqlcipher-api/#key
     db.pragma(`key = "x'${key}'"`);
@@ -22582,22 +22555,16 @@ function switchToWAL(db) {
     db.pragma('journal_mode = WAL');
     db.pragma('synchronous = FULL');
 }
-function getUserVersion(db) {
-    return db.pragma('user_version', { simple: true });
-}
-function getSQLCipherVersion(db) {
-    return db.pragma('cipher_version', { simple: true });
-}
 function migrateSchemaVersion(db) {
-    const userVersion = getUserVersion(db);
+    const userVersion = (0, util_1.getUserVersion)(db);
     if (userVersion > 0) {
         return;
     }
-    const schemaVersion = getSchemaVersion(db);
+    const schemaVersion = (0, util_1.getSchemaVersion)(db);
     const newUserVersion = schemaVersion > 18 ? 16 : schemaVersion;
     logger.info('migrateSchemaVersion: Migrating from schema_version ' +
         `${schemaVersion} to user_version ${newUserVersion}`);
-    setUserVersion(db, newUserVersion);
+    (0, util_1.setUserVersion)(db, newUserVersion);
 }
 function openAndMigrateDatabase(filePath, key) {
     let db;
@@ -22642,1921 +22609,21 @@ function openAndSetUpSQLCipher(filePath, { key }) {
     db.pragma('foreign_keys = ON');
     return db;
 }
-function updateToSchemaVersion1(currentVersion, db) {
-    if (currentVersion >= 1) {
-        return;
-    }
-    logger.info('updateToSchemaVersion1: starting...');
-    db.transaction(() => {
-        db.exec(`
-      CREATE TABLE messages(
-        id STRING PRIMARY KEY ASC,
-        json TEXT,
-
-        unread INTEGER,
-        expires_at INTEGER,
-        sent_at INTEGER,
-        schemaVersion INTEGER,
-        conversationId STRING,
-        received_at INTEGER,
-        source STRING,
-        sourceDevice STRING,
-        hasAttachments INTEGER,
-        hasFileAttachments INTEGER,
-        hasVisualMediaAttachments INTEGER
-      );
-      CREATE INDEX messages_unread ON messages (
-        unread
-      );
-      CREATE INDEX messages_expires_at ON messages (
-        expires_at
-      );
-      CREATE INDEX messages_receipt ON messages (
-        sent_at
-      );
-      CREATE INDEX messages_schemaVersion ON messages (
-        schemaVersion
-      );
-      CREATE INDEX messages_conversation ON messages (
-        conversationId,
-        received_at
-      );
-      CREATE INDEX messages_duplicate_check ON messages (
-        source,
-        sourceDevice,
-        sent_at
-      );
-      CREATE INDEX messages_hasAttachments ON messages (
-        conversationId,
-        hasAttachments,
-        received_at
-      );
-      CREATE INDEX messages_hasFileAttachments ON messages (
-        conversationId,
-        hasFileAttachments,
-        received_at
-      );
-      CREATE INDEX messages_hasVisualMediaAttachments ON messages (
-        conversationId,
-        hasVisualMediaAttachments,
-        received_at
-      );
-      CREATE TABLE unprocessed(
-        id STRING,
-        timestamp INTEGER,
-        json TEXT
-      );
-      CREATE INDEX unprocessed_id ON unprocessed (
-        id
-      );
-      CREATE INDEX unprocessed_timestamp ON unprocessed (
-        timestamp
-      );
-    `);
-        db.pragma('user_version = 1');
-    })();
-    logger.info('updateToSchemaVersion1: success!');
-}
-function updateToSchemaVersion2(currentVersion, db) {
-    if (currentVersion >= 2) {
-        return;
-    }
-    logger.info('updateToSchemaVersion2: starting...');
-    db.transaction(() => {
-        db.exec(`
-      ALTER TABLE messages
-        ADD COLUMN expireTimer INTEGER;
-
-      ALTER TABLE messages
-        ADD COLUMN expirationStartTimestamp INTEGER;
-
-      ALTER TABLE messages
-        ADD COLUMN type STRING;
-
-      CREATE INDEX messages_expiring ON messages (
-        expireTimer,
-        expirationStartTimestamp,
-        expires_at
-      );
-
-      UPDATE messages SET
-        expirationStartTimestamp = json_extract(json, '$.expirationStartTimestamp'),
-        expireTimer = json_extract(json, '$.expireTimer'),
-        type = json_extract(json, '$.type');
-    `);
-        db.pragma('user_version = 2');
-    })();
-    logger.info('updateToSchemaVersion2: success!');
-}
-function updateToSchemaVersion3(currentVersion, db) {
-    if (currentVersion >= 3) {
-        return;
-    }
-    logger.info('updateToSchemaVersion3: starting...');
-    db.transaction(() => {
-        db.exec(`
-      DROP INDEX messages_expiring;
-      DROP INDEX messages_unread;
-
-      CREATE INDEX messages_without_timer ON messages (
-        expireTimer,
-        expires_at,
-        type
-      ) WHERE expires_at IS NULL AND expireTimer IS NOT NULL;
-
-      CREATE INDEX messages_unread ON messages (
-        conversationId,
-        unread
-      ) WHERE unread IS NOT NULL;
-
-      ANALYZE;
-    `);
-        db.pragma('user_version = 3');
-    })();
-    logger.info('updateToSchemaVersion3: success!');
-}
-function updateToSchemaVersion4(currentVersion, db) {
-    if (currentVersion >= 4) {
-        return;
-    }
-    logger.info('updateToSchemaVersion4: starting...');
-    db.transaction(() => {
-        db.exec(`
-      CREATE TABLE conversations(
-        id STRING PRIMARY KEY ASC,
-        json TEXT,
-
-        active_at INTEGER,
-        type STRING,
-        members TEXT,
-        name TEXT,
-        profileName TEXT
-      );
-      CREATE INDEX conversations_active ON conversations (
-        active_at
-      ) WHERE active_at IS NOT NULL;
-
-      CREATE INDEX conversations_type ON conversations (
-        type
-      ) WHERE type IS NOT NULL;
-    `);
-        db.pragma('user_version = 4');
-    })();
-    logger.info('updateToSchemaVersion4: success!');
-}
-function updateToSchemaVersion6(currentVersion, db) {
-    if (currentVersion >= 6) {
-        return;
-    }
-    logger.info('updateToSchemaVersion6: starting...');
-    db.transaction(() => {
-        db.exec(`
-      -- key-value, ids are strings, one extra column
-      CREATE TABLE sessions(
-        id STRING PRIMARY KEY ASC,
-        number STRING,
-        json TEXT
-      );
-      CREATE INDEX sessions_number ON sessions (
-        number
-      ) WHERE number IS NOT NULL;
-      -- key-value, ids are strings
-      CREATE TABLE groups(
-        id STRING PRIMARY KEY ASC,
-        json TEXT
-      );
-      CREATE TABLE identityKeys(
-        id STRING PRIMARY KEY ASC,
-        json TEXT
-      );
-      CREATE TABLE items(
-        id STRING PRIMARY KEY ASC,
-        json TEXT
-      );
-      -- key-value, ids are integers
-      CREATE TABLE preKeys(
-        id INTEGER PRIMARY KEY ASC,
-        json TEXT
-      );
-      CREATE TABLE signedPreKeys(
-        id INTEGER PRIMARY KEY ASC,
-        json TEXT
-      );
-    `);
-        db.pragma('user_version = 6');
-    })();
-    logger.info('updateToSchemaVersion6: success!');
-}
-function updateToSchemaVersion7(currentVersion, db) {
-    if (currentVersion >= 7) {
-        return;
-    }
-    logger.info('updateToSchemaVersion7: starting...');
-    db.transaction(() => {
-        db.exec(`
-      -- SQLite has been coercing our STRINGs into numbers, so we force it with TEXT
-      -- We create a new table then copy the data into it, since we can't modify columns
-      DROP INDEX sessions_number;
-      ALTER TABLE sessions RENAME TO sessions_old;
-
-      CREATE TABLE sessions(
-        id TEXT PRIMARY KEY,
-        number TEXT,
-        json TEXT
-      );
-      CREATE INDEX sessions_number ON sessions (
-        number
-      ) WHERE number IS NOT NULL;
-      INSERT INTO sessions(id, number, json)
-        SELECT "+" || id, number, json FROM sessions_old;
-      DROP TABLE sessions_old;
-    `);
-        db.pragma('user_version = 7');
-    })();
-    logger.info('updateToSchemaVersion7: success!');
-}
-function updateToSchemaVersion8(currentVersion, db) {
-    if (currentVersion >= 8) {
-        return;
-    }
-    logger.info('updateToSchemaVersion8: starting...');
-    db.transaction(() => {
-        db.exec(`
-      -- First, we pull a new body field out of the message table's json blob
-      ALTER TABLE messages
-        ADD COLUMN body TEXT;
-      UPDATE messages SET body = json_extract(json, '$.body');
-
-      -- Then we create our full-text search table and populate it
-      CREATE VIRTUAL TABLE messages_fts
-        USING fts5(id UNINDEXED, body);
-
-      INSERT INTO messages_fts(id, body)
-        SELECT id, body FROM messages;
-
-      -- Then we set up triggers to keep the full-text search table up to date
-      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages BEGIN
-        INSERT INTO messages_fts (
-          id,
-          body
-        ) VALUES (
-          new.id,
-          new.body
-        );
-      END;
-      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
-        DELETE FROM messages_fts WHERE id = old.id;
-      END;
-      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages BEGIN
-        DELETE FROM messages_fts WHERE id = old.id;
-        INSERT INTO messages_fts(
-          id,
-          body
-        ) VALUES (
-          new.id,
-          new.body
-        );
-      END;
-    `);
-        // For formatting search results:
-        //   https://sqlite.org/fts5.html#the_highlight_function
-        //   https://sqlite.org/fts5.html#the_snippet_function
-        db.pragma('user_version = 8');
-    })();
-    logger.info('updateToSchemaVersion8: success!');
-}
-function updateToSchemaVersion9(currentVersion, db) {
-    if (currentVersion >= 9) {
-        return;
-    }
-    logger.info('updateToSchemaVersion9: starting...');
-    db.transaction(() => {
-        db.exec(`
-      CREATE TABLE attachment_downloads(
-        id STRING primary key,
-        timestamp INTEGER,
-        pending INTEGER,
-        json TEXT
-      );
-
-      CREATE INDEX attachment_downloads_timestamp
-        ON attachment_downloads (
-          timestamp
-      ) WHERE pending = 0;
-      CREATE INDEX attachment_downloads_pending
-        ON attachment_downloads (
-          pending
-      ) WHERE pending != 0;
-    `);
-        db.pragma('user_version = 9');
-    })();
-    logger.info('updateToSchemaVersion9: success!');
-}
-function updateToSchemaVersion10(currentVersion, db) {
-    if (currentVersion >= 10) {
-        return;
-    }
-    logger.info('updateToSchemaVersion10: starting...');
-    db.transaction(() => {
-        db.exec(`
-      DROP INDEX unprocessed_id;
-      DROP INDEX unprocessed_timestamp;
-      ALTER TABLE unprocessed RENAME TO unprocessed_old;
-
-      CREATE TABLE unprocessed(
-        id STRING,
-        timestamp INTEGER,
-        version INTEGER,
-        attempts INTEGER,
-        envelope TEXT,
-        decrypted TEXT,
-        source TEXT,
-        sourceDevice TEXT,
-        serverTimestamp INTEGER
-      );
-
-      CREATE INDEX unprocessed_id ON unprocessed (
-        id
-      );
-      CREATE INDEX unprocessed_timestamp ON unprocessed (
-        timestamp
-      );
-
-      INSERT INTO unprocessed (
-        id,
-        timestamp,
-        version,
-        attempts,
-        envelope,
-        decrypted,
-        source,
-        sourceDevice,
-        serverTimestamp
-      ) SELECT
-        id,
-        timestamp,
-        json_extract(json, '$.version'),
-        json_extract(json, '$.attempts'),
-        json_extract(json, '$.envelope'),
-        json_extract(json, '$.decrypted'),
-        json_extract(json, '$.source'),
-        json_extract(json, '$.sourceDevice'),
-        json_extract(json, '$.serverTimestamp')
-      FROM unprocessed_old;
-
-      DROP TABLE unprocessed_old;
-    `);
-        db.pragma('user_version = 10');
-    })();
-    logger.info('updateToSchemaVersion10: success!');
-}
-function updateToSchemaVersion11(currentVersion, db) {
-    if (currentVersion >= 11) {
-        return;
-    }
-    logger.info('updateToSchemaVersion11: starting...');
-    db.transaction(() => {
-        db.exec(`
-      DROP TABLE groups;
-    `);
-        db.pragma('user_version = 11');
-    })();
-    logger.info('updateToSchemaVersion11: success!');
-}
-function updateToSchemaVersion12(currentVersion, db) {
-    if (currentVersion >= 12) {
-        return;
-    }
-    logger.info('updateToSchemaVersion12: starting...');
-    db.transaction(() => {
-        db.exec(`
-      CREATE TABLE sticker_packs(
-        id TEXT PRIMARY KEY,
-        key TEXT NOT NULL,
-
-        author STRING,
-        coverStickerId INTEGER,
-        createdAt INTEGER,
-        downloadAttempts INTEGER,
-        installedAt INTEGER,
-        lastUsed INTEGER,
-        status STRING,
-        stickerCount INTEGER,
-        title STRING
-      );
-
-      CREATE TABLE stickers(
-        id INTEGER NOT NULL,
-        packId TEXT NOT NULL,
-
-        emoji STRING,
-        height INTEGER,
-        isCoverOnly INTEGER,
-        lastUsed INTEGER,
-        path STRING,
-        width INTEGER,
-
-        PRIMARY KEY (id, packId),
-        CONSTRAINT stickers_fk
-          FOREIGN KEY (packId)
-          REFERENCES sticker_packs(id)
-          ON DELETE CASCADE
-      );
-
-      CREATE INDEX stickers_recents
-        ON stickers (
-          lastUsed
-      ) WHERE lastUsed IS NOT NULL;
-
-      CREATE TABLE sticker_references(
-        messageId STRING,
-        packId TEXT,
-        CONSTRAINT sticker_references_fk
-          FOREIGN KEY(packId)
-          REFERENCES sticker_packs(id)
-          ON DELETE CASCADE
-      );
-    `);
-        db.pragma('user_version = 12');
-    })();
-    logger.info('updateToSchemaVersion12: success!');
-}
-function updateToSchemaVersion13(currentVersion, db) {
-    if (currentVersion >= 13) {
-        return;
-    }
-    logger.info('updateToSchemaVersion13: starting...');
-    db.transaction(() => {
-        db.exec(`
-      ALTER TABLE sticker_packs ADD COLUMN attemptedStatus STRING;
-    `);
-        db.pragma('user_version = 13');
-    })();
-    logger.info('updateToSchemaVersion13: success!');
-}
-function updateToSchemaVersion14(currentVersion, db) {
-    if (currentVersion >= 14) {
-        return;
-    }
-    logger.info('updateToSchemaVersion14: starting...');
-    db.transaction(() => {
-        db.exec(`
-      CREATE TABLE emojis(
-        shortName STRING PRIMARY KEY,
-        lastUsage INTEGER
-      );
-
-      CREATE INDEX emojis_lastUsage
-        ON emojis (
-          lastUsage
-      );
-    `);
-        db.pragma('user_version = 14');
-    })();
-    logger.info('updateToSchemaVersion14: success!');
-}
-function updateToSchemaVersion15(currentVersion, db) {
-    if (currentVersion >= 15) {
-        return;
-    }
-    logger.info('updateToSchemaVersion15: starting...');
-    db.transaction(() => {
-        db.exec(`
-      -- SQLite has again coerced our STRINGs into numbers, so we force it with TEXT
-      -- We create a new table then copy the data into it, since we can't modify columns
-
-      DROP INDEX emojis_lastUsage;
-      ALTER TABLE emojis RENAME TO emojis_old;
-
-      CREATE TABLE emojis(
-        shortName TEXT PRIMARY KEY,
-        lastUsage INTEGER
-      );
-      CREATE INDEX emojis_lastUsage
-        ON emojis (
-          lastUsage
-      );
-
-      DELETE FROM emojis WHERE shortName = 1;
-      INSERT INTO emojis(shortName, lastUsage)
-        SELECT shortName, lastUsage FROM emojis_old;
-
-      DROP TABLE emojis_old;
-    `);
-        db.pragma('user_version = 15');
-    })();
-    logger.info('updateToSchemaVersion15: success!');
-}
-function updateToSchemaVersion16(currentVersion, db) {
-    if (currentVersion >= 16) {
-        return;
-    }
-    logger.info('updateToSchemaVersion16: starting...');
-    db.transaction(() => {
-        db.exec(`
-      ALTER TABLE messages
-      ADD COLUMN messageTimer INTEGER;
-      ALTER TABLE messages
-      ADD COLUMN messageTimerStart INTEGER;
-      ALTER TABLE messages
-      ADD COLUMN messageTimerExpiresAt INTEGER;
-      ALTER TABLE messages
-      ADD COLUMN isErased INTEGER;
-
-      CREATE INDEX messages_message_timer ON messages (
-        messageTimer,
-        messageTimerStart,
-        messageTimerExpiresAt,
-        isErased
-      ) WHERE messageTimer IS NOT NULL;
-
-      -- Updating full-text triggers to avoid anything with a messageTimer set
-
-      DROP TRIGGER messages_on_insert;
-      DROP TRIGGER messages_on_delete;
-      DROP TRIGGER messages_on_update;
-
-      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages
-      WHEN new.messageTimer IS NULL
-      BEGIN
-        INSERT INTO messages_fts (
-          id,
-          body
-        ) VALUES (
-          new.id,
-          new.body
-        );
-      END;
-      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
-        DELETE FROM messages_fts WHERE id = old.id;
-      END;
-      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
-      WHEN new.messageTimer IS NULL
-      BEGIN
-        DELETE FROM messages_fts WHERE id = old.id;
-        INSERT INTO messages_fts(
-          id,
-          body
-        ) VALUES (
-          new.id,
-          new.body
-        );
-      END;
-    `);
-        db.pragma('user_version = 16');
-    })();
-    logger.info('updateToSchemaVersion16: success!');
-}
-function updateToSchemaVersion17(currentVersion, db) {
-    if (currentVersion >= 17) {
-        return;
-    }
-    logger.info('updateToSchemaVersion17: starting...');
-    db.transaction(() => {
-        try {
-            db.exec(`
-        ALTER TABLE messages
-        ADD COLUMN isViewOnce INTEGER;
-
-        DROP INDEX messages_message_timer;
-      `);
-        }
-        catch (error) {
-            logger.info('updateToSchemaVersion17: Message table already had isViewOnce column');
-        }
-        try {
-            db.exec('DROP INDEX messages_view_once;');
-        }
-        catch (error) {
-            logger.info('updateToSchemaVersion17: Index messages_view_once did not already exist');
-        }
-        db.exec(`
-      CREATE INDEX messages_view_once ON messages (
-        isErased
-      ) WHERE isViewOnce = 1;
-
-      -- Updating full-text triggers to avoid anything with isViewOnce = 1
-
-      DROP TRIGGER messages_on_insert;
-      DROP TRIGGER messages_on_update;
-
-      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages
-      WHEN new.isViewOnce != 1
-      BEGIN
-        INSERT INTO messages_fts (
-          id,
-          body
-        ) VALUES (
-          new.id,
-          new.body
-        );
-      END;
-      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
-      WHEN new.isViewOnce != 1
-      BEGIN
-        DELETE FROM messages_fts WHERE id = old.id;
-        INSERT INTO messages_fts(
-          id,
-          body
-        ) VALUES (
-          new.id,
-          new.body
-        );
-      END;
-    `);
-        db.pragma('user_version = 17');
-    })();
-    logger.info('updateToSchemaVersion17: success!');
-}
-function updateToSchemaVersion18(currentVersion, db) {
-    if (currentVersion >= 18) {
-        return;
-    }
-    logger.info('updateToSchemaVersion18: starting...');
-    db.transaction(() => {
-        db.exec(`
-      -- Delete and rebuild full-text search index to capture everything
-
-      DELETE FROM messages_fts;
-      INSERT INTO messages_fts(messages_fts) VALUES('rebuild');
-
-      INSERT INTO messages_fts(id, body)
-      SELECT id, body FROM messages WHERE isViewOnce IS NULL OR isViewOnce != 1;
-
-      -- Fixing full-text triggers
-
-      DROP TRIGGER messages_on_insert;
-      DROP TRIGGER messages_on_update;
-
-      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages
-      WHEN new.isViewOnce IS NULL OR new.isViewOnce != 1
-      BEGIN
-        INSERT INTO messages_fts (
-          id,
-          body
-        ) VALUES (
-          new.id,
-          new.body
-        );
-      END;
-      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
-      WHEN new.isViewOnce IS NULL OR new.isViewOnce != 1
-      BEGIN
-        DELETE FROM messages_fts WHERE id = old.id;
-        INSERT INTO messages_fts(
-          id,
-          body
-        ) VALUES (
-          new.id,
-          new.body
-        );
-      END;
-    `);
-        db.pragma('user_version = 18');
-    })();
-    logger.info('updateToSchemaVersion18: success!');
-}
-function updateToSchemaVersion19(currentVersion, db) {
-    if (currentVersion >= 19) {
-        return;
-    }
-    logger.info('updateToSchemaVersion19: starting...');
-    db.transaction(() => {
-        db.exec(`
-      ALTER TABLE conversations
-      ADD COLUMN profileFamilyName TEXT;
-      ALTER TABLE conversations
-      ADD COLUMN profileFullName TEXT;
-
-      -- Preload new field with the profileName we already have
-      UPDATE conversations SET profileFullName = profileName;
-    `);
-        db.pragma('user_version = 19');
-    })();
-    logger.info('updateToSchemaVersion19: success!');
-}
-function updateToSchemaVersion20(currentVersion, db) {
-    if (currentVersion >= 20) {
-        return;
-    }
-    logger.info('updateToSchemaVersion20: starting...');
-    db.transaction(() => {
-        // The triggers on the messages table slow down this migration
-        // significantly, so we drop them and recreate them later.
-        // Drop triggers
-        const triggers = db
-            .prepare('SELECT * FROM sqlite_master WHERE type = "trigger" AND tbl_name = "messages"')
-            .all();
-        for (const trigger of triggers) {
-            db.exec(`DROP TRIGGER ${trigger.name}`);
-        }
-        // Create new columns and indices
-        db.exec(`
-      ALTER TABLE conversations ADD COLUMN e164 TEXT;
-      ALTER TABLE conversations ADD COLUMN uuid TEXT;
-      ALTER TABLE conversations ADD COLUMN groupId TEXT;
-      ALTER TABLE messages ADD COLUMN sourceUuid TEXT;
-      ALTER TABLE sessions RENAME COLUMN number TO conversationId;
-      CREATE INDEX conversations_e164 ON conversations(e164);
-      CREATE INDEX conversations_uuid ON conversations(uuid);
-      CREATE INDEX conversations_groupId ON conversations(groupId);
-      CREATE INDEX messages_sourceUuid on messages(sourceUuid);
-
-      -- Migrate existing IDs
-      UPDATE conversations SET e164 = '+' || id WHERE type = 'private';
-      UPDATE conversations SET groupId = id WHERE type = 'group';
-    `);
-        // Drop invalid groups and any associated messages
-        const maybeInvalidGroups = db
-            .prepare("SELECT * FROM conversations WHERE type = 'group' AND members IS NULL;")
-            .all();
-        for (const group of maybeInvalidGroups) {
-            const json = JSON.parse(group.json);
-            if (!json.members || !json.members.length) {
-                db.prepare('DELETE FROM conversations WHERE id = $id;').run({
-                    id: json.id,
-                });
-                db.prepare('DELETE FROM messages WHERE conversationId = $id;').run({ id: json.id });
-            }
-        }
-        // Generate new IDs and alter data
-        const allConversations = db
-            .prepare('SELECT * FROM conversations;')
-            .all();
-        const allConversationsByOldId = (0, lodash_1.keyBy)(allConversations, 'id');
-        for (const row of allConversations) {
-            const oldId = row.id;
-            const newId = (0, uuid_1.v4)();
-            allConversationsByOldId[oldId].id = newId;
-            const patchObj = { id: newId };
-            if (row.type === 'private') {
-                patchObj.e164 = `+${oldId}`;
-            }
-            else if (row.type === 'group') {
-                patchObj.groupId = oldId;
-            }
-            const patch = JSON.stringify(patchObj);
-            db.prepare(`
-        UPDATE conversations
-        SET id = $newId, json = JSON_PATCH(json, $patch)
-        WHERE id = $oldId
-        `).run({
-                newId,
-                oldId,
-                patch,
-            });
-            const messagePatch = JSON.stringify({ conversationId: newId });
-            db.prepare(`
-        UPDATE messages
-        SET conversationId = $newId, json = JSON_PATCH(json, $patch)
-        WHERE conversationId = $oldId
-        `).run({ newId, oldId, patch: messagePatch });
-        }
-        const groupConversations = db
-            .prepare(`
-        SELECT id, members, json FROM conversations WHERE type = 'group';
-        `)
-            .all();
-        // Update group conversations, point members at new conversation ids
-        groupConversations.forEach(groupRow => {
-            const members = groupRow.members.split(/\s?\+/).filter(Boolean);
-            const newMembers = [];
-            for (const m of members) {
-                const memberRow = allConversationsByOldId[m];
-                if (memberRow) {
-                    newMembers.push(memberRow.id);
-                }
-                else {
-                    // We didn't previously have a private conversation for this member,
-                    // we need to create one
-                    const id = (0, uuid_1.v4)();
-                    saveConversation({
-                        id,
-                        e164: m,
-                        type: 'private',
-                        version: 2,
-                        unreadCount: 0,
-                        verified: 0,
-                        // Not directly used by saveConversation, but are necessary
-                        // for conversation model
-                        inbox_position: 0,
-                        isPinned: false,
-                        lastMessageDeletedForEveryone: false,
-                        markedUnread: false,
-                        messageCount: 0,
-                        sentMessageCount: 0,
-                        profileSharing: false,
-                    });
-                    newMembers.push(id);
-                }
-            }
-            const json = Object.assign(Object.assign({}, jsonToObject(groupRow.json)), { members: newMembers });
-            const newMembersValue = newMembers.join(' ');
-            db.prepare(`
-        UPDATE conversations
-        SET members = $newMembersValue, json = $newJsonValue
-        WHERE id = $id
-        `).run({
-                id: groupRow.id,
-                newMembersValue,
-                newJsonValue: objectToJSON(json),
-            });
-        });
-        // Update sessions to stable IDs
-        const allSessions = db.prepare('SELECT * FROM sessions;').all();
-        for (const session of allSessions) {
-            // Not using patch here so we can explicitly delete a property rather than
-            // implicitly delete via null
-            const newJson = JSON.parse(session.json);
-            const conversation = allConversationsByOldId[newJson.number.substr(1)];
-            if (conversation) {
-                newJson.conversationId = conversation.id;
-                newJson.id = `${newJson.conversationId}.${newJson.deviceId}`;
-            }
-            delete newJson.number;
-            db.prepare(`
-        UPDATE sessions
-        SET id = $newId, json = $newJson, conversationId = $newConversationId
-        WHERE id = $oldId
-        `).run({
-                newId: newJson.id,
-                newJson: objectToJSON(newJson),
-                oldId: session.id,
-                newConversationId: newJson.conversationId,
-            });
-        }
-        // Update identity keys to stable IDs
-        const allIdentityKeys = db
-            .prepare('SELECT * FROM identityKeys;')
-            .all();
-        for (const identityKey of allIdentityKeys) {
-            const newJson = JSON.parse(identityKey.json);
-            newJson.id = allConversationsByOldId[newJson.id];
-            db.prepare(`
-        UPDATE identityKeys
-        SET id = $newId, json = $newJson
-        WHERE id = $oldId
-        `).run({
-                newId: newJson.id,
-                newJson: objectToJSON(newJson),
-                oldId: identityKey.id,
-            });
-        }
-        // Recreate triggers
-        for (const trigger of triggers) {
-            db.exec(trigger.sql);
-        }
-        db.pragma('user_version = 20');
-    })();
-    logger.info('updateToSchemaVersion20: success!');
-}
-function updateToSchemaVersion21(currentVersion, db) {
-    if (currentVersion >= 21) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      UPDATE conversations
-      SET json = json_set(
-        json,
-        '$.messageCount',
-        (SELECT count(*) FROM messages WHERE messages.conversationId = conversations.id)
-      );
-      UPDATE conversations
-      SET json = json_set(
-        json,
-        '$.sentMessageCount',
-        (SELECT count(*) FROM messages WHERE messages.conversationId = conversations.id AND messages.type = 'outgoing')
-      );
-    `);
-        db.pragma('user_version = 21');
-    })();
-    logger.info('updateToSchemaVersion21: success!');
-}
-function updateToSchemaVersion22(currentVersion, db) {
-    if (currentVersion >= 22) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      ALTER TABLE unprocessed
-        ADD COLUMN sourceUuid STRING;
-    `);
-        db.pragma('user_version = 22');
-    })();
-    logger.info('updateToSchemaVersion22: success!');
-}
-function updateToSchemaVersion23(currentVersion, db) {
-    if (currentVersion >= 23) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      -- Remove triggers which keep full-text search up to date
-      DROP TRIGGER messages_on_insert;
-      DROP TRIGGER messages_on_update;
-      DROP TRIGGER messages_on_delete;
-    `);
-        db.pragma('user_version = 23');
-    })();
-    logger.info('updateToSchemaVersion23: success!');
-}
-function updateToSchemaVersion24(currentVersion, db) {
-    if (currentVersion >= 24) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      ALTER TABLE conversations
-      ADD COLUMN profileLastFetchedAt INTEGER;
-    `);
-        db.pragma('user_version = 24');
-    })();
-    logger.info('updateToSchemaVersion24: success!');
-}
-async function updateToSchemaVersion25(currentVersion, db) {
-    if (currentVersion >= 25) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      ALTER TABLE messages
-      RENAME TO old_messages
-    `);
-        const indicesToDrop = [
-            'messages_expires_at',
-            'messages_receipt',
-            'messages_schemaVersion',
-            'messages_conversation',
-            'messages_duplicate_check',
-            'messages_hasAttachments',
-            'messages_hasFileAttachments',
-            'messages_hasVisualMediaAttachments',
-            'messages_without_timer',
-            'messages_unread',
-            'messages_view_once',
-            'messages_sourceUuid',
-        ];
-        for (const index of indicesToDrop) {
-            db.exec(`DROP INDEX IF EXISTS ${index};`);
-        }
-        db.exec(`
-      --
-      -- Create a new table with a different primary key
-      --
-
-      CREATE TABLE messages(
-        rowid INTEGER PRIMARY KEY ASC,
-        id STRING UNIQUE,
-        json TEXT,
-        unread INTEGER,
-        expires_at INTEGER,
-        sent_at INTEGER,
-        schemaVersion INTEGER,
-        conversationId STRING,
-        received_at INTEGER,
-        source STRING,
-        sourceDevice STRING,
-        hasAttachments INTEGER,
-        hasFileAttachments INTEGER,
-        hasVisualMediaAttachments INTEGER,
-        expireTimer INTEGER,
-        expirationStartTimestamp INTEGER,
-        type STRING,
-        body TEXT,
-        messageTimer INTEGER,
-        messageTimerStart INTEGER,
-        messageTimerExpiresAt INTEGER,
-        isErased INTEGER,
-        isViewOnce INTEGER,
-        sourceUuid TEXT);
-
-      -- Create index in lieu of old PRIMARY KEY
-      CREATE INDEX messages_id ON messages (id ASC);
-
-      --
-      -- Recreate indices
-      --
-
-      CREATE INDEX messages_expires_at ON messages (expires_at);
-
-      CREATE INDEX messages_receipt ON messages (sent_at);
-
-      CREATE INDEX messages_schemaVersion ON messages (schemaVersion);
-
-      CREATE INDEX messages_conversation ON messages
-        (conversationId, received_at);
-
-      CREATE INDEX messages_duplicate_check ON messages
-        (source, sourceDevice, sent_at);
-
-      CREATE INDEX messages_hasAttachments ON messages
-        (conversationId, hasAttachments, received_at);
-
-      CREATE INDEX messages_hasFileAttachments ON messages
-        (conversationId, hasFileAttachments, received_at);
-
-      CREATE INDEX messages_hasVisualMediaAttachments ON messages
-        (conversationId, hasVisualMediaAttachments, received_at);
-
-      CREATE INDEX messages_without_timer ON messages
-        (expireTimer, expires_at, type)
-        WHERE expires_at IS NULL AND expireTimer IS NOT NULL;
-
-      CREATE INDEX messages_unread ON messages
-        (conversationId, unread) WHERE unread IS NOT NULL;
-
-      CREATE INDEX messages_view_once ON messages
-        (isErased) WHERE isViewOnce = 1;
-
-      CREATE INDEX messages_sourceUuid on messages(sourceUuid);
-
-      -- New index for searchMessages
-      CREATE INDEX messages_searchOrder on messages(received_at, sent_at);
-
-      --
-      -- Re-create messages_fts and add triggers
-      --
-
-      DROP TABLE messages_fts;
-
-      CREATE VIRTUAL TABLE messages_fts USING fts5(body);
-
-      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages
-      WHEN new.isViewOnce IS NULL OR new.isViewOnce != 1
-      BEGIN
-        INSERT INTO messages_fts
-        (rowid, body)
-        VALUES
-        (new.rowid, new.body);
-      END;
-
-      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
-        DELETE FROM messages_fts WHERE rowid = old.rowid;
-      END;
-
-      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
-      WHEN new.isViewOnce IS NULL OR new.isViewOnce != 1
-      BEGIN
-        DELETE FROM messages_fts WHERE rowid = old.rowid;
-        INSERT INTO messages_fts
-        (rowid, body)
-        VALUES
-        (new.rowid, new.body);
-      END;
-
-      --
-      -- Copy data over
-      --
-
-      INSERT INTO messages
-      (
-        id, json, unread, expires_at, sent_at, schemaVersion, conversationId,
-        received_at, source, sourceDevice, hasAttachments, hasFileAttachments,
-        hasVisualMediaAttachments, expireTimer, expirationStartTimestamp, type,
-        body, messageTimer, messageTimerStart, messageTimerExpiresAt, isErased,
-        isViewOnce, sourceUuid
-      )
-      SELECT
-        id, json, unread, expires_at, sent_at, schemaVersion, conversationId,
-        received_at, source, sourceDevice, hasAttachments, hasFileAttachments,
-        hasVisualMediaAttachments, expireTimer, expirationStartTimestamp, type,
-        body, messageTimer, messageTimerStart, messageTimerExpiresAt, isErased,
-        isViewOnce, sourceUuid
-      FROM old_messages;
-
-      -- Drop old database
-      DROP TABLE old_messages;
-    `);
-        db.pragma('user_version = 25');
-    })();
-    logger.info('updateToSchemaVersion25: success!');
-}
-async function updateToSchemaVersion26(currentVersion, db) {
-    if (currentVersion >= 26) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      DROP TRIGGER messages_on_insert;
-      DROP TRIGGER messages_on_update;
-
-      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages
-      WHEN new.isViewOnce IS NULL OR new.isViewOnce != 1
-      BEGIN
-        INSERT INTO messages_fts
-        (rowid, body)
-        VALUES
-        (new.rowid, new.body);
-      END;
-
-      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
-      WHEN new.body != old.body AND
-        (new.isViewOnce IS NULL OR new.isViewOnce != 1)
-      BEGIN
-        DELETE FROM messages_fts WHERE rowid = old.rowid;
-        INSERT INTO messages_fts
-        (rowid, body)
-        VALUES
-        (new.rowid, new.body);
-      END;
-    `);
-        db.pragma('user_version = 26');
-    })();
-    logger.info('updateToSchemaVersion26: success!');
-}
-async function updateToSchemaVersion27(currentVersion, db) {
-    if (currentVersion >= 27) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      DELETE FROM messages_fts WHERE rowid IN
-        (SELECT rowid FROM messages WHERE body IS NULL);
-
-      DROP TRIGGER messages_on_update;
-
-      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
-      WHEN
-        new.body IS NULL OR
-        ((old.body IS NULL OR new.body != old.body) AND
-         (new.isViewOnce IS NULL OR new.isViewOnce != 1))
-      BEGIN
-        DELETE FROM messages_fts WHERE rowid = old.rowid;
-        INSERT INTO messages_fts
-        (rowid, body)
-        VALUES
-        (new.rowid, new.body);
-      END;
-
-      CREATE TRIGGER messages_on_view_once_update AFTER UPDATE ON messages
-      WHEN
-        new.body IS NOT NULL AND new.isViewOnce = 1
-      BEGIN
-        DELETE FROM messages_fts WHERE rowid = old.rowid;
-      END;
-    `);
-        db.pragma('user_version = 27');
-    })();
-    logger.info('updateToSchemaVersion27: success!');
-}
-function updateToSchemaVersion28(currentVersion, db) {
-    if (currentVersion >= 28) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      CREATE TABLE jobs(
-        id TEXT PRIMARY KEY,
-        queueType TEXT STRING NOT NULL,
-        timestamp INTEGER NOT NULL,
-        data STRING TEXT
-      );
-
-      CREATE INDEX jobs_timestamp ON jobs (timestamp);
-    `);
-        db.pragma('user_version = 28');
-    })();
-    logger.info('updateToSchemaVersion28: success!');
-}
-function updateToSchemaVersion29(currentVersion, db) {
-    if (currentVersion >= 29) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      CREATE TABLE reactions(
-        conversationId STRING,
-        emoji STRING,
-        fromId STRING,
-        messageReceivedAt INTEGER,
-        targetAuthorUuid STRING,
-        targetTimestamp INTEGER,
-        unread INTEGER
-      );
-
-      CREATE INDEX reactions_unread ON reactions (
-        unread,
-        conversationId
-      );
-
-      CREATE INDEX reaction_identifier ON reactions (
-        emoji,
-        targetAuthorUuid,
-        targetTimestamp
-      );
-    `);
-        db.pragma('user_version = 29');
-    })();
-    logger.info('updateToSchemaVersion29: success!');
-}
-function updateToSchemaVersion30(currentVersion, db) {
-    if (currentVersion >= 30) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      CREATE TABLE senderKeys(
-        id TEXT PRIMARY KEY NOT NULL,
-        senderId TEXT NOT NULL,
-        distributionId TEXT NOT NULL,
-        data BLOB NOT NULL,
-        lastUpdatedDate NUMBER NOT NULL
-      );
-    `);
-        db.pragma('user_version = 30');
-    })();
-    logger.info('updateToSchemaVersion30: success!');
-}
-function updateToSchemaVersion31(currentVersion, db) {
-    if (currentVersion >= 31) {
-        return;
-    }
-    logger.info('updateToSchemaVersion31: starting...');
-    db.transaction(() => {
-        db.exec(`
-      DROP INDEX unprocessed_id;
-      DROP INDEX unprocessed_timestamp;
-      ALTER TABLE unprocessed RENAME TO unprocessed_old;
-
-      CREATE TABLE unprocessed(
-        id STRING PRIMARY KEY ASC,
-        timestamp INTEGER,
-        version INTEGER,
-        attempts INTEGER,
-        envelope TEXT,
-        decrypted TEXT,
-        source TEXT,
-        sourceDevice TEXT,
-        serverTimestamp INTEGER,
-        sourceUuid STRING
-      );
-
-      CREATE INDEX unprocessed_timestamp ON unprocessed (
-        timestamp
-      );
-
-      INSERT OR REPLACE INTO unprocessed
-        (id, timestamp, version, attempts, envelope, decrypted, source,
-         sourceDevice, serverTimestamp, sourceUuid)
-      SELECT
-        id, timestamp, version, attempts, envelope, decrypted, source,
-         sourceDevice, serverTimestamp, sourceUuid
-      FROM unprocessed_old;
-
-      DROP TABLE unprocessed_old;
-    `);
-        db.pragma('user_version = 31');
-    })();
-    logger.info('updateToSchemaVersion31: success!');
-}
-function updateToSchemaVersion32(currentVersion, db) {
-    if (currentVersion >= 32) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      ALTER TABLE messages
-      ADD COLUMN serverGuid STRING NULL;
-
-      ALTER TABLE unprocessed
-      ADD COLUMN serverGuid STRING NULL;
-    `);
-        db.pragma('user_version = 32');
-    })();
-    logger.info('updateToSchemaVersion32: success!');
-}
-function updateToSchemaVersion33(currentVersion, db) {
-    if (currentVersion >= 33) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      -- These indexes should exist, but we add "IF EXISTS" for safety.
-      DROP INDEX IF EXISTS messages_expires_at;
-      DROP INDEX IF EXISTS messages_without_timer;
-
-      ALTER TABLE messages
-      ADD COLUMN
-      expiresAt INT
-      GENERATED ALWAYS
-      AS (expirationStartTimestamp + (expireTimer * 1000));
-
-      CREATE INDEX message_expires_at ON messages (
-        expiresAt
-      );
-
-      CREATE INDEX outgoing_messages_without_expiration_start_timestamp ON messages (
-        expireTimer, expirationStartTimestamp, type
-      )
-      WHERE expireTimer IS NOT NULL AND expirationStartTimestamp IS NULL;
-    `);
-        db.pragma('user_version = 33');
-    })();
-    logger.info('updateToSchemaVersion33: success!');
-}
-function updateToSchemaVersion34(currentVersion, db) {
-    if (currentVersion >= 34) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      -- This index should exist, but we add "IF EXISTS" for safety.
-      DROP INDEX IF EXISTS outgoing_messages_without_expiration_start_timestamp;
-
-      CREATE INDEX messages_unexpectedly_missing_expiration_start_timestamp ON messages (
-        expireTimer, expirationStartTimestamp, type
-      )
-      WHERE expireTimer IS NOT NULL AND expirationStartTimestamp IS NULL;
-    `);
-        db.pragma('user_version = 34');
-    })();
-    logger.info('updateToSchemaVersion34: success!');
-}
-function updateToSchemaVersion35(currentVersion, db) {
-    if (currentVersion >= 35) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      CREATE INDEX expiring_message_by_conversation_and_received_at
-      ON messages
-      (
-        expirationStartTimestamp,
-        expireTimer,
-        conversationId,
-        received_at
-      );
-    `);
-        db.pragma('user_version = 35');
-    })();
-    logger.info('updateToSchemaVersion35: success!');
-}
-// Reverted
-function updateToSchemaVersion36(currentVersion, db) {
-    if (currentVersion >= 36) {
-        return;
-    }
-    db.pragma('user_version = 36');
-    logger.info('updateToSchemaVersion36: success!');
-}
-function updateToSchemaVersion37(currentVersion, db) {
-    if (currentVersion >= 37) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      -- Create send log primary table
-
-      CREATE TABLE sendLogPayloads(
-        id INTEGER PRIMARY KEY ASC,
-
-        timestamp INTEGER NOT NULL,
-        contentHint INTEGER NOT NULL,
-        proto BLOB NOT NULL
-      );
-
-      CREATE INDEX sendLogPayloadsByTimestamp ON sendLogPayloads (timestamp);
-
-      -- Create send log recipients table with foreign key relationship to payloads
-
-      CREATE TABLE sendLogRecipients(
-        payloadId INTEGER NOT NULL,
-
-        recipientUuid STRING NOT NULL,
-        deviceId INTEGER NOT NULL,
-
-        PRIMARY KEY (payloadId, recipientUuid, deviceId),
-
-        CONSTRAINT sendLogRecipientsForeignKey
-          FOREIGN KEY (payloadId)
-          REFERENCES sendLogPayloads(id)
-          ON DELETE CASCADE
-      );
-
-      CREATE INDEX sendLogRecipientsByRecipient
-        ON sendLogRecipients (recipientUuid, deviceId);
-
-      -- Create send log messages table with foreign key relationship to payloads
-
-      CREATE TABLE sendLogMessageIds(
-        payloadId INTEGER NOT NULL,
-
-        messageId STRING NOT NULL,
-
-        PRIMARY KEY (payloadId, messageId),
-
-        CONSTRAINT sendLogMessageIdsForeignKey
-          FOREIGN KEY (payloadId)
-          REFERENCES sendLogPayloads(id)
-          ON DELETE CASCADE
-      );
-
-      CREATE INDEX sendLogMessageIdsByMessage
-        ON sendLogMessageIds (messageId);
-
-      -- Recreate messages table delete trigger with send log support
-
-      DROP TRIGGER messages_on_delete;
-
-      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
-        DELETE FROM messages_fts WHERE rowid = old.rowid;
-        DELETE FROM sendLogPayloads WHERE id IN (
-          SELECT payloadId FROM sendLogMessageIds
-          WHERE messageId = old.id
-        );
-      END;
-
-      --- Add messageId column to reactions table to properly track proto associations
-
-      ALTER TABLE reactions ADD column messageId STRING;
-    `);
-        db.pragma('user_version = 37');
-    })();
-    logger.info('updateToSchemaVersion37: success!');
-}
-function updateToSchemaVersion38(currentVersion, db) {
-    if (currentVersion >= 38) {
-        return;
-    }
-    db.transaction(() => {
-        // TODO: Remove deprecated columns once sqlcipher is updated to support it
-        db.exec(`
-      DROP INDEX IF EXISTS messages_duplicate_check;
-
-      ALTER TABLE messages
-        RENAME COLUMN sourceDevice TO deprecatedSourceDevice;
-      ALTER TABLE messages
-        ADD COLUMN sourceDevice INTEGER;
-
-      UPDATE messages
-      SET
-        sourceDevice = CAST(deprecatedSourceDevice AS INTEGER),
-        deprecatedSourceDevice = NULL;
-
-      ALTER TABLE unprocessed
-        RENAME COLUMN sourceDevice TO deprecatedSourceDevice;
-      ALTER TABLE unprocessed
-        ADD COLUMN sourceDevice INTEGER;
-
-      UPDATE unprocessed
-      SET
-        sourceDevice = CAST(deprecatedSourceDevice AS INTEGER),
-        deprecatedSourceDevice = NULL;
-    `);
-        db.pragma('user_version = 38');
-    })();
-    logger.info('updateToSchemaVersion38: success!');
-}
-function updateToSchemaVersion39(currentVersion, db) {
-    if (currentVersion >= 39) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec('ALTER TABLE messages RENAME COLUMN unread TO readStatus;');
-        db.pragma('user_version = 39');
-    })();
-    logger.info('updateToSchemaVersion39: success!');
-}
-function updateToSchemaVersion40(currentVersion, db) {
-    if (currentVersion >= 40) {
-        return;
-    }
-    db.transaction(() => {
-        db.exec(`
-      CREATE TABLE groupCallRings(
-        ringId INTEGER PRIMARY KEY,
-        isActive INTEGER NOT NULL,
-        createdAt INTEGER NOT NULL
-      );
-      `);
-        db.pragma('user_version = 40');
-    })();
-    logger.info('updateToSchemaVersion40: success!');
-}
-function updateToSchemaVersion41(currentVersion, db) {
-    if (currentVersion >= 41) {
-        return;
-    }
-    const getConversationUuid = db
-        .prepare(`
-      SELECT uuid
-      FROM
-        conversations
-      WHERE
-        id = $conversationId
-      `)
-        .pluck();
-    const getConversationStats = db.prepare(`
-      SELECT uuid, e164, active_at
-      FROM
-        conversations
-      WHERE
-        id = $conversationId
-      `);
-    const compareConvoRecency = (a, b) => {
-        const aStats = getConversationStats.get({ conversationId: a });
-        const bStats = getConversationStats.get({ conversationId: b });
-        const isAComplete = Boolean((aStats === null || aStats === void 0 ? void 0 : aStats.uuid) && (aStats === null || aStats === void 0 ? void 0 : aStats.e164));
-        const isBComplete = Boolean((bStats === null || bStats === void 0 ? void 0 : bStats.uuid) && (bStats === null || bStats === void 0 ? void 0 : bStats.e164));
-        if (!isAComplete && !isBComplete) {
-            return 0;
-        }
-        if (!isAComplete) {
-            return -1;
-        }
-        if (!isBComplete) {
-            return 1;
-        }
-        return aStats.active_at - bStats.active_at;
-    };
-    const clearSessionsAndKeys = () => {
-        // ts/background.ts will ask user to relink so all that matters here is
-        // to maintain an invariant:
-        //
-        // After this migration all sessions and keys are prefixed by
-        // "uuid:".
-        db.exec(`
-      DELETE FROM senderKeys;
-      DELETE FROM sessions;
-      DELETE FROM signedPreKeys;
-      DELETE FROM preKeys;
-      `);
-        assertSync(removeById('items', 'identityKey', db));
-        assertSync(removeById('items', 'registrationId', db));
-    };
-    const moveIdentityKeyToMap = (ourUuid) => {
-        const identityKey = assertSync(getById('items', 'identityKey', db));
-        const registrationId = assertSync(getById('items', 'registrationId', db));
-        if (identityKey) {
-            assertSync(createOrUpdateSync('items', {
-                id: 'identityKeyMap',
-                value: {
-                    [ourUuid]: identityKey.value,
-                },
-            }, db));
-        }
-        if (registrationId) {
-            assertSync(createOrUpdateSync('items', {
-                id: 'registrationIdMap',
-                value: {
-                    [ourUuid]: registrationId.value,
-                },
-            }, db));
-        }
-        assertSync(removeById('items', 'identityKey', db));
-        assertSync(removeById('items', 'registrationId', db));
-    };
-    const prefixKeys = (ourUuid) => {
-        for (const table of ['signedPreKeys', 'preKeys']) {
-            // Update id to include suffix, add `ourUuid` and `keyId` fields.
-            db.prepare(`
-        UPDATE ${table}
-        SET
-          id = $ourUuid || ':' || id,
-          json = json_set(
-            json,
-            '$.id',
-            $ourUuid || ':' || json_extract(json, '$.id'),
-            '$.keyId',
-            json_extract(json, '$.id'),
-            '$.ourUuid',
-            $ourUuid
-          )
-        `).run({ ourUuid });
-        }
-    };
-    const updateSenderKeys = (ourUuid) => {
-        const senderKeys = db
-            .prepare('SELECT id, senderId, lastUpdatedDate FROM senderKeys')
-            .all();
-        logger.info(`Updating ${senderKeys.length} sender keys`);
-        const updateSenderKey = db.prepare(`
-      UPDATE senderKeys
-      SET
-        id = $newId,
-        senderId = $newSenderId
-      WHERE
-        id = $id
-      `);
-        const deleteSenderKey = db.prepare('DELETE FROM senderKeys WHERE id = $id');
-        const pastKeys = new Map();
-        let updated = 0;
-        let deleted = 0;
-        let skipped = 0;
-        for (const { id, senderId, lastUpdatedDate } of senderKeys) {
-            const [conversationId] = Helpers_1.default.unencodeNumber(senderId);
-            const uuid = getConversationUuid.get({ conversationId });
-            if (!uuid) {
-                deleted += 1;
-                deleteSenderKey.run({ id });
-                continue;
-            }
-            const newId = `${ourUuid}:${id.replace(conversationId, uuid)}`;
-            const existing = pastKeys.get(newId);
-            // We are going to delete on of the keys anyway
-            if (existing) {
-                skipped += 1;
-            }
-            else {
-                updated += 1;
-            }
-            const isOlder = existing &&
-                (lastUpdatedDate < existing.lastUpdatedDate ||
-                    compareConvoRecency(conversationId, existing.conversationId) < 0);
-            if (isOlder) {
-                deleteSenderKey.run({ id });
-                continue;
-            }
-            else if (existing) {
-                deleteSenderKey.run({ id: newId });
-            }
-            pastKeys.set(newId, { conversationId, lastUpdatedDate });
-            updateSenderKey.run({
-                id,
-                newId,
-                newSenderId: `${senderId.replace(conversationId, uuid)}`,
-            });
-        }
-        logger.info(`Updated ${senderKeys.length} sender keys: ` +
-            `updated: ${updated}, deleted: ${deleted}, skipped: ${skipped}`);
-    };
-    const updateSessions = (ourUuid) => {
-        // Use uuid instead of conversation id in existing sesions and prefix id
-        // with ourUuid.
-        //
-        // Set ourUuid column and field in json
-        const allSessions = db
-            .prepare('SELECT id, conversationId FROM SESSIONS')
-            .all();
-        logger.info(`Updating ${allSessions.length} sessions`);
-        const updateSession = db.prepare(`
-      UPDATE sessions
-      SET
-        id = $newId,
-        ourUuid = $ourUuid,
-        uuid = $uuid,
-        json = json_set(
-          sessions.json,
-          '$.id',
-          $newId,
-          '$.uuid',
-          $uuid,
-          '$.ourUuid',
-          $ourUuid
-        )
-      WHERE
-        id = $id
-      `);
-        const deleteSession = db.prepare('DELETE FROM sessions WHERE id = $id');
-        const pastSessions = new Map();
-        let updated = 0;
-        let deleted = 0;
-        let skipped = 0;
-        for (const { id, conversationId } of allSessions) {
-            const uuid = getConversationUuid.get({ conversationId });
-            if (!uuid) {
-                deleted += 1;
-                deleteSession.run({ id });
-                continue;
-            }
-            const newId = `${ourUuid}:${id.replace(conversationId, uuid)}`;
-            const existing = pastSessions.get(newId);
-            // We are going to delete on of the keys anyway
-            if (existing) {
-                skipped += 1;
-            }
-            else {
-                updated += 1;
-            }
-            const isOlder = existing &&
-                compareConvoRecency(conversationId, existing.conversationId) < 0;
-            if (isOlder) {
-                deleteSession.run({ id });
-                continue;
-            }
-            else if (existing) {
-                deleteSession.run({ id: newId });
-            }
-            pastSessions.set(newId, { conversationId });
-            updateSession.run({
-                id,
-                newId,
-                uuid,
-                ourUuid,
-            });
-        }
-        logger.info(`Updated ${allSessions.length} sessions: ` +
-            `updated: ${updated}, deleted: ${deleted}, skipped: ${skipped}`);
-    };
-    const updateIdentityKeys = () => {
-        const identityKeys = db.prepare('SELECT id FROM identityKeys').all();
-        logger.info(`Updating ${identityKeys.length} identity keys`);
-        const updateIdentityKey = db.prepare(`
-      UPDATE identityKeys
-      SET
-        id = $newId,
-        json = json_set(
-          identityKeys.json,
-          '$.id',
-          $newId
-        )
-      WHERE
-        id = $id
-      `);
-        let migrated = 0;
-        for (const { id } of identityKeys) {
-            const uuid = getConversationUuid.get({ conversationId: id });
-            let newId;
-            if (uuid) {
-                migrated += 1;
-                newId = uuid;
-            }
-            else {
-                newId = `conversation:${id}`;
-            }
-            updateIdentityKey.run({ id, newId });
-        }
-        logger.info(`Migrated ${migrated} identity keys`);
-    };
-    db.transaction(() => {
-        db.exec(`
-      -- Change type of 'id' column from INTEGER to STRING
-
-      ALTER TABLE preKeys
-      RENAME TO old_preKeys;
-
-      ALTER TABLE signedPreKeys
-      RENAME TO old_signedPreKeys;
-
-      CREATE TABLE preKeys(
-        id STRING PRIMARY KEY ASC,
-        json TEXT
-      );
-      CREATE TABLE signedPreKeys(
-        id STRING PRIMARY KEY ASC,
-        json TEXT
-      );
-
-      -- sqlite handles the type conversion
-      INSERT INTO preKeys SELECT * FROM old_preKeys;
-      INSERT INTO signedPreKeys SELECT * FROM old_signedPreKeys;
-
-      DROP TABLE old_preKeys;
-      DROP TABLE old_signedPreKeys;
-
-      -- Alter sessions
-
-      ALTER TABLE sessions
-        ADD COLUMN ourUuid STRING;
-
-      ALTER TABLE sessions
-        ADD COLUMN uuid STRING;
-      `);
-        const ourUuid = getOurUuid(db);
-        if (!(0, isValidGuid_1.isValidGuid)(ourUuid)) {
-            logger.error('updateToSchemaVersion41: no uuid is available clearing sessions');
-            clearSessionsAndKeys();
-            db.pragma('user_version = 41');
-            return;
-        }
-        prefixKeys(ourUuid);
-        updateSenderKeys(ourUuid);
-        updateSessions(ourUuid);
-        moveIdentityKeyToMap(ourUuid);
-        updateIdentityKeys();
-        db.pragma('user_version = 41');
-    })();
-    logger.info('updateToSchemaVersion41: success!');
-}
-function updateToSchemaVersion42(currentVersion, db) {
-    if (currentVersion >= 42) {
-        return;
-    }
-    db.transaction(() => {
-        // First, recreate messages table delete trigger with reaction support
-        db.exec(`
-      DROP TRIGGER messages_on_delete;
-
-      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
-        DELETE FROM messages_fts WHERE rowid = old.rowid;
-        DELETE FROM sendLogPayloads WHERE id IN (
-          SELECT payloadId FROM sendLogMessageIds
-          WHERE messageId = old.id
-        );
-        DELETE FROM reactions WHERE rowid IN (
-          SELECT rowid FROM reactions
-          WHERE messageId = old.id
-        );
-      END;
-    `);
-        // Then, delete previously-orphaned reactions
-        // Note: we use `pluck` here to fetch only the first column of
-        //   returned row.
-        const messageIdList = db
-            .prepare('SELECT id FROM messages ORDER BY id ASC;')
-            .pluck()
-            .all();
-        const allReactions = db.prepare('SELECT rowid, messageId FROM reactions;').all();
-        const messageIds = new Set(messageIdList);
-        const reactionsToDelete = [];
-        allReactions.forEach(reaction => {
-            if (!messageIds.has(reaction.messageId)) {
-                reactionsToDelete.push(reaction.rowid);
-            }
-        });
-        function deleteReactions(rowids) {
-            db.prepare(`
-        DELETE FROM reactions
-        WHERE rowid IN ( ${rowids.map(() => '?').join(', ')} );
-        `).run(rowids);
-        }
-        if (reactionsToDelete.length > 0) {
-            logger.info(`Deleting ${reactionsToDelete.length} orphaned reactions`);
-            batchMultiVarQuery(reactionsToDelete, deleteReactions, db);
-        }
-        db.pragma('user_version = 42');
-    })();
-    logger.info('updateToSchemaVersion42: success!');
-}
-exports.SCHEMA_VERSIONS = [
-    updateToSchemaVersion1,
-    updateToSchemaVersion2,
-    updateToSchemaVersion3,
-    updateToSchemaVersion4,
-    (_v, _i) => null,
-    updateToSchemaVersion6,
-    updateToSchemaVersion7,
-    updateToSchemaVersion8,
-    updateToSchemaVersion9,
-    updateToSchemaVersion10,
-    updateToSchemaVersion11,
-    updateToSchemaVersion12,
-    updateToSchemaVersion13,
-    updateToSchemaVersion14,
-    updateToSchemaVersion15,
-    updateToSchemaVersion16,
-    updateToSchemaVersion17,
-    updateToSchemaVersion18,
-    updateToSchemaVersion19,
-    updateToSchemaVersion20,
-    updateToSchemaVersion21,
-    updateToSchemaVersion22,
-    updateToSchemaVersion23,
-    updateToSchemaVersion24,
-    updateToSchemaVersion25,
-    updateToSchemaVersion26,
-    updateToSchemaVersion27,
-    updateToSchemaVersion28,
-    updateToSchemaVersion29,
-    updateToSchemaVersion30,
-    updateToSchemaVersion31,
-    updateToSchemaVersion32,
-    updateToSchemaVersion33,
-    updateToSchemaVersion34,
-    updateToSchemaVersion35,
-    updateToSchemaVersion36,
-    updateToSchemaVersion37,
-    updateToSchemaVersion38,
-    updateToSchemaVersion39,
-    updateToSchemaVersion40,
-    updateToSchemaVersion41,
-    updateToSchemaVersion42,
-];
-function updateSchema(db) {
-    const sqliteVersion = getSQLiteVersion(db);
-    const sqlcipherVersion = getSQLCipherVersion(db);
-    const userVersion = getUserVersion(db);
-    const maxUserVersion = exports.SCHEMA_VERSIONS.length;
-    const schemaVersion = getSchemaVersion(db);
-    logger.info('updateSchema:\n', ` Current user_version: ${userVersion};\n`, ` Most recent db schema: ${maxUserVersion};\n`, ` SQLite version: ${sqliteVersion};\n`, ` SQLCipher version: ${sqlcipherVersion};\n`, ` (deprecated) schema_version: ${schemaVersion};\n`);
-    if (userVersion > maxUserVersion) {
-        throw new Error(`SQL: User version is ${userVersion} but the expected maximum version ` +
-            `is ${maxUserVersion}. Did you try to start an old version of Signal?`);
-    }
-    for (let index = 0; index < maxUserVersion; index += 1) {
-        const runSchemaUpdate = exports.SCHEMA_VERSIONS[index];
-        runSchemaUpdate(userVersion, db);
-    }
-}
-exports.updateSchema = updateSchema;
-function getOurUuid(db) {
-    const UUID_ID = 'uuid_id';
-    const row = db
-        .prepare('SELECT json FROM items WHERE id = $id;')
-        .get({ id: UUID_ID });
-    if (!row) {
-        return undefined;
-    }
-    const { value } = JSON.parse(row.json);
-    const [ourUuid] = Helpers_1.default.unencodeNumber(String(value).toLowerCase());
-    return ourUuid;
-}
 let globalInstance;
 let logger = consoleLogger_1.consoleLogger;
 let globalInstanceRenderer;
 let databaseFilePath;
 let indexedDBPath;
+let corruptionLog = new Array();
+better_sqlite3_1.default.setCorruptionLogger(line => {
+    logger.error(`SQL corruption: ${line}`);
+    corruptionLog.push(line);
+});
+function getCorruptionLog() {
+    const result = corruptionLog.join('\n');
+    corruptionLog = [];
+    return result;
+}
 async function initialize({ configDir, key, logger: suppliedLogger, }) {
     if (globalInstance) {
         throw new Error('Cannot initialize more than once!');
@@ -24577,11 +22644,11 @@ async function initialize({ configDir, key, logger: suppliedLogger, }) {
         db = openAndSetUpSQLCipher(databaseFilePath, { key });
         // For profiling use:
         // db.pragma('cipher_profile=\'sqlcipher.log\'');
-        updateSchema(db);
+        (0, migrations_1.updateSchema)(db, logger);
         // At this point we can allow general access to the database
         globalInstance = db;
         // test database
-        await getMessageCount();
+        getMessageCountSync();
     }
     catch (error) {
         logger.error('Database startup error:', error.stack);
@@ -24617,7 +22684,7 @@ async function initializeRenderer({ configDir, key, }) {
         // At this point we can allow general access to the database
         globalInstanceRenderer = promisified;
         // test database
-        await getMessageCount();
+        getMessageCountSync();
     }
     catch (error) {
         log.error('Database startup error:', error.stack);
@@ -24671,77 +22738,59 @@ function getInstance() {
     }
     return globalInstance;
 }
-function batchMultiVarQuery(values, query, providedDatabase) {
-    const db = providedDatabase || getInstance();
-    if (values.length > MAX_VARIABLE_COUNT) {
-        const result = [];
-        db.transaction(() => {
-            for (let i = 0; i < values.length; i += MAX_VARIABLE_COUNT) {
-                const batch = values.slice(i, i + MAX_VARIABLE_COUNT);
-                const batchResult = query(batch);
-                if (Array.isArray(batchResult)) {
-                    result.push(...batchResult);
-                }
-            }
-        })();
-        return result;
-    }
-    const result = query(values);
-    return Array.isArray(result) ? result : [];
-}
 const IDENTITY_KEYS_TABLE = 'identityKeys';
-function createOrUpdateIdentityKey(data) {
-    return createOrUpdate(IDENTITY_KEYS_TABLE, data);
+async function createOrUpdateIdentityKey(data) {
+    return (0, util_1.createOrUpdate)(getInstance(), IDENTITY_KEYS_TABLE, data);
 }
 async function getIdentityKeyById(id) {
-    return getById(IDENTITY_KEYS_TABLE, id);
+    return (0, util_1.getById)(getInstance(), IDENTITY_KEYS_TABLE, id);
 }
-function bulkAddIdentityKeys(array) {
-    return bulkAdd(IDENTITY_KEYS_TABLE, array);
+async function bulkAddIdentityKeys(array) {
+    return (0, util_1.bulkAdd)(getInstance(), IDENTITY_KEYS_TABLE, array);
 }
 async function removeIdentityKeyById(id) {
-    return removeById(IDENTITY_KEYS_TABLE, id);
+    return (0, util_1.removeById)(getInstance(), IDENTITY_KEYS_TABLE, id);
 }
-function removeAllIdentityKeys() {
-    return removeAllFromTable(IDENTITY_KEYS_TABLE);
+async function removeAllIdentityKeys() {
+    return (0, util_1.removeAllFromTable)(getInstance(), IDENTITY_KEYS_TABLE);
 }
-function getAllIdentityKeys() {
-    return getAllFromTable(IDENTITY_KEYS_TABLE);
+async function getAllIdentityKeys() {
+    return (0, util_1.getAllFromTable)(getInstance(), IDENTITY_KEYS_TABLE);
 }
 const PRE_KEYS_TABLE = 'preKeys';
-function createOrUpdatePreKey(data) {
-    return createOrUpdate(PRE_KEYS_TABLE, data);
+async function createOrUpdatePreKey(data) {
+    return (0, util_1.createOrUpdate)(getInstance(), PRE_KEYS_TABLE, data);
 }
 async function getPreKeyById(id) {
-    return getById(PRE_KEYS_TABLE, id);
+    return (0, util_1.getById)(getInstance(), PRE_KEYS_TABLE, id);
 }
-function bulkAddPreKeys(array) {
-    return bulkAdd(PRE_KEYS_TABLE, array);
+async function bulkAddPreKeys(array) {
+    return (0, util_1.bulkAdd)(getInstance(), PRE_KEYS_TABLE, array);
 }
 async function removePreKeyById(id) {
-    return removeById(PRE_KEYS_TABLE, id);
+    return (0, util_1.removeById)(getInstance(), PRE_KEYS_TABLE, id);
 }
-function removeAllPreKeys() {
-    return removeAllFromTable(PRE_KEYS_TABLE);
+async function removeAllPreKeys() {
+    return (0, util_1.removeAllFromTable)(getInstance(), PRE_KEYS_TABLE);
 }
-function getAllPreKeys() {
-    return getAllFromTable(PRE_KEYS_TABLE);
+async function getAllPreKeys() {
+    return (0, util_1.getAllFromTable)(getInstance(), PRE_KEYS_TABLE);
 }
 const SIGNED_PRE_KEYS_TABLE = 'signedPreKeys';
-function createOrUpdateSignedPreKey(data) {
-    return createOrUpdate(SIGNED_PRE_KEYS_TABLE, data);
+async function createOrUpdateSignedPreKey(data) {
+    return (0, util_1.createOrUpdate)(getInstance(), SIGNED_PRE_KEYS_TABLE, data);
 }
 async function getSignedPreKeyById(id) {
-    return getById(SIGNED_PRE_KEYS_TABLE, id);
+    return (0, util_1.getById)(getInstance(), SIGNED_PRE_KEYS_TABLE, id);
 }
-function bulkAddSignedPreKeys(array) {
-    return bulkAdd(SIGNED_PRE_KEYS_TABLE, array);
+async function bulkAddSignedPreKeys(array) {
+    return (0, util_1.bulkAdd)(getInstance(), SIGNED_PRE_KEYS_TABLE, array);
 }
 async function removeSignedPreKeyById(id) {
-    return removeById(SIGNED_PRE_KEYS_TABLE, id);
+    return (0, util_1.removeById)(getInstance(), SIGNED_PRE_KEYS_TABLE, id);
 }
-function removeAllSignedPreKeys() {
-    return removeAllFromTable(SIGNED_PRE_KEYS_TABLE);
+async function removeAllSignedPreKeys() {
+    return (0, util_1.removeAllFromTable)(getInstance(), SIGNED_PRE_KEYS_TABLE);
 }
 async function getAllSignedPreKeys() {
     const db = getInstance();
@@ -24752,33 +22801,32 @@ async function getAllSignedPreKeys() {
       ORDER BY id ASC;
       `)
         .all();
-    return rows.map(row => jsonToObject(row.json));
+    return rows.map(row => (0, util_1.jsonToObject)(row.json));
 }
 const ITEMS_TABLE = 'items';
-function createOrUpdateItem(data) {
-    return createOrUpdate(ITEMS_TABLE, data);
+async function createOrUpdateItem(data) {
+    return (0, util_1.createOrUpdate)(getInstance(), ITEMS_TABLE, data);
 }
 async function getItemById(id) {
-    return getById(ITEMS_TABLE, id);
+    return (0, util_1.getById)(getInstance(), ITEMS_TABLE, id);
 }
 async function getAllItems() {
     const db = getInstance();
     const rows = db
         .prepare('SELECT json FROM items ORDER BY id ASC;')
         .all();
-    const items = rows.map(row => jsonToObject(row.json));
+    const items = rows.map(row => (0, util_1.jsonToObject)(row.json));
     const result = Object.create(null);
     for (const { id, value } of items) {
-        const key = id;
-        result[key] = value;
+        result[id] = value;
     }
     return result;
 }
 async function removeItemById(id) {
-    return removeById(ITEMS_TABLE, id);
+    return (0, util_1.removeById)(getInstance(), ITEMS_TABLE, id);
 }
-function removeAllItems() {
-    return removeAllFromTable(ITEMS_TABLE);
+async function removeAllItems() {
+    return (0, util_1.removeAllFromTable)(getInstance(), ITEMS_TABLE);
 }
 async function createOrUpdateSenderKey(key) {
     const db = getInstance();
@@ -25051,7 +23099,7 @@ function createOrUpdateSessionSync(data) {
         conversationId,
         ourUuid,
         uuid,
-        json: objectToJSON(data),
+        json: (0, util_1.objectToJSON)(data),
     });
 }
 async function createOrUpdateSession(data) {
@@ -25061,7 +23109,7 @@ async function createOrUpdateSessions(array) {
     const db = getInstance();
     db.transaction(() => {
         for (const item of array) {
-            assertSync(createOrUpdateSessionSync(item));
+            (0, assert_1.assertSync)(createOrUpdateSessionSync(item));
         }
     })();
 }
@@ -25069,18 +23117,18 @@ async function commitSessionsAndUnprocessed({ sessions, unprocessed, }) {
     const db = getInstance();
     db.transaction(() => {
         for (const item of sessions) {
-            assertSync(createOrUpdateSessionSync(item));
+            (0, assert_1.assertSync)(createOrUpdateSessionSync(item));
         }
         for (const item of unprocessed) {
-            assertSync(saveUnprocessedSync(item));
+            (0, assert_1.assertSync)(saveUnprocessedSync(item));
         }
     })();
 }
-function bulkAddSessions(array) {
-    return bulkAdd(SESSIONS_TABLE, array);
+async function bulkAddSessions(array) {
+    return (0, util_1.bulkAdd)(getInstance(), SESSIONS_TABLE, array);
 }
 async function removeSessionById(id) {
-    return removeById(SESSIONS_TABLE, id);
+    return (0, util_1.removeById)(getInstance(), SESSIONS_TABLE, id);
 }
 async function removeSessionsByConversation(conversationId) {
     const db = getInstance();
@@ -25091,109 +23139,28 @@ async function removeSessionsByConversation(conversationId) {
         conversationId,
     });
 }
-function removeAllSessions() {
-    return removeAllFromTable(SESSIONS_TABLE);
+async function removeAllSessions() {
+    return (0, util_1.removeAllFromTable)(getInstance(), SESSIONS_TABLE);
 }
-function getAllSessions() {
-    return getAllFromTable(SESSIONS_TABLE);
-}
-function createOrUpdateSync(table, data, db = getInstance()) {
-    const { id } = data;
-    if (!id) {
-        throw new Error('createOrUpdate: Provided data did not have a truthy id');
-    }
-    db.prepare(`
-    INSERT OR REPLACE INTO ${table} (
-      id,
-      json
-    ) values (
-      $id,
-      $json
-    )
-    `).run({
-        id,
-        json: objectToJSON(data),
-    });
-}
-async function createOrUpdate(table, data) {
-    return createOrUpdateSync(table, data);
-}
-async function bulkAdd(table, array) {
-    const db = getInstance();
-    db.transaction(() => {
-        for (const data of array) {
-            assertSync(createOrUpdateSync(table, data));
-        }
-    })();
-}
-function getById(table, id, db = getInstance()) {
-    const row = db
-        .prepare(`
-      SELECT *
-      FROM ${table}
-      WHERE id = $id;
-      `)
-        .get({
-        id,
-    });
-    if (!row) {
-        return undefined;
-    }
-    return jsonToObject(row.json);
-}
-function removeById(table, id, db = getInstance()) {
-    if (!Array.isArray(id)) {
-        db.prepare(`
-      DELETE FROM ${table}
-      WHERE id = $id;
-      `).run({ id });
-        return;
-    }
-    if (!id.length) {
-        throw new Error('removeById: No ids to delete!');
-    }
-    const removeByIdsSync = (ids) => {
-        db.prepare(`
-      DELETE FROM ${table}
-      WHERE id IN ( ${id.map(() => '?').join(', ')} );
-      `).run(ids);
-    };
-    batchMultiVarQuery(id, removeByIdsSync);
-}
-async function removeAllFromTable(table) {
-    const db = getInstance();
-    db.prepare(`DELETE FROM ${table};`).run();
-}
-async function getAllFromTable(table) {
-    const db = getInstance();
-    const rows = db
-        .prepare(`SELECT json FROM ${table};`)
-        .all();
-    return rows.map(row => jsonToObject(row.json));
-}
-function getCountFromTable(table) {
-    const db = getInstance();
-    const result = db
-        .prepare(`SELECT count(*) from ${table};`)
-        .pluck(true)
-        .get();
-    if ((0, lodash_1.isNumber)(result)) {
-        return result;
-    }
-    throw new Error(`getCountFromTable: Unable to get count from table ${table}`);
+async function getAllSessions() {
+    return (0, util_1.getAllFromTable)(getInstance(), SESSIONS_TABLE);
 }
 // Conversations
 async function getConversationCount() {
-    return getCountFromTable('conversations');
+    return (0, util_1.getCountFromTable)(getInstance(), 'conversations');
+}
+function getConversationMembersList({ members, membersV2 }) {
+    if (membersV2) {
+        return membersV2.map((item) => item.uuid).join(' ');
+    }
+    if (members) {
+        return members.join(' ');
+    }
+    return null;
 }
 function saveConversationSync(data, db = getInstance()) {
-    const { active_at, e164, groupId, id, members, membersV2, name, profileFamilyName, profileName, profileLastFetchedAt, type, uuid, } = data;
-    // prettier-ignore
-    const membersList = membersV2
-        ? membersV2.map((item) => item.conversationId).join(' ')
-        : members
-            ? members.join(' ')
-            : null;
+    const { active_at, e164, groupId, id, name, profileFamilyName, profileName, profileLastFetchedAt, type, uuid, } = data;
+    const membersList = getConversationMembersList(data);
     db.prepare(`
     INSERT INTO conversations (
       id,
@@ -25230,7 +23197,7 @@ function saveConversationSync(data, db = getInstance()) {
     );
     `).run({
         id,
-        json: objectToJSON((0, lodash_1.omit)(data, ['profileLastFetchedAt', 'unblurredAvatarPath'])),
+        json: (0, util_1.objectToJSON)((0, lodash_1.omit)(data, ['profileLastFetchedAt', 'unblurredAvatarPath'])),
         e164: e164 || null,
         uuid: uuid || null,
         groupId: groupId || null,
@@ -25251,19 +23218,13 @@ async function saveConversations(arrayOfConversations) {
     const db = getInstance();
     db.transaction(() => {
         for (const conversation of arrayOfConversations) {
-            assertSync(saveConversationSync(conversation));
+            (0, assert_1.assertSync)(saveConversationSync(conversation));
         }
     })();
 }
-function updateConversationSync(data) {
-    const db = getInstance();
-    const { id, active_at, type, members, membersV2, name, profileName, profileFamilyName, profileLastFetchedAt, e164, uuid, } = data;
-    // prettier-ignore
-    const membersList = membersV2
-        ? membersV2.map((item) => item.conversationId).join(' ')
-        : members
-            ? members.join(' ')
-            : null;
+function updateConversationSync(data, db = getInstance()) {
+    const { id, active_at, type, name, profileName, profileFamilyName, profileLastFetchedAt, e164, uuid, } = data;
+    const membersList = getConversationMembersList(data);
     db.prepare(`
     UPDATE conversations SET
       json = $json,
@@ -25282,7 +23243,7 @@ function updateConversationSync(data) {
     WHERE id = $id;
     `).run({
         id,
-        json: objectToJSON((0, lodash_1.omit)(data, ['profileLastFetchedAt', 'unblurredAvatarPath'])),
+        json: (0, util_1.objectToJSON)((0, lodash_1.omit)(data, ['profileLastFetchedAt', 'unblurredAvatarPath'])),
         e164: e164 || null,
         uuid: uuid || null,
         active_at: active_at || null,
@@ -25302,7 +23263,7 @@ async function updateConversations(array) {
     const db = getInstance();
     db.transaction(() => {
         for (const item of array) {
-            assertSync(updateConversationSync(item));
+            (0, assert_1.assertSync)(updateConversationSync(item));
         }
     })();
 }
@@ -25315,8 +23276,8 @@ function removeConversationsSync(ids) {
     `).run(ids);
 }
 async function removeConversation(id) {
+    const db = getInstance();
     if (!Array.isArray(id)) {
-        const db = getInstance();
         db.prepare('DELETE FROM conversations WHERE id = $id;').run({
             id,
         });
@@ -25325,7 +23286,7 @@ async function removeConversation(id) {
     if (!id.length) {
         throw new Error('removeConversation: No ids to delete!');
     }
-    batchMultiVarQuery(id, removeConversationsSync);
+    (0, util_1.batchMultiVarQuery)(db, id, removeConversationsSync);
 }
 async function getConversationById(id) {
     const db = getInstance();
@@ -25335,7 +23296,7 @@ async function getConversationById(id) {
     if (!row) {
         return undefined;
     }
-    return jsonToObject(row.json);
+    return (0, util_1.jsonToObject)(row.json);
 }
 async function eraseStorageServiceStateFromConversations() {
     const db = getInstance();
@@ -25345,8 +23306,7 @@ async function eraseStorageServiceStateFromConversations() {
       json = json_remove(json, '$.storageID', '$.needsStorageServiceSync', '$.unknownFields', '$.storageProfileKey');
     `).run();
 }
-async function getAllConversations() {
-    const db = getInstance();
+function getAllConversationsSync(db = getInstance()) {
     const rows = db
         .prepare(`
       SELECT json, profileLastFetchedAt
@@ -25355,6 +23315,9 @@ async function getAllConversations() {
       `)
         .all();
     return rows.map(row => rowToConversation(row));
+}
+async function getAllConversations() {
+    return getAllConversationsSync();
 }
 async function getAllConversationIds() {
     const db = getInstance();
@@ -25377,18 +23340,18 @@ async function getAllPrivateConversations() {
         .all();
     return rows.map(row => rowToConversation(row));
 }
-async function getAllGroupsInvolvingId(id) {
+async function getAllGroupsInvolvingUuid(uuid) {
     const db = getInstance();
     const rows = db
         .prepare(`
       SELECT json, profileLastFetchedAt
       FROM conversations WHERE
         type = 'group' AND
-        members LIKE $id
+        members LIKE $uuid
       ORDER BY id ASC;
       `)
         .all({
-        id: `%${id}%`,
+        uuid: `%${uuid}%`,
     });
     return rows.map(row => rowToConversation(row));
 }
@@ -25498,22 +23461,22 @@ async function searchMessages(query, params = {}) {
 async function searchMessagesInConversation(query, conversationId, { limit = 100 } = {}) {
     return searchMessages(query, { conversationId, limit });
 }
-async function getMessageCount(conversationId) {
+function getMessageCountSync(conversationId, db = getInstance()) {
     if (conversationId === undefined) {
-        return getCountFromTable('messages');
+        return (0, util_1.getCountFromTable)(db, 'messages');
     }
-    const db = getInstance();
-    const row = db
+    const count = db
         .prepare(`
         SELECT count(*)
         FROM messages
         WHERE conversationId = $conversationId;
         `)
+        .pluck()
         .get({ conversationId });
-    if (!row) {
-        throw new Error('getMessageCount: Unable to get count of messages');
-    }
-    return row['count(*)'];
+    return count;
+}
+async function getMessageCount(conversationId) {
+    return getMessageCountSync(conversationId);
 }
 function hasUserInitiatedMessages(conversationId) {
     const db = getInstance();
@@ -25545,18 +23508,17 @@ function hasUserInitiatedMessages(conversationId) {
         .get({ conversationId });
     return row.count !== 0;
 }
-function saveMessageSync(data, options) {
-    const db = getInstance();
-    const { jobToInsert, forceSave, alreadyInTransaction } = options || {};
+function saveMessageSync(data, options = {}) {
+    const { jobToInsert, forceSave, alreadyInTransaction, db = getInstance(), } = options;
     if (!alreadyInTransaction) {
         return db.transaction(() => {
-            return assertSync(saveMessageSync(data, Object.assign(Object.assign({}, options), { alreadyInTransaction: true })));
+            return (0, assert_1.assertSync)(saveMessageSync(data, Object.assign(Object.assign({}, options), { alreadyInTransaction: true })));
         })();
     }
     const { body, conversationId, hasAttachments, hasFileAttachments, hasVisualMediaAttachments, id, isErased, isViewOnce, received_at, schemaVersion, sent_at, serverGuid, source, sourceUuid, sourceDevice, type, readStatus, expireTimer, expirationStartTimestamp, } = data;
     const payload = {
         id,
-        json: objectToJSON(data),
+        json: (0, util_1.objectToJSON)(data),
         body: body || null,
         conversationId,
         expirationStartTimestamp: expirationStartTimestamp || null,
@@ -25607,7 +23569,7 @@ function saveMessageSync(data, options) {
         }
         return id;
     }
-    const toCreate = Object.assign(Object.assign({}, data), { id: id || (0, uuid_1.v4)() });
+    const toCreate = Object.assign(Object.assign({}, data), { id: id || UUID_1.UUID.generate().toString() });
     prepare(db, `
     INSERT INTO messages (
       id,
@@ -25654,7 +23616,7 @@ function saveMessageSync(data, options) {
       $type,
       $readStatus
     );
-    `).run(Object.assign(Object.assign({}, payload), { id: toCreate.id, json: objectToJSON(toCreate) }));
+    `).run(Object.assign(Object.assign({}, payload), { id: toCreate.id, json: (0, util_1.objectToJSON)(toCreate) }));
     if (jobToInsert) {
         insertJobSync(db, jobToInsert);
     }
@@ -25668,7 +23630,7 @@ async function saveMessages(arrayOfMessages, options) {
     const { forceSave } = options || {};
     db.transaction(() => {
         for (const message of arrayOfMessages) {
-            assertSync(saveMessageSync(message, { forceSave, alreadyInTransaction: true }));
+            (0, assert_1.assertSync)(saveMessageSync(message, { forceSave, alreadyInTransaction: true }));
         }
     })();
 }
@@ -25684,7 +23646,7 @@ function removeMessagesSync(ids) {
     `).run(ids);
 }
 async function removeMessages(ids) {
-    batchMultiVarQuery(ids, removeMessagesSync);
+    (0, util_1.batchMultiVarQuery)(getInstance(), ids, removeMessagesSync);
 }
 async function getMessageById(id) {
     const db = getInstance();
@@ -25696,16 +23658,16 @@ async function getMessageById(id) {
     if (!row) {
         return undefined;
     }
-    return jsonToObject(row.json);
+    return (0, util_1.jsonToObject)(row.json);
 }
 async function getMessagesById(messageIds) {
     const db = getInstance();
-    return batchMultiVarQuery(messageIds, (batch) => {
+    return (0, util_1.batchMultiVarQuery)(db, messageIds, (batch) => {
         const query = db.prepare(`SELECT json FROM messages WHERE id IN (${Array(batch.length)
             .fill('?')
             .join(',')});`);
         const rows = query.all(batch);
-        return rows.map(row => jsonToObject(row.json));
+        return rows.map(row => (0, util_1.jsonToObject)(row.json));
     });
 }
 async function _getAllMessages() {
@@ -25713,7 +23675,7 @@ async function _getAllMessages() {
     const rows = db
         .prepare('SELECT json FROM messages ORDER BY id ASC;')
         .all();
-    return rows.map(row => jsonToObject(row.json));
+    return rows.map(row => (0, util_1.jsonToObject)(row.json));
 }
 async function getAllMessageIds() {
     const db = getInstance();
@@ -25735,7 +23697,7 @@ async function getMessageBySender({ source, sourceUuid, sourceDevice, sent_at, }
         sourceDevice,
         sent_at,
     });
-    return rows.map(row => jsonToObject(row.json));
+    return rows.map(row => (0, util_1.jsonToObject)(row.json));
 }
 async function getUnreadCountForConversation(conversationId) {
     const db = getInstance();
@@ -25804,7 +23766,7 @@ async function getUnreadByConversationAndMarkRead(conversationId, newestUnreadId
             newestUnreadId,
         });
         return rows.map(row => {
-            const json = jsonToObject(row.json);
+            const json = (0, util_1.jsonToObject)(row.json);
             return Object.assign({ readStatus: MessageReadStatus_1.ReadStatus.Read }, (0, lodash_1.pick)(json, [
                 'expirationStartTimestamp',
                 'id',
@@ -26025,7 +23987,7 @@ function getNewestMessageForConversation(conversationId) {
     }
     return row;
 }
-function getLastConversationActivity({ conversationId, ourConversationId, }) {
+function getLastConversationActivity({ conversationId, ourUuid, }) {
     const db = getInstance();
     const row = prepare(db, `
       SELECT json FROM messages
@@ -26050,23 +24012,23 @@ function getLastConversationActivity({ conversationId, ourConversationId, }) {
         ) AND NOT
         (
           type = 'group-v2-change' AND
-          json_extract(json, '$.groupV2Change.from') != $ourConversationId AND
+          json_extract(json, '$.groupV2Change.from') != $ourUuid AND
           json_extract(json, '$.groupV2Change.details.length') = 1 AND
           json_extract(json, '$.groupV2Change.details[0].type') = 'member-remove' AND
-          json_extract(json, '$.groupV2Change.details[0].conversationId') != $ourConversationId
+          json_extract(json, '$.groupV2Change.details[0].uuid') != $ourUuid
         )
       ORDER BY received_at DESC, sent_at DESC
       LIMIT 1;
       `).get({
         conversationId,
-        ourConversationId,
+        ourUuid,
     });
     if (!row) {
         return undefined;
     }
-    return jsonToObject(row.json);
+    return (0, util_1.jsonToObject)(row.json);
 }
-function getLastConversationPreview({ conversationId, ourConversationId, }) {
+function getLastConversationPreview({ conversationId, ourUuid, }) {
     const db = getInstance();
     const row = prepare(db, `
       SELECT json FROM messages
@@ -26090,34 +24052,34 @@ function getLastConversationPreview({ conversationId, ourConversationId, }) {
         ) AND NOT
         (
           type = 'group-v2-change' AND
-          json_extract(json, '$.groupV2Change.from') != $ourConversationId AND
+          json_extract(json, '$.groupV2Change.from') != $ourUuid AND
           json_extract(json, '$.groupV2Change.details.length') = 1 AND
           json_extract(json, '$.groupV2Change.details[0].type') = 'member-remove' AND
-          json_extract(json, '$.groupV2Change.details[0].conversationId') != $ourConversationId
+          json_extract(json, '$.groupV2Change.details[0].uuid') != $ourUuid
         )
       ORDER BY received_at DESC, sent_at DESC
       LIMIT 1;
       `).get({
         conversationId,
-        ourConversationId,
+        ourUuid,
         now: Date.now(),
     });
     if (!row) {
         return undefined;
     }
-    return jsonToObject(row.json);
+    return (0, util_1.jsonToObject)(row.json);
 }
-async function getLastConversationMessages({ conversationId, ourConversationId, }) {
+async function getLastConversationMessages({ conversationId, ourUuid, }) {
     const db = getInstance();
     return db.transaction(() => {
         return {
             activity: getLastConversationActivity({
                 conversationId,
-                ourConversationId,
+                ourUuid,
             }),
             preview: getLastConversationPreview({
                 conversationId,
-                ourConversationId,
+                ourUuid,
             }),
             hasUserInitiatedMessages: hasUserInitiatedMessages(conversationId),
         };
@@ -26216,7 +24178,7 @@ async function getMessagesBySentAt(sentAt) {
         .all({
         sent_at: sentAt,
     });
-    return rows.map(row => jsonToObject(row.json));
+    return rows.map(row => (0, util_1.jsonToObject)(row.json));
 }
 async function getExpiredMessages() {
     const db = getInstance();
@@ -26229,7 +24191,7 @@ async function getExpiredMessages() {
       ORDER BY expiresAt ASC;
       `)
         .all({ now });
-    return rows.map(row => jsonToObject(row.json));
+    return rows.map(row => (0, util_1.jsonToObject)(row.json));
 }
 async function getMessagesUnexpectedlyMissingExpirationStartTimestamp() {
     const db = getInstance();
@@ -26250,7 +24212,7 @@ async function getMessagesUnexpectedlyMissingExpirationStartTimestamp() {
         );
       `)
         .all();
-    return rows.map(row => jsonToObject(row.json));
+    return rows.map(row => (0, util_1.jsonToObject)(row.json));
 }
 async function getSoonestMessageExpiry() {
     const db = getInstance();
@@ -26279,7 +24241,7 @@ async function getNextTapToViewMessageTimestampToAgeOut() {
     if (!row) {
         return undefined;
     }
-    const data = jsonToObject(row.json);
+    const data = (0, util_1.jsonToObject)(row.json);
     const result = data.received_at_ms || data.received_at;
     return (0, isNormalNumber_1.isNormalNumber)(result) ? result : undefined;
 }
@@ -26299,7 +24261,7 @@ async function getTapToViewMessagesNeedingErase() {
         .all({
         THIRTY_DAYS_AGO,
     });
-    return rows.map(row => jsonToObject(row.json));
+    return rows.map(row => (0, util_1.jsonToObject)(row.json));
 }
 const MAX_UNPROCESSED_ATTEMPTS = 3;
 function saveUnprocessedSync(data) {
@@ -26382,7 +24344,7 @@ async function updateUnprocessedsWithData(arrayOfUnprocessed) {
     const db = getInstance();
     db.transaction(() => {
         for (const { id, data } of arrayOfUnprocessed) {
-            assertSync(updateUnprocessedWithDataSync(id, data));
+            (0, assert_1.assertSync)(updateUnprocessedWithDataSync(id, data));
         }
     })();
 }
@@ -26396,7 +24358,7 @@ async function getUnprocessedById(id) {
     return row;
 }
 async function getUnprocessedCount() {
-    return getCountFromTable('unprocessed');
+    return (0, util_1.getCountFromTable)(getInstance(), 'unprocessed');
 }
 async function getAllUnprocessed() {
     const db = getInstance();
@@ -26417,15 +24379,15 @@ function removeUnprocessedsSync(ids) {
     `).run(ids);
 }
 function removeUnprocessedSync(id) {
+    const db = getInstance();
     if (!Array.isArray(id)) {
-        const db = getInstance();
         prepare(db, 'DELETE FROM unprocessed WHERE id = $id;').run({ id });
         return;
     }
     if (!id.length) {
         throw new Error('removeUnprocessedSync: No ids to delete!');
     }
-    assertSync(batchMultiVarQuery(id, removeUnprocessedsSync));
+    (0, assert_1.assertSync)((0, util_1.batchMultiVarQuery)(db, id, removeUnprocessedsSync));
 }
 async function removeUnprocessed(id) {
     removeUnprocessedSync(id);
@@ -26451,7 +24413,7 @@ async function getNextAttachmentDownloadJobs(limit, options = {}) {
         limit: limit || 3,
         timestamp,
     });
-    return rows.map(row => jsonToObject(row.json));
+    return rows.map(row => (0, util_1.jsonToObject)(row.json));
 }
 async function saveAttachmentDownloadJob(job) {
     const db = getInstance();
@@ -26475,7 +24437,7 @@ async function saveAttachmentDownloadJob(job) {
         id,
         pending,
         timestamp,
-        json: objectToJSON(job),
+        json: (0, util_1.objectToJSON)(job),
     });
 }
 async function setAttachmentDownloadJobPending(id, pending) {
@@ -26498,10 +24460,10 @@ async function resetAttachmentDownloadPending() {
     `).run();
 }
 async function removeAttachmentDownloadJob(id) {
-    return removeById(ATTACHMENT_DOWNLOADS_TABLE, id);
+    return (0, util_1.removeById)(getInstance(), ATTACHMENT_DOWNLOADS_TABLE, id);
 }
-function removeAllAttachmentDownloadJobs() {
-    return removeAllFromTable(ATTACHMENT_DOWNLOADS_TABLE);
+async function removeAllAttachmentDownloadJobs() {
+    return (0, util_1.removeAllFromTable)(getInstance(), ATTACHMENT_DOWNLOADS_TABLE);
 }
 // Stickers
 async function createOrUpdateStickerPack(pack) {
@@ -26784,7 +24746,7 @@ async function deleteStickerPack(packId) {
         .immediate();
 }
 async function getStickerCount() {
-    return getCountFromTable('stickers');
+    return (0, util_1.getCountFromTable)(getInstance(), 'stickers');
 }
 async function getAllStickerPacks() {
     const db = getInstance();
@@ -26910,7 +24872,7 @@ async function removeAllConfiguration(mode = RemoveAllConfiguration_1.RemoveAllC
             const allowedSet = new Set(StorageUIKeys_1.STORAGE_UI_KEYS);
             for (const id of itemIds) {
                 if (!allowedSet.has(id)) {
-                    removeById('items', id);
+                    (0, util_1.removeById)(db, 'items', id);
                 }
             }
         }
@@ -26933,7 +24895,7 @@ async function getMessagesNeedingUpgrade(limit, { maxVersion }) {
         maxVersion,
         limit,
     });
-    return rows.map(row => jsonToObject(row.json));
+    return rows.map(row => (0, util_1.jsonToObject)(row.json));
 }
 async function getMessagesWithVisualMediaAttachments(conversationId, { limit }) {
     const db = getInstance();
@@ -26949,7 +24911,7 @@ async function getMessagesWithVisualMediaAttachments(conversationId, { limit }) 
         conversationId,
         limit,
     });
-    return rows.map(row => jsonToObject(row.json));
+    return rows.map(row => (0, util_1.jsonToObject)(row.json));
 }
 async function getMessagesWithFileAttachments(conversationId, { limit }) {
     const db = getInstance();
@@ -26965,7 +24927,7 @@ async function getMessagesWithFileAttachments(conversationId, { limit }) {
         conversationId,
         limit,
     });
-    return (0, lodash_1.map)(rows, row => jsonToObject(row.json));
+    return (0, lodash_1.map)(rows, row => (0, util_1.jsonToObject)(row.json));
 }
 async function getMessageServerGuidsForSpam(conversationId) {
     const db = getInstance();
@@ -27063,42 +25025,20 @@ async function removeKnownAttachments(allAttachments) {
     const db = getInstance();
     const lookup = (0, lodash_1.fromPairs)((0, lodash_1.map)(allAttachments, file => [file, true]));
     const chunkSize = 500;
-    const total = await getMessageCount();
+    const total = getMessageCountSync();
     logger.info(`removeKnownAttachments: About to iterate through ${total} messages`);
     let count = 0;
-    let complete = false;
-    let id = '';
-    const fetchMessages = db.prepare(`
-      SELECT json FROM messages
-      WHERE id > $id
-      ORDER BY id ASC
-      LIMIT $chunkSize;
-    `);
-    while (!complete) {
-        const rows = fetchMessages.all({
-            id,
-            chunkSize,
+    for (const message of new util_1.TableIterator(db, 'messages')) {
+        const externalFiles = getExternalFilesForMessage(message);
+        (0, lodash_1.forEach)(externalFiles, file => {
+            delete lookup[file];
         });
-        const messages = rows.map(row => jsonToObject(row.json));
-        messages.forEach(message => {
-            const externalFiles = getExternalFilesForMessage(message);
-            (0, lodash_1.forEach)(externalFiles, file => {
-                delete lookup[file];
-            });
-        });
-        const lastMessage = (0, lodash_1.last)(messages);
-        if (lastMessage) {
-            ({ id } = lastMessage);
-        }
-        complete = messages.length < chunkSize;
-        count += messages.length;
+        count += 1;
     }
     logger.info(`removeKnownAttachments: Done processing ${count} messages`);
-    complete = false;
+    let complete = false;
     count = 0;
-    // Though conversations.id is a string, this ensures that, when coerced, this
-    //   value is still a string but it's smaller than every other string.
-    id = 0;
+    let id = '';
     const conversationTotal = await getConversationCount();
     logger.info(`removeKnownAttachments: About to iterate through ${conversationTotal} conversations`);
     const fetchConversations = db.prepare(`
@@ -27112,7 +25052,7 @@ async function removeKnownAttachments(allAttachments) {
             id,
             chunkSize,
         });
-        const conversations = (0, lodash_1.map)(rows, row => jsonToObject(row.json));
+        const conversations = (0, lodash_1.map)(rows, row => (0, util_1.jsonToObject)(row.json));
         conversations.forEach(conversation => {
             const externalFiles = getExternalFilesForConversation(conversation);
             externalFiles.forEach(file => {
@@ -27187,7 +25127,7 @@ async function removeKnownDraftAttachments(allStickers) {
             id,
             chunkSize,
         });
-        const conversations = rows.map(row => jsonToObject(row.json));
+        const conversations = rows.map(row => (0, util_1.jsonToObject)(row.json));
         conversations.forEach(conversation => {
             const externalFiles = getExternalDraftFilesForConversation(conversation);
             externalFiles.forEach(file => {
@@ -27317,11 +25257,12 @@ async function getMaxMessageCounter() {
         .get();
 }
 async function getStatisticsForLogging() {
+    const db = getInstance();
     const counts = await (0, p_props_1.default)({
         messageCount: getMessageCount(),
         conversationCount: getConversationCount(),
-        sessionCount: getCountFromTable('sessions'),
-        senderKeyCount: getCountFromTable('senderKeys'),
+        sessionCount: (0, util_1.getCountFromTable)(db, 'sessions'),
+        senderKeyCount: (0, util_1.getCountFromTable)(db, 'senderKeys'),
     });
     return (0, lodash_1.mapValues)(counts, formatCountForLogging_1.formatCountForLogging);
 }
@@ -27364,10 +25305,15 @@ if (!worker_threads_1.parentPort) {
 const port = worker_threads_1.parentPort;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function respond(seq, error, response) {
+    const corruptionLog = Server_1.default.getCorruptionLog();
+    const errorMessage = [
+        ...(error ? [error.stack] : []),
+        ...(corruptionLog ? [corruptionLog] : []),
+    ].join('\n');
     const wrappedResponse = {
         type: 'response',
         seq,
-        error: error ? error.stack : undefined,
+        error: errorMessage,
         response,
     };
     port.postMessage(wrappedResponse);
@@ -27460,6 +25406,2427 @@ module.exports = (binding) => {
     }
     throw new Error(`Unknown binding ${binding}`);
 };
+
+
+/***/ }),
+
+/***/ "./ts/sql/migrations/41-uuid-keys.js":
+/*!*******************************************!*\
+  !*** ./ts/sql/migrations/41-uuid-keys.js ***!
+  \*******************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const UUID_1 = __webpack_require__(/*! ../../types/UUID */ "./ts/types/UUID.js");
+const assert_1 = __webpack_require__(/*! ../../util/assert */ "./ts/util/assert.js");
+const Helpers_1 = __importDefault(__webpack_require__(/*! ../../textsecure/Helpers */ "./ts/textsecure/Helpers.js"));
+const util_1 = __webpack_require__(/*! ../util */ "./ts/sql/util.js");
+function getOurUuid(db) {
+    const UUID_ID = 'uuid_id';
+    const row = db
+        .prepare('SELECT json FROM items WHERE id = $id;')
+        .get({ id: UUID_ID });
+    if (!row) {
+        return undefined;
+    }
+    const { value } = JSON.parse(row.json);
+    const [ourUuid] = Helpers_1.default.unencodeNumber(String(value).toLowerCase());
+    return ourUuid;
+}
+function updateToSchemaVersion41(currentVersion, db, logger) {
+    if (currentVersion >= 41) {
+        return;
+    }
+    const getConversationUuid = db
+        .prepare(`
+      SELECT uuid
+      FROM
+        conversations
+      WHERE
+        id = $conversationId
+      `)
+        .pluck();
+    const getConversationStats = db.prepare(`
+      SELECT uuid, e164, active_at
+      FROM
+        conversations
+      WHERE
+        id = $conversationId
+    `);
+    const compareConvoRecency = (a, b) => {
+        const aStats = getConversationStats.get({ conversationId: a });
+        const bStats = getConversationStats.get({ conversationId: b });
+        const isAComplete = Boolean((aStats === null || aStats === void 0 ? void 0 : aStats.uuid) && (aStats === null || aStats === void 0 ? void 0 : aStats.e164));
+        const isBComplete = Boolean((bStats === null || bStats === void 0 ? void 0 : bStats.uuid) && (bStats === null || bStats === void 0 ? void 0 : bStats.e164));
+        if (!isAComplete && !isBComplete) {
+            return 0;
+        }
+        if (!isAComplete) {
+            return -1;
+        }
+        if (!isBComplete) {
+            return 1;
+        }
+        return aStats.active_at - bStats.active_at;
+    };
+    const clearSessionsAndKeys = () => {
+        // ts/background.ts will ask user to relink so all that matters here is
+        // to maintain an invariant:
+        //
+        // After this migration all sessions and keys are prefixed by
+        // "uuid:".
+        db.exec(`
+      DELETE FROM senderKeys;
+      DELETE FROM sessions;
+      DELETE FROM signedPreKeys;
+      DELETE FROM preKeys;
+      `);
+        (0, assert_1.assertSync)((0, util_1.removeById)(db, 'items', 'identityKey'));
+        (0, assert_1.assertSync)((0, util_1.removeById)(db, 'items', 'registrationId'));
+    };
+    const moveIdentityKeyToMap = (ourUuid) => {
+        const identityKey = (0, assert_1.assertSync)((0, util_1.getById)(db, 'items', 'identityKey'));
+        const registrationId = (0, assert_1.assertSync)((0, util_1.getById)(db, 'items', 'registrationId'));
+        if (identityKey) {
+            (0, assert_1.assertSync)((0, util_1.createOrUpdate)(db, 'items', {
+                id: 'identityKeyMap',
+                value: {
+                    [ourUuid]: identityKey.value,
+                },
+            }));
+        }
+        if (registrationId) {
+            (0, assert_1.assertSync)((0, util_1.createOrUpdate)(db, 'items', {
+                id: 'registrationIdMap',
+                value: {
+                    [ourUuid]: registrationId.value,
+                },
+            }));
+        }
+        db.exec(`
+      DELETE FROM items WHERE id = "identityKey" OR id = "registrationId";
+      `);
+    };
+    const prefixKeys = (ourUuid) => {
+        for (const table of ['signedPreKeys', 'preKeys']) {
+            // Update id to include suffix, add `ourUuid` and `keyId` fields.
+            db.prepare(`
+        UPDATE ${table}
+        SET
+          id = $ourUuid || ':' || id,
+          json = json_set(
+            json,
+            '$.id',
+            $ourUuid || ':' || json_extract(json, '$.id'),
+            '$.keyId',
+            json_extract(json, '$.id'),
+            '$.ourUuid',
+            $ourUuid
+          )
+        `).run({ ourUuid });
+        }
+    };
+    const updateSenderKeys = (ourUuid) => {
+        const senderKeys = db
+            .prepare('SELECT id, senderId, lastUpdatedDate FROM senderKeys')
+            .all();
+        logger.info(`Updating ${senderKeys.length} sender keys`);
+        const updateSenderKey = db.prepare(`
+      UPDATE senderKeys
+      SET
+        id = $newId,
+        senderId = $newSenderId
+      WHERE
+        id = $id
+      `);
+        const deleteSenderKey = db.prepare('DELETE FROM senderKeys WHERE id = $id');
+        const pastKeys = new Map();
+        let updated = 0;
+        let deleted = 0;
+        let skipped = 0;
+        for (const { id, senderId, lastUpdatedDate } of senderKeys) {
+            const [conversationId] = Helpers_1.default.unencodeNumber(senderId);
+            const uuid = getConversationUuid.get({ conversationId });
+            if (!uuid) {
+                deleted += 1;
+                deleteSenderKey.run({ id });
+                continue;
+            }
+            const newId = `${ourUuid}:${id.replace(conversationId, uuid)}`;
+            const existing = pastKeys.get(newId);
+            // We are going to delete on of the keys anyway
+            if (existing) {
+                skipped += 1;
+            }
+            else {
+                updated += 1;
+            }
+            const isOlder = existing &&
+                (lastUpdatedDate < existing.lastUpdatedDate ||
+                    compareConvoRecency(conversationId, existing.conversationId) < 0);
+            if (isOlder) {
+                deleteSenderKey.run({ id });
+                continue;
+            }
+            else if (existing) {
+                deleteSenderKey.run({ id: newId });
+            }
+            pastKeys.set(newId, { conversationId, lastUpdatedDate });
+            updateSenderKey.run({
+                id,
+                newId,
+                newSenderId: `${senderId.replace(conversationId, uuid)}`,
+            });
+        }
+        logger.info(`Updated ${senderKeys.length} sender keys: ` +
+            `updated: ${updated}, deleted: ${deleted}, skipped: ${skipped}`);
+    };
+    const updateSessions = (ourUuid) => {
+        // Use uuid instead of conversation id in existing sesions and prefix id
+        // with ourUuid.
+        //
+        // Set ourUuid column and field in json
+        const allSessions = db
+            .prepare('SELECT id, conversationId FROM SESSIONS')
+            .all();
+        logger.info(`Updating ${allSessions.length} sessions`);
+        const updateSession = db.prepare(`
+      UPDATE sessions
+      SET
+        id = $newId,
+        ourUuid = $ourUuid,
+        uuid = $uuid,
+        json = json_set(
+          sessions.json,
+          '$.id',
+          $newId,
+          '$.uuid',
+          $uuid,
+          '$.ourUuid',
+          $ourUuid
+        )
+      WHERE
+        id = $id
+      `);
+        const deleteSession = db.prepare('DELETE FROM sessions WHERE id = $id');
+        const pastSessions = new Map();
+        let updated = 0;
+        let deleted = 0;
+        let skipped = 0;
+        for (const { id, conversationId } of allSessions) {
+            const uuid = getConversationUuid.get({ conversationId });
+            if (!uuid) {
+                deleted += 1;
+                deleteSession.run({ id });
+                continue;
+            }
+            const newId = `${ourUuid}:${id.replace(conversationId, uuid)}`;
+            const existing = pastSessions.get(newId);
+            // We are going to delete on of the keys anyway
+            if (existing) {
+                skipped += 1;
+            }
+            else {
+                updated += 1;
+            }
+            const isOlder = existing &&
+                compareConvoRecency(conversationId, existing.conversationId) < 0;
+            if (isOlder) {
+                deleteSession.run({ id });
+                continue;
+            }
+            else if (existing) {
+                deleteSession.run({ id: newId });
+            }
+            pastSessions.set(newId, { conversationId });
+            updateSession.run({
+                id,
+                newId,
+                uuid,
+                ourUuid,
+            });
+        }
+        logger.info(`Updated ${allSessions.length} sessions: ` +
+            `updated: ${updated}, deleted: ${deleted}, skipped: ${skipped}`);
+    };
+    const updateIdentityKeys = () => {
+        const identityKeys = db.prepare('SELECT id FROM identityKeys').all();
+        logger.info(`Updating ${identityKeys.length} identity keys`);
+        const updateIdentityKey = db.prepare(`
+      UPDATE identityKeys
+      SET
+        id = $newId,
+        json = json_set(
+          identityKeys.json,
+          '$.id',
+          $newId
+        )
+      WHERE
+        id = $id
+      `);
+        let migrated = 0;
+        for (const { id } of identityKeys) {
+            const uuid = getConversationUuid.get({ conversationId: id });
+            let newId;
+            if (uuid) {
+                migrated += 1;
+                newId = uuid;
+            }
+            else {
+                newId = `conversation:${id}`;
+            }
+            updateIdentityKey.run({ id, newId });
+        }
+        logger.info(`Migrated ${migrated} identity keys`);
+    };
+    db.transaction(() => {
+        db.exec(`
+      -- Change type of 'id' column from INTEGER to STRING
+
+      ALTER TABLE preKeys
+      RENAME TO old_preKeys;
+
+      ALTER TABLE signedPreKeys
+      RENAME TO old_signedPreKeys;
+
+      CREATE TABLE preKeys(
+        id STRING PRIMARY KEY ASC,
+        json TEXT
+      );
+      CREATE TABLE signedPreKeys(
+        id STRING PRIMARY KEY ASC,
+        json TEXT
+      );
+
+      -- sqlite handles the type conversion
+      INSERT INTO preKeys SELECT * FROM old_preKeys;
+      INSERT INTO signedPreKeys SELECT * FROM old_signedPreKeys;
+
+      DROP TABLE old_preKeys;
+      DROP TABLE old_signedPreKeys;
+
+      -- Alter sessions
+
+      ALTER TABLE sessions
+        ADD COLUMN ourUuid STRING;
+
+      ALTER TABLE sessions
+        ADD COLUMN uuid STRING;
+      `);
+        const ourUuid = getOurUuid(db);
+        if (!(0, UUID_1.isValidUuid)(ourUuid)) {
+            logger.error('updateToSchemaVersion41: no uuid is available clearing sessions');
+            clearSessionsAndKeys();
+            db.pragma('user_version = 41');
+            return;
+        }
+        prefixKeys(ourUuid);
+        updateSenderKeys(ourUuid);
+        updateSessions(ourUuid);
+        moveIdentityKeyToMap(ourUuid);
+        updateIdentityKeys();
+        db.pragma('user_version = 41');
+    })();
+    logger.info('updateToSchemaVersion41: success!');
+}
+exports.default = updateToSchemaVersion41;
+
+
+/***/ }),
+
+/***/ "./ts/sql/migrations/42-stale-reactions.js":
+/*!*************************************************!*\
+  !*** ./ts/sql/migrations/42-stale-reactions.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const util_1 = __webpack_require__(/*! ../util */ "./ts/sql/util.js");
+function updateToSchemaVersion42(currentVersion, db, logger) {
+    if (currentVersion >= 42) {
+        return;
+    }
+    db.transaction(() => {
+        // First, recreate messages table delete trigger with reaction support
+        db.exec(`
+      DROP TRIGGER messages_on_delete;
+
+      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
+        DELETE FROM messages_fts WHERE rowid = old.rowid;
+        DELETE FROM sendLogPayloads WHERE id IN (
+          SELECT payloadId FROM sendLogMessageIds
+          WHERE messageId = old.id
+        );
+        DELETE FROM reactions WHERE rowid IN (
+          SELECT rowid FROM reactions
+          WHERE messageId = old.id
+        );
+      END;
+    `);
+        // Then, delete previously-orphaned reactions
+        // Note: we use `pluck` here to fetch only the first column of
+        //   returned row.
+        const messageIdList = db
+            .prepare('SELECT id FROM messages ORDER BY id ASC;')
+            .pluck()
+            .all();
+        const allReactions = db.prepare('SELECT rowid, messageId FROM reactions;').all();
+        const messageIds = new Set(messageIdList);
+        const reactionsToDelete = [];
+        allReactions.forEach(reaction => {
+            if (!messageIds.has(reaction.messageId)) {
+                reactionsToDelete.push(reaction.rowid);
+            }
+        });
+        function deleteReactions(rowids) {
+            db.prepare(`
+        DELETE FROM reactions
+        WHERE rowid IN ( ${rowids.map(() => '?').join(', ')} );
+        `).run(rowids);
+        }
+        if (reactionsToDelete.length > 0) {
+            logger.info(`Deleting ${reactionsToDelete.length} orphaned reactions`);
+            (0, util_1.batchMultiVarQuery)(db, reactionsToDelete, deleteReactions);
+        }
+        db.pragma('user_version = 42');
+    })();
+    logger.info('updateToSchemaVersion42: success!');
+}
+exports.default = updateToSchemaVersion42;
+
+
+/***/ }),
+
+/***/ "./ts/sql/migrations/43-gv2-uuid.js":
+/*!******************************************!*\
+  !*** ./ts/sql/migrations/43-gv2-uuid.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const lodash_1 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+const isNotNil_1 = __webpack_require__(/*! ../../util/isNotNil */ "./ts/util/isNotNil.js");
+const assert_1 = __webpack_require__(/*! ../../util/assert */ "./ts/util/assert.js");
+const util_1 = __webpack_require__(/*! ../util */ "./ts/sql/util.js");
+function updateToSchemaVersion43(currentVersion, db, logger) {
+    if (currentVersion >= 43) {
+        return;
+    }
+    const getConversationUuid = db
+        .prepare(`
+      SELECT uuid
+      FROM
+        conversations
+      WHERE
+        id = $conversationId
+      `)
+        .pluck();
+    const updateConversationStmt = db.prepare(`
+    UPDATE conversations SET
+      json = $json,
+      members = $members
+    WHERE id = $id;
+    `);
+    const updateMessageStmt = db.prepare(`
+    UPDATE messages SET
+      json = $json,
+      sourceUuid = $sourceUuid
+    WHERE id = $id;
+    `);
+    const upgradeConversation = (convo) => {
+        const legacy = convo;
+        let result = convo;
+        const logId = `(${legacy.id}) groupv2(${legacy.groupId})`;
+        const memberKeys = [
+            'membersV2',
+            'pendingMembersV2',
+            'pendingAdminApprovalV2',
+        ];
+        for (const key of memberKeys) {
+            const oldValue = legacy[key];
+            if (!Array.isArray(oldValue)) {
+                continue;
+            }
+            let addedByCount = 0;
+            const newValue = oldValue
+                .map(member => {
+                const uuid = getConversationUuid.get({
+                    conversationId: member.conversationId,
+                });
+                if (!uuid) {
+                    logger.warn(`updateToSchemaVersion43: ${logId}.${key} UUID not found ` +
+                        `for ${member.conversationId}`);
+                    return undefined;
+                }
+                const updated = Object.assign(Object.assign({}, (0, lodash_1.omit)(member, 'conversationId')), { uuid });
+                // We previously stored our conversation
+                if (!('addedByUserId' in member) || !member.addedByUserId) {
+                    return updated;
+                }
+                const addedByUserId = getConversationUuid.get({
+                    conversationId: member.addedByUserId,
+                });
+                if (!addedByUserId) {
+                    return updated;
+                }
+                addedByCount += 1;
+                return Object.assign(Object.assign({}, updated), { addedByUserId });
+            })
+                .filter(isNotNil_1.isNotNil);
+            result = Object.assign(Object.assign({}, result), { [key]: newValue });
+            if (oldValue.length !== 0) {
+                logger.info(`updateToSchemaVersion43: migrated ${oldValue.length} ${key} ` +
+                    `entries to ${newValue.length} for ${logId}`);
+            }
+            if (addedByCount > 0) {
+                logger.info(`updateToSchemaVersion43: migrated ${addedByCount} addedByUserId ` +
+                    `in ${key} for ${logId}`);
+            }
+        }
+        if (result === convo) {
+            return;
+        }
+        let dbMembers;
+        if (result.membersV2) {
+            dbMembers = result.membersV2.map(item => item.uuid).join(' ');
+        }
+        else if (result.members) {
+            dbMembers = result.members.join(' ');
+        }
+        else {
+            dbMembers = null;
+        }
+        updateConversationStmt.run({
+            id: result.id,
+            json: (0, util_1.objectToJSON)(result),
+            members: dbMembers,
+        });
+    };
+    const upgradeMessage = (message) => {
+        var _a;
+        const { id, groupV2Change, sourceUuid, invitedGV2Members, } = message;
+        let result = message;
+        if (groupV2Change) {
+            (0, assert_1.assert)(result.groupV2Change, 'Pacify typescript');
+            const from = getConversationUuid.get({
+                conversationId: groupV2Change.from,
+            });
+            if (from) {
+                result = Object.assign(Object.assign({}, result), { groupV2Change: Object.assign(Object.assign({}, result.groupV2Change), { from }) });
+            }
+            else {
+                result = Object.assign(Object.assign({}, result), { groupV2Change: (0, lodash_1.omit)(result.groupV2Change, ['from']) });
+            }
+            let changedDetails = false;
+            const details = groupV2Change.details
+                .map((legacyDetail, i) => {
+                var _a;
+                const oldDetail = (_a = result.groupV2Change) === null || _a === void 0 ? void 0 : _a.details[i];
+                (0, assert_1.assert)(oldDetail, 'Pacify typescript');
+                let newDetail = oldDetail;
+                for (const key of ['conversationId', 'inviter']) {
+                    const oldValue = legacyDetail[key];
+                    const newKey = key === 'conversationId' ? 'uuid' : key;
+                    if (oldValue === undefined) {
+                        continue;
+                    }
+                    changedDetails = true;
+                    const newValue = getConversationUuid.get({
+                        conversationId: oldValue,
+                    });
+                    if (key === 'inviter' && !newValue) {
+                        continue;
+                    }
+                    if (!newValue) {
+                        logger.warn(`updateToSchemaVersion43: ${id}.groupV2Change.details.${key} ` +
+                            `UUID not found for ${oldValue}`);
+                        return undefined;
+                    }
+                    (0, assert_1.assert)(newDetail.type === legacyDetail.type, 'Pacify typescript');
+                    newDetail = Object.assign(Object.assign({}, (0, lodash_1.omit)(newDetail, key)), { [newKey]: newValue });
+                }
+                return newDetail;
+            })
+                .filter(isNotNil_1.isNotNil);
+            if (changedDetails) {
+                result = Object.assign(Object.assign({}, result), { groupV2Change: Object.assign(Object.assign({}, result.groupV2Change), { details }) });
+            }
+        }
+        if (sourceUuid) {
+            const newValue = getConversationUuid.get({
+                conversationId: sourceUuid,
+            });
+            if (newValue) {
+                result = Object.assign(Object.assign({}, result), { sourceUuid: newValue });
+            }
+        }
+        if (invitedGV2Members) {
+            const newMembers = invitedGV2Members
+                .map(({ addedByUserId, conversationId }, i) => {
+                const uuid = getConversationUuid.get({
+                    conversationId,
+                });
+                const oldMember = result.invitedGV2Members && result.invitedGV2Members[i];
+                (0, assert_1.assert)(oldMember !== undefined, 'Pacify typescript');
+                if (!uuid) {
+                    logger.warn(`updateToSchemaVersion43: ${id}.invitedGV2Members UUID ` +
+                        `not found for ${conversationId}`);
+                    return undefined;
+                }
+                const newMember = Object.assign(Object.assign({}, (0, lodash_1.omit)(oldMember, ['conversationId'])), { uuid });
+                if (!addedByUserId) {
+                    return newMember;
+                }
+                const newAddedBy = getConversationUuid.get({
+                    conversationId: addedByUserId,
+                });
+                if (!newAddedBy) {
+                    return newMember;
+                }
+                return Object.assign(Object.assign({}, newMember), { addedByUserId: newAddedBy });
+            })
+                .filter(isNotNil_1.isNotNil);
+            result = Object.assign(Object.assign({}, result), { invitedGV2Members: newMembers });
+        }
+        if (result === message) {
+            return false;
+        }
+        updateMessageStmt.run({
+            id: result.id,
+            json: JSON.stringify(result),
+            sourceUuid: (_a = result.sourceUuid) !== null && _a !== void 0 ? _a : null,
+        });
+        return true;
+    };
+    db.transaction(() => {
+        const allConversations = db
+            .prepare(`
+      SELECT json, profileLastFetchedAt
+      FROM conversations
+      ORDER BY id ASC;
+      `)
+            .all()
+            .map(({ json }) => (0, util_1.jsonToObject)(json));
+        logger.info('updateToSchemaVersion43: About to iterate through ' +
+            `${allConversations.length} conversations`);
+        for (const convo of allConversations) {
+            upgradeConversation(convo);
+        }
+        const messageCount = (0, util_1.getCountFromTable)(db, 'messages');
+        logger.info('updateToSchemaVersion43: About to iterate through ' +
+            `${messageCount} messages`);
+        let updatedCount = 0;
+        for (const message of new util_1.TableIterator(db, 'messages')) {
+            if (upgradeMessage(message)) {
+                updatedCount += 1;
+            }
+        }
+        logger.info(`updateToSchemaVersion43: Updated ${updatedCount} messages`);
+        db.pragma('user_version = 43');
+    })();
+    logger.info('updateToSchemaVersion43: success!');
+}
+exports.default = updateToSchemaVersion43;
+
+
+/***/ }),
+
+/***/ "./ts/sql/migrations/index.js":
+/*!************************************!*\
+  !*** ./ts/sql/migrations/index.js ***!
+  \************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.updateSchema = exports.SCHEMA_VERSIONS = void 0;
+const lodash_1 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+const UUID_1 = __webpack_require__(/*! ../../types/UUID */ "./ts/types/UUID.js");
+const util_1 = __webpack_require__(/*! ../util */ "./ts/sql/util.js");
+const _41_uuid_keys_1 = __importDefault(__webpack_require__(/*! ./41-uuid-keys */ "./ts/sql/migrations/41-uuid-keys.js"));
+const _42_stale_reactions_1 = __importDefault(__webpack_require__(/*! ./42-stale-reactions */ "./ts/sql/migrations/42-stale-reactions.js"));
+const _43_gv2_uuid_1 = __importDefault(__webpack_require__(/*! ./43-gv2-uuid */ "./ts/sql/migrations/43-gv2-uuid.js"));
+function updateToSchemaVersion1(currentVersion, db, logger) {
+    if (currentVersion >= 1) {
+        return;
+    }
+    logger.info('updateToSchemaVersion1: starting...');
+    db.transaction(() => {
+        db.exec(`
+      CREATE TABLE messages(
+        id STRING PRIMARY KEY ASC,
+        json TEXT,
+
+        unread INTEGER,
+        expires_at INTEGER,
+        sent_at INTEGER,
+        schemaVersion INTEGER,
+        conversationId STRING,
+        received_at INTEGER,
+        source STRING,
+        sourceDevice STRING,
+        hasAttachments INTEGER,
+        hasFileAttachments INTEGER,
+        hasVisualMediaAttachments INTEGER
+      );
+      CREATE INDEX messages_unread ON messages (
+        unread
+      );
+      CREATE INDEX messages_expires_at ON messages (
+        expires_at
+      );
+      CREATE INDEX messages_receipt ON messages (
+        sent_at
+      );
+      CREATE INDEX messages_schemaVersion ON messages (
+        schemaVersion
+      );
+      CREATE INDEX messages_conversation ON messages (
+        conversationId,
+        received_at
+      );
+      CREATE INDEX messages_duplicate_check ON messages (
+        source,
+        sourceDevice,
+        sent_at
+      );
+      CREATE INDEX messages_hasAttachments ON messages (
+        conversationId,
+        hasAttachments,
+        received_at
+      );
+      CREATE INDEX messages_hasFileAttachments ON messages (
+        conversationId,
+        hasFileAttachments,
+        received_at
+      );
+      CREATE INDEX messages_hasVisualMediaAttachments ON messages (
+        conversationId,
+        hasVisualMediaAttachments,
+        received_at
+      );
+      CREATE TABLE unprocessed(
+        id STRING,
+        timestamp INTEGER,
+        json TEXT
+      );
+      CREATE INDEX unprocessed_id ON unprocessed (
+        id
+      );
+      CREATE INDEX unprocessed_timestamp ON unprocessed (
+        timestamp
+      );
+    `);
+        db.pragma('user_version = 1');
+    })();
+    logger.info('updateToSchemaVersion1: success!');
+}
+function updateToSchemaVersion2(currentVersion, db, logger) {
+    if (currentVersion >= 2) {
+        return;
+    }
+    logger.info('updateToSchemaVersion2: starting...');
+    db.transaction(() => {
+        db.exec(`
+      ALTER TABLE messages
+        ADD COLUMN expireTimer INTEGER;
+
+      ALTER TABLE messages
+        ADD COLUMN expirationStartTimestamp INTEGER;
+
+      ALTER TABLE messages
+        ADD COLUMN type STRING;
+
+      CREATE INDEX messages_expiring ON messages (
+        expireTimer,
+        expirationStartTimestamp,
+        expires_at
+      );
+
+      UPDATE messages SET
+        expirationStartTimestamp = json_extract(json, '$.expirationStartTimestamp'),
+        expireTimer = json_extract(json, '$.expireTimer'),
+        type = json_extract(json, '$.type');
+    `);
+        db.pragma('user_version = 2');
+    })();
+    logger.info('updateToSchemaVersion2: success!');
+}
+function updateToSchemaVersion3(currentVersion, db, logger) {
+    if (currentVersion >= 3) {
+        return;
+    }
+    logger.info('updateToSchemaVersion3: starting...');
+    db.transaction(() => {
+        db.exec(`
+      DROP INDEX messages_expiring;
+      DROP INDEX messages_unread;
+
+      CREATE INDEX messages_without_timer ON messages (
+        expireTimer,
+        expires_at,
+        type
+      ) WHERE expires_at IS NULL AND expireTimer IS NOT NULL;
+
+      CREATE INDEX messages_unread ON messages (
+        conversationId,
+        unread
+      ) WHERE unread IS NOT NULL;
+
+      ANALYZE;
+    `);
+        db.pragma('user_version = 3');
+    })();
+    logger.info('updateToSchemaVersion3: success!');
+}
+function updateToSchemaVersion4(currentVersion, db, logger) {
+    if (currentVersion >= 4) {
+        return;
+    }
+    logger.info('updateToSchemaVersion4: starting...');
+    db.transaction(() => {
+        db.exec(`
+      CREATE TABLE conversations(
+        id STRING PRIMARY KEY ASC,
+        json TEXT,
+
+        active_at INTEGER,
+        type STRING,
+        members TEXT,
+        name TEXT,
+        profileName TEXT
+      );
+      CREATE INDEX conversations_active ON conversations (
+        active_at
+      ) WHERE active_at IS NOT NULL;
+
+      CREATE INDEX conversations_type ON conversations (
+        type
+      ) WHERE type IS NOT NULL;
+    `);
+        db.pragma('user_version = 4');
+    })();
+    logger.info('updateToSchemaVersion4: success!');
+}
+function updateToSchemaVersion6(currentVersion, db, logger) {
+    if (currentVersion >= 6) {
+        return;
+    }
+    logger.info('updateToSchemaVersion6: starting...');
+    db.transaction(() => {
+        db.exec(`
+      -- key-value, ids are strings, one extra column
+      CREATE TABLE sessions(
+        id STRING PRIMARY KEY ASC,
+        number STRING,
+        json TEXT
+      );
+      CREATE INDEX sessions_number ON sessions (
+        number
+      ) WHERE number IS NOT NULL;
+      -- key-value, ids are strings
+      CREATE TABLE groups(
+        id STRING PRIMARY KEY ASC,
+        json TEXT
+      );
+      CREATE TABLE identityKeys(
+        id STRING PRIMARY KEY ASC,
+        json TEXT
+      );
+      CREATE TABLE items(
+        id STRING PRIMARY KEY ASC,
+        json TEXT
+      );
+      -- key-value, ids are integers
+      CREATE TABLE preKeys(
+        id INTEGER PRIMARY KEY ASC,
+        json TEXT
+      );
+      CREATE TABLE signedPreKeys(
+        id INTEGER PRIMARY KEY ASC,
+        json TEXT
+      );
+    `);
+        db.pragma('user_version = 6');
+    })();
+    logger.info('updateToSchemaVersion6: success!');
+}
+function updateToSchemaVersion7(currentVersion, db, logger) {
+    if (currentVersion >= 7) {
+        return;
+    }
+    logger.info('updateToSchemaVersion7: starting...');
+    db.transaction(() => {
+        db.exec(`
+      -- SQLite has been coercing our STRINGs into numbers, so we force it with TEXT
+      -- We create a new table then copy the data into it, since we can't modify columns
+      DROP INDEX sessions_number;
+      ALTER TABLE sessions RENAME TO sessions_old;
+
+      CREATE TABLE sessions(
+        id TEXT PRIMARY KEY,
+        number TEXT,
+        json TEXT
+      );
+      CREATE INDEX sessions_number ON sessions (
+        number
+      ) WHERE number IS NOT NULL;
+      INSERT INTO sessions(id, number, json)
+        SELECT "+" || id, number, json FROM sessions_old;
+      DROP TABLE sessions_old;
+    `);
+        db.pragma('user_version = 7');
+    })();
+    logger.info('updateToSchemaVersion7: success!');
+}
+function updateToSchemaVersion8(currentVersion, db, logger) {
+    if (currentVersion >= 8) {
+        return;
+    }
+    logger.info('updateToSchemaVersion8: starting...');
+    db.transaction(() => {
+        db.exec(`
+      -- First, we pull a new body field out of the message table's json blob
+      ALTER TABLE messages
+        ADD COLUMN body TEXT;
+      UPDATE messages SET body = json_extract(json, '$.body');
+
+      -- Then we create our full-text search table and populate it
+      CREATE VIRTUAL TABLE messages_fts
+        USING fts5(id UNINDEXED, body);
+
+      INSERT INTO messages_fts(id, body)
+        SELECT id, body FROM messages;
+
+      -- Then we set up triggers to keep the full-text search table up to date
+      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages BEGIN
+        INSERT INTO messages_fts (
+          id,
+          body
+        ) VALUES (
+          new.id,
+          new.body
+        );
+      END;
+      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
+        DELETE FROM messages_fts WHERE id = old.id;
+      END;
+      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages BEGIN
+        DELETE FROM messages_fts WHERE id = old.id;
+        INSERT INTO messages_fts(
+          id,
+          body
+        ) VALUES (
+          new.id,
+          new.body
+        );
+      END;
+    `);
+        // For formatting search results:
+        //   https://sqlite.org/fts5.html#the_highlight_function
+        //   https://sqlite.org/fts5.html#the_snippet_function
+        db.pragma('user_version = 8');
+    })();
+    logger.info('updateToSchemaVersion8: success!');
+}
+function updateToSchemaVersion9(currentVersion, db, logger) {
+    if (currentVersion >= 9) {
+        return;
+    }
+    logger.info('updateToSchemaVersion9: starting...');
+    db.transaction(() => {
+        db.exec(`
+      CREATE TABLE attachment_downloads(
+        id STRING primary key,
+        timestamp INTEGER,
+        pending INTEGER,
+        json TEXT
+      );
+
+      CREATE INDEX attachment_downloads_timestamp
+        ON attachment_downloads (
+          timestamp
+      ) WHERE pending = 0;
+      CREATE INDEX attachment_downloads_pending
+        ON attachment_downloads (
+          pending
+      ) WHERE pending != 0;
+    `);
+        db.pragma('user_version = 9');
+    })();
+    logger.info('updateToSchemaVersion9: success!');
+}
+function updateToSchemaVersion10(currentVersion, db, logger) {
+    if (currentVersion >= 10) {
+        return;
+    }
+    logger.info('updateToSchemaVersion10: starting...');
+    db.transaction(() => {
+        db.exec(`
+      DROP INDEX unprocessed_id;
+      DROP INDEX unprocessed_timestamp;
+      ALTER TABLE unprocessed RENAME TO unprocessed_old;
+
+      CREATE TABLE unprocessed(
+        id STRING,
+        timestamp INTEGER,
+        version INTEGER,
+        attempts INTEGER,
+        envelope TEXT,
+        decrypted TEXT,
+        source TEXT,
+        sourceDevice TEXT,
+        serverTimestamp INTEGER
+      );
+
+      CREATE INDEX unprocessed_id ON unprocessed (
+        id
+      );
+      CREATE INDEX unprocessed_timestamp ON unprocessed (
+        timestamp
+      );
+
+      INSERT INTO unprocessed (
+        id,
+        timestamp,
+        version,
+        attempts,
+        envelope,
+        decrypted,
+        source,
+        sourceDevice,
+        serverTimestamp
+      ) SELECT
+        id,
+        timestamp,
+        json_extract(json, '$.version'),
+        json_extract(json, '$.attempts'),
+        json_extract(json, '$.envelope'),
+        json_extract(json, '$.decrypted'),
+        json_extract(json, '$.source'),
+        json_extract(json, '$.sourceDevice'),
+        json_extract(json, '$.serverTimestamp')
+      FROM unprocessed_old;
+
+      DROP TABLE unprocessed_old;
+    `);
+        db.pragma('user_version = 10');
+    })();
+    logger.info('updateToSchemaVersion10: success!');
+}
+function updateToSchemaVersion11(currentVersion, db, logger) {
+    if (currentVersion >= 11) {
+        return;
+    }
+    logger.info('updateToSchemaVersion11: starting...');
+    db.transaction(() => {
+        db.exec(`
+      DROP TABLE groups;
+    `);
+        db.pragma('user_version = 11');
+    })();
+    logger.info('updateToSchemaVersion11: success!');
+}
+function updateToSchemaVersion12(currentVersion, db, logger) {
+    if (currentVersion >= 12) {
+        return;
+    }
+    logger.info('updateToSchemaVersion12: starting...');
+    db.transaction(() => {
+        db.exec(`
+      CREATE TABLE sticker_packs(
+        id TEXT PRIMARY KEY,
+        key TEXT NOT NULL,
+
+        author STRING,
+        coverStickerId INTEGER,
+        createdAt INTEGER,
+        downloadAttempts INTEGER,
+        installedAt INTEGER,
+        lastUsed INTEGER,
+        status STRING,
+        stickerCount INTEGER,
+        title STRING
+      );
+
+      CREATE TABLE stickers(
+        id INTEGER NOT NULL,
+        packId TEXT NOT NULL,
+
+        emoji STRING,
+        height INTEGER,
+        isCoverOnly INTEGER,
+        lastUsed INTEGER,
+        path STRING,
+        width INTEGER,
+
+        PRIMARY KEY (id, packId),
+        CONSTRAINT stickers_fk
+          FOREIGN KEY (packId)
+          REFERENCES sticker_packs(id)
+          ON DELETE CASCADE
+      );
+
+      CREATE INDEX stickers_recents
+        ON stickers (
+          lastUsed
+      ) WHERE lastUsed IS NOT NULL;
+
+      CREATE TABLE sticker_references(
+        messageId STRING,
+        packId TEXT,
+        CONSTRAINT sticker_references_fk
+          FOREIGN KEY(packId)
+          REFERENCES sticker_packs(id)
+          ON DELETE CASCADE
+      );
+    `);
+        db.pragma('user_version = 12');
+    })();
+    logger.info('updateToSchemaVersion12: success!');
+}
+function updateToSchemaVersion13(currentVersion, db, logger) {
+    if (currentVersion >= 13) {
+        return;
+    }
+    logger.info('updateToSchemaVersion13: starting...');
+    db.transaction(() => {
+        db.exec(`
+      ALTER TABLE sticker_packs ADD COLUMN attemptedStatus STRING;
+    `);
+        db.pragma('user_version = 13');
+    })();
+    logger.info('updateToSchemaVersion13: success!');
+}
+function updateToSchemaVersion14(currentVersion, db, logger) {
+    if (currentVersion >= 14) {
+        return;
+    }
+    logger.info('updateToSchemaVersion14: starting...');
+    db.transaction(() => {
+        db.exec(`
+      CREATE TABLE emojis(
+        shortName STRING PRIMARY KEY,
+        lastUsage INTEGER
+      );
+
+      CREATE INDEX emojis_lastUsage
+        ON emojis (
+          lastUsage
+      );
+    `);
+        db.pragma('user_version = 14');
+    })();
+    logger.info('updateToSchemaVersion14: success!');
+}
+function updateToSchemaVersion15(currentVersion, db, logger) {
+    if (currentVersion >= 15) {
+        return;
+    }
+    logger.info('updateToSchemaVersion15: starting...');
+    db.transaction(() => {
+        db.exec(`
+      -- SQLite has again coerced our STRINGs into numbers, so we force it with TEXT
+      -- We create a new table then copy the data into it, since we can't modify columns
+
+      DROP INDEX emojis_lastUsage;
+      ALTER TABLE emojis RENAME TO emojis_old;
+
+      CREATE TABLE emojis(
+        shortName TEXT PRIMARY KEY,
+        lastUsage INTEGER
+      );
+      CREATE INDEX emojis_lastUsage
+        ON emojis (
+          lastUsage
+      );
+
+      DELETE FROM emojis WHERE shortName = 1;
+      INSERT INTO emojis(shortName, lastUsage)
+        SELECT shortName, lastUsage FROM emojis_old;
+
+      DROP TABLE emojis_old;
+    `);
+        db.pragma('user_version = 15');
+    })();
+    logger.info('updateToSchemaVersion15: success!');
+}
+function updateToSchemaVersion16(currentVersion, db, logger) {
+    if (currentVersion >= 16) {
+        return;
+    }
+    logger.info('updateToSchemaVersion16: starting...');
+    db.transaction(() => {
+        db.exec(`
+      ALTER TABLE messages
+      ADD COLUMN messageTimer INTEGER;
+      ALTER TABLE messages
+      ADD COLUMN messageTimerStart INTEGER;
+      ALTER TABLE messages
+      ADD COLUMN messageTimerExpiresAt INTEGER;
+      ALTER TABLE messages
+      ADD COLUMN isErased INTEGER;
+
+      CREATE INDEX messages_message_timer ON messages (
+        messageTimer,
+        messageTimerStart,
+        messageTimerExpiresAt,
+        isErased
+      ) WHERE messageTimer IS NOT NULL;
+
+      -- Updating full-text triggers to avoid anything with a messageTimer set
+
+      DROP TRIGGER messages_on_insert;
+      DROP TRIGGER messages_on_delete;
+      DROP TRIGGER messages_on_update;
+
+      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages
+      WHEN new.messageTimer IS NULL
+      BEGIN
+        INSERT INTO messages_fts (
+          id,
+          body
+        ) VALUES (
+          new.id,
+          new.body
+        );
+      END;
+      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
+        DELETE FROM messages_fts WHERE id = old.id;
+      END;
+      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
+      WHEN new.messageTimer IS NULL
+      BEGIN
+        DELETE FROM messages_fts WHERE id = old.id;
+        INSERT INTO messages_fts(
+          id,
+          body
+        ) VALUES (
+          new.id,
+          new.body
+        );
+      END;
+    `);
+        db.pragma('user_version = 16');
+    })();
+    logger.info('updateToSchemaVersion16: success!');
+}
+function updateToSchemaVersion17(currentVersion, db, logger) {
+    if (currentVersion >= 17) {
+        return;
+    }
+    logger.info('updateToSchemaVersion17: starting...');
+    db.transaction(() => {
+        try {
+            db.exec(`
+        ALTER TABLE messages
+        ADD COLUMN isViewOnce INTEGER;
+
+        DROP INDEX messages_message_timer;
+      `);
+        }
+        catch (error) {
+            logger.info('updateToSchemaVersion17: Message table already had isViewOnce column');
+        }
+        try {
+            db.exec('DROP INDEX messages_view_once;');
+        }
+        catch (error) {
+            logger.info('updateToSchemaVersion17: Index messages_view_once did not already exist');
+        }
+        db.exec(`
+      CREATE INDEX messages_view_once ON messages (
+        isErased
+      ) WHERE isViewOnce = 1;
+
+      -- Updating full-text triggers to avoid anything with isViewOnce = 1
+
+      DROP TRIGGER messages_on_insert;
+      DROP TRIGGER messages_on_update;
+
+      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages
+      WHEN new.isViewOnce != 1
+      BEGIN
+        INSERT INTO messages_fts (
+          id,
+          body
+        ) VALUES (
+          new.id,
+          new.body
+        );
+      END;
+      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
+      WHEN new.isViewOnce != 1
+      BEGIN
+        DELETE FROM messages_fts WHERE id = old.id;
+        INSERT INTO messages_fts(
+          id,
+          body
+        ) VALUES (
+          new.id,
+          new.body
+        );
+      END;
+    `);
+        db.pragma('user_version = 17');
+    })();
+    logger.info('updateToSchemaVersion17: success!');
+}
+function updateToSchemaVersion18(currentVersion, db, logger) {
+    if (currentVersion >= 18) {
+        return;
+    }
+    logger.info('updateToSchemaVersion18: starting...');
+    db.transaction(() => {
+        db.exec(`
+      -- Delete and rebuild full-text search index to capture everything
+
+      DELETE FROM messages_fts;
+      INSERT INTO messages_fts(messages_fts) VALUES('rebuild');
+
+      INSERT INTO messages_fts(id, body)
+      SELECT id, body FROM messages WHERE isViewOnce IS NULL OR isViewOnce != 1;
+
+      -- Fixing full-text triggers
+
+      DROP TRIGGER messages_on_insert;
+      DROP TRIGGER messages_on_update;
+
+      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages
+      WHEN new.isViewOnce IS NULL OR new.isViewOnce != 1
+      BEGIN
+        INSERT INTO messages_fts (
+          id,
+          body
+        ) VALUES (
+          new.id,
+          new.body
+        );
+      END;
+      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
+      WHEN new.isViewOnce IS NULL OR new.isViewOnce != 1
+      BEGIN
+        DELETE FROM messages_fts WHERE id = old.id;
+        INSERT INTO messages_fts(
+          id,
+          body
+        ) VALUES (
+          new.id,
+          new.body
+        );
+      END;
+    `);
+        db.pragma('user_version = 18');
+    })();
+    logger.info('updateToSchemaVersion18: success!');
+}
+function updateToSchemaVersion19(currentVersion, db, logger) {
+    if (currentVersion >= 19) {
+        return;
+    }
+    logger.info('updateToSchemaVersion19: starting...');
+    db.transaction(() => {
+        db.exec(`
+      ALTER TABLE conversations
+      ADD COLUMN profileFamilyName TEXT;
+      ALTER TABLE conversations
+      ADD COLUMN profileFullName TEXT;
+
+      -- Preload new field with the profileName we already have
+      UPDATE conversations SET profileFullName = profileName;
+    `);
+        db.pragma('user_version = 19');
+    })();
+    logger.info('updateToSchemaVersion19: success!');
+}
+function updateToSchemaVersion20(currentVersion, db, logger) {
+    if (currentVersion >= 20) {
+        return;
+    }
+    logger.info('updateToSchemaVersion20: starting...');
+    db.transaction(() => {
+        // The triggers on the messages table slow down this migration
+        // significantly, so we drop them and recreate them later.
+        // Drop triggers
+        const triggers = db
+            .prepare('SELECT * FROM sqlite_master WHERE type = "trigger" AND tbl_name = "messages"')
+            .all();
+        for (const trigger of triggers) {
+            db.exec(`DROP TRIGGER ${trigger.name}`);
+        }
+        // Create new columns and indices
+        db.exec(`
+      ALTER TABLE conversations ADD COLUMN e164 TEXT;
+      ALTER TABLE conversations ADD COLUMN uuid TEXT;
+      ALTER TABLE conversations ADD COLUMN groupId TEXT;
+      ALTER TABLE messages ADD COLUMN sourceUuid TEXT;
+      ALTER TABLE sessions RENAME COLUMN number TO conversationId;
+      CREATE INDEX conversations_e164 ON conversations(e164);
+      CREATE INDEX conversations_uuid ON conversations(uuid);
+      CREATE INDEX conversations_groupId ON conversations(groupId);
+      CREATE INDEX messages_sourceUuid on messages(sourceUuid);
+
+      -- Migrate existing IDs
+      UPDATE conversations SET e164 = '+' || id WHERE type = 'private';
+      UPDATE conversations SET groupId = id WHERE type = 'group';
+    `);
+        // Drop invalid groups and any associated messages
+        const maybeInvalidGroups = db
+            .prepare("SELECT * FROM conversations WHERE type = 'group' AND members IS NULL;")
+            .all();
+        for (const group of maybeInvalidGroups) {
+            const json = JSON.parse(group.json);
+            if (!json.members || !json.members.length) {
+                db.prepare('DELETE FROM conversations WHERE id = $id;').run({
+                    id: json.id,
+                });
+                db.prepare('DELETE FROM messages WHERE conversationId = $id;').run({ id: json.id });
+            }
+        }
+        // Generate new IDs and alter data
+        const allConversations = db
+            .prepare('SELECT * FROM conversations;')
+            .all();
+        const allConversationsByOldId = (0, lodash_1.keyBy)(allConversations, 'id');
+        for (const row of allConversations) {
+            const oldId = row.id;
+            const newId = UUID_1.UUID.generate().toString();
+            allConversationsByOldId[oldId].id = newId;
+            const patchObj = {
+                id: newId,
+            };
+            if (row.type === 'private') {
+                patchObj.e164 = `+${oldId}`;
+            }
+            else if (row.type === 'group') {
+                patchObj.groupId = oldId;
+            }
+            const patch = JSON.stringify(patchObj);
+            db.prepare(`
+        UPDATE conversations
+        SET id = $newId, json = JSON_PATCH(json, $patch)
+        WHERE id = $oldId
+        `).run({
+                newId,
+                oldId,
+                patch,
+            });
+            const messagePatch = JSON.stringify({ conversationId: newId });
+            db.prepare(`
+        UPDATE messages
+        SET conversationId = $newId, json = JSON_PATCH(json, $patch)
+        WHERE conversationId = $oldId
+        `).run({ newId, oldId, patch: messagePatch });
+        }
+        const groupConversations = db
+            .prepare(`
+        SELECT id, members, json FROM conversations WHERE type = 'group';
+        `)
+            .all();
+        // Update group conversations, point members at new conversation ids
+        groupConversations.forEach(groupRow => {
+            const members = groupRow.members.split(/\s?\+/).filter(Boolean);
+            const newMembers = [];
+            for (const m of members) {
+                const memberRow = allConversationsByOldId[m];
+                if (memberRow) {
+                    newMembers.push(memberRow.id);
+                }
+                else {
+                    // We didn't previously have a private conversation for this member,
+                    // we need to create one
+                    const id = UUID_1.UUID.generate().toString();
+                    const updatedConversation = {
+                        id,
+                        e164: m,
+                        type: 'private',
+                        version: 2,
+                        unreadCount: 0,
+                        verified: 0,
+                        // Not directly used by saveConversation, but are necessary
+                        // for conversation model
+                        inbox_position: 0,
+                        isPinned: false,
+                        lastMessageDeletedForEveryone: false,
+                        markedUnread: false,
+                        messageCount: 0,
+                        sentMessageCount: 0,
+                        profileSharing: false,
+                    };
+                    db.prepare(`
+            UPDATE conversations
+            SET
+              json = $json,
+              e164 = $e164,
+              type = $type,
+            WHERE
+              id = $id;
+            `).run({
+                        id: updatedConversation.id,
+                        json: (0, util_1.objectToJSON)(updatedConversation),
+                        e164: updatedConversation.e164,
+                        type: updatedConversation.type,
+                    });
+                    newMembers.push(id);
+                }
+            }
+            const json = Object.assign(Object.assign({}, (0, util_1.jsonToObject)(groupRow.json)), { members: newMembers });
+            const newMembersValue = newMembers.join(' ');
+            db.prepare(`
+        UPDATE conversations
+        SET members = $newMembersValue, json = $newJsonValue
+        WHERE id = $id
+        `).run({
+                id: groupRow.id,
+                newMembersValue,
+                newJsonValue: (0, util_1.objectToJSON)(json),
+            });
+        });
+        // Update sessions to stable IDs
+        const allSessions = db.prepare('SELECT * FROM sessions;').all();
+        for (const session of allSessions) {
+            // Not using patch here so we can explicitly delete a property rather than
+            // implicitly delete via null
+            const newJson = JSON.parse(session.json);
+            const conversation = allConversationsByOldId[newJson.number.substr(1)];
+            if (conversation) {
+                newJson.conversationId = conversation.id;
+                newJson.id = `${newJson.conversationId}.${newJson.deviceId}`;
+            }
+            delete newJson.number;
+            db.prepare(`
+        UPDATE sessions
+        SET id = $newId, json = $newJson, conversationId = $newConversationId
+        WHERE id = $oldId
+        `).run({
+                newId: newJson.id,
+                newJson: (0, util_1.objectToJSON)(newJson),
+                oldId: session.id,
+                newConversationId: newJson.conversationId,
+            });
+        }
+        // Update identity keys to stable IDs
+        const allIdentityKeys = db
+            .prepare('SELECT * FROM identityKeys;')
+            .all();
+        for (const identityKey of allIdentityKeys) {
+            const newJson = JSON.parse(identityKey.json);
+            newJson.id = allConversationsByOldId[newJson.id];
+            db.prepare(`
+        UPDATE identityKeys
+        SET id = $newId, json = $newJson
+        WHERE id = $oldId
+        `).run({
+                newId: newJson.id,
+                newJson: (0, util_1.objectToJSON)(newJson),
+                oldId: identityKey.id,
+            });
+        }
+        // Recreate triggers
+        for (const trigger of triggers) {
+            db.exec(trigger.sql);
+        }
+        db.pragma('user_version = 20');
+    })();
+    logger.info('updateToSchemaVersion20: success!');
+}
+function updateToSchemaVersion21(currentVersion, db, logger) {
+    if (currentVersion >= 21) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      UPDATE conversations
+      SET json = json_set(
+        json,
+        '$.messageCount',
+        (SELECT count(*) FROM messages WHERE messages.conversationId = conversations.id)
+      );
+      UPDATE conversations
+      SET json = json_set(
+        json,
+        '$.sentMessageCount',
+        (SELECT count(*) FROM messages WHERE messages.conversationId = conversations.id AND messages.type = 'outgoing')
+      );
+    `);
+        db.pragma('user_version = 21');
+    })();
+    logger.info('updateToSchemaVersion21: success!');
+}
+function updateToSchemaVersion22(currentVersion, db, logger) {
+    if (currentVersion >= 22) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      ALTER TABLE unprocessed
+        ADD COLUMN sourceUuid STRING;
+    `);
+        db.pragma('user_version = 22');
+    })();
+    logger.info('updateToSchemaVersion22: success!');
+}
+function updateToSchemaVersion23(currentVersion, db, logger) {
+    if (currentVersion >= 23) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      -- Remove triggers which keep full-text search up to date
+      DROP TRIGGER messages_on_insert;
+      DROP TRIGGER messages_on_update;
+      DROP TRIGGER messages_on_delete;
+    `);
+        db.pragma('user_version = 23');
+    })();
+    logger.info('updateToSchemaVersion23: success!');
+}
+function updateToSchemaVersion24(currentVersion, db, logger) {
+    if (currentVersion >= 24) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      ALTER TABLE conversations
+      ADD COLUMN profileLastFetchedAt INTEGER;
+    `);
+        db.pragma('user_version = 24');
+    })();
+    logger.info('updateToSchemaVersion24: success!');
+}
+function updateToSchemaVersion25(currentVersion, db, logger) {
+    if (currentVersion >= 25) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      ALTER TABLE messages
+      RENAME TO old_messages
+    `);
+        const indicesToDrop = [
+            'messages_expires_at',
+            'messages_receipt',
+            'messages_schemaVersion',
+            'messages_conversation',
+            'messages_duplicate_check',
+            'messages_hasAttachments',
+            'messages_hasFileAttachments',
+            'messages_hasVisualMediaAttachments',
+            'messages_without_timer',
+            'messages_unread',
+            'messages_view_once',
+            'messages_sourceUuid',
+        ];
+        for (const index of indicesToDrop) {
+            db.exec(`DROP INDEX IF EXISTS ${index};`);
+        }
+        db.exec(`
+      --
+      -- Create a new table with a different primary key
+      --
+
+      CREATE TABLE messages(
+        rowid INTEGER PRIMARY KEY ASC,
+        id STRING UNIQUE,
+        json TEXT,
+        unread INTEGER,
+        expires_at INTEGER,
+        sent_at INTEGER,
+        schemaVersion INTEGER,
+        conversationId STRING,
+        received_at INTEGER,
+        source STRING,
+        sourceDevice STRING,
+        hasAttachments INTEGER,
+        hasFileAttachments INTEGER,
+        hasVisualMediaAttachments INTEGER,
+        expireTimer INTEGER,
+        expirationStartTimestamp INTEGER,
+        type STRING,
+        body TEXT,
+        messageTimer INTEGER,
+        messageTimerStart INTEGER,
+        messageTimerExpiresAt INTEGER,
+        isErased INTEGER,
+        isViewOnce INTEGER,
+        sourceUuid TEXT);
+
+      -- Create index in lieu of old PRIMARY KEY
+      CREATE INDEX messages_id ON messages (id ASC);
+
+      --
+      -- Recreate indices
+      --
+
+      CREATE INDEX messages_expires_at ON messages (expires_at);
+
+      CREATE INDEX messages_receipt ON messages (sent_at);
+
+      CREATE INDEX messages_schemaVersion ON messages (schemaVersion);
+
+      CREATE INDEX messages_conversation ON messages
+        (conversationId, received_at);
+
+      CREATE INDEX messages_duplicate_check ON messages
+        (source, sourceDevice, sent_at);
+
+      CREATE INDEX messages_hasAttachments ON messages
+        (conversationId, hasAttachments, received_at);
+
+      CREATE INDEX messages_hasFileAttachments ON messages
+        (conversationId, hasFileAttachments, received_at);
+
+      CREATE INDEX messages_hasVisualMediaAttachments ON messages
+        (conversationId, hasVisualMediaAttachments, received_at);
+
+      CREATE INDEX messages_without_timer ON messages
+        (expireTimer, expires_at, type)
+        WHERE expires_at IS NULL AND expireTimer IS NOT NULL;
+
+      CREATE INDEX messages_unread ON messages
+        (conversationId, unread) WHERE unread IS NOT NULL;
+
+      CREATE INDEX messages_view_once ON messages
+        (isErased) WHERE isViewOnce = 1;
+
+      CREATE INDEX messages_sourceUuid on messages(sourceUuid);
+
+      -- New index for searchMessages
+      CREATE INDEX messages_searchOrder on messages(received_at, sent_at);
+
+      --
+      -- Re-create messages_fts and add triggers
+      --
+
+      DROP TABLE messages_fts;
+
+      CREATE VIRTUAL TABLE messages_fts USING fts5(body);
+
+      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages
+      WHEN new.isViewOnce IS NULL OR new.isViewOnce != 1
+      BEGIN
+        INSERT INTO messages_fts
+        (rowid, body)
+        VALUES
+        (new.rowid, new.body);
+      END;
+
+      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
+        DELETE FROM messages_fts WHERE rowid = old.rowid;
+      END;
+
+      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
+      WHEN new.isViewOnce IS NULL OR new.isViewOnce != 1
+      BEGIN
+        DELETE FROM messages_fts WHERE rowid = old.rowid;
+        INSERT INTO messages_fts
+        (rowid, body)
+        VALUES
+        (new.rowid, new.body);
+      END;
+
+      --
+      -- Copy data over
+      --
+
+      INSERT INTO messages
+      (
+        id, json, unread, expires_at, sent_at, schemaVersion, conversationId,
+        received_at, source, sourceDevice, hasAttachments, hasFileAttachments,
+        hasVisualMediaAttachments, expireTimer, expirationStartTimestamp, type,
+        body, messageTimer, messageTimerStart, messageTimerExpiresAt, isErased,
+        isViewOnce, sourceUuid
+      )
+      SELECT
+        id, json, unread, expires_at, sent_at, schemaVersion, conversationId,
+        received_at, source, sourceDevice, hasAttachments, hasFileAttachments,
+        hasVisualMediaAttachments, expireTimer, expirationStartTimestamp, type,
+        body, messageTimer, messageTimerStart, messageTimerExpiresAt, isErased,
+        isViewOnce, sourceUuid
+      FROM old_messages;
+
+      -- Drop old database
+      DROP TABLE old_messages;
+    `);
+        db.pragma('user_version = 25');
+    })();
+    logger.info('updateToSchemaVersion25: success!');
+}
+function updateToSchemaVersion26(currentVersion, db, logger) {
+    if (currentVersion >= 26) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      DROP TRIGGER messages_on_insert;
+      DROP TRIGGER messages_on_update;
+
+      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages
+      WHEN new.isViewOnce IS NULL OR new.isViewOnce != 1
+      BEGIN
+        INSERT INTO messages_fts
+        (rowid, body)
+        VALUES
+        (new.rowid, new.body);
+      END;
+
+      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
+      WHEN new.body != old.body AND
+        (new.isViewOnce IS NULL OR new.isViewOnce != 1)
+      BEGIN
+        DELETE FROM messages_fts WHERE rowid = old.rowid;
+        INSERT INTO messages_fts
+        (rowid, body)
+        VALUES
+        (new.rowid, new.body);
+      END;
+    `);
+        db.pragma('user_version = 26');
+    })();
+    logger.info('updateToSchemaVersion26: success!');
+}
+function updateToSchemaVersion27(currentVersion, db, logger) {
+    if (currentVersion >= 27) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      DELETE FROM messages_fts WHERE rowid IN
+        (SELECT rowid FROM messages WHERE body IS NULL);
+
+      DROP TRIGGER messages_on_update;
+
+      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
+      WHEN
+        new.body IS NULL OR
+        ((old.body IS NULL OR new.body != old.body) AND
+         (new.isViewOnce IS NULL OR new.isViewOnce != 1))
+      BEGIN
+        DELETE FROM messages_fts WHERE rowid = old.rowid;
+        INSERT INTO messages_fts
+        (rowid, body)
+        VALUES
+        (new.rowid, new.body);
+      END;
+
+      CREATE TRIGGER messages_on_view_once_update AFTER UPDATE ON messages
+      WHEN
+        new.body IS NOT NULL AND new.isViewOnce = 1
+      BEGIN
+        DELETE FROM messages_fts WHERE rowid = old.rowid;
+      END;
+    `);
+        db.pragma('user_version = 27');
+    })();
+    logger.info('updateToSchemaVersion27: success!');
+}
+function updateToSchemaVersion28(currentVersion, db, logger) {
+    if (currentVersion >= 28) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      CREATE TABLE jobs(
+        id TEXT PRIMARY KEY,
+        queueType TEXT STRING NOT NULL,
+        timestamp INTEGER NOT NULL,
+        data STRING TEXT
+      );
+
+      CREATE INDEX jobs_timestamp ON jobs (timestamp);
+    `);
+        db.pragma('user_version = 28');
+    })();
+    logger.info('updateToSchemaVersion28: success!');
+}
+function updateToSchemaVersion29(currentVersion, db, logger) {
+    if (currentVersion >= 29) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      CREATE TABLE reactions(
+        conversationId STRING,
+        emoji STRING,
+        fromId STRING,
+        messageReceivedAt INTEGER,
+        targetAuthorUuid STRING,
+        targetTimestamp INTEGER,
+        unread INTEGER
+      );
+
+      CREATE INDEX reactions_unread ON reactions (
+        unread,
+        conversationId
+      );
+
+      CREATE INDEX reaction_identifier ON reactions (
+        emoji,
+        targetAuthorUuid,
+        targetTimestamp
+      );
+    `);
+        db.pragma('user_version = 29');
+    })();
+    logger.info('updateToSchemaVersion29: success!');
+}
+function updateToSchemaVersion30(currentVersion, db, logger) {
+    if (currentVersion >= 30) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      CREATE TABLE senderKeys(
+        id TEXT PRIMARY KEY NOT NULL,
+        senderId TEXT NOT NULL,
+        distributionId TEXT NOT NULL,
+        data BLOB NOT NULL,
+        lastUpdatedDate NUMBER NOT NULL
+      );
+    `);
+        db.pragma('user_version = 30');
+    })();
+    logger.info('updateToSchemaVersion30: success!');
+}
+function updateToSchemaVersion31(currentVersion, db, logger) {
+    if (currentVersion >= 31) {
+        return;
+    }
+    logger.info('updateToSchemaVersion31: starting...');
+    db.transaction(() => {
+        db.exec(`
+      DROP INDEX unprocessed_id;
+      DROP INDEX unprocessed_timestamp;
+      ALTER TABLE unprocessed RENAME TO unprocessed_old;
+
+      CREATE TABLE unprocessed(
+        id STRING PRIMARY KEY ASC,
+        timestamp INTEGER,
+        version INTEGER,
+        attempts INTEGER,
+        envelope TEXT,
+        decrypted TEXT,
+        source TEXT,
+        sourceDevice TEXT,
+        serverTimestamp INTEGER,
+        sourceUuid STRING
+      );
+
+      CREATE INDEX unprocessed_timestamp ON unprocessed (
+        timestamp
+      );
+
+      INSERT OR REPLACE INTO unprocessed
+        (id, timestamp, version, attempts, envelope, decrypted, source,
+         sourceDevice, serverTimestamp, sourceUuid)
+      SELECT
+        id, timestamp, version, attempts, envelope, decrypted, source,
+         sourceDevice, serverTimestamp, sourceUuid
+      FROM unprocessed_old;
+
+      DROP TABLE unprocessed_old;
+    `);
+        db.pragma('user_version = 31');
+    })();
+    logger.info('updateToSchemaVersion31: success!');
+}
+function updateToSchemaVersion32(currentVersion, db, logger) {
+    if (currentVersion >= 32) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      ALTER TABLE messages
+      ADD COLUMN serverGuid STRING NULL;
+
+      ALTER TABLE unprocessed
+      ADD COLUMN serverGuid STRING NULL;
+    `);
+        db.pragma('user_version = 32');
+    })();
+    logger.info('updateToSchemaVersion32: success!');
+}
+function updateToSchemaVersion33(currentVersion, db, logger) {
+    if (currentVersion >= 33) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      -- These indexes should exist, but we add "IF EXISTS" for safety.
+      DROP INDEX IF EXISTS messages_expires_at;
+      DROP INDEX IF EXISTS messages_without_timer;
+
+      ALTER TABLE messages
+      ADD COLUMN
+      expiresAt INT
+      GENERATED ALWAYS
+      AS (expirationStartTimestamp + (expireTimer * 1000));
+
+      CREATE INDEX message_expires_at ON messages (
+        expiresAt
+      );
+
+      CREATE INDEX outgoing_messages_without_expiration_start_timestamp ON messages (
+        expireTimer, expirationStartTimestamp, type
+      )
+      WHERE expireTimer IS NOT NULL AND expirationStartTimestamp IS NULL;
+    `);
+        db.pragma('user_version = 33');
+    })();
+    logger.info('updateToSchemaVersion33: success!');
+}
+function updateToSchemaVersion34(currentVersion, db, logger) {
+    if (currentVersion >= 34) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      -- This index should exist, but we add "IF EXISTS" for safety.
+      DROP INDEX IF EXISTS outgoing_messages_without_expiration_start_timestamp;
+
+      CREATE INDEX messages_unexpectedly_missing_expiration_start_timestamp ON messages (
+        expireTimer, expirationStartTimestamp, type
+      )
+      WHERE expireTimer IS NOT NULL AND expirationStartTimestamp IS NULL;
+    `);
+        db.pragma('user_version = 34');
+    })();
+    logger.info('updateToSchemaVersion34: success!');
+}
+function updateToSchemaVersion35(currentVersion, db, logger) {
+    if (currentVersion >= 35) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      CREATE INDEX expiring_message_by_conversation_and_received_at
+      ON messages
+      (
+        expirationStartTimestamp,
+        expireTimer,
+        conversationId,
+        received_at
+      );
+    `);
+        db.pragma('user_version = 35');
+    })();
+    logger.info('updateToSchemaVersion35: success!');
+}
+// Reverted
+function updateToSchemaVersion36(currentVersion, db, logger) {
+    if (currentVersion >= 36) {
+        return;
+    }
+    db.pragma('user_version = 36');
+    logger.info('updateToSchemaVersion36: success!');
+}
+function updateToSchemaVersion37(currentVersion, db, logger) {
+    if (currentVersion >= 37) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      -- Create send log primary table
+
+      CREATE TABLE sendLogPayloads(
+        id INTEGER PRIMARY KEY ASC,
+
+        timestamp INTEGER NOT NULL,
+        contentHint INTEGER NOT NULL,
+        proto BLOB NOT NULL
+      );
+
+      CREATE INDEX sendLogPayloadsByTimestamp ON sendLogPayloads (timestamp);
+
+      -- Create send log recipients table with foreign key relationship to payloads
+
+      CREATE TABLE sendLogRecipients(
+        payloadId INTEGER NOT NULL,
+
+        recipientUuid STRING NOT NULL,
+        deviceId INTEGER NOT NULL,
+
+        PRIMARY KEY (payloadId, recipientUuid, deviceId),
+
+        CONSTRAINT sendLogRecipientsForeignKey
+          FOREIGN KEY (payloadId)
+          REFERENCES sendLogPayloads(id)
+          ON DELETE CASCADE
+      );
+
+      CREATE INDEX sendLogRecipientsByRecipient
+        ON sendLogRecipients (recipientUuid, deviceId);
+
+      -- Create send log messages table with foreign key relationship to payloads
+
+      CREATE TABLE sendLogMessageIds(
+        payloadId INTEGER NOT NULL,
+
+        messageId STRING NOT NULL,
+
+        PRIMARY KEY (payloadId, messageId),
+
+        CONSTRAINT sendLogMessageIdsForeignKey
+          FOREIGN KEY (payloadId)
+          REFERENCES sendLogPayloads(id)
+          ON DELETE CASCADE
+      );
+
+      CREATE INDEX sendLogMessageIdsByMessage
+        ON sendLogMessageIds (messageId);
+
+      -- Recreate messages table delete trigger with send log support
+
+      DROP TRIGGER messages_on_delete;
+
+      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
+        DELETE FROM messages_fts WHERE rowid = old.rowid;
+        DELETE FROM sendLogPayloads WHERE id IN (
+          SELECT payloadId FROM sendLogMessageIds
+          WHERE messageId = old.id
+        );
+      END;
+
+      --- Add messageId column to reactions table to properly track proto associations
+
+      ALTER TABLE reactions ADD column messageId STRING;
+    `);
+        db.pragma('user_version = 37');
+    })();
+    logger.info('updateToSchemaVersion37: success!');
+}
+function updateToSchemaVersion38(currentVersion, db, logger) {
+    if (currentVersion >= 38) {
+        return;
+    }
+    db.transaction(() => {
+        // TODO: Remove deprecated columns once sqlcipher is updated to support it
+        db.exec(`
+      DROP INDEX IF EXISTS messages_duplicate_check;
+
+      ALTER TABLE messages
+        RENAME COLUMN sourceDevice TO deprecatedSourceDevice;
+      ALTER TABLE messages
+        ADD COLUMN sourceDevice INTEGER;
+
+      UPDATE messages
+      SET
+        sourceDevice = CAST(deprecatedSourceDevice AS INTEGER),
+        deprecatedSourceDevice = NULL;
+
+      ALTER TABLE unprocessed
+        RENAME COLUMN sourceDevice TO deprecatedSourceDevice;
+      ALTER TABLE unprocessed
+        ADD COLUMN sourceDevice INTEGER;
+
+      UPDATE unprocessed
+      SET
+        sourceDevice = CAST(deprecatedSourceDevice AS INTEGER),
+        deprecatedSourceDevice = NULL;
+    `);
+        db.pragma('user_version = 38');
+    })();
+    logger.info('updateToSchemaVersion38: success!');
+}
+function updateToSchemaVersion39(currentVersion, db, logger) {
+    if (currentVersion >= 39) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec('ALTER TABLE messages RENAME COLUMN unread TO readStatus;');
+        db.pragma('user_version = 39');
+    })();
+    logger.info('updateToSchemaVersion39: success!');
+}
+function updateToSchemaVersion40(currentVersion, db, logger) {
+    if (currentVersion >= 40) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      CREATE TABLE groupCallRings(
+        ringId INTEGER PRIMARY KEY,
+        isActive INTEGER NOT NULL,
+        createdAt INTEGER NOT NULL
+      );
+      `);
+        db.pragma('user_version = 40');
+    })();
+    logger.info('updateToSchemaVersion40: success!');
+}
+exports.SCHEMA_VERSIONS = [
+    updateToSchemaVersion1,
+    updateToSchemaVersion2,
+    updateToSchemaVersion3,
+    updateToSchemaVersion4,
+    (_v, _i, _l) => undefined,
+    updateToSchemaVersion6,
+    updateToSchemaVersion7,
+    updateToSchemaVersion8,
+    updateToSchemaVersion9,
+    updateToSchemaVersion10,
+    updateToSchemaVersion11,
+    updateToSchemaVersion12,
+    updateToSchemaVersion13,
+    updateToSchemaVersion14,
+    updateToSchemaVersion15,
+    updateToSchemaVersion16,
+    updateToSchemaVersion17,
+    updateToSchemaVersion18,
+    updateToSchemaVersion19,
+    updateToSchemaVersion20,
+    updateToSchemaVersion21,
+    updateToSchemaVersion22,
+    updateToSchemaVersion23,
+    updateToSchemaVersion24,
+    updateToSchemaVersion25,
+    updateToSchemaVersion26,
+    updateToSchemaVersion27,
+    updateToSchemaVersion28,
+    updateToSchemaVersion29,
+    updateToSchemaVersion30,
+    updateToSchemaVersion31,
+    updateToSchemaVersion32,
+    updateToSchemaVersion33,
+    updateToSchemaVersion34,
+    updateToSchemaVersion35,
+    updateToSchemaVersion36,
+    updateToSchemaVersion37,
+    updateToSchemaVersion38,
+    updateToSchemaVersion39,
+    updateToSchemaVersion40,
+    _41_uuid_keys_1.default,
+    _42_stale_reactions_1.default,
+    _43_gv2_uuid_1.default,
+];
+function updateSchema(db, logger) {
+    const sqliteVersion = (0, util_1.getSQLiteVersion)(db);
+    const sqlcipherVersion = (0, util_1.getSQLCipherVersion)(db);
+    const userVersion = (0, util_1.getUserVersion)(db);
+    const maxUserVersion = exports.SCHEMA_VERSIONS.length;
+    const schemaVersion = (0, util_1.getSchemaVersion)(db);
+    logger.info('updateSchema:\n', ` Current user_version: ${userVersion};\n`, ` Most recent db schema: ${maxUserVersion};\n`, ` SQLite version: ${sqliteVersion};\n`, ` SQLCipher version: ${sqlcipherVersion};\n`, ` (deprecated) schema_version: ${schemaVersion};\n`);
+    if (userVersion > maxUserVersion) {
+        throw new Error(`SQL: User version is ${userVersion} but the expected maximum version ` +
+            `is ${maxUserVersion}. Did you try to start an old version of Signal?`);
+    }
+    for (let index = 0; index < maxUserVersion; index += 1) {
+        const runSchemaUpdate = exports.SCHEMA_VERSIONS[index];
+        runSchemaUpdate(userVersion, db, logger);
+    }
+}
+exports.updateSchema = updateSchema;
+
+
+/***/ }),
+
+/***/ "./ts/sql/util.js":
+/*!************************!*\
+  !*** ./ts/sql/util.js ***!
+  \************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.TableIterator = exports.getCountFromTable = exports.getAllFromTable = exports.removeAllFromTable = exports.removeById = exports.getById = exports.bulkAdd = exports.createOrUpdate = exports.batchMultiVarQuery = exports.getSQLCipherVersion = exports.getUserVersion = exports.setUserVersion = exports.getSchemaVersion = exports.getSQLiteVersion = exports.jsonToObject = exports.objectToJSON = void 0;
+const lodash_1 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+// This value needs to be below SQLITE_MAX_VARIABLE_NUMBER.
+const MAX_VARIABLE_COUNT = 100;
+function objectToJSON(data) {
+    return JSON.stringify(data);
+}
+exports.objectToJSON = objectToJSON;
+function jsonToObject(json) {
+    return JSON.parse(json);
+}
+exports.jsonToObject = jsonToObject;
+//
+// Database helpers
+//
+function getSQLiteVersion(db) {
+    const { sqlite_version: version } = db
+        .prepare('select sqlite_version() AS sqlite_version')
+        .get();
+    return version;
+}
+exports.getSQLiteVersion = getSQLiteVersion;
+function getSchemaVersion(db) {
+    return db.pragma('schema_version', { simple: true });
+}
+exports.getSchemaVersion = getSchemaVersion;
+function setUserVersion(db, version) {
+    if (!(0, lodash_1.isNumber)(version)) {
+        throw new Error(`setUserVersion: version ${version} is not a number`);
+    }
+    db.pragma(`user_version = ${version}`);
+}
+exports.setUserVersion = setUserVersion;
+function getUserVersion(db) {
+    return db.pragma('user_version', { simple: true });
+}
+exports.getUserVersion = getUserVersion;
+function getSQLCipherVersion(db) {
+    return db.pragma('cipher_version', { simple: true });
+}
+exports.getSQLCipherVersion = getSQLCipherVersion;
+function batchMultiVarQuery(db, values, query) {
+    if (values.length > MAX_VARIABLE_COUNT) {
+        const result = [];
+        db.transaction(() => {
+            for (let i = 0; i < values.length; i += MAX_VARIABLE_COUNT) {
+                const batch = values.slice(i, i + MAX_VARIABLE_COUNT);
+                const batchResult = query(batch);
+                if (Array.isArray(batchResult)) {
+                    result.push(...batchResult);
+                }
+            }
+        })();
+        return result;
+    }
+    const result = query(values);
+    return Array.isArray(result) ? result : [];
+}
+exports.batchMultiVarQuery = batchMultiVarQuery;
+function createOrUpdate(db, table, data) {
+    const { id } = data;
+    if (!id) {
+        throw new Error('createOrUpdate: Provided data did not have a truthy id');
+    }
+    db.prepare(`
+    INSERT OR REPLACE INTO ${table} (
+      id,
+      json
+    ) values (
+      $id,
+      $json
+    )
+    `).run({
+        id,
+        json: objectToJSON(data),
+    });
+}
+exports.createOrUpdate = createOrUpdate;
+function bulkAdd(db, table, array) {
+    db.transaction(() => {
+        for (const data of array) {
+            createOrUpdate(db, table, data);
+        }
+    })();
+}
+exports.bulkAdd = bulkAdd;
+function getById(db, table, id) {
+    const row = db
+        .prepare(`
+      SELECT *
+      FROM ${table}
+      WHERE id = $id;
+      `)
+        .get({
+        id,
+    });
+    if (!row) {
+        return undefined;
+    }
+    return jsonToObject(row.json);
+}
+exports.getById = getById;
+function removeById(db, table, id) {
+    if (!Array.isArray(id)) {
+        db.prepare(`
+      DELETE FROM ${table}
+      WHERE id = $id;
+      `).run({ id });
+        return;
+    }
+    if (!id.length) {
+        throw new Error('removeById: No ids to delete!');
+    }
+    const removeByIdsSync = (ids) => {
+        db.prepare(`
+      DELETE FROM ${table}
+      WHERE id IN ( ${id.map(() => '?').join(', ')} );
+      `).run(ids);
+    };
+    batchMultiVarQuery(db, id, removeByIdsSync);
+}
+exports.removeById = removeById;
+function removeAllFromTable(db, table) {
+    db.prepare(`DELETE FROM ${table};`).run();
+}
+exports.removeAllFromTable = removeAllFromTable;
+function getAllFromTable(db, table) {
+    const rows = db
+        .prepare(`SELECT json FROM ${table};`)
+        .all();
+    return rows.map(row => jsonToObject(row.json));
+}
+exports.getAllFromTable = getAllFromTable;
+function getCountFromTable(db, table) {
+    const result = db
+        .prepare(`SELECT count(*) from ${table};`)
+        .pluck(true)
+        .get();
+    if ((0, lodash_1.isNumber)(result)) {
+        return result;
+    }
+    throw new Error(`getCountFromTable: Unable to get count from table ${table}`);
+}
+exports.getCountFromTable = getCountFromTable;
+class TableIterator {
+    constructor(db, table, pageSize = 500) {
+        this.db = db;
+        this.table = table;
+        this.pageSize = pageSize;
+    }
+    *[Symbol.iterator]() {
+        const fetchObject = this.db.prepare(`
+        SELECT json FROM ${this.table}
+        WHERE id > $id
+        ORDER BY id ASC
+        LIMIT $pageSize;
+      `);
+        let complete = false;
+        let id = '';
+        while (!complete) {
+            const rows = fetchObject.all({
+                id,
+                pageSize: this.pageSize,
+            });
+            const messages = rows.map(row => jsonToObject(row.json));
+            yield* messages;
+            const lastMessage = (0, lodash_1.last)(messages);
+            if (lastMessage) {
+                ({ id } = lastMessage);
+            }
+            complete = messages.length < this.pageSize;
+        }
+    }
+}
+exports.TableIterator = TableIterator;
 
 
 /***/ }),
@@ -27714,6 +28081,70 @@ exports.STORAGE_UI_KEYS = [
 
 /***/ }),
 
+/***/ "./ts/types/UUID.js":
+/*!**************************!*\
+  !*** ./ts/types/UUID.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UUID = exports.isValidUuid = void 0;
+const uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/index.js");
+const assert_1 = __webpack_require__(/*! ../util/assert */ "./ts/util/assert.js");
+const isValidUuid = (value) => typeof value === 'string' &&
+    /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i.test(value);
+exports.isValidUuid = isValidUuid;
+class UUID {
+    constructor(value) {
+        this.value = value;
+        (0, assert_1.strictAssert)((0, exports.isValidUuid)(value), `Invalid UUID: ${value}`);
+    }
+    toString() {
+        return this.value;
+    }
+    isEqual(other) {
+        return this.value === other.value;
+    }
+    static parse(value) {
+        return new UUID(value);
+    }
+    static lookup(identifier) {
+        const conversation = window.ConversationController.get(identifier);
+        const uuid = conversation === null || conversation === void 0 ? void 0 : conversation.get('uuid');
+        if (uuid === undefined) {
+            return undefined;
+        }
+        return new UUID(uuid);
+    }
+    static checkedLookup(identifier) {
+        const uuid = UUID.lookup(identifier);
+        (0, assert_1.strictAssert)(uuid !== undefined, `Conversation ${identifier} not found or has no uuid`);
+        return uuid;
+    }
+    static generate() {
+        return new UUID((0, uuid_1.v4)());
+    }
+    static cast(value) {
+        return new UUID(value.toLowerCase()).toString();
+    }
+    // For testing
+    static fromPrefix(value) {
+        let padded = value;
+        while (padded.length < 8) {
+            padded += '0';
+        }
+        return new UUID(`${padded}-0000-4000-8000-${'0'.repeat(12)}`);
+    }
+}
+exports.UUID = UUID;
+
+
+/***/ }),
+
 /***/ "./ts/util/assert.js":
 /*!***************************!*\
   !*** ./ts/util/assert.js ***!
@@ -27744,7 +28175,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.strictAssert = exports.assert = void 0;
+exports.assertSync = exports.strictAssert = exports.assert = void 0;
 const environment_1 = __webpack_require__(/*! ../environment */ "./ts/environment.js");
 const log = __importStar(__webpack_require__(/*! ../logging/log */ "./ts/logging/log.js"));
 /**
@@ -27772,6 +28203,14 @@ function strictAssert(condition, message) {
     }
 }
 exports.strictAssert = strictAssert;
+/**
+ * Asserts that the type of value is not a promise.
+ * (Useful for database modules)
+ */
+function assertSync(value) {
+    return value;
+}
+exports.assertSync = assertSync;
 
 
 /***/ }),
@@ -28044,25 +28483,6 @@ function isNotNil(value) {
     return true;
 }
 exports.isNotNil = isNotNil;
-
-
-/***/ }),
-
-/***/ "./ts/util/isValidGuid.js":
-/*!********************************!*\
-  !*** ./ts/util/isValidGuid.js ***!
-  \********************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-// Copyright 2017-2021 Signal Messenger, LLC
-// SPDX-License-Identifier: AGPL-3.0-only
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isValidGuid = void 0;
-const isValidGuid = (value) => typeof value === 'string' &&
-    /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i.test(value);
-exports.isValidGuid = isValidGuid;
 
 
 /***/ }),
