@@ -22,14 +22,14 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 * [x] Signal Desktop builds
 * [x] libsignal-client builds
 * [x] better-sqlite3 builds
-* [ ] zkgroup builds
+* [x] zkgroup builds
 * [x] ringrtc builds
 * [x] Bundle all builds and outputs
 * [x] Sign `.deb` with keypair
 
 ## Successful Builds:
 
-...
+* [x] 5.23.0
 
 ## See also:
 

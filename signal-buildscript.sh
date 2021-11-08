@@ -34,8 +34,9 @@ popd
 # Build zkgroup
 echo "Entering /zkgroup"
 pushd /zkgroup
-rustup toolchain install nightly-2021-09-19
-rustup default nightly-2021-09-19
+sed -i 's/nightly-2021-09-19/nightly-2021-06-08/' rust-toolchain.toml
+rustup toolchain install nightly-2021-06-08
+rustup default nightly-2021-06-08
 make libzkgroup
 rm -f /signal-zkgroup-node/libzkgroup.so
 cp target/release/libzkgroup.so /signal-zkgroup-node/libzkgroup-arm64.so
