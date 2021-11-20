@@ -10,7 +10,6 @@ RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
 # Rustup-init
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-ENV RUST_BACKTRACE="full"
 # Node via NVM
 ENV HOME="/root"
 ENV NVM_DIR="$HOME/.nvm"
@@ -20,8 +19,8 @@ RUN tar xvf signalapp-signal-client-0.9.5.tgz
 RUN mv package signal-client
 
 # Clone Repos
-# Signal-Desktop v5.23.0
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.23.x
+# Signal-Desktop v5.24.0
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.24.x
 RUN mkdir /Signal-Desktop/release/
 # libsignal-client v0.9.5
 RUN git clone https://github.com/signalapp/libsignal-client.git
@@ -37,13 +36,13 @@ RUN git clone https://github.com/signalapp/signal-zkgroup-node.git
 RUN cd signal-zkgroup-node; git reset --hard 0d2b3874d2e671fa5fdcc2154065cc061f977672
 # better-sqlite3 branch feature/log-corruption
 RUN git clone https://github.com/signalapp/better-sqlite3.git -b feature/log-corruption
-RUN cd better-sqlite3; git reset --hard 32828e03be0489572ab334239c5768c86697989f
+RUN cd better-sqlite3; git reset --hard 9de3488f68d7429133dd859b7308fdcbd64f02f6
 # sqlcipher branch updates
 RUN git clone https://github.com/scottnonnenberg-signal/node-sqlcipher.git -b updates /sqlcipher
 
 #Copy Files
 COPY libringrtc-arm64.node /signal-ringrtc-node/build/linux/
-# COPY builds/release/private.key /Signal-Desktop/release/
+COPY builds/release/private.key /Signal-Desktop/release/
 COPY builds/release/public.key /Signal-Desktop/release/
 COPY fficonfig.h /usr/include/aarch64-linux-gnu/
 COPY signal-buildscript.sh /

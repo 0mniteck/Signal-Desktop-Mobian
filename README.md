@@ -2,9 +2,9 @@
 
 # Signal Desktop Builder
 
-## signal-desktop_5.23.0_arm64/unstable
+## signal-desktop_5.24.0_arm64/unstable
 
-This project builds Signal Desktop for Mobian/unstable on Arm64, currently targeting release `5.23.0`.
+This project builds Signal Desktop for Mobian/unstable on Arm64, currently targeting release `5.24.0`.
 
 This is the signed release: `builds/release/signal-desktop_5.xx.0_arm64.deb`.
 
@@ -15,7 +15,7 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 ## Usage:
 
 1. Build with docker: `sudo ./buildscript.sh`, it takes about 3 hours.
-2. Switch to Mobian/unstable.
+2. Switch your device to Mobian/unstable.
 2. Copy the `.deb` to your device and `sudo apt install ./signal-desktop_5.xx.0_arm64.deb`.
 
 ## Current Status:
@@ -31,6 +31,7 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 ## Successful Builds:
 
 * [x] 5.23.0
+* [x] 5.24.0
 
 ## See also:
 

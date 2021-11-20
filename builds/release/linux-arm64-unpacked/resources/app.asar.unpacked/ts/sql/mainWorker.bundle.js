@@ -22148,6 +22148,54 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ "./ts/badges/BadgeCategory.js":
+/*!************************************!*\
+  !*** ./ts/badges/BadgeCategory.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseBadgeCategory = exports.BadgeCategory = void 0;
+const enum_1 = __webpack_require__(/*! ../util/enum */ "./ts/util/enum.js");
+// The server may return "testing", which we should parse as "other".
+var BadgeCategory;
+(function (BadgeCategory) {
+    BadgeCategory["Donor"] = "donor";
+    BadgeCategory["Other"] = "other";
+})(BadgeCategory = exports.BadgeCategory || (exports.BadgeCategory = {}));
+exports.parseBadgeCategory = (0, enum_1.makeEnumParser)(BadgeCategory, BadgeCategory.Other);
+
+
+/***/ }),
+
+/***/ "./ts/badges/BadgeImageTheme.js":
+/*!**************************************!*\
+  !*** ./ts/badges/BadgeImageTheme.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseBadgeImageTheme = exports.BadgeImageTheme = void 0;
+const enum_1 = __webpack_require__(/*! ../util/enum */ "./ts/util/enum.js");
+var BadgeImageTheme;
+(function (BadgeImageTheme) {
+    BadgeImageTheme["Light"] = "light";
+    BadgeImageTheme["Dark"] = "dark";
+    BadgeImageTheme["Transparent"] = "transparent";
+})(BadgeImageTheme = exports.BadgeImageTheme || (exports.BadgeImageTheme = {}));
+exports.parseBadgeImageTheme = (0, enum_1.makeEnumParser)(BadgeImageTheme, BadgeImageTheme.Transparent);
+
+
+/***/ }),
+
 /***/ "./ts/environment.js":
 /*!***************************!*\
   !*** ./ts/environment.js ***!
@@ -22359,6 +22407,8 @@ const durations = __importStar(__webpack_require__(/*! ../util/durations */ "./t
 const formatCountForLogging_1 = __webpack_require__(/*! ../logging/formatCountForLogging */ "./ts/logging/formatCountForLogging.js");
 const Calling_1 = __webpack_require__(/*! ../types/Calling */ "./ts/types/Calling.js");
 const RemoveAllConfiguration_1 = __webpack_require__(/*! ../types/RemoveAllConfiguration */ "./ts/types/RemoveAllConfiguration.js");
+const BadgeCategory_1 = __webpack_require__(/*! ../badges/BadgeCategory */ "./ts/badges/BadgeCategory.js");
+const BadgeImageTheme_1 = __webpack_require__(/*! ../badges/BadgeImageTheme */ "./ts/badges/BadgeImageTheme.js");
 const log = __importStar(__webpack_require__(/*! ../logging/log */ "./ts/logging/log.js"));
 const util_1 = __webpack_require__(/*! ./util */ "./ts/sql/util.js");
 const migrations_1 = __webpack_require__(/*! ./migrations */ "./ts/sql/migrations/index.js");
@@ -22488,6 +22538,9 @@ const dataInterface = {
     clearAllErrorStickerPackAttempts,
     updateEmojiUsage,
     getRecentEmojis,
+    getAllBadges,
+    updateOrCreateBadges,
+    badgeImageFileDownloaded,
     removeAll,
     removeAllConfiguration,
     getMessagesNeedingUpgrade,
@@ -22509,6 +22562,7 @@ const dataInterface = {
     removeKnownAttachments,
     removeKnownStickers,
     removeKnownDraftAttachments,
+    getAllBadgeImageFileLocalPaths,
 };
 exports.default = dataInterface;
 const statementCache = new WeakMap();
@@ -24823,11 +24877,110 @@ async function getRecentEmojis(limit = 32) {
         .all({ limit });
     return rows || [];
 }
+async function getAllBadges() {
+    const db = getInstance();
+    const [badgeRows, badgeImageFileRows] = db.transaction(() => [
+        db.prepare('SELECT * FROM badges').all(),
+        db.prepare('SELECT * FROM badgeImageFiles').all(),
+    ])();
+    const badgeImagesByBadge = new Map();
+    for (const badgeImageFileRow of badgeImageFileRows) {
+        const { badgeId, order, localPath, url, theme } = badgeImageFileRow;
+        const badgeImages = badgeImagesByBadge.get(badgeId) || [];
+        badgeImages[order] = Object.assign(Object.assign({}, (badgeImages[order] || {})), { [(0, BadgeImageTheme_1.parseBadgeImageTheme)(theme)]: {
+                localPath: (0, dropNull_1.dropNull)(localPath),
+                url,
+            } });
+        badgeImagesByBadge.set(badgeId, badgeImages);
+    }
+    return badgeRows.map(badgeRow => ({
+        id: badgeRow.id,
+        category: (0, BadgeCategory_1.parseBadgeCategory)(badgeRow.category),
+        name: badgeRow.name,
+        descriptionTemplate: badgeRow.descriptionTemplate,
+        images: (badgeImagesByBadge.get(badgeRow.id) || []).filter(isNotNil_1.isNotNil),
+    }));
+}
+// This should match the logic in the badges Redux reducer.
+async function updateOrCreateBadges(badges) {
+    const db = getInstance();
+    const insertBadge = prepare(db, `
+    INSERT OR REPLACE INTO badges (
+      id,
+      category,
+      name,
+      descriptionTemplate
+    ) VALUES (
+      $id,
+      $category,
+      $name,
+      $descriptionTemplate
+    );
+    `);
+    const getImageFilesForBadge = prepare(db, 'SELECT url, localPath FROM badgeImageFiles WHERE badgeId = $badgeId');
+    const insertBadgeImageFile = prepare(db, `
+    INSERT INTO badgeImageFiles (
+      badgeId,
+      'order',
+      url,
+      localPath,
+      theme
+    ) VALUES (
+      $badgeId,
+      $order,
+      $url,
+      $localPath,
+      $theme
+    );
+    `);
+    db.transaction(() => {
+        badges.forEach(badge => {
+            const { id: badgeId } = badge;
+            const oldLocalPaths = new Map();
+            for (const { url, localPath } of getImageFilesForBadge.all({ badgeId })) {
+                if (localPath) {
+                    oldLocalPaths.set(url, localPath);
+                }
+            }
+            insertBadge.run({
+                id: badgeId,
+                category: badge.category,
+                name: badge.name,
+                descriptionTemplate: badge.descriptionTemplate,
+            });
+            for (const [order, image] of badge.images.entries()) {
+                for (const [theme, imageFile] of Object.entries(image)) {
+                    insertBadgeImageFile.run({
+                        badgeId,
+                        localPath: imageFile.localPath || oldLocalPaths.get(imageFile.url) || null,
+                        order,
+                        theme,
+                        url: imageFile.url,
+                    });
+                }
+            }
+        });
+    })();
+}
+async function badgeImageFileDownloaded(url, localPath) {
+    const db = getInstance();
+    prepare(db, 'UPDATE badgeImageFiles SET localPath = $localPath WHERE url = $url').run({ url, localPath });
+}
+async function getAllBadgeImageFileLocalPaths() {
+    const db = getInstance();
+    const localPaths = db
+        .prepare('SELECT localPath FROM badgeImageFiles WHERE localPath IS NOT NULL')
+        .pluck()
+        .all();
+    return new Set(localPaths);
+}
 // All data in database
 async function removeAll() {
     const db = getInstance();
     db.transaction(() => {
         db.exec(`
+      DELETE FROM badges;
+      DELETE FROM badgeImageFiles;
       DELETE FROM conversations;
       DELETE FROM identityKeys;
       DELETE FROM items;
@@ -26046,6 +26199,49 @@ exports.default = updateToSchemaVersion43;
 
 /***/ }),
 
+/***/ "./ts/sql/migrations/44-badges.js":
+/*!****************************************!*\
+  !*** ./ts/sql/migrations/44-badges.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function updateToSchemaVersion44(currentVersion, db, logger) {
+    if (currentVersion >= 44) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      CREATE TABLE badges(
+        id TEXT PRIMARY KEY,
+        category TEXT NOT NULL,
+        name TEXT NOT NULL,
+        descriptionTemplate TEXT NOT NULL
+      );
+
+      CREATE TABLE badgeImageFiles(
+        badgeId TEXT REFERENCES badges(id)
+          ON DELETE CASCADE
+          ON UPDATE CASCADE,
+        'order' INTEGER NOT NULL,
+        url TEXT NOT NULL,
+        localPath TEXT,
+        theme TEXT NOT NULL
+      );
+      `);
+        db.pragma('user_version = 44');
+    })();
+    logger.info('updateToSchemaVersion44: success!');
+}
+exports.default = updateToSchemaVersion44;
+
+
+/***/ }),
+
 /***/ "./ts/sql/migrations/index.js":
 /*!************************************!*\
   !*** ./ts/sql/migrations/index.js ***!
@@ -26067,6 +26263,7 @@ const util_1 = __webpack_require__(/*! ../util */ "./ts/sql/util.js");
 const _41_uuid_keys_1 = __importDefault(__webpack_require__(/*! ./41-uuid-keys */ "./ts/sql/migrations/41-uuid-keys.js"));
 const _42_stale_reactions_1 = __importDefault(__webpack_require__(/*! ./42-stale-reactions */ "./ts/sql/migrations/42-stale-reactions.js"));
 const _43_gv2_uuid_1 = __importDefault(__webpack_require__(/*! ./43-gv2-uuid */ "./ts/sql/migrations/43-gv2-uuid.js"));
+const _44_badges_1 = __importDefault(__webpack_require__(/*! ./44-badges */ "./ts/sql/migrations/44-badges.js"));
 function updateToSchemaVersion1(currentVersion, db, logger) {
     if (currentVersion >= 1) {
         return;
@@ -27619,6 +27816,7 @@ exports.SCHEMA_VERSIONS = [
     _41_uuid_keys_1.default,
     _42_stale_reactions_1.default,
     _43_gv2_uuid_1.default,
+    _44_badges_1.default,
 ];
 function updateSchema(db, logger) {
     const sqliteVersion = (0, util_1.getSQLiteVersion)(db);
