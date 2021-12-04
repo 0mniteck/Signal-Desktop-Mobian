@@ -24065,11 +24065,11 @@ function getLastConversationActivity({ conversationId, ourUuid, }) {
           json_extract(json, '$.expirationTimerUpdate.fromSync') != 1
         ) AND NOT
         (
-          type = 'group-v2-change' AND
-          json_extract(json, '$.groupV2Change.from') != $ourUuid AND
-          json_extract(json, '$.groupV2Change.details.length') = 1 AND
-          json_extract(json, '$.groupV2Change.details[0].type') = 'member-remove' AND
-          json_extract(json, '$.groupV2Change.details[0].uuid') != $ourUuid
+          type IS 'group-v2-change' AND
+          json_extract(json, '$.groupV2Change.from') IS NOT $ourUuid AND
+          json_extract(json, '$.groupV2Change.details.length') IS 1 AND
+          json_extract(json, '$.groupV2Change.details[0].type') IS 'member-remove' AND
+          json_extract(json, '$.groupV2Change.details[0].uuid') IS NOT $ourUuid
         )
       ORDER BY received_at DESC, sent_at DESC
       LIMIT 1;
@@ -24105,11 +24105,11 @@ function getLastConversationPreview({ conversationId, ourUuid, }) {
           )
         ) AND NOT
         (
-          type = 'group-v2-change' AND
-          json_extract(json, '$.groupV2Change.from') != $ourUuid AND
-          json_extract(json, '$.groupV2Change.details.length') = 1 AND
-          json_extract(json, '$.groupV2Change.details[0].type') = 'member-remove' AND
-          json_extract(json, '$.groupV2Change.details[0].uuid') != $ourUuid
+          type IS 'group-v2-change' AND
+          json_extract(json, '$.groupV2Change.from') IS NOT $ourUuid AND
+          json_extract(json, '$.groupV2Change.details.length') IS 1 AND
+          json_extract(json, '$.groupV2Change.details[0].type') IS 'member-remove' AND
+          json_extract(json, '$.groupV2Change.details[0].uuid') IS NOT $ourUuid
         )
       ORDER BY received_at DESC, sent_at DESC
       LIMIT 1;
@@ -24619,7 +24619,7 @@ async function clearAllErrorStickerPackAttempts() {
 }
 async function createOrUpdateSticker(sticker) {
     const db = getInstance();
-    const { emoji, height, id, isCoverOnly, lastUsed, packId, path, width, } = sticker;
+    const { emoji, height, id, isCoverOnly, lastUsed, packId, path, width } = sticker;
     if (!(0, lodash_1.isNumber)(id)) {
         throw new Error('createOrUpdateSticker: Provided data did not have a numeric id');
     }
@@ -25635,14 +25635,15 @@ function updateToSchemaVersion41(currentVersion, db, logger) {
         //
         // After this migration all sessions and keys are prefixed by
         // "uuid:".
-        db.exec(`
-      DELETE FROM senderKeys;
-      DELETE FROM sessions;
-      DELETE FROM signedPreKeys;
-      DELETE FROM preKeys;
-      `);
+        const keyCount = [
+            db.prepare('DELETE FROM senderKeys').run().changes,
+            db.prepare('DELETE FROM sessions').run().changes,
+            db.prepare('DELETE FROM signedPreKeys').run().changes,
+            db.prepare('DELETE FROM preKeys').run().changes,
+        ].reduce((a, b) => a + b);
         (0, assert_1.assertSync)((0, util_1.removeById)(db, 'items', 'identityKey'));
         (0, assert_1.assertSync)((0, util_1.removeById)(db, 'items', 'registrationId'));
+        return keyCount;
     };
     const moveIdentityKeyToMap = (ourUuid) => {
         const identityKey = (0, assert_1.assertSync)((0, util_1.getById)(db, 'items', 'identityKey'));
@@ -25875,8 +25876,11 @@ function updateToSchemaVersion41(currentVersion, db, logger) {
       `);
         const ourUuid = getOurUuid(db);
         if (!(0, UUID_1.isValidUuid)(ourUuid)) {
-            logger.error('updateToSchemaVersion41: no uuid is available clearing sessions');
-            clearSessionsAndKeys();
+            const deleteCount = clearSessionsAndKeys();
+            if (deleteCount > 0) {
+                logger.error('updateToSchemaVersion41: no uuid is available, ' +
+                    `erased ${deleteCount} sessions/keys`);
+            }
             db.pragma('user_version = 41');
             return;
         }
@@ -26072,7 +26076,7 @@ function updateToSchemaVersion43(currentVersion, db, logger) {
     };
     const upgradeMessage = (message) => {
         var _a;
-        const { id, groupV2Change, sourceUuid, invitedGV2Members, } = message;
+        const { id, groupV2Change, sourceUuid, invitedGV2Members } = message;
         let result = message;
         if (groupV2Change) {
             (0, assert_1.assert)(result.groupV2Change, 'Pacify typescript');
@@ -28290,9 +28294,15 @@ exports.STORAGE_UI_KEYS = [
 // Copyright 2021 Signal Messenger, LLC
 // SPDX-License-Identifier: AGPL-3.0-only
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.UUID = exports.isValidUuid = void 0;
+exports.UUID = exports.isValidUuid = exports.UUIDKind = void 0;
 const uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/index.js");
 const assert_1 = __webpack_require__(/*! ../util/assert */ "./ts/util/assert.js");
+var UUIDKind;
+(function (UUIDKind) {
+    UUIDKind["ACI"] = "ACI";
+    UUIDKind["PNI"] = "PNI";
+    UUIDKind["Unknown"] = "Unknown";
+})(UUIDKind = exports.UUIDKind || (exports.UUIDKind = {}));
 const isValidUuid = (value) => typeof value === 'string' &&
     /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i.test(value);
 exports.isValidUuid = isValidUuid;
