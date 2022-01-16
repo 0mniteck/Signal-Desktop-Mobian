@@ -19961,8 +19961,6 @@ module.exports.win32 = win32;
   \*********************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-exports.alphasort = alphasort
-exports.alphasorti = alphasorti
 exports.setopts = setopts
 exports.ownProp = ownProp
 exports.makeAbs = makeAbs
@@ -19980,12 +19978,8 @@ var minimatch = __webpack_require__(/*! minimatch */ "./node_modules/minimatch/m
 var isAbsolute = __webpack_require__(/*! path-is-absolute */ "./node_modules/path-is-absolute/index.js")
 var Minimatch = minimatch.Minimatch
 
-function alphasorti (a, b) {
-  return a.toLowerCase().localeCompare(b.toLowerCase())
-}
-
 function alphasort (a, b) {
-  return a.localeCompare(b)
+  return a.localeCompare(b, 'en')
 }
 
 function setupIgnores (self, options) {
@@ -20113,7 +20107,7 @@ function finish (self) {
     all = Object.keys(all)
 
   if (!self.nosort)
-    all = all.sort(self.nocase ? alphasorti : alphasort)
+    all = all.sort(alphasort)
 
   // at *some* point we statted all of these
   if (self.mark) {
@@ -20264,8 +20258,6 @@ var assert = __webpack_require__(/*! assert */ "assert")
 var isAbsolute = __webpack_require__(/*! path-is-absolute */ "./node_modules/path-is-absolute/index.js")
 var globSync = __webpack_require__(/*! ./sync.js */ "./node_modules/rimraf/node_modules/glob/sync.js")
 var common = __webpack_require__(/*! ./common.js */ "./node_modules/rimraf/node_modules/glob/common.js")
-var alphasort = common.alphasort
-var alphasorti = common.alphasorti
 var setopts = common.setopts
 var ownProp = common.ownProp
 var inflight = __webpack_require__(/*! inflight */ "./node_modules/inflight/inflight.js")
@@ -20366,9 +20358,7 @@ function Glob (pattern, options, cb) {
   }
 
   var self = this
-  var n = this.minimatch.set.length
   this._processing = 0
-  this.matches = new Array(n)
 
   this._emitQueue = []
   this._processQueue = []
@@ -21026,8 +21016,6 @@ var path = __webpack_require__(/*! path */ "path")
 var assert = __webpack_require__(/*! assert */ "assert")
 var isAbsolute = __webpack_require__(/*! path-is-absolute */ "./node_modules/path-is-absolute/index.js")
 var common = __webpack_require__(/*! ./common.js */ "./node_modules/rimraf/node_modules/glob/common.js")
-var alphasort = common.alphasort
-var alphasorti = common.alphasorti
 var setopts = common.setopts
 var ownProp = common.ownProp
 var childrenIgnored = common.childrenIgnored
@@ -22216,7 +22204,6 @@ var Environment;
     Environment["Production"] = "production";
     Environment["Staging"] = "staging";
     Environment["Test"] = "test";
-    Environment["TestLib"] = "test-lib";
 })(Environment = exports.Environment || (exports.Environment = {}));
 let environment;
 function getEnvironment() {
@@ -22241,7 +22228,7 @@ function setEnvironment(env) {
 }
 exports.setEnvironment = setEnvironment;
 exports.parseEnvironment = (0, enum_1.makeEnumParser)(Environment, Environment.Production);
-const isTestEnvironment = (env) => env === Environment.Test || env === Environment.TestLib;
+const isTestEnvironment = (env) => env === Environment.Test;
 exports.isTestEnvironment = isTestEnvironment;
 
 
@@ -22434,15 +22421,15 @@ const dataInterface = {
     getAllPreKeys,
     createOrUpdateSignedPreKey,
     getSignedPreKeyById,
-    getAllSignedPreKeys,
     bulkAddSignedPreKeys,
     removeSignedPreKeyById,
     removeAllSignedPreKeys,
+    getAllSignedPreKeys,
     createOrUpdateItem,
     getItemById,
-    getAllItems,
     removeItemById,
     removeAllItems,
+    getAllItems,
     createOrUpdateSenderKey,
     getSenderKeyById,
     removeAllSenderKeys,
@@ -22466,6 +22453,7 @@ const dataInterface = {
     removeSessionsByConversation,
     removeAllSessions,
     getAllSessions,
+    eraseStorageServiceStateFromConversations,
     getConversationCount,
     saveConversation,
     saveConversations,
@@ -22473,12 +22461,10 @@ const dataInterface = {
     updateConversation,
     updateConversations,
     removeConversation,
-    eraseStorageServiceStateFromConversations,
+    updateAllConversationColors,
     getAllConversations,
     getAllConversationIds,
-    getAllPrivateConversations,
     getAllGroupsInvolvingUuid,
-    updateAllConversationColors,
     searchConversations,
     searchMessages,
     searchMessagesInConversation,
@@ -22487,17 +22473,18 @@ const dataInterface = {
     saveMessages,
     removeMessage,
     removeMessages,
-    getUnreadCountForConversation,
     getUnreadByConversationAndMarkRead,
     getUnreadReactionsAndMarkRead,
     markReactionAsRead,
     addReaction,
     removeReactionFromConversation,
     _getAllReactions,
+    _removeAllReactions,
     getMessageBySender,
     getMessageById,
     getMessagesById,
     _getAllMessages,
+    _removeAllMessages,
     getAllMessageIds,
     getMessagesBySentAt,
     getExpiredMessages,
@@ -22506,8 +22493,11 @@ const dataInterface = {
     getNextTapToViewMessageTimestampToAgeOut,
     getTapToViewMessagesNeedingErase,
     getOlderMessagesByConversation,
+    getOlderStories,
     getNewerMessagesByConversation,
+    getTotalUnreadForConversation,
     getMessageMetricsForConversation,
+    getConversationRangeCenteredOnMessage,
     getLastConversationMessages,
     hasGroupCallHistoryMessage,
     migrateConversationMessages,
@@ -22520,8 +22510,8 @@ const dataInterface = {
     removeAllUnprocessed,
     getNextAttachmentDownloadJobs,
     saveAttachmentDownloadJob,
-    setAttachmentDownloadJobPending,
     resetAttachmentDownloadPending,
+    setAttachmentDownloadJobPending,
     removeAttachmentDownloadJob,
     removeAllAttachmentDownloadJobs,
     createOrUpdateStickerPack,
@@ -22541,6 +22531,18 @@ const dataInterface = {
     getAllBadges,
     updateOrCreateBadges,
     badgeImageFileDownloaded,
+    _getAllStoryDistributions,
+    _getAllStoryDistributionMembers,
+    _deleteAllStoryDistributions,
+    createNewStoryDistribution,
+    getAllStoryDistributionsWithMembers,
+    modifyStoryDistribution,
+    modifyStoryDistributionMembers,
+    deleteStoryDistribution,
+    _getAllStoryReads,
+    _deleteAllStoryReads,
+    addNewStoryRead,
+    getLastStoryReadsForAuthor,
     removeAll,
     removeAllConfiguration,
     getMessagesNeedingUpgrade,
@@ -23382,18 +23384,6 @@ async function getAllConversationIds() {
         .all();
     return rows.map(row => row.id);
 }
-async function getAllPrivateConversations() {
-    const db = getInstance();
-    const rows = db
-        .prepare(`
-      SELECT json, profileLastFetchedAt
-      FROM conversations
-      WHERE type = 'private'
-      ORDER BY id ASC;
-      `)
-        .all();
-    return rows.map(row => rowToConversation(row));
-}
 async function getAllGroupsInvolvingUuid(uuid) {
     const db = getInstance();
     const rows = db
@@ -23534,8 +23524,6 @@ async function getMessageCount(conversationId) {
 }
 function hasUserInitiatedMessages(conversationId) {
     const db = getInstance();
-    // We apply the limit in the sub-query so that `json_extract` wouldn't run
-    // for additional messages.
     const row = db
         .prepare(`
       SELECT COUNT(*) as count FROM
@@ -23543,33 +23531,21 @@ function hasUserInitiatedMessages(conversationId) {
           SELECT 1 FROM messages
           WHERE
             conversationId = $conversationId AND
-            (type IS NULL
-              OR
-              type NOT IN (
-                'profile-change',
-                'verified-change',
-                'message-history-unsynced',
-                'keychange',
-                'group-v1-migration',
-                'universal-timer-notification',
-                'change-number-notification',
-                'group-v2-change'
-              )
-            )
+            isUserInitiatedMessage = 1
           LIMIT 1
         );
       `)
         .get({ conversationId });
     return row.count !== 0;
 }
-function saveMessageSync(data, options = {}) {
-    const { jobToInsert, forceSave, alreadyInTransaction, db = getInstance(), } = options;
+function saveMessageSync(data, options) {
+    const { alreadyInTransaction, db = getInstance(), forceSave, jobToInsert, ourUuid, } = options;
     if (!alreadyInTransaction) {
         return db.transaction(() => {
             return (0, assert_1.assertSync)(saveMessageSync(data, Object.assign(Object.assign({}, options), { alreadyInTransaction: true })));
         })();
     }
-    const { body, conversationId, hasAttachments, hasFileAttachments, hasVisualMediaAttachments, id, isErased, isViewOnce, received_at, schemaVersion, sent_at, serverGuid, source, sourceUuid, sourceDevice, type, readStatus, expireTimer, expirationStartTimestamp, } = data;
+    const { body, conversationId, groupV2Change, hasAttachments, hasFileAttachments, hasVisualMediaAttachments, id, isErased, isViewOnce, received_at, schemaVersion, sent_at, serverGuid, source, sourceUuid, sourceDevice, storyId, type, readStatus, expireTimer, expirationStartTimestamp, } = data;
     const payload = {
         id,
         json: (0, util_1.objectToJSON)(data),
@@ -23580,6 +23556,7 @@ function saveMessageSync(data, options = {}) {
         hasAttachments: hasAttachments ? 1 : 0,
         hasFileAttachments: hasFileAttachments ? 1 : 0,
         hasVisualMediaAttachments: hasVisualMediaAttachments ? 1 : 0,
+        isChangeCreatedByUs: (groupV2Change === null || groupV2Change === void 0 ? void 0 : groupV2Change.from) === ourUuid ? 1 : 0,
         isErased: isErased ? 1 : 0,
         isViewOnce: isViewOnce ? 1 : 0,
         received_at: received_at || null,
@@ -23589,6 +23566,7 @@ function saveMessageSync(data, options = {}) {
         source: source || null,
         sourceUuid: sourceUuid || null,
         sourceDevice: sourceDevice || null,
+        storyId: storyId || null,
         type: type || null,
         readStatus: readStatus !== null && readStatus !== void 0 ? readStatus : null,
     };
@@ -23605,6 +23583,7 @@ function saveMessageSync(data, options = {}) {
         hasAttachments = $hasAttachments,
         hasFileAttachments = $hasFileAttachments,
         hasVisualMediaAttachments = $hasVisualMediaAttachments,
+        isChangeCreatedByUs = $isChangeCreatedByUs,
         isErased = $isErased,
         isViewOnce = $isViewOnce,
         received_at = $received_at,
@@ -23614,6 +23593,7 @@ function saveMessageSync(data, options = {}) {
         source = $source,
         sourceUuid = $sourceUuid,
         sourceDevice = $sourceDevice,
+        storyId = $storyId,
         type = $type,
         readStatus = $readStatus
       WHERE id = $id;
@@ -23636,6 +23616,7 @@ function saveMessageSync(data, options = {}) {
       hasAttachments,
       hasFileAttachments,
       hasVisualMediaAttachments,
+      isChangeCreatedByUs,
       isErased,
       isViewOnce,
       received_at,
@@ -23645,6 +23626,7 @@ function saveMessageSync(data, options = {}) {
       source,
       sourceUuid,
       sourceDevice,
+      storyId,
       type,
       readStatus
     ) values (
@@ -23658,6 +23640,7 @@ function saveMessageSync(data, options = {}) {
       $hasAttachments,
       $hasFileAttachments,
       $hasVisualMediaAttachments,
+      $isChangeCreatedByUs,
       $isErased,
       $isViewOnce,
       $received_at,
@@ -23667,6 +23650,7 @@ function saveMessageSync(data, options = {}) {
       $source,
       $sourceUuid,
       $sourceDevice,
+      $storyId,
       $type,
       $readStatus
     );
@@ -23681,10 +23665,9 @@ async function saveMessage(data, options) {
 }
 async function saveMessages(arrayOfMessages, options) {
     const db = getInstance();
-    const { forceSave } = options || {};
     db.transaction(() => {
         for (const message of arrayOfMessages) {
-            (0, assert_1.assertSync)(saveMessageSync(message, { forceSave, alreadyInTransaction: true }));
+            (0, assert_1.assertSync)(saveMessageSync(message, Object.assign(Object.assign({}, options), { alreadyInTransaction: true })));
         }
     })();
 }
@@ -23731,6 +23714,10 @@ async function _getAllMessages() {
         .all();
     return rows.map(row => (0, util_1.jsonToObject)(row.json));
 }
+async function _removeAllMessages() {
+    const db = getInstance();
+    db.prepare('DELETE from messages;').run();
+}
 async function getAllMessageIds() {
     const db = getInstance();
     const rows = db
@@ -23744,30 +23731,28 @@ async function getMessageBySender({ source, sourceUuid, sourceDevice, sent_at, }
     SELECT json FROM messages WHERE
       (source = $source OR sourceUuid = $sourceUuid) AND
       sourceDevice = $sourceDevice AND
-      sent_at = $sent_at;
+      sent_at = $sent_at
+    LIMIT 2;
     `).all({
         source,
         sourceUuid,
         sourceDevice,
         sent_at,
     });
-    return rows.map(row => (0, util_1.jsonToObject)(row.json));
+    if (rows.length > 1) {
+        log.warn('getMessageBySender: More than one message found for', {
+            sent_at,
+            source,
+            sourceUuid,
+            sourceDevice,
+        });
+    }
+    if (rows.length < 1) {
+        return undefined;
+    }
+    return (0, util_1.jsonToObject)(rows[0].json);
 }
-async function getUnreadCountForConversation(conversationId) {
-    const db = getInstance();
-    const row = db
-        .prepare(`
-      SELECT COUNT(*) AS unreadCount FROM messages
-      WHERE readStatus = ${MessageReadStatus_1.ReadStatus.Unread} AND
-      conversationId = $conversationId AND
-      type = 'incoming';
-      `)
-        .get({
-        conversationId,
-    });
-    return row.unreadCount;
-}
-async function getUnreadByConversationAndMarkRead(conversationId, newestUnreadId, readAt) {
+async function getUnreadByConversationAndMarkRead({ conversationId, newestUnreadAt, storyId, readAt, }) {
     const db = getInstance();
     return db.transaction(() => {
         const expirationStartTimestamp = Math.min(Date.now(), readAt !== null && readAt !== void 0 ? readAt : Infinity);
@@ -23782,14 +23767,16 @@ async function getUnreadByConversationAndMarkRead(conversationId, newestUnreadId
           expirationStartTimestamp IS NULL OR
           expirationStartTimestamp > $expirationStartTimestamp
         ) AND
-        expireTimer IS NOT NULL AND
+        expireTimer > 0 AND
         conversationId = $conversationId AND
-        received_at <= $newestUnreadId;
+        storyId IS $storyId AND
+        received_at <= $newestUnreadAt;
       `).run({
             conversationId,
             expirationStartTimestamp,
             jsonPatch: JSON.stringify({ expirationStartTimestamp }),
-            newestUnreadId,
+            newestUnreadAt,
+            storyId: storyId || null,
         });
         const rows = db
             .prepare(`
@@ -23798,12 +23785,14 @@ async function getUnreadByConversationAndMarkRead(conversationId, newestUnreadId
         WHERE
           readStatus = ${MessageReadStatus_1.ReadStatus.Unread} AND
           conversationId = $conversationId AND
-          received_at <= $newestUnreadId
+          storyId IS $storyId AND
+          received_at <= $newestUnreadAt
         ORDER BY received_at DESC, sent_at DESC;
         `)
             .all({
             conversationId,
-            newestUnreadId,
+            newestUnreadAt,
+            storyId: storyId || null,
         });
         db.prepare(`
         UPDATE messages
@@ -23813,11 +23802,13 @@ async function getUnreadByConversationAndMarkRead(conversationId, newestUnreadId
         WHERE
           readStatus = ${MessageReadStatus_1.ReadStatus.Unread} AND
           conversationId = $conversationId AND
-          received_at <= $newestUnreadId;
+          storyId IS $storyId AND
+          received_at <= $newestUnreadAt;
         `).run({
             conversationId,
             jsonPatch: JSON.stringify({ readStatus: MessageReadStatus_1.ReadStatus.Read }),
-            newestUnreadId,
+            newestUnreadAt,
+            storyId: storyId || null,
         });
         return rows.map(row => {
             const json = (0, util_1.jsonToObject)(row.json);
@@ -23832,29 +23823,32 @@ async function getUnreadByConversationAndMarkRead(conversationId, newestUnreadId
         });
     })();
 }
-async function getUnreadReactionsAndMarkRead(conversationId, newestUnreadId) {
+async function getUnreadReactionsAndMarkRead({ conversationId, newestUnreadAt, storyId, }) {
     const db = getInstance();
     return db.transaction(() => {
         const unreadMessages = db
             .prepare(`
-        SELECT targetAuthorUuid, targetTimestamp, messageId
-        FROM reactions WHERE
-          unread = 1 AND
-          conversationId = $conversationId AND
-          messageReceivedAt <= $newestUnreadId;
+        SELECT reactions.rowid, targetAuthorUuid, targetTimestamp, messageId
+        FROM reactions
+        JOIN messages on messages.id IS reactions.messageId
+        WHERE
+          unread > 0 AND
+          messages.conversationId IS $conversationId AND
+          messages.received_at <= $newestUnreadAt AND
+          messages.storyId IS $storyId
+        ORDER BY messageReceivedAt DESC;
       `)
             .all({
             conversationId,
-            newestUnreadId,
+            newestUnreadAt,
+            storyId: storyId || null,
         });
-        db.prepare(`
-      UPDATE reactions SET
-      unread = 0 WHERE
-      conversationId = $conversationId AND
-      messageReceivedAt <= $newestUnreadId;
-    `).run({
-            conversationId,
-            newestUnreadId,
+        const idsToUpdate = unreadMessages.map(item => item.rowid);
+        (0, util_1.batchMultiVarQuery)(db, idsToUpdate, (ids) => {
+            db.prepare(`
+        UPDATE reactions SET
+        unread = 0 WHERE rowid IN ( ${ids.map(() => '?').join(', ')} );
+        `).run(ids);
         });
         return unreadMessages;
     })();
@@ -23941,57 +23935,75 @@ async function _getAllReactions() {
     const db = getInstance();
     return db.prepare('SELECT * from reactions;').all();
 }
-async function getOlderMessagesByConversation(conversationId, { limit = 100, receivedAt = Number.MAX_VALUE, sentAt = Number.MAX_VALUE, messageId, } = {}) {
+async function _removeAllReactions() {
     const db = getInstance();
-    let rows;
-    if (messageId) {
-        rows = db
-            .prepare(`
-        SELECT json FROM messages WHERE
-          conversationId = $conversationId AND
-          id != $messageId AND
-          (
-            (received_at = $received_at AND sent_at < $sent_at) OR
-            received_at < $received_at
-          )
-        ORDER BY received_at DESC, sent_at DESC
-        LIMIT $limit;
-        `)
-            .all({
-            conversationId,
-            received_at: receivedAt,
-            sent_at: sentAt,
-            limit,
-            messageId,
-        });
-    }
-    else {
-        rows = db
-            .prepare(`
-        SELECT json FROM messages WHERE
+    db.prepare('DELETE from reactions;').run();
+}
+async function getOlderMessagesByConversation(conversationId, options) {
+    return getOlderMessagesByConversationSync(conversationId, options);
+}
+function getOlderMessagesByConversationSync(conversationId, { limit = 100, messageId, receivedAt = Number.MAX_VALUE, sentAt = Number.MAX_VALUE, storyId, } = {}) {
+    const db = getInstance();
+    return db
+        .prepare(`
+      SELECT json FROM messages WHERE
         conversationId = $conversationId AND
+        ($messageId IS NULL OR id IS NOT $messageId) AND
+        isStory IS 0 AND
+        storyId IS $storyId AND
         (
           (received_at = $received_at AND sent_at < $sent_at) OR
           received_at < $received_at
         )
-        ORDER BY received_at DESC, sent_at DESC
-        LIMIT $limit;
-        `)
-            .all({
-            conversationId,
-            received_at: receivedAt,
-            sent_at: sentAt,
-            limit,
-        });
-    }
-    return rows.reverse();
+      ORDER BY received_at DESC, sent_at DESC
+      LIMIT $limit;
+      `)
+        .all({
+        conversationId,
+        limit,
+        messageId: messageId || null,
+        received_at: receivedAt,
+        sent_at: sentAt,
+        storyId: storyId || null,
+    })
+        .reverse();
 }
-async function getNewerMessagesByConversation(conversationId, { limit = 100, receivedAt = 0, sentAt = 0, } = {}) {
+async function getOlderStories({ conversationId, limit = 10, receivedAt = Number.MAX_VALUE, sentAt, sourceUuid, }) {
+    const db = getInstance();
+    const rows = db
+        .prepare(`
+      SELECT json
+      FROM messages
+      WHERE
+        type IS 'story' AND
+        ($conversationId IS NULL OR conversationId IS $conversationId) AND
+        ($sourceUuid IS NULL OR sourceUuid IS $sourceUuid) AND
+        (received_at < $receivedAt
+          OR (received_at IS $receivedAt AND sent_at < $sentAt)
+        )
+      ORDER BY received_at DESC, sent_at DESC
+      LIMIT $limit;
+      `)
+        .all({
+        conversationId: conversationId || null,
+        receivedAt,
+        sentAt: sentAt || null,
+        sourceUuid: sourceUuid || null,
+        limit,
+    });
+    return rows.map(row => (0, util_1.jsonToObject)(row.json));
+}
+async function getNewerMessagesByConversation(conversationId, options) {
+    return getNewerMessagesByConversationSync(conversationId, options);
+}
+function getNewerMessagesByConversationSync(conversationId, { limit = 100, receivedAt = 0, sentAt = 0, storyId, } = {}) {
     const db = getInstance();
     const rows = db
         .prepare(`
       SELECT json FROM messages WHERE
         conversationId = $conversationId AND
+        isStory IS 0 AND
+        storyId IS $storyId AND
         (
           (received_at = $received_at AND sent_at > $sent_at) OR
           received_at > $received_at
@@ -24001,40 +24013,47 @@ async function getNewerMessagesByConversation(conversationId, { limit = 100, rec
       `)
         .all({
         conversationId,
+        limit,
         received_at: receivedAt,
         sent_at: sentAt,
-        limit,
+        storyId: storyId || null,
     });
     return rows;
 }
-function getOldestMessageForConversation(conversationId) {
+function getOldestMessageForConversation(conversationId, storyId) {
     const db = getInstance();
     const row = db
         .prepare(`
       SELECT * FROM messages WHERE
-        conversationId = $conversationId
+        conversationId = $conversationId AND
+        isStory IS 0 AND
+        storyId IS $storyId
       ORDER BY received_at ASC, sent_at ASC
       LIMIT 1;
       `)
         .get({
         conversationId,
+        storyId: storyId || null,
     });
     if (!row) {
         return undefined;
     }
     return row;
 }
-function getNewestMessageForConversation(conversationId) {
+function getNewestMessageForConversation(conversationId, storyId) {
     const db = getInstance();
     const row = db
         .prepare(`
       SELECT * FROM messages WHERE
-        conversationId = $conversationId
+        conversationId = $conversationId AND
+        isStory IS 0 AND
+        storyId IS $storyId
       ORDER BY received_at DESC, sent_at DESC
       LIMIT 1;
       `)
         .get({
         conversationId,
+        storyId: storyId || null,
     });
     if (!row) {
         return undefined;
@@ -24047,30 +24066,9 @@ function getLastConversationActivity({ conversationId, ourUuid, }) {
       SELECT json FROM messages
       WHERE
         conversationId = $conversationId AND
-        (type IS NULL
-          OR
-          type NOT IN (
-            'profile-change',
-            'verified-change',
-            'message-history-unsynced',
-            'keychange',
-            'group-v1-migration',
-            'universal-timer-notification',
-            'change-number-notification'
-          )
-        ) AND
-        (
-          json_extract(json, '$.expirationTimerUpdate.fromSync') IS NULL
-          OR
-          json_extract(json, '$.expirationTimerUpdate.fromSync') != 1
-        ) AND NOT
-        (
-          type IS 'group-v2-change' AND
-          json_extract(json, '$.groupV2Change.from') IS NOT $ourUuid AND
-          json_extract(json, '$.groupV2Change.details.length') IS 1 AND
-          json_extract(json, '$.groupV2Change.details[0].type') IS 'member-remove' AND
-          json_extract(json, '$.groupV2Change.details[0].uuid') IS NOT $ourUuid
-        )
+        shouldAffectActivity IS 1 AND
+        isTimerChangeFromSync IS 0 AND
+        isGroupLeaveEventFromOther IS 0
       ORDER BY received_at DESC, sent_at DESC
       LIMIT 1;
       `).get({
@@ -24082,40 +24080,23 @@ function getLastConversationActivity({ conversationId, ourUuid, }) {
     }
     return (0, util_1.jsonToObject)(row.json);
 }
-function getLastConversationPreview({ conversationId, ourUuid, }) {
+function getLastConversationPreview({ conversationId, }) {
     const db = getInstance();
     const row = prepare(db, `
       SELECT json FROM messages
       WHERE
         conversationId = $conversationId AND
+        shouldAffectPreview IS 1 AND
+        isGroupLeaveEventFromOther IS 0 AND
         (
-          expiresAt IS NULL OR
-          (expiresAt > $now)
-        ) AND
-        (
-          type IS NULL
+          expiresAt IS NULL
           OR
-          type NOT IN (
-            'profile-change',
-            'verified-change',
-            'message-history-unsynced',
-            'group-v1-migration',
-            'universal-timer-notification',
-            'change-number-notification'
-          )
-        ) AND NOT
-        (
-          type IS 'group-v2-change' AND
-          json_extract(json, '$.groupV2Change.from') IS NOT $ourUuid AND
-          json_extract(json, '$.groupV2Change.details.length') IS 1 AND
-          json_extract(json, '$.groupV2Change.details[0].type') IS 'member-remove' AND
-          json_extract(json, '$.groupV2Change.details[0].uuid') IS NOT $ourUuid
+          expiresAt > $now
         )
       ORDER BY received_at DESC, sent_at DESC
       LIMIT 1;
       `).get({
         conversationId,
-        ourUuid,
         now: Date.now(),
     });
     if (!row) {
@@ -24131,33 +24112,36 @@ async function getLastConversationMessages({ conversationId, ourUuid, }) {
                 conversationId,
                 ourUuid,
             }),
-            preview: getLastConversationPreview({
-                conversationId,
-                ourUuid,
-            }),
+            preview: getLastConversationPreview({ conversationId }),
             hasUserInitiatedMessages: hasUserInitiatedMessages(conversationId),
         };
     })();
 }
-function getOldestUnreadMessageForConversation(conversationId) {
+function getOldestUnreadMessageForConversation(conversationId, storyId) {
     const db = getInstance();
     const row = db
         .prepare(`
       SELECT * FROM messages WHERE
         conversationId = $conversationId AND
-        readStatus = ${MessageReadStatus_1.ReadStatus.Unread}
+        readStatus = ${MessageReadStatus_1.ReadStatus.Unread} AND
+        isStory IS 0 AND
+        storyId IS $storyId
       ORDER BY received_at ASC, sent_at ASC
       LIMIT 1;
       `)
         .get({
         conversationId,
+        storyId: storyId || null,
     });
     if (!row) {
         return undefined;
     }
     return row;
 }
-function getTotalUnreadForConversation(conversationId) {
+async function getTotalUnreadForConversation(conversationId, storyId) {
+    return getTotalUnreadForConversationSync(conversationId, storyId);
+}
+function getTotalUnreadForConversationSync(conversationId, storyId) {
     const db = getInstance();
     const row = db
         .prepare(`
@@ -24165,21 +24149,27 @@ function getTotalUnreadForConversation(conversationId) {
       FROM messages
       WHERE
         conversationId = $conversationId AND
-        readStatus = ${MessageReadStatus_1.ReadStatus.Unread};
+        readStatus = ${MessageReadStatus_1.ReadStatus.Unread} AND
+        isStory IS 0 AND
+        storyId IS $storyId;
       `)
         .get({
         conversationId,
+        storyId: storyId || null,
     });
     if (!row) {
         throw new Error('getTotalUnreadForConversation: Unable to get count');
     }
     return row['count(id)'];
 }
-async function getMessageMetricsForConversation(conversationId) {
-    const oldest = getOldestMessageForConversation(conversationId);
-    const newest = getNewestMessageForConversation(conversationId);
-    const oldestUnread = getOldestUnreadMessageForConversation(conversationId);
-    const totalUnread = getTotalUnreadForConversation(conversationId);
+async function getMessageMetricsForConversation(conversationId, storyId) {
+    return getMessageMetricsForConversationSync(conversationId, storyId);
+}
+function getMessageMetricsForConversationSync(conversationId, storyId) {
+    const oldest = getOldestMessageForConversation(conversationId, storyId);
+    const newest = getNewestMessageForConversation(conversationId, storyId);
+    const oldestUnread = getOldestUnreadMessageForConversation(conversationId, storyId);
+    const totalUnread = getTotalUnreadForConversationSync(conversationId, storyId);
     return {
         oldest: oldest ? (0, lodash_1.pick)(oldest, ['received_at', 'sent_at', 'id']) : undefined,
         newest: newest ? (0, lodash_1.pick)(newest, ['received_at', 'sent_at', 'id']) : undefined,
@@ -24188,6 +24178,27 @@ async function getMessageMetricsForConversation(conversationId) {
             : undefined,
         totalUnread,
     };
+}
+async function getConversationRangeCenteredOnMessage({ conversationId, limit, messageId, receivedAt, sentAt, storyId, }) {
+    const db = getInstance();
+    return db.transaction(() => {
+        return {
+            older: getOlderMessagesByConversationSync(conversationId, {
+                limit,
+                messageId,
+                receivedAt,
+                sentAt,
+                storyId,
+            }),
+            newer: getNewerMessagesByConversationSync(conversationId, {
+                limit,
+                receivedAt,
+                sentAt,
+                storyId,
+            }),
+            metrics: getMessageMetricsForConversationSync(conversationId, storyId),
+        };
+    })();
 }
 async function hasGroupCallHistoryMessage(conversationId, eraId) {
     const db = getInstance();
@@ -24416,6 +24427,14 @@ async function getUnprocessedCount() {
 }
 async function getAllUnprocessed() {
     const db = getInstance();
+    const { changes: deletedCount } = db
+        .prepare('DELETE FROM unprocessed WHERE timestamp < $monthAgo')
+        .run({
+        monthAgo: Date.now() - durations.MONTH,
+    });
+    if (deletedCount !== 0) {
+        logger.warn(`getAllUnprocessed: deleting ${deletedCount} old unprocessed envelopes`);
+    }
     const rows = db
         .prepare(`
       SELECT *
@@ -24974,28 +24993,195 @@ async function getAllBadgeImageFileLocalPaths() {
         .all();
     return new Set(localPaths);
 }
+function hydrateStoryDistribution(fromDatabase) {
+    return Object.assign(Object.assign({}, (0, lodash_1.omit)(fromDatabase, 'senderKeyInfoJson')), { senderKeyInfo: fromDatabase.senderKeyInfoJson
+            ? JSON.parse(fromDatabase.senderKeyInfoJson)
+            : undefined });
+}
+function freezeStoryDistribution(story) {
+    return Object.assign(Object.assign({}, (0, lodash_1.omit)(story, 'senderKeyInfo')), { senderKeyInfoJson: story.senderKeyInfo
+            ? JSON.stringify(story.senderKeyInfo)
+            : null });
+}
+async function _getAllStoryDistributions() {
+    const db = getInstance();
+    const storyDistributions = db
+        .prepare('SELECT * FROM storyDistributions;')
+        .all();
+    return storyDistributions.map(hydrateStoryDistribution);
+}
+async function _getAllStoryDistributionMembers() {
+    const db = getInstance();
+    return db
+        .prepare('SELECT * FROM storyDistributionMembers;')
+        .all();
+}
+async function _deleteAllStoryDistributions() {
+    const db = getInstance();
+    db.prepare('DELETE FROM storyDistributions;').run();
+}
+async function createNewStoryDistribution(distribution) {
+    const db = getInstance();
+    db.transaction(() => {
+        const payload = freezeStoryDistribution(distribution);
+        prepare(db, `
+      INSERT INTO storyDistributions(
+        id,
+        name,
+        avatarUrlPath,
+        avatarKey,
+        senderKeyInfoJson
+      ) VALUES (
+        $id,
+        $name,
+        $avatarUrlPath,
+        $avatarKey,
+        $senderKeyInfoJson
+      );
+      `).run(payload);
+        const { id: listId, members } = distribution;
+        const memberInsertStatement = prepare(db, `
+      INSERT OR REPLACE INTO storyDistributionMembers (
+        listId,
+        uuid
+      ) VALUES (
+        $listId,
+        $uuid
+      );
+      `);
+        for (const uuid of members) {
+            memberInsertStatement.run({
+                listId,
+                uuid,
+            });
+        }
+    })();
+}
+async function getAllStoryDistributionsWithMembers() {
+    const allDistributions = await _getAllStoryDistributions();
+    const allMembers = await _getAllStoryDistributionMembers();
+    const byListId = (0, lodash_1.groupBy)(allMembers, member => member.listId);
+    return allDistributions.map(list => (Object.assign(Object.assign({}, list), { members: (byListId[list.id] || []).map(member => member.uuid) })));
+}
+async function modifyStoryDistribution(distribution) {
+    const payload = freezeStoryDistribution(distribution);
+    const db = getInstance();
+    prepare(db, `
+    UPDATE storyDistributions
+    SET
+      name = $name,
+      avatarUrlPath = $avatarUrlPath,
+      avatarKey = $avatarKey,
+      senderKeyInfoJson = $senderKeyInfoJson
+    WHERE id = $id
+    `).run(payload);
+}
+async function modifyStoryDistributionMembers(listId, { toAdd, toRemove, }) {
+    const db = getInstance();
+    db.transaction(() => {
+        const memberInsertStatement = prepare(db, `
+      INSERT OR REPLACE INTO storyDistributionMembers (
+        listId,
+        uuid
+      ) VALUES (
+        $listId,
+        $uuid
+      );
+      `);
+        for (const uuid of toAdd) {
+            memberInsertStatement.run({
+                listId,
+                uuid,
+            });
+        }
+        (0, util_1.batchMultiVarQuery)(db, toRemove, (uuids) => {
+            db.prepare(`
+        DELETE FROM storyDistributionMembers
+        WHERE listId = ? AND uuid IN ( ${uuids.map(() => '?').join(', ')} );
+        `).run([listId, ...uuids]);
+        });
+    })();
+}
+async function deleteStoryDistribution(id) {
+    const db = getInstance();
+    db.prepare('DELETE FROM storyDistributions WHERE id = $id;').run({
+        id,
+    });
+}
+async function _getAllStoryReads() {
+    const db = getInstance();
+    return db.prepare('SELECT * FROM storyReads;').all();
+}
+async function _deleteAllStoryReads() {
+    const db = getInstance();
+    db.prepare('DELETE FROM storyReads;').run();
+}
+async function addNewStoryRead(read) {
+    const db = getInstance();
+    prepare(db, `
+    INSERT OR REPLACE INTO storyReads(
+      authorId,
+      conversationId,
+      storyId,
+      storyReadDate
+    ) VALUES (
+      $authorId,
+      $conversationId,
+      $storyId,
+      $storyReadDate
+    );
+    `).run(read);
+}
+async function getLastStoryReadsForAuthor({ authorId, conversationId, limit: initialLimit, }) {
+    const limit = initialLimit || 5;
+    const db = getInstance();
+    return db
+        .prepare(`
+      SELECT * FROM storyReads
+      WHERE
+        authorId = $authorId AND
+        ($conversationId IS NULL OR conversationId = $conversationId)
+      ORDER BY storyReadDate DESC
+      LIMIT $limit;
+      `)
+        .all({
+        authorId,
+        conversationId: conversationId || null,
+        limit,
+    });
+}
 // All data in database
 async function removeAll() {
     const db = getInstance();
     db.transaction(() => {
         db.exec(`
-      DELETE FROM badges;
+      DELETE FROM attachment_downloads;
       DELETE FROM badgeImageFiles;
+      DELETE FROM badges;
       DELETE FROM conversations;
+      DELETE FROM emojis;
+      DELETE FROM groupCallRings;
       DELETE FROM identityKeys;
       DELETE FROM items;
+      DELETE FROM jobs;
+      DELETE FROM jobs;
+      DELETE FROM messages_fts;
       DELETE FROM messages;
       DELETE FROM preKeys;
+      DELETE FROM reactions;
       DELETE FROM senderKeys;
+      DELETE FROM sendLogMessageIds;
+      DELETE FROM sendLogPayloads;
+      DELETE FROM sendLogRecipients;
       DELETE FROM sessions;
       DELETE FROM signedPreKeys;
-      DELETE FROM unprocessed;
-      DELETE FROM attachment_downloads;
-      DELETE FROM messages_fts;
-      DELETE FROM stickers;
       DELETE FROM sticker_packs;
       DELETE FROM sticker_references;
-      DELETE FROM jobs;
+      DELETE FROM stickers;
+      DELETE FROM storyDistributionMembers;
+      DELETE FROM storyDistributions;
+      DELETE FROM storyReads;
+      DELETE FROM unprocessed;
     `);
     })();
 }
@@ -25005,12 +25191,15 @@ async function removeAllConfiguration(mode = RemoveAllConfiguration_1.RemoveAllC
     db.transaction(() => {
         db.exec(`
       DELETE FROM identityKeys;
+      DELETE FROM jobs;
       DELETE FROM preKeys;
       DELETE FROM senderKeys;
+      DELETE FROM sendLogMessageIds;
+      DELETE FROM sendLogPayloads;
+      DELETE FROM sendLogRecipients;
       DELETE FROM sessions;
       DELETE FROM signedPreKeys;
       DELETE FROM unprocessed;
-      DELETE FROM jobs;
       `);
         if (mode === RemoveAllConfiguration_1.RemoveAllConfiguration.Full) {
             db.exec(`
@@ -25055,6 +25244,8 @@ async function getMessagesWithVisualMediaAttachments(conversationId, { limit }) 
     const rows = db
         .prepare(`
       SELECT json FROM messages WHERE
+        isStory IS 0 AND
+        storyId IS NULL AND
         conversationId = $conversationId AND
         hasVisualMediaAttachments = 1
       ORDER BY received_at DESC, sent_at DESC
@@ -25071,6 +25262,8 @@ async function getMessagesWithFileAttachments(conversationId, { limit }) {
     const rows = db
         .prepare(`
       SELECT json FROM messages WHERE
+        isStory IS 0 AND
+        storyId IS NULL AND
         conversationId = $conversationId AND
         hasFileAttachments = 1
       ORDER BY received_at DESC, sent_at DESC
@@ -25577,6 +25770,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getOurUuid = void 0;
 const UUID_1 = __webpack_require__(/*! ../../types/UUID */ "./ts/types/UUID.js");
 const assert_1 = __webpack_require__(/*! ../../util/assert */ "./ts/util/assert.js");
 const Helpers_1 = __importDefault(__webpack_require__(/*! ../../textsecure/Helpers */ "./ts/textsecure/Helpers.js"));
@@ -25593,6 +25787,7 @@ function getOurUuid(db) {
     const [ourUuid] = Helpers_1.default.unencodeNumber(String(value).toLowerCase());
     return ourUuid;
 }
+exports.getOurUuid = getOurUuid;
 function updateToSchemaVersion41(currentVersion, db, logger) {
     if (currentVersion >= 41) {
         return;
@@ -26246,6 +26441,412 @@ exports.default = updateToSchemaVersion44;
 
 /***/ }),
 
+/***/ "./ts/sql/migrations/45-stories.js":
+/*!*****************************************!*\
+  !*** ./ts/sql/migrations/45-stories.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function updateToSchemaVersion45(currentVersion, db, logger) {
+    if (currentVersion >= 45) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      --- Add column to messages table
+
+      ALTER TABLE messages ADD COLUMN storyId STRING;
+
+      --- Update important message indices
+
+      DROP INDEX   messages_conversation;
+      CREATE INDEX messages_conversation ON messages
+        (conversationId, type, storyId, received_at);
+
+      DROP INDEX   messages_unread;
+      CREATE INDEX messages_unread ON messages
+        (conversationId, readStatus, type, storyId) WHERE readStatus IS NOT NULL;
+
+      --- Update attachment indices for All Media views
+
+      DROP INDEX   messages_hasAttachments;
+      CREATE INDEX messages_hasAttachments
+        ON messages (conversationId, hasAttachments, received_at)
+        WHERE type IS NOT 'story' AND storyId IS NULL;
+
+      DROP INDEX   messages_hasFileAttachments;
+      CREATE INDEX messages_hasFileAttachments
+        ON messages (conversationId, hasFileAttachments, received_at)
+        WHERE type IS NOT 'story' AND storyId IS NULL;
+
+      DROP INDEX   messages_hasVisualMediaAttachments;
+      CREATE INDEX messages_hasVisualMediaAttachments
+        ON messages (conversationId, hasVisualMediaAttachments, received_at)
+        WHERE type IS NOT 'story' AND storyId IS NULL;
+
+      --- Message insert/update triggers to exclude stories and story replies
+
+      DROP   TRIGGER messages_on_insert;
+      CREATE TRIGGER messages_on_insert AFTER INSERT ON messages
+      WHEN new.isViewOnce IS NOT 1 AND new.storyId IS NULL
+      BEGIN
+        INSERT INTO messages_fts
+          (rowid, body)
+        VALUES
+          (new.rowid, new.body);
+      END;
+
+      DROP   TRIGGER messages_on_update;
+      CREATE TRIGGER messages_on_update AFTER UPDATE ON messages
+      WHEN
+        (new.body IS NULL OR old.body IS NOT new.body) AND
+         new.isViewOnce IS NOT 1 AND new.storyId IS NULL
+      BEGIN
+        DELETE FROM messages_fts WHERE rowid = old.rowid;
+        INSERT INTO messages_fts
+          (rowid, body)
+        VALUES
+          (new.rowid, new.body);
+      END;
+
+      --- Update delete trigger to remove storyReads
+
+      DROP   TRIGGER messages_on_delete;
+      CREATE TRIGGER messages_on_delete AFTER DELETE ON messages BEGIN
+        DELETE FROM messages_fts WHERE rowid = old.rowid;
+        DELETE FROM sendLogPayloads WHERE id IN (
+          SELECT payloadId FROM sendLogMessageIds
+          WHERE messageId = old.id
+        );
+        DELETE FROM reactions WHERE rowid IN (
+          SELECT rowid FROM reactions
+          WHERE messageId = old.id
+        );
+        DELETE FROM storyReads WHERE storyId = old.storyId;
+      END;
+
+      --- Story Read History
+
+      CREATE TABLE storyReads (
+        authorId STRING NOT NULL,
+        conversationId STRING NOT NULL,
+        storyId STRING NOT NULL,
+        storyReadDate NUMBER NOT NULL,
+
+        PRIMARY KEY (authorId, storyId)
+      );
+
+      CREATE INDEX storyReads_data ON storyReads (
+        storyReadDate, authorId, conversationId
+      );
+
+      --- Story Distribution Lists
+
+      CREATE TABLE storyDistributions(
+        id STRING PRIMARY KEY NOT NULL,
+        name TEXT,
+
+        avatarUrlPath TEXT,
+        avatarKey BLOB,
+        senderKeyInfoJson STRING
+      );
+
+      CREATE TABLE storyDistributionMembers(
+        listId STRING NOT NULL REFERENCES storyDistributions(id)
+          ON DELETE CASCADE
+          ON UPDATE CASCADE,
+        uuid STRING NOT NULL,
+
+        PRIMARY KEY (listId, uuid)
+      )
+      `);
+        db.pragma('user_version = 45');
+    })();
+    logger.info('updateToSchemaVersion45: success!');
+}
+exports.default = updateToSchemaVersion45;
+
+
+/***/ }),
+
+/***/ "./ts/sql/migrations/46-optimize-stories.js":
+/*!**************************************************!*\
+  !*** ./ts/sql/migrations/46-optimize-stories.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function updateToSchemaVersion46(currentVersion, db, logger) {
+    if (currentVersion >= 46) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      --- Add column to messages table
+
+      ALTER TABLE messages
+      ADD COLUMN
+      isStory INTEGER
+      GENERATED ALWAYS
+      AS (type = 'story');
+
+      --- Update important message indices
+
+      DROP INDEX   messages_conversation;
+      CREATE INDEX messages_conversation ON messages
+        (conversationId, isStory, storyId, received_at, sent_at);
+      `);
+        db.pragma('user_version = 46');
+    })();
+    logger.info('updateToSchemaVersion46: success!');
+}
+exports.default = updateToSchemaVersion46;
+
+
+/***/ }),
+
+/***/ "./ts/sql/migrations/47-further-optimize.js":
+/*!**************************************************!*\
+  !*** ./ts/sql/migrations/47-further-optimize.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const _41_uuid_keys_1 = __webpack_require__(/*! ./41-uuid-keys */ "./ts/sql/migrations/41-uuid-keys.js");
+function updateToSchemaVersion47(currentVersion, db, logger) {
+    if (currentVersion >= 47) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      DROP INDEX   messages_conversation;
+
+      ALTER TABLE messages
+        DROP COLUMN isStory;
+      ALTER TABLE messages
+        ADD COLUMN isStory INTEGER
+        GENERATED ALWAYS AS (type IS 'story');
+
+      ALTER TABLE messages
+        ADD COLUMN isChangeCreatedByUs INTEGER NOT NULL DEFAULT 0;
+
+      ALTER TABLE messages
+        ADD COLUMN shouldAffectActivity INTEGER
+        GENERATED ALWAYS AS (
+          type IS NULL
+          OR
+          type NOT IN (
+            'change-number-notification',
+            'group-v1-migration',
+            'message-history-unsynced',
+            'profile-change',
+            'story',
+            'universal-timer-notification',
+            'verified-change',
+
+            'keychange'
+          )
+        );
+
+      ALTER TABLE messages
+        ADD COLUMN shouldAffectPreview INTEGER
+        GENERATED ALWAYS AS (
+          type IS NULL
+          OR
+          type NOT IN (
+            'change-number-notification',
+            'group-v1-migration',
+            'message-history-unsynced',
+            'profile-change',
+            'story',
+            'universal-timer-notification',
+            'verified-change'
+          )
+        );
+
+      ALTER TABLE messages
+        ADD COLUMN isUserInitiatedMessage INTEGER
+        GENERATED ALWAYS AS (
+          type IS NULL
+          OR
+          type NOT IN (
+            'change-number-notification',
+            'group-v1-migration',
+            'message-history-unsynced',
+            'profile-change',
+            'story',
+            'universal-timer-notification',
+            'verified-change',
+
+            'group-v2-change',
+            'keychange'
+          )
+        );
+
+      ALTER TABLE messages
+        ADD COLUMN isTimerChangeFromSync INTEGER
+        GENERATED ALWAYS AS (
+          json_extract(json, '$.expirationTimerUpdate.fromSync') IS 1
+        );
+
+      ALTER TABLE messages
+        ADD COLUMN isGroupLeaveEvent INTEGER
+        GENERATED ALWAYS AS (
+          type IS 'group-v2-change' AND
+          json_array_length(json_extract(json, '$.groupV2Change.details')) IS 1 AND
+          json_extract(json, '$.groupV2Change.details[0].type') IS 'member-remove' AND
+          json_extract(json, '$.groupV2Change.from') IS NOT NULL AND
+          json_extract(json, '$.groupV2Change.from') IS json_extract(json, '$.groupV2Change.details[0].uuid')
+        );
+
+      ALTER TABLE messages
+        ADD COLUMN isGroupLeaveEventFromOther INTEGER
+        GENERATED ALWAYS AS (
+          isGroupLeaveEvent IS 1
+          AND
+          isChangeCreatedByUs IS 0
+        );
+
+      CREATE INDEX messages_conversation ON messages
+        (conversationId, isStory, storyId, received_at, sent_at);
+
+      CREATE INDEX messages_preview ON messages
+        (conversationId, shouldAffectPreview, isGroupLeaveEventFromOther, expiresAt, received_at, sent_at);
+
+      CREATE INDEX messages_activity ON messages
+        (conversationId, shouldAffectActivity, isTimerChangeFromSync, isGroupLeaveEventFromOther, received_at, sent_at);
+
+      CREATE INDEX message_user_initiated ON messages (isUserInitiatedMessage);
+      `);
+        const ourUuid = (0, _41_uuid_keys_1.getOurUuid)(db);
+        if (!ourUuid) {
+            logger.warn('updateToSchemaVersion47: our UUID not found');
+        }
+        else {
+            db.prepare(`
+        UPDATE messages SET
+          isChangeCreatedByUs = json_extract(json, '$.groupV2Change.from') IS $ourUuid;
+        `).run({
+                ourUuid,
+            });
+        }
+        db.pragma('user_version = 47');
+    })();
+    logger.info('updateToSchemaVersion47: success!');
+}
+exports.default = updateToSchemaVersion47;
+
+
+/***/ }),
+
+/***/ "./ts/sql/migrations/48-fix-user-initiated-index.js":
+/*!**********************************************************!*\
+  !*** ./ts/sql/migrations/48-fix-user-initiated-index.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function updateToSchemaVersion48(currentVersion, db, logger) {
+    if (currentVersion >= 48) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      DROP INDEX   message_user_initiated;
+
+      CREATE INDEX message_user_initiated ON messages (conversationId, isUserInitiatedMessage);
+      `);
+        db.pragma('user_version = 48');
+    })();
+    logger.info('updateToSchemaVersion48: success!');
+}
+exports.default = updateToSchemaVersion48;
+
+
+/***/ }),
+
+/***/ "./ts/sql/migrations/49-fix-preview-index.js":
+/*!***************************************************!*\
+  !*** ./ts/sql/migrations/49-fix-preview-index.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function updateToSchemaVersion49(currentVersion, db, logger) {
+    if (currentVersion >= 49) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      DROP INDEX messages_preview;
+
+      -- Note the omitted 'expiresAt' column in the index. If it is present
+      -- sqlite can't ORDER BY received_at, sent_at using this index.
+      CREATE INDEX messages_preview ON messages
+        (conversationId, shouldAffectPreview, isGroupLeaveEventFromOther, received_at, sent_at);
+      `);
+        db.pragma('user_version = 49');
+    })();
+    logger.info('updateToSchemaVersion49: success!');
+}
+exports.default = updateToSchemaVersion49;
+
+
+/***/ }),
+
+/***/ "./ts/sql/migrations/50-fix-messages-unread-index.js":
+/*!***********************************************************!*\
+  !*** ./ts/sql/migrations/50-fix-messages-unread-index.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function updateToSchemaVersion50(currentVersion, db, logger) {
+    if (currentVersion >= 50) {
+        return;
+    }
+    db.transaction(() => {
+        db.exec(`
+      DROP INDEX messages_unread;
+
+      -- Note: here we move to the modern isStory/storyId fields and add received_at/sent_at.
+      CREATE INDEX messages_unread ON messages
+        (conversationId, readStatus, isStory, storyId, received_at, sent_at) WHERE readStatus IS NOT NULL;
+      `);
+        db.pragma('user_version = 50');
+    })();
+    logger.info('updateToSchemaVersion50: success!');
+}
+exports.default = updateToSchemaVersion50;
+
+
+/***/ }),
+
 /***/ "./ts/sql/migrations/index.js":
 /*!************************************!*\
   !*** ./ts/sql/migrations/index.js ***!
@@ -26268,6 +26869,12 @@ const _41_uuid_keys_1 = __importDefault(__webpack_require__(/*! ./41-uuid-keys *
 const _42_stale_reactions_1 = __importDefault(__webpack_require__(/*! ./42-stale-reactions */ "./ts/sql/migrations/42-stale-reactions.js"));
 const _43_gv2_uuid_1 = __importDefault(__webpack_require__(/*! ./43-gv2-uuid */ "./ts/sql/migrations/43-gv2-uuid.js"));
 const _44_badges_1 = __importDefault(__webpack_require__(/*! ./44-badges */ "./ts/sql/migrations/44-badges.js"));
+const _45_stories_1 = __importDefault(__webpack_require__(/*! ./45-stories */ "./ts/sql/migrations/45-stories.js"));
+const _46_optimize_stories_1 = __importDefault(__webpack_require__(/*! ./46-optimize-stories */ "./ts/sql/migrations/46-optimize-stories.js"));
+const _47_further_optimize_1 = __importDefault(__webpack_require__(/*! ./47-further-optimize */ "./ts/sql/migrations/47-further-optimize.js"));
+const _48_fix_user_initiated_index_1 = __importDefault(__webpack_require__(/*! ./48-fix-user-initiated-index */ "./ts/sql/migrations/48-fix-user-initiated-index.js"));
+const _49_fix_preview_index_1 = __importDefault(__webpack_require__(/*! ./49-fix-preview-index */ "./ts/sql/migrations/49-fix-preview-index.js"));
+const _50_fix_messages_unread_index_1 = __importDefault(__webpack_require__(/*! ./50-fix-messages-unread-index */ "./ts/sql/migrations/50-fix-messages-unread-index.js"));
 function updateToSchemaVersion1(currentVersion, db, logger) {
     if (currentVersion >= 1) {
         return;
@@ -27821,6 +28428,12 @@ exports.SCHEMA_VERSIONS = [
     _42_stale_reactions_1.default,
     _43_gv2_uuid_1.default,
     _44_badges_1.default,
+    _45_stories_1.default,
+    _46_optimize_stories_1.default,
+    _47_further_optimize_1.default,
+    _48_fix_user_initiated_index_1.default,
+    _49_fix_preview_index_1.default,
+    _50_fix_messages_unread_index_1.default,
 ];
 function updateSchema(db, logger) {
     const sqliteVersion = (0, util_1.getSQLiteVersion)(db);
@@ -28294,7 +28907,7 @@ exports.STORAGE_UI_KEYS = [
 // Copyright 2021 Signal Messenger, LLC
 // SPDX-License-Identifier: AGPL-3.0-only
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.UUID = exports.isValidUuid = exports.UUIDKind = void 0;
+exports.UUID = exports.isValidUuid = exports.UUID_BYTE_SIZE = exports.UUIDKind = void 0;
 const uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/index.js");
 const assert_1 = __webpack_require__(/*! ../util/assert */ "./ts/util/assert.js");
 var UUIDKind;
@@ -28303,6 +28916,7 @@ var UUIDKind;
     UUIDKind["PNI"] = "PNI";
     UUIDKind["Unknown"] = "Unknown";
 })(UUIDKind = exports.UUIDKind || (exports.UUIDKind = {}));
+exports.UUID_BYTE_SIZE = 16;
 const isValidUuid = (value) => typeof value === 'string' &&
     /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i.test(value);
 exports.isValidUuid = isValidUuid;
@@ -28605,12 +29219,13 @@ exports.shallowDropNull = shallowDropNull;
 // Copyright 2021 Signal Messenger, LLC
 // SPDX-License-Identifier: AGPL-3.0-only
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.WEEK = exports.DAY = exports.HOUR = exports.MINUTE = exports.SECOND = void 0;
+exports.MONTH = exports.WEEK = exports.DAY = exports.HOUR = exports.MINUTE = exports.SECOND = void 0;
 exports.SECOND = 1000;
 exports.MINUTE = exports.SECOND * 60;
 exports.HOUR = exports.MINUTE * 60;
 exports.DAY = exports.HOUR * 24;
 exports.WEEK = exports.DAY * 7;
+exports.MONTH = exports.DAY * 30;
 
 
 /***/ }),

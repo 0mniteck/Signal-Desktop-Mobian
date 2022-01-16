@@ -1,5 +1,6 @@
 arm64:
   firstOrDefaultFilePatterns:
+    - '!**/node_modules'
     - '!build{,/**/*}'
     - '!release{,/**/*}'
     - package.json
@@ -40,6 +41,7 @@ arm64:
     - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts,.snyk-*.flag,benchmark}'
     - '!**/node_modules/.bin'
     - '!**/node_modules/**/build/**'
+    - node_modules/intl-tel-input/build/**
     - '!**/node_modules/**/prebuilds/**'
     - '!**/*.{o,hprof,orig,pyc,pyo,rbc}'
     - '!**/._*'
@@ -51,13 +53,18 @@ arm64:
     - node_modules/socks/build/common/*.js
     - node_modules/socks/build/client/*.js
     - node_modules/smart-buffer/build/*.js
-    - node_modules/sharp/build/**
-    - '!node_modules/sharp/{install,src,vendor/include,vendor/*/include}'
+    - node_modules/sharp/build/**/*arm64*.node
+    - node_modules/sharp/build/**/*.dll
+    - '!node_modules/sharp/{install,src,vendor}'
+    - '!node_modules/sharp/vendor'
+    - node_modules/sharp/vendor/*/*arm64*/**
+    - '!node_modules/sharp/vendor/*/*arm64*/**/include/**'
+    - '!node_modules/sharp/vendor/*/*win32*/**/*.{dll,lib}'
     - '!node_modules/better-sqlite3/deps/*'
     - '!node_modules/better-sqlite3/src/*'
     - node_modules/better-sqlite3/build/Release/better_sqlite3.node
-    - node_modules/@signalapp/signal-client/prebuilds/*linux*/*.node
-    - node_modules/ringrtc/build/linux/**
+    - node_modules/@signalapp/signal-client/prebuilds/linux-arm64/*.node
+    - node_modules/ringrtc/build/linux/*arm64*.node
     - node_modules/mac-screen-capture-permissions/build/Release/*.node
     - '!**/node_modules/react-dom/*/*.development.js'
     - '!node_modules/.cache'
@@ -108,6 +115,7 @@ arm64:
     - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts,.snyk-*.flag,benchmark}'
     - '!**/node_modules/.bin'
     - '!**/node_modules/**/build/**'
+    - node_modules/intl-tel-input/build/**
     - '!**/node_modules/**/prebuilds/**'
     - '!**/*.{o,hprof,orig,pyc,pyo,rbc}'
     - '!**/._*'
@@ -119,13 +127,18 @@ arm64:
     - node_modules/socks/build/common/*.js
     - node_modules/socks/build/client/*.js
     - node_modules/smart-buffer/build/*.js
-    - node_modules/sharp/build/**
-    - '!node_modules/sharp/{install,src,vendor/include,vendor/*/include}'
+    - node_modules/sharp/build/**/*arm64*.node
+    - node_modules/sharp/build/**/*.dll
+    - '!node_modules/sharp/{install,src,vendor}'
+    - '!node_modules/sharp/vendor'
+    - node_modules/sharp/vendor/*/*arm64*/**
+    - '!node_modules/sharp/vendor/*/*arm64*/**/include/**'
+    - '!node_modules/sharp/vendor/*/*win32*/**/*.{dll,lib}'
     - '!node_modules/better-sqlite3/deps/*'
     - '!node_modules/better-sqlite3/src/*'
     - node_modules/better-sqlite3/build/Release/better_sqlite3.node
-    - node_modules/@signalapp/signal-client/prebuilds/*linux*/*.node
-    - node_modules/ringrtc/build/linux/**
+    - node_modules/@signalapp/signal-client/prebuilds/linux-arm64/*.node
+    - node_modules/ringrtc/build/linux/*arm64*.node
     - node_modules/mac-screen-capture-permissions/build/Release/*.node
     - '!**/node_modules/react-dom/*/*.development.js'
     - '!node_modules/.cache'

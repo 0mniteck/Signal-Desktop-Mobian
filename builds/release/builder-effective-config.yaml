@@ -5,7 +5,7 @@ appId: org.whispersystems.signal-desktop
 mac:
   asarUnpack:
     - '**/*.node'
-  artifactName: ${name}-mac-${version}.${ext}
+  artifactName: ${name}-mac-${arch}-${version}.${ext}
   category: public.app-category.social-networking
   darkModeSupport: true
   hardenedRuntime: true
@@ -15,8 +15,15 @@ mac:
     - provider: generic
       url: https://updates.signal.org/desktop
   target:
-    - zip
-    - dmg
+    - target: zip
+      arch:
+        - x64
+        - arm64
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+        - universal
   bundleVersion: '1'
 win:
   asarUnpack:
@@ -60,6 +67,8 @@ protocols:
   schemes:
     - sgnl
     - signalcaptcha
+beforeBuild: scripts/install-cross-deps.js
+afterPack: ts/scripts/after-pack.js
 asarUnpack:
   - ts/workers/heicConverter.bundle.js
   - ts/sql/mainWorker.bundle.js
@@ -104,6 +113,7 @@ files:
       - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts,.snyk-*.flag,benchmark}'
       - '!**/node_modules/.bin'
       - '!**/node_modules/**/build/**'
+      - node_modules/intl-tel-input/build/**
       - '!**/node_modules/**/prebuilds/**'
       - '!**/*.{o,hprof,orig,pyc,pyo,rbc}'
       - '!**/._*'
@@ -115,16 +125,21 @@ files:
       - node_modules/socks/build/common/*.js
       - node_modules/socks/build/client/*.js
       - node_modules/smart-buffer/build/*.js
-      - node_modules/sharp/build/**
-      - '!node_modules/sharp/{install,src,vendor/include,vendor/*/include}'
+      - node_modules/sharp/build/**/*${arch}*.node
+      - node_modules/sharp/build/**/*.dll
+      - '!node_modules/sharp/{install,src,vendor}'
+      - '!node_modules/sharp/vendor'
+      - node_modules/sharp/vendor/*/*${arch}*/**
+      - '!node_modules/sharp/vendor/*/*${arch}*/**/include/**'
+      - '!node_modules/sharp/vendor/*/*win32*/**/*.{dll,lib}'
       - '!node_modules/better-sqlite3/deps/*'
       - '!node_modules/better-sqlite3/src/*'
       - node_modules/better-sqlite3/build/Release/better_sqlite3.node
-      - node_modules/@signalapp/signal-client/prebuilds/*${platform}*/*.node
-      - node_modules/ringrtc/build/${platform}/**
+      - node_modules/@signalapp/signal-client/prebuilds/${platform}-${arch}/*.node
+      - node_modules/ringrtc/build/${platform}/*${arch}*.node
       - node_modules/mac-screen-capture-permissions/build/Release/*.node
       - '!**/node_modules/react-dom/*/*.development.js'
       - '!node_modules/.cache'
 extraMetadata:
   environment: production
-electronVersion: 15.3.2
+electronVersion: 16.0.6
