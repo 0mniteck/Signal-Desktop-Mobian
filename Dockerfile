@@ -14,13 +14,13 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV HOME="/root"
 ENV NVM_DIR="$HOME/.nvm"
 # @signalapp/signal-client v0.11.1
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.9.1 && nvm use 16.9.1 && npm install --global yarn node-gyp && npm pack '@signalapp/signal-client@0.11.1'
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.9.1 && nvm use 16.9.1 && npm install -g npm@8.3.2 && npm install --global yarn node-gyp && npm pack '@signalapp/signal-client@0.11.1'
 RUN tar xvf signalapp-signal-client-0.11.1.tgz
 RUN mv package signal-client
 
 # Clone Repos
-# Signal-Desktop v5.28.0
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.28.x
+# Signal-Desktop v5.29.0
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.29.x
 RUN mkdir /Signal-Desktop/release/
 # libsignal-client v0.11.1
 RUN git clone https://github.com/signalapp/libsignal-client.git

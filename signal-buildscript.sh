@@ -47,6 +47,6 @@ else
 fi
 sha512sum release/*.deb && sha512sum release/*.deb > release/release.sha512sum
 echo "Public Key: "$(cat /Signal-Desktop/release/public.key) && echo "Public Key: "$(cat /Signal-Desktop/release/public.key) >> release/release.sha512sum
-echo "Build Complete on "$(date -u) && echo "Build Complete on "$(date -u) >> release/release.sha512sum
+echo "Build Complete "$(date -u '+on %D at %R UTC') && echo "Build Complete "$(date -u '+on %D at %R UTC') >> release/release.sha512sum
 ls -la release/
 popd

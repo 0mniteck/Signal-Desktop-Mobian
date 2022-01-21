@@ -10,7 +10,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # Node via NVM
 ENV HOME="/root"
 ENV NVM_DIR="$HOME/.nvm"
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.9.1 && nvm use 16.9.1 && npm install --global yarn
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.9.1 && nvm use 16.9.1 && npm install -g npm@8.3.2 && npm install --global yarn
 
 # Clone Repos
 # RingRTC v2.16.1

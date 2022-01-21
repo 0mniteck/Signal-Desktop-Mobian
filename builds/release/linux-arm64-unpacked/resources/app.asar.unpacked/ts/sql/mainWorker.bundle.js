@@ -22447,7 +22447,7 @@ const dataInterface = {
     _getAllSentProtoMessageIds,
     createOrUpdateSession,
     createOrUpdateSessions,
-    commitSessionsAndUnprocessed,
+    commitDecryptResult,
     bulkAddSessions,
     removeSessionById,
     removeSessionsByConversation,
@@ -22885,6 +22885,9 @@ async function removeAllItems() {
     return (0, util_1.removeAllFromTable)(getInstance(), ITEMS_TABLE);
 }
 async function createOrUpdateSenderKey(key) {
+    createOrUpdateSenderKeySync(key);
+}
+function createOrUpdateSenderKeySync(key) {
     const db = getInstance();
     prepare(db, `
     INSERT OR REPLACE INTO senderKeys (
@@ -23169,9 +23172,12 @@ async function createOrUpdateSessions(array) {
         }
     })();
 }
-async function commitSessionsAndUnprocessed({ sessions, unprocessed, }) {
+async function commitDecryptResult({ senderKeys, sessions, unprocessed, }) {
     const db = getInstance();
     db.transaction(() => {
+        for (const item of senderKeys) {
+            (0, assert_1.assertSync)(createOrUpdateSenderKeySync(item));
+        }
         for (const item of sessions) {
             (0, assert_1.assertSync)(createOrUpdateSessionSync(item));
         }

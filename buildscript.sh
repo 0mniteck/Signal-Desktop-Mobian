@@ -2,7 +2,7 @@
 
 apt install snapd
 
-echo "Starting Build on "$(date -u)
+echo "Starting Build "$(date -u '+on %D at %R UTC')
 echo
 
 echo "Entering ringrtc/"
