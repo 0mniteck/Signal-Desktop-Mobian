@@ -10,12 +10,12 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # Node via NVM
 ENV HOME="/root"
 ENV NVM_DIR="$HOME/.nvm"
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.9.1 && nvm use 16.9.1 && npm install -g npm@8.3.2 && npm install --global yarn
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.9.1 && nvm use 16.9.1 && npm install -g npm@latest && npm install --global yarn
 
 # Clone Repos
-# RingRTC v2.16.1
+# RingRTC v2.17.0
 RUN git clone https://github.com/signalapp/ringrtc
-RUN cd ringrtc; git reset --hard e686f21aed73366fd5cf0a4d82b06275a86e8722
+RUN cd ringrtc; git reset --hard 733a12544f16abb6d86795f3b179f80945b14151
 # Chromium Depot Tools
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 ENV PATH=/depot_tools:$PATH
