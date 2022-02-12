@@ -28751,7 +28751,7 @@ var CallMode;
 // Must be kept in sync with RingRTC.CallState
 var CallState;
 (function (CallState) {
-    CallState["Prering"] = "init";
+    CallState["Prering"] = "idle";
     CallState["Ringing"] = "ringing";
     CallState["Accepted"] = "connected";
     CallState["Reconnecting"] = "connecting";
@@ -29319,25 +29319,15 @@ exports.isNotNil = isNotNil;
 /*!*************************************!*\
   !*** ./ts/util/missingCaseError.js ***!
   \*************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
-// Copyright 2018-2020 Signal Messenger, LLC
+// Copyright 2018-2022 Signal Messenger, LLC
 // SPDX-License-Identifier: AGPL-3.0-only
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.missingCaseError = void 0;
-const stringify = (value) => {
-    try {
-        // `JSON.stringify` can return `undefined` (TypeScript has incorrect types here).
-        //   However, this is fine because we interpolate it into a string, so it shows up as
-        //   "undefined" in the final error message.
-        return JSON.stringify(value);
-    }
-    catch (err) {
-        return Object.prototype.toString.call(value);
-    }
-};
+const reallyJsonStringify_1 = __webpack_require__(/*! ./reallyJsonStringify */ "./ts/util/reallyJsonStringify.js");
 // `missingCaseError` is useful for compile-time checking that all `case`s in
 // a `switch` statement have been handled, e.g.
 //
@@ -29357,7 +29347,7 @@ const stringify = (value) => {
 // above would trigger a compiler error stating that `'links'` has not been
 // handled by our `switch` / `case` statement which is useful for code
 // maintenance and system evolution.
-const missingCaseError = (x) => new TypeError(`Unhandled case: ${stringify(x)}`);
+const missingCaseError = (x) => new TypeError(`Unhandled case: ${(0, reallyJsonStringify_1.reallyJsonStringify)(x)}`);
 exports.missingCaseError = missingCaseError;
 
 
@@ -29394,6 +29384,63 @@ function parseIntOrThrow(value, message) {
     return result;
 }
 exports.parseIntOrThrow = parseIntOrThrow;
+
+
+/***/ }),
+
+/***/ "./ts/util/reallyJsonStringify.js":
+/*!****************************************!*\
+  !*** ./ts/util/reallyJsonStringify.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// Copyright 2021 Signal Messenger, LLC
+// SPDX-License-Identifier: AGPL-3.0-only
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.reallyJsonStringify = void 0;
+/**
+ * Returns `JSON.stringify(value)` if that returns a string, otherwise returns a value
+ * like `[object Object]` or `[object Undefined]`.
+ *
+ * `JSON.stringify` doesn't always return a string. Some examples:
+ *
+ *     JSON.stringify(undefined) === undefined
+ *
+ *     JSON.stringify(Symbol()) === undefined
+ *
+ *     JSON.stringify({ toJSON() {} }) === undefined
+ *
+ *     const a = {};
+ *     const b = { a };
+ *     a.b = a;
+ *     JSON.stringify(a);  // => Throws a TypeError
+ *
+ *     JSON.stringify(123n);  // => Throws a TypeError
+ *
+ *     const scary = {
+ *       toJSON() {
+ *         throw new Error('uh oh');
+ *       }
+ *     };
+ *     JSON.stringify(scary);  // => Throws "uh oh"
+ *
+ * This makes sure we return a string and don't throw.
+ */
+function reallyJsonStringify(value) {
+    let result;
+    try {
+        result = JSON.stringify(value);
+    }
+    catch (_err) {
+        result = undefined;
+    }
+    return typeof result === 'string'
+        ? result
+        : Object.prototype.toString.call(value);
+}
+exports.reallyJsonStringify = reallyJsonStringify;
 
 
 /***/ }),

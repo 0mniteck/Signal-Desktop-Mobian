@@ -13,9 +13,9 @@ ENV NVM_DIR="$HOME/.nvm"
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.9.1 && nvm use 16.9.1 && npm install -g npm@latest && npm install --global yarn
 
 # Clone Repos
-# RingRTC v2.17.0
+# RingRTC v2.17.2
 RUN git clone https://github.com/signalapp/ringrtc
-RUN cd ringrtc; git reset --hard 733a12544f16abb6d86795f3b179f80945b14151
+RUN cd ringrtc; git reset --hard f955f40118bd6ad94ee3a7e234c660254b20c6bd
 # Chromium Depot Tools
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 ENV PATH=/depot_tools:$PATH
