@@ -4,7 +4,7 @@
 
 ## signal-desktop_5.31.1_arm64/unstable
 
-This project builds Signal Desktop for Mobian/unstable on Arm64, currently targeting release `5.31.1`.
+This project builds Signal Desktop for Mobian/unstable on Arm64, currently targeting release `5.31.x`.
 
 This is the signed release: `builds/release/signal-desktop_5.xx.x_arm64.deb`.
 
@@ -29,7 +29,7 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## Successful Builds:
 
-...(many builds before and many to come)
+... (many builds before and many to come)
 
 * [x] 5.28.0
 * [x] 5.29.0
@@ -40,5 +40,4 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 * Included buildscript-demo.cast, it's an asciinema demo file.
 * https://wiki.mobian-project.org/doku.php?id=signaldesktop
-* https://gitlab.com/undef1/Snippets/-/snippets/2100495
 * https://gitlab.com/ohfp/pinebookpro-things/-/blob/master/signal-desktop/PKGBUILD
