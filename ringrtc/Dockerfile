@@ -1,16 +1,14 @@
 # Fetch amd64 Mobian Image
-FROM registry.gitlab.com/mobian1/docker-images/mobian-builder-amd64:latest
+FROM registry.gitlab.com/0mniteck/docker-images/mobian-builder-amd64:latest
 RUN apt update
 RUN apt upgrade -y
-
-# Install Dependencies
-RUN apt install -y nano python-is-python3 python3 python2 gcc g++ make build-essential git git-lfs libffi-dev libssl-dev libglib2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libx11-xcb1 libgdk-pixbuf-2.0-0 libgtk-3-0 libdrm2 libgbm1 ruby ruby-dev curl wget clang llvm lld clang-tools generate-ninja ninja-build pkg-config tcl libglib2.0-dev meson gcc-aarch64-linux-gnu crossbuild-essential-arm64
+RUN apt install -y crossbuild-essential-arm64 gcc-aarch64-linux-gnu
 # Rustup-init
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # Node via NVM
 ENV HOME="/root"
 ENV NVM_DIR="$HOME/.nvm"
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.9.1 && nvm use 16.9.1 && npm install -g npm@latest && npm install --global yarn
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.13.0 && nvm use 16.13.0 && npm install -g npm@latest && npm install --global yarn
 
 # Clone Repos
 # RingRTC v2.18.0

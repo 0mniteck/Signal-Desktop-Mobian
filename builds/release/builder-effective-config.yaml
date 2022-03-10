@@ -69,6 +69,7 @@ protocols:
     - signalcaptcha
 beforeBuild: scripts/install-cross-deps.js
 afterPack: ts/scripts/after-pack.js
+afterSign: ts/scripts/after-sign.js
 asarUnpack:
   - ts/workers/heicConverter.bundle.js
   - ts/sql/mainWorker.bundle.js
@@ -142,4 +143,4 @@ files:
       - '!node_modules/.cache'
 extraMetadata:
   environment: production
-electronVersion: 16.0.8
+electronVersion: 17.1.0

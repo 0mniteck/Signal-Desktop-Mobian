@@ -10,11 +10,11 @@ cat << EOF > .cargo/config.toml
 linker = "aarch64-linux-gnu-gcc"
 EOF
 
-rustup toolchain install nightly-2021-09-16
-rustup default nightly-2021-09-16
+rustup toolchain install nightly-2022-01-15
+rustup default nightly-2022-01-15
 rustup target add aarch64-unknown-linux-gnu
 
-nvm use 16.9.1
+nvm use 16.13.0
 make electron PLATFORM=unix NODEJS_ARCH=arm64
 ./src/webrtc/src/build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
 make electron PLATFORM=unix NODEJS_ARCH=arm64

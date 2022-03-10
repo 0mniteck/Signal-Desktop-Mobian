@@ -7,7 +7,7 @@ echo "Entering /libsignal-client"
 pushd /libsignal-client/node/
 rustup toolchain install nightly-2021-09-16
 rustup default nightly-2021-09-16
-nvm use 16.9.1
+nvm use 16.13.0
 yarn install
 yarn tsc
 mkdir -p /signal-client/prebuilds/linux-arm64
@@ -20,7 +20,7 @@ pushd /better-sqlite3
 # Apply patch to use local (dynamic) libraries
 patch -Np1 -i ../better-sqlite3.patch
 rm -f Relase/obj/gen/sqlite3/OpenSSL-Linux/libcrypto.a
-nvm use 16.9.1
+nvm use 16.13.0
 npm install tar
 npm run build-release
 yarn install
@@ -30,10 +30,12 @@ popd
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
+rm -rf ts/test-mock
+sed -r '/mock/d' -i package.json
 sed -r 's#("@signalapp/signal-client": ").*"#\1file:../signal-client"#' -i package.json
 sed -r 's#("better-sqlite3": ").*"#\1file:../better-sqlite3"#' -i package.json
 sed -r 's#("ringrtc": ").*"#\1file:../signal-ringrtc-node"#' -i package.json
-nvm use 16.9.1
+nvm use
 yarn install && yarn install --frozen-lockfile
 yarn build:dev && yarn build:release --arm64 --linux deb && debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
 if [ ! -f /Signal-Desktop/release/private.key ]; then
