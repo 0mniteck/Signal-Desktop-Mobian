@@ -12831,6 +12831,7 @@ var dataInterface = {
   _deleteAllStoryDistributions,
   createNewStoryDistribution,
   getAllStoryDistributionsWithMembers,
+  getStoryDistributionWithMembers,
   modifyStoryDistribution,
   modifyStoryDistributionMembers,
   deleteStoryDistribution,
@@ -15529,6 +15530,22 @@ async function getAllStoryDistributionsWithMembers() {
   }));
 }
 __name(getAllStoryDistributionsWithMembers, "getAllStoryDistributionsWithMembers");
+async function getStoryDistributionWithMembers(id) {
+  const db = getInstance();
+  const storyDistribution = prepare(db, "SELECT * FROM storyDistributions WHERE id = $id;").get({
+    id
+  });
+  if (!storyDistribution) {
+    return void 0;
+  }
+  const members = prepare(db, "SELECT * FROM storyDistributionMembers WHERE listId = $id;").all({
+    id
+  });
+  return __spreadProps(__spreadValues({}, storyDistribution), {
+    members: members.map(({ uuid }) => uuid)
+  });
+}
+__name(getStoryDistributionWithMembers, "getStoryDistributionWithMembers");
 async function modifyStoryDistribution(distribution) {
   const payload = freezeStoryDistribution(distribution);
   const db = getInstance();
