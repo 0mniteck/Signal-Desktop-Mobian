@@ -18,26 +18,23 @@ var __spreadValues = (a, b) => {
     }
   return a;
 };
-var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
-var __reExport = (target, module2, desc) => {
-  if (module2 && typeof module2 === "object" || typeof module2 === "function") {
-    for (let key of __getOwnPropNames(module2))
-      if (!__hasOwnProp.call(target, key) && key !== "default")
-        __defProp(target, key, { get: () => module2[key], enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable });
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   }
-  return target;
+  return to;
 };
-var __toModule = (module2) => {
-  return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", module2 && module2.__esModule && "default" in module2 ? { get: () => module2.default, enumerable: true } : { value: module2, enumerable: true })), module2);
-};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target, mod));
 
 // node_modules/jpeg-js/lib/encoder.js
 var require_encoder = __commonJS({
-  "node_modules/jpeg-js/lib/encoder.js"(exports2, module2) {
+  "node_modules/jpeg-js/lib/encoder.js"(exports, module2) {
     var btoa = btoa || function(buf) {
       return Buffer.from(buf).toString("base64");
     };
@@ -636,7 +633,6 @@ var require_encoder = __commonJS({
           }
         }
       }
-      __name(initQuantTables, "initQuantTables");
       function computeHuffmanTbl(nrcodes, std_table) {
         var codevalue = 0;
         var pos_in_table = 0;
@@ -653,14 +649,12 @@ var require_encoder = __commonJS({
         }
         return HT;
       }
-      __name(computeHuffmanTbl, "computeHuffmanTbl");
       function initHuffmanTbl() {
         YDC_HT = computeHuffmanTbl(std_dc_luminance_nrcodes, std_dc_luminance_values);
         UVDC_HT = computeHuffmanTbl(std_dc_chrominance_nrcodes, std_dc_chrominance_values);
         YAC_HT = computeHuffmanTbl(std_ac_luminance_nrcodes, std_ac_luminance_values);
         UVAC_HT = computeHuffmanTbl(std_ac_chrominance_nrcodes, std_ac_chrominance_values);
       }
-      __name(initHuffmanTbl, "initHuffmanTbl");
       function initCategoryNumber() {
         var nrlower = 1;
         var nrupper = 2;
@@ -681,7 +675,6 @@ var require_encoder = __commonJS({
           nrupper <<= 1;
         }
       }
-      __name(initCategoryNumber, "initCategoryNumber");
       function initRGBYUVTable() {
         for (var i = 0; i < 256; i++) {
           RGB_YUV_TABLE[i] = 19595 * i;
@@ -694,7 +687,6 @@ var require_encoder = __commonJS({
           RGB_YUV_TABLE[i + 1792 >> 0] = -5329 * i;
         }
       }
-      __name(initRGBYUVTable, "initRGBYUVTable");
       function writeBits(bs) {
         var value = bs[0];
         var posval = bs[1] - 1;
@@ -716,16 +708,13 @@ var require_encoder = __commonJS({
           }
         }
       }
-      __name(writeBits, "writeBits");
       function writeByte(value) {
         byteout.push(value);
       }
-      __name(writeByte, "writeByte");
       function writeWord(value) {
         writeByte(value >> 8 & 255);
         writeByte(value & 255);
       }
-      __name(writeWord, "writeWord");
       function fDCTQuant(data, fdtbl) {
         var d0, d1, d2, d3, d4, d5, d6, d7;
         var dataOff = 0;
@@ -822,7 +811,6 @@ var require_encoder = __commonJS({
         }
         return outputfDCTQuant;
       }
-      __name(fDCTQuant, "fDCTQuant");
       function writeAPP0() {
         writeWord(65504);
         writeWord(16);
@@ -839,7 +827,6 @@ var require_encoder = __commonJS({
         writeByte(0);
         writeByte(0);
       }
-      __name(writeAPP0, "writeAPP0");
       function writeAPP1(exifBuffer) {
         if (!exifBuffer)
           return;
@@ -858,7 +845,6 @@ var require_encoder = __commonJS({
           writeByte(exifBuffer[i]);
         }
       }
-      __name(writeAPP1, "writeAPP1");
       function writeSOF0(width, height) {
         writeWord(65472);
         writeWord(17);
@@ -876,7 +862,6 @@ var require_encoder = __commonJS({
         writeByte(17);
         writeByte(1);
       }
-      __name(writeSOF0, "writeSOF0");
       function writeDQT() {
         writeWord(65499);
         writeWord(132);
@@ -889,7 +874,6 @@ var require_encoder = __commonJS({
           writeByte(UVTable[j]);
         }
       }
-      __name(writeDQT, "writeDQT");
       function writeDHT() {
         writeWord(65476);
         writeWord(418);
@@ -922,7 +906,6 @@ var require_encoder = __commonJS({
           writeByte(std_ac_chrominance_values[p]);
         }
       }
-      __name(writeDHT, "writeDHT");
       function writeSOS() {
         writeWord(65498);
         writeWord(12);
@@ -937,7 +920,6 @@ var require_encoder = __commonJS({
         writeByte(63);
         writeByte(0);
       }
-      __name(writeSOS, "writeSOS");
       function processDU(CDU, fdtbl, DC, HTDC, HTAC) {
         var EOB = HTAC[0];
         var M16zeroes = HTAC[240];
@@ -989,14 +971,12 @@ var require_encoder = __commonJS({
         }
         return DC;
       }
-      __name(processDU, "processDU");
       function initCharLookupTable() {
         var sfcc = String.fromCharCode;
         for (var i = 0; i < 256; i++) {
           clt[i] = sfcc(i);
         }
       }
-      __name(initCharLookupTable, "initCharLookupTable");
       this.encode = function(image, quality2) {
         var time_start = new Date().getTime();
         if (quality2)
@@ -1089,7 +1069,6 @@ var require_encoder = __commonJS({
         initQuantTables(sf);
         currentQuality = quality2;
       }
-      __name(setQuality, "setQuality");
       function init() {
         var time_start = new Date().getTime();
         if (!quality)
@@ -1101,10 +1080,8 @@ var require_encoder = __commonJS({
         setQuality(quality);
         var duration = new Date().getTime() - time_start;
       }
-      __name(init, "init");
       init();
     }
-    __name(JPEGEncoder, "JPEGEncoder");
     if (typeof module2 !== "undefined") {
       module2.exports = encode;
     } else if (typeof window !== "undefined") {
@@ -1122,14 +1099,13 @@ var require_encoder = __commonJS({
         height: imgData.height
       };
     }
-    __name(encode, "encode");
   }
 });
 
 // node_modules/jpeg-js/lib/decoder.js
 var require_decoder = __commonJS({
-  "node_modules/jpeg-js/lib/decoder.js"(exports2, module2) {
-    var JpegImage = (/* @__PURE__ */ __name(function jpegImage() {
+  "node_modules/jpeg-js/lib/decoder.js"(exports, module2) {
+    var JpegImage = function jpegImage() {
       "use strict";
       var dctZigZag = new Int32Array([
         0,
@@ -1207,7 +1183,6 @@ var require_decoder = __commonJS({
       var dctSqrt1d2 = 2896;
       function constructor() {
       }
-      __name(constructor, "constructor");
       function buildHuffmanTable(codeLengths, values) {
         var k = 0, code = [], i, j, length = 16;
         while (length > 0 && !codeLengths[length - 1])
@@ -1240,7 +1215,6 @@ var require_decoder = __commonJS({
         }
         return code[0].children;
       }
-      __name(buildHuffmanTable, "buildHuffmanTable");
       function decodeScan(data, offset, frame, components, resetInterval, spectralStart, spectralEnd, successivePrev, successive, opts) {
         var precision = frame.precision;
         var samplesPerLine = frame.samplesPerLine;
@@ -1264,7 +1238,6 @@ var require_decoder = __commonJS({
           bitsCount = 7;
           return bitsData >>> 7;
         }
-        __name(readBit, "readBit");
         function decodeHuffman(tree) {
           var node = tree, bit;
           while ((bit = readBit()) !== null) {
@@ -1276,7 +1249,6 @@ var require_decoder = __commonJS({
           }
           return null;
         }
-        __name(decodeHuffman, "decodeHuffman");
         function receive(length) {
           var n2 = 0;
           while (length > 0) {
@@ -1288,14 +1260,12 @@ var require_decoder = __commonJS({
           }
           return n2;
         }
-        __name(receive, "receive");
         function receiveAndExtend(length) {
           var n2 = receive(length);
           if (n2 >= 1 << length - 1)
             return n2;
           return n2 + (-1 << length) + 1;
         }
-        __name(receiveAndExtend, "receiveAndExtend");
         function decodeBaseline(component2, zz) {
           var t = decodeHuffman(component2.huffmanTableDC);
           var diff = t === 0 ? 0 : receiveAndExtend(t);
@@ -1316,17 +1286,14 @@ var require_decoder = __commonJS({
             k2++;
           }
         }
-        __name(decodeBaseline, "decodeBaseline");
         function decodeDCFirst(component2, zz) {
           var t = decodeHuffman(component2.huffmanTableDC);
           var diff = t === 0 ? 0 : receiveAndExtend(t) << successive;
           zz[0] = component2.pred += diff;
         }
-        __name(decodeDCFirst, "decodeDCFirst");
         function decodeDCSuccessive(component2, zz) {
           zz[0] |= readBit() << successive;
         }
-        __name(decodeDCSuccessive, "decodeDCSuccessive");
         var eobrun = 0;
         function decodeACFirst(component2, zz) {
           if (eobrun > 0) {
@@ -1351,7 +1318,6 @@ var require_decoder = __commonJS({
             k2++;
           }
         }
-        __name(decodeACFirst, "decodeACFirst");
         var successiveACState = 0, successiveACNextValue;
         function decodeACSuccessive(component2, zz) {
           var k2 = spectralStart, e = spectralEnd, r = 0;
@@ -1408,7 +1374,6 @@ var require_decoder = __commonJS({
               successiveACState = 0;
           }
         }
-        __name(decodeACSuccessive, "decodeACSuccessive");
         function decodeMcu(component2, decode2, mcu2, row, col) {
           var mcuRow = mcu2 / mcusPerLine | 0;
           var mcuCol = mcu2 % mcusPerLine;
@@ -1418,7 +1383,6 @@ var require_decoder = __commonJS({
             return;
           decode2(component2, component2.blocks[blockRow][blockCol]);
         }
-        __name(decodeMcu, "decodeMcu");
         function decodeBlock(component2, decode2, mcu2) {
           var blockRow = mcu2 / component2.blocksPerLine | 0;
           var blockCol = mcu2 % component2.blocksPerLine;
@@ -1426,7 +1390,6 @@ var require_decoder = __commonJS({
             return;
           decode2(component2, component2.blocks[blockRow][blockCol]);
         }
-        __name(decodeBlock, "decodeBlock");
         var componentsLength = components.length;
         var component, i, j, k, n;
         var decodeFn;
@@ -1497,7 +1460,6 @@ var require_decoder = __commonJS({
         }
         return offset - startOffset;
       }
-      __name(decodeScan, "decodeScan");
       function buildComponentData(frame, component) {
         var lines = [];
         var blocksPerLine = component.blocksPerLine;
@@ -1626,7 +1588,6 @@ var require_decoder = __commonJS({
             dataOut[i2] = sample2 < 0 ? 0 : sample2 > 255 ? 255 : sample2;
           }
         }
-        __name(quantizeAndInverse, "quantizeAndInverse");
         requestMemoryAllocation(samplesPerLine * blocksPerColumn * 8);
         var i, j;
         for (var blockRow = 0; blockRow < blocksPerColumn; blockRow++) {
@@ -1645,13 +1606,11 @@ var require_decoder = __commonJS({
         }
         return lines;
       }
-      __name(buildComponentData, "buildComponentData");
       function clampTo8bit(a) {
         return a < 0 ? 0 : a > 255 ? 255 : a;
       }
-      __name(clampTo8bit, "clampTo8bit");
       constructor.prototype = {
-        load: /* @__PURE__ */ __name(function load(path2) {
+        load: function load(path2) {
           var xhr = new XMLHttpRequest();
           xhr.open("GET", path2, true);
           xhr.responseType = "arraybuffer";
@@ -1662,8 +1621,8 @@ var require_decoder = __commonJS({
               this.onload();
           }.bind(this);
           xhr.send(null);
-        }, "load"),
-        parse: /* @__PURE__ */ __name(function parse(data) {
+        },
+        parse: function parse(data) {
           var maxResolutionInPixels = this.opts.maxResolutionInMP * 1e3 * 1e3;
           var offset = 0, length = data.length;
           function readUint16() {
@@ -1671,14 +1630,12 @@ var require_decoder = __commonJS({
             offset += 2;
             return value;
           }
-          __name(readUint16, "readUint16");
           function readDataBlock() {
             var length2 = readUint16();
             var array = data.subarray(offset, offset + length2 - 2);
             offset += array.length;
             return array;
           }
-          __name(readDataBlock, "readDataBlock");
           function prepareComponents(frame2) {
             var maxH2 = 0, maxV2 = 0;
             var component2, componentId2;
@@ -1719,7 +1676,6 @@ var require_decoder = __commonJS({
             frame2.mcusPerLine = mcusPerLine;
             frame2.mcusPerColumn = mcusPerColumn;
           }
-          __name(prepareComponents, "prepareComponents");
           var jfif = null;
           var adobe = null;
           var pixels = null;
@@ -1934,8 +1890,8 @@ var require_decoder = __commonJS({
               scaleY: component.v / frame.maxV
             });
           }
-        }, "parse"),
-        getData: /* @__PURE__ */ __name(function getData(width, height) {
+        },
+        getData: function getData(width, height) {
           var scaleX = this.width / width, scaleY = this.height / height;
           var component1, component2, component3, component4;
           var component1Line, component2Line, component3Line, component4Line;
@@ -2046,8 +2002,8 @@ var require_decoder = __commonJS({
               throw new Error("Unsupported color mode");
           }
           return data;
-        }, "getData"),
-        copyToImageData: /* @__PURE__ */ __name(function copyToImageData(imageData, formatAsRGBA) {
+        },
+        copyToImageData: function copyToImageData(imageData, formatAsRGBA) {
           var width = imageData.width, height = imageData.height;
           var imageDataArray = imageData.data;
           var data = this.getData(width, height);
@@ -2104,7 +2060,7 @@ var require_decoder = __commonJS({
             default:
               throw new Error("Unsupported color mode");
           }
-        }, "copyToImageData")
+        }
       };
       var totalBytesAllocated = 0;
       var maxMemoryUsageBytes = 0;
@@ -2116,7 +2072,6 @@ var require_decoder = __commonJS({
         }
         totalBytesAllocated = totalMemoryImpactBytes;
       }
-      __name(requestMemoryAllocation, "requestMemoryAllocation");
       constructor.resetMaxMemoryUsage = function(maxMemoryUsageBytes_) {
         totalBytesAllocated = 0;
         maxMemoryUsageBytes = maxMemoryUsageBytes_;
@@ -2126,7 +2081,7 @@ var require_decoder = __commonJS({
       };
       constructor.requestMemoryAllocation = requestMemoryAllocation;
       return constructor;
-    }, "jpegImage"))();
+    }();
     if (typeof module2 !== "undefined") {
       module2.exports = decode;
     } else if (typeof window !== "undefined") {
@@ -2171,13 +2126,12 @@ var require_decoder = __commonJS({
       decoder.copyToImageData(image, opts.formatAsRGBA);
       return image;
     }
-    __name(decode, "decode");
   }
 });
 
 // node_modules/jpeg-js/index.js
 var require_jpeg_js = __commonJS({
-  "node_modules/jpeg-js/index.js"(exports2, module2) {
+  "node_modules/jpeg-js/index.js"(exports, module2) {
     var encode = require_encoder();
     var decode = require_decoder();
     module2.exports = {
@@ -2189,7 +2143,7 @@ var require_jpeg_js = __commonJS({
 
 // node_modules/pngjs/lib/chunkstream.js
 var require_chunkstream = __commonJS({
-  "node_modules/pngjs/lib/chunkstream.js"(exports2, module2) {
+  "node_modules/pngjs/lib/chunkstream.js"(exports, module2) {
     "use strict";
     var util = require("util");
     var Stream = require("stream");
@@ -2324,7 +2278,7 @@ var require_chunkstream = __commonJS({
 
 // node_modules/pngjs/lib/interlace.js
 var require_interlace = __commonJS({
-  "node_modules/pngjs/lib/interlace.js"(exports2) {
+  "node_modules/pngjs/lib/interlace.js"(exports) {
     "use strict";
     var imagePasses = [
       {
@@ -2356,7 +2310,7 @@ var require_interlace = __commonJS({
         y: [1, 3, 5, 7]
       }
     ];
-    exports2.getImagePasses = function(width, height) {
+    exports.getImagePasses = function(width, height) {
       var images = [];
       var xLeftOver = width % 8;
       var yLeftOver = height % 8;
@@ -2386,7 +2340,7 @@ var require_interlace = __commonJS({
       }
       return images;
     };
-    exports2.getInterlaceIterator = function(width) {
+    exports.getInterlaceIterator = function(width) {
       return function(x, y, pass) {
         var outerXLeftOver = x % imagePasses[pass].x.length;
         var outerX = (x - outerXLeftOver) / imagePasses[pass].x.length * 8 + imagePasses[pass].x[outerXLeftOver];
@@ -2400,9 +2354,9 @@ var require_interlace = __commonJS({
 
 // node_modules/pngjs/lib/paeth-predictor.js
 var require_paeth_predictor = __commonJS({
-  "node_modules/pngjs/lib/paeth-predictor.js"(exports2, module2) {
+  "node_modules/pngjs/lib/paeth-predictor.js"(exports, module2) {
     "use strict";
-    module2.exports = /* @__PURE__ */ __name(function paethPredictor(left, above, upLeft) {
+    module2.exports = function paethPredictor(left, above, upLeft) {
       var paeth = left + above - upLeft;
       var pLeft = Math.abs(paeth - left);
       var pAbove = Math.abs(paeth - above);
@@ -2414,13 +2368,13 @@ var require_paeth_predictor = __commonJS({
         return above;
       }
       return upLeft;
-    }, "paethPredictor");
+    };
   }
 });
 
 // node_modules/pngjs/lib/filter-parse.js
 var require_filter_parse = __commonJS({
-  "node_modules/pngjs/lib/filter-parse.js"(exports2, module2) {
+  "node_modules/pngjs/lib/filter-parse.js"(exports, module2) {
     "use strict";
     var interlaceUtils = require_interlace();
     var paethPredictor = require_paeth_predictor();
@@ -2431,7 +2385,6 @@ var require_filter_parse = __commonJS({
       }
       return byteWidth;
     }
-    __name(getByteWidth, "getByteWidth");
     var Filter = module2.exports = function(bitmapInfo, dependencies) {
       var width = bitmapInfo.width;
       var height = bitmapInfo.height;
@@ -2559,7 +2512,7 @@ var require_filter_parse = __commonJS({
 
 // node_modules/pngjs/lib/filter-parse-async.js
 var require_filter_parse_async = __commonJS({
-  "node_modules/pngjs/lib/filter-parse-async.js"(exports2, module2) {
+  "node_modules/pngjs/lib/filter-parse-async.js"(exports, module2) {
     "use strict";
     var util = require("util");
     var ChunkStream = require_chunkstream();
@@ -2585,7 +2538,7 @@ var require_filter_parse_async = __commonJS({
 
 // node_modules/pngjs/lib/constants.js
 var require_constants = __commonJS({
-  "node_modules/pngjs/lib/constants.js"(exports2, module2) {
+  "node_modules/pngjs/lib/constants.js"(exports, module2) {
     "use strict";
     module2.exports = {
       PNG_SIGNATURE: [137, 80, 78, 71, 13, 10, 26, 10],
@@ -2615,7 +2568,7 @@ var require_constants = __commonJS({
 
 // node_modules/pngjs/lib/crc.js
 var require_crc = __commonJS({
-  "node_modules/pngjs/lib/crc.js"(exports2, module2) {
+  "node_modules/pngjs/lib/crc.js"(exports, module2) {
     "use strict";
     var crcTable = [];
     (function() {
@@ -2655,7 +2608,7 @@ var require_crc = __commonJS({
 
 // node_modules/pngjs/lib/parser.js
 var require_parser = __commonJS({
-  "node_modules/pngjs/lib/parser.js"(exports2, module2) {
+  "node_modules/pngjs/lib/parser.js"(exports, module2) {
     "use strict";
     var constants = require_constants();
     var CrcCalculator = require_crc();
@@ -2877,7 +2830,7 @@ var require_parser = __commonJS({
 
 // node_modules/pngjs/lib/bitmapper.js
 var require_bitmapper = __commonJS({
-  "node_modules/pngjs/lib/bitmapper.js"(exports2) {
+  "node_modules/pngjs/lib/bitmapper.js"(exports) {
     "use strict";
     var interlaceUtils = require_interlace();
     var pixelBppMapper = [
@@ -2995,7 +2948,6 @@ var require_bitmapper = __commonJS({
             break;
         }
       }
-      __name(split, "split");
       return {
         get: function(count) {
           while (leftOver.length < count) {
@@ -3015,7 +2967,6 @@ var require_bitmapper = __commonJS({
         }
       };
     }
-    __name(bitRetriever, "bitRetriever");
     function mapImage8Bit(image, pxData, getPxPos, bpp, data, rawPos) {
       var imageWidth = image.width;
       var imageHeight = image.height;
@@ -3029,7 +2980,6 @@ var require_bitmapper = __commonJS({
       }
       return rawPos;
     }
-    __name(mapImage8Bit, "mapImage8Bit");
     function mapImageCustomBit(image, pxData, getPxPos, bpp, bits, maxBit) {
       var imageWidth = image.width;
       var imageHeight = image.height;
@@ -3043,8 +2993,7 @@ var require_bitmapper = __commonJS({
         bits.resetAfterLine();
       }
     }
-    __name(mapImageCustomBit, "mapImageCustomBit");
-    exports2.dataToBitMap = function(data, bitmapInfo) {
+    exports.dataToBitMap = function(data, bitmapInfo) {
       var width = bitmapInfo.width;
       var height = bitmapInfo.height;
       var depth = bitmapInfo.depth;
@@ -3096,7 +3045,7 @@ var require_bitmapper = __commonJS({
 
 // node_modules/pngjs/lib/format-normaliser.js
 var require_format_normaliser = __commonJS({
-  "node_modules/pngjs/lib/format-normaliser.js"(exports2, module2) {
+  "node_modules/pngjs/lib/format-normaliser.js"(exports, module2) {
     "use strict";
     function dePalette(indata, outdata, width, height, palette) {
       var pxPos = 0;
@@ -3113,7 +3062,6 @@ var require_format_normaliser = __commonJS({
         }
       }
     }
-    __name(dePalette, "dePalette");
     function replaceTransparentColor(indata, outdata, width, height, transColor) {
       var pxPos = 0;
       for (var y = 0; y < height; y++) {
@@ -3135,7 +3083,6 @@ var require_format_normaliser = __commonJS({
         }
       }
     }
-    __name(replaceTransparentColor, "replaceTransparentColor");
     function scaleDepth(indata, outdata, width, height, depth) {
       var maxOutSample = 255;
       var maxInSample = Math.pow(2, depth) - 1;
@@ -3149,7 +3096,6 @@ var require_format_normaliser = __commonJS({
         }
       }
     }
-    __name(scaleDepth, "scaleDepth");
     module2.exports = function(indata, imageData) {
       var depth = imageData.depth;
       var width = imageData.width;
@@ -3178,7 +3124,7 @@ var require_format_normaliser = __commonJS({
 
 // node_modules/pngjs/lib/parser-async.js
 var require_parser_async = __commonJS({
-  "node_modules/pngjs/lib/parser-async.js"(exports2, module2) {
+  "node_modules/pngjs/lib/parser-async.js"(exports, module2) {
     "use strict";
     var util = require("util");
     var zlib = require("zlib");
@@ -3304,7 +3250,7 @@ var require_parser_async = __commonJS({
 
 // node_modules/pngjs/lib/bitpacker.js
 var require_bitpacker = __commonJS({
-  "node_modules/pngjs/lib/bitpacker.js"(exports2, module2) {
+  "node_modules/pngjs/lib/bitpacker.js"(exports, module2) {
     "use strict";
     var constants = require_constants();
     module2.exports = function(dataIn, width, height, options) {
@@ -3384,7 +3330,6 @@ var require_bitpacker = __commonJS({
         }
         return { red, green, blue, alpha };
       }
-      __name(getRGBA, "getRGBA");
       for (var y = 0; y < height; y++) {
         for (var x = 0; x < width; x++) {
           var rgba = getRGBA(data, inIndex);
@@ -3436,7 +3381,7 @@ var require_bitpacker = __commonJS({
 
 // node_modules/pngjs/lib/filter-pack.js
 var require_filter_pack = __commonJS({
-  "node_modules/pngjs/lib/filter-pack.js"(exports2, module2) {
+  "node_modules/pngjs/lib/filter-pack.js"(exports, module2) {
     "use strict";
     var paethPredictor = require_paeth_predictor();
     function filterNone(pxData, pxPos, byteWidth, rawData, rawPos) {
@@ -3444,7 +3389,6 @@ var require_filter_pack = __commonJS({
         rawData[rawPos + x] = pxData[pxPos + x];
       }
     }
-    __name(filterNone, "filterNone");
     function filterSumNone(pxData, pxPos, byteWidth) {
       var sum = 0;
       var length = pxPos + byteWidth;
@@ -3453,7 +3397,6 @@ var require_filter_pack = __commonJS({
       }
       return sum;
     }
-    __name(filterSumNone, "filterSumNone");
     function filterSub(pxData, pxPos, byteWidth, rawData, rawPos, bpp) {
       for (var x = 0; x < byteWidth; x++) {
         var left = x >= bpp ? pxData[pxPos + x - bpp] : 0;
@@ -3461,7 +3404,6 @@ var require_filter_pack = __commonJS({
         rawData[rawPos + x] = val;
       }
     }
-    __name(filterSub, "filterSub");
     function filterSumSub(pxData, pxPos, byteWidth, bpp) {
       var sum = 0;
       for (var x = 0; x < byteWidth; x++) {
@@ -3471,7 +3413,6 @@ var require_filter_pack = __commonJS({
       }
       return sum;
     }
-    __name(filterSumSub, "filterSumSub");
     function filterUp(pxData, pxPos, byteWidth, rawData, rawPos) {
       for (var x = 0; x < byteWidth; x++) {
         var up = pxPos > 0 ? pxData[pxPos + x - byteWidth] : 0;
@@ -3479,7 +3420,6 @@ var require_filter_pack = __commonJS({
         rawData[rawPos + x] = val;
       }
     }
-    __name(filterUp, "filterUp");
     function filterSumUp(pxData, pxPos, byteWidth) {
       var sum = 0;
       var length = pxPos + byteWidth;
@@ -3490,7 +3430,6 @@ var require_filter_pack = __commonJS({
       }
       return sum;
     }
-    __name(filterSumUp, "filterSumUp");
     function filterAvg(pxData, pxPos, byteWidth, rawData, rawPos, bpp) {
       for (var x = 0; x < byteWidth; x++) {
         var left = x >= bpp ? pxData[pxPos + x - bpp] : 0;
@@ -3499,7 +3438,6 @@ var require_filter_pack = __commonJS({
         rawData[rawPos + x] = val;
       }
     }
-    __name(filterAvg, "filterAvg");
     function filterSumAvg(pxData, pxPos, byteWidth, bpp) {
       var sum = 0;
       for (var x = 0; x < byteWidth; x++) {
@@ -3510,7 +3448,6 @@ var require_filter_pack = __commonJS({
       }
       return sum;
     }
-    __name(filterSumAvg, "filterSumAvg");
     function filterPaeth(pxData, pxPos, byteWidth, rawData, rawPos, bpp) {
       for (var x = 0; x < byteWidth; x++) {
         var left = x >= bpp ? pxData[pxPos + x - bpp] : 0;
@@ -3520,7 +3457,6 @@ var require_filter_pack = __commonJS({
         rawData[rawPos + x] = val;
       }
     }
-    __name(filterPaeth, "filterPaeth");
     function filterSumPaeth(pxData, pxPos, byteWidth, bpp) {
       var sum = 0;
       for (var x = 0; x < byteWidth; x++) {
@@ -3532,7 +3468,6 @@ var require_filter_pack = __commonJS({
       }
       return sum;
     }
-    __name(filterSumPaeth, "filterSumPaeth");
     var filters = {
       0: filterNone,
       1: filterSub,
@@ -3588,7 +3523,7 @@ var require_filter_pack = __commonJS({
 
 // node_modules/pngjs/lib/packer.js
 var require_packer = __commonJS({
-  "node_modules/pngjs/lib/packer.js"(exports2, module2) {
+  "node_modules/pngjs/lib/packer.js"(exports, module2) {
     "use strict";
     var constants = require_constants();
     var CrcStream = require_crc();
@@ -3679,7 +3614,7 @@ var require_packer = __commonJS({
 
 // node_modules/pngjs/lib/packer-async.js
 var require_packer_async = __commonJS({
-  "node_modules/pngjs/lib/packer-async.js"(exports2, module2) {
+  "node_modules/pngjs/lib/packer-async.js"(exports, module2) {
     "use strict";
     var util = require("util");
     var Stream = require("stream");
@@ -3715,7 +3650,7 @@ var require_packer_async = __commonJS({
 
 // node_modules/pngjs/lib/sync-inflate.js
 var require_sync_inflate = __commonJS({
-  "node_modules/pngjs/lib/sync-inflate.js"(exports2, module2) {
+  "node_modules/pngjs/lib/sync-inflate.js"(exports, module2) {
     "use strict";
     var assert = require("assert").ok;
     var zlib = require("zlib");
@@ -3735,11 +3670,9 @@ var require_sync_inflate = __commonJS({
         this._maxLength = opts.maxLength;
       }
     }
-    __name(Inflate, "Inflate");
     function createInflate(opts) {
       return new Inflate(opts);
     }
-    __name(createInflate, "createInflate");
     function _close(engine, callback) {
       if (callback) {
         process.nextTick(callback);
@@ -3750,7 +3683,6 @@ var require_sync_inflate = __commonJS({
       engine._handle.close();
       engine._handle = null;
     }
-    __name(_close, "_close");
     Inflate.prototype._processChunk = function(chunk, flushFlag, asyncCb) {
       if (typeof asyncCb === "function") {
         return zlib.Inflate._processChunk.call(this, chunk, flushFlag, asyncCb);
@@ -3797,7 +3729,6 @@ var require_sync_inflate = __commonJS({
         }
         return false;
       }
-      __name(handleChunk, "handleChunk");
       assert(this._handle, "zlib binding closed");
       do {
         var res = this._handle.writeSync(flushFlag, chunk, inOff, availInBefore, this._buffer, this._offset, availOutBefore);
@@ -3828,21 +3759,19 @@ var require_sync_inflate = __commonJS({
       }
       return engine._processChunk(buffer, flushFlag);
     }
-    __name(zlibBufferSync, "zlibBufferSync");
     function inflateSync(buffer, opts) {
       return zlibBufferSync(new Inflate(opts), buffer);
     }
-    __name(inflateSync, "inflateSync");
-    module2.exports = exports2 = inflateSync;
-    exports2.Inflate = Inflate;
-    exports2.createInflate = createInflate;
-    exports2.inflateSync = inflateSync;
+    module2.exports = exports = inflateSync;
+    exports.Inflate = Inflate;
+    exports.createInflate = createInflate;
+    exports.inflateSync = inflateSync;
   }
 });
 
 // node_modules/pngjs/lib/sync-reader.js
 var require_sync_reader = __commonJS({
-  "node_modules/pngjs/lib/sync-reader.js"(exports2, module2) {
+  "node_modules/pngjs/lib/sync-reader.js"(exports, module2) {
     "use strict";
     var SyncReader = module2.exports = function(buffer) {
       this._buffer = buffer;
@@ -3879,11 +3808,11 @@ var require_sync_reader = __commonJS({
 
 // node_modules/pngjs/lib/filter-parse-sync.js
 var require_filter_parse_sync = __commonJS({
-  "node_modules/pngjs/lib/filter-parse-sync.js"(exports2) {
+  "node_modules/pngjs/lib/filter-parse-sync.js"(exports) {
     "use strict";
     var SyncReader = require_sync_reader();
     var Filter = require_filter_parse();
-    exports2.process = function(inBuffer, bitmapInfo) {
+    exports.process = function(inBuffer, bitmapInfo) {
       var outBuffers = [];
       var reader = new SyncReader(inBuffer);
       var filter = new Filter(bitmapInfo, {
@@ -3903,7 +3832,7 @@ var require_filter_parse_sync = __commonJS({
 
 // node_modules/pngjs/lib/parser-sync.js
 var require_parser_sync = __commonJS({
-  "node_modules/pngjs/lib/parser-sync.js"(exports2, module2) {
+  "node_modules/pngjs/lib/parser-sync.js"(exports, module2) {
     "use strict";
     var hasSyncZlib = true;
     var zlib = require("zlib");
@@ -3924,34 +3853,27 @@ var require_parser_sync = __commonJS({
       function handleError(_err_) {
         err = _err_;
       }
-      __name(handleError, "handleError");
       var metaData;
       function handleMetaData(_metaData_) {
         metaData = _metaData_;
       }
-      __name(handleMetaData, "handleMetaData");
       function handleTransColor(transColor) {
         metaData.transColor = transColor;
       }
-      __name(handleTransColor, "handleTransColor");
       function handlePalette(palette) {
         metaData.palette = palette;
       }
-      __name(handlePalette, "handlePalette");
       function handleSimpleTransparency() {
         metaData.alpha = true;
       }
-      __name(handleSimpleTransparency, "handleSimpleTransparency");
       var gamma;
       function handleGamma(_gamma_) {
         gamma = _gamma_;
       }
-      __name(handleGamma, "handleGamma");
       var inflateDataList = [];
       function handleInflateData(inflatedData2) {
         inflateDataList.push(inflatedData2);
       }
-      __name(handleInflateData, "handleInflateData");
       var reader = new SyncReader(buffer);
       var parser = new Parser(options, {
         read: reader.read.bind(reader),
@@ -3996,7 +3918,7 @@ var require_parser_sync = __commonJS({
 
 // node_modules/pngjs/lib/packer-sync.js
 var require_packer_sync = __commonJS({
-  "node_modules/pngjs/lib/packer-sync.js"(exports2, module2) {
+  "node_modules/pngjs/lib/packer-sync.js"(exports, module2) {
     "use strict";
     var hasSyncZlib = true;
     var zlib = require("zlib");
@@ -4032,14 +3954,14 @@ var require_packer_sync = __commonJS({
 
 // node_modules/pngjs/lib/png-sync.js
 var require_png_sync = __commonJS({
-  "node_modules/pngjs/lib/png-sync.js"(exports2) {
+  "node_modules/pngjs/lib/png-sync.js"(exports) {
     "use strict";
     var parse = require_parser_sync();
     var pack = require_packer_sync();
-    exports2.read = function(buffer, options) {
+    exports.read = function(buffer, options) {
       return parse(buffer, options || {});
     };
-    exports2.write = function(png, options) {
+    exports.write = function(png, options) {
       return pack(png, options);
     };
   }
@@ -4047,14 +3969,14 @@ var require_png_sync = __commonJS({
 
 // node_modules/pngjs/lib/png.js
 var require_png = __commonJS({
-  "node_modules/pngjs/lib/png.js"(exports2) {
+  "node_modules/pngjs/lib/png.js"(exports) {
     "use strict";
     var util = require("util");
     var Stream = require("stream");
     var Parser = require_parser_async();
     var Packer = require_packer_async();
     var PNGSync = require_png_sync();
-    var PNG = exports2.PNG = function(options) {
+    var PNG = exports.PNG = function(options) {
       Stream.call(this);
       options = options || {};
       this.width = options.width | 0;
@@ -4174,7 +4096,7 @@ var require_png = __commonJS({
 
 // node_modules/libheif-js/libheif/libheif.js
 var require_libheif = __commonJS({
-  "node_modules/libheif-js/libheif/libheif.js"(exports2, module2) {
+  "node_modules/libheif-js/libheif/libheif.js"(exports, module2) {
     (function() {
       var Module2 = { print: function(text) {
         text = Array.prototype.slice.call(arguments).join(" ");
@@ -4219,7 +4141,7 @@ var require_libheif = __commonJS({
           Module2["printErr"] = console.warn;
         var nodeFS;
         var nodePath;
-        Module2["read"] = /* @__PURE__ */ __name(function shell_read(filename, binary) {
+        Module2["read"] = function shell_read(filename, binary) {
           var ret;
           ret = tryParseAsDataURI(filename);
           if (!ret) {
@@ -4231,15 +4153,15 @@ var require_libheif = __commonJS({
             ret = nodeFS["readFileSync"](filename);
           }
           return binary ? ret : ret.toString();
-        }, "shell_read");
-        Module2["readBinary"] = /* @__PURE__ */ __name(function readBinary(filename) {
+        };
+        Module2["readBinary"] = function readBinary(filename) {
           var ret = Module2["read"](filename, true);
           if (!ret.buffer) {
             ret = new Uint8Array(ret);
           }
           assert(ret.buffer);
           return ret;
-        }, "readBinary");
+        };
         if (!Module2["thisProgram"]) {
           if (process["argv"].length > 1) {
             Module2["thisProgram"] = process["argv"][1].replace(/\\/g, "/");
@@ -4268,19 +4190,19 @@ var require_libheif = __commonJS({
         if (typeof printErr != "undefined")
           Module2["printErr"] = printErr;
         if (typeof read != "undefined") {
-          Module2["read"] = /* @__PURE__ */ __name(function shell_read(f) {
+          Module2["read"] = function shell_read(f) {
             var data2 = tryParseAsDataURI(f);
             if (data2) {
               return intArrayToString(data2);
             }
             return read(f);
-          }, "shell_read");
+          };
         } else {
-          Module2["read"] = /* @__PURE__ */ __name(function shell_read() {
+          Module2["read"] = function shell_read() {
             throw "no read() available";
-          }, "shell_read");
+          };
         }
-        Module2["readBinary"] = /* @__PURE__ */ __name(function readBinary(f) {
+        Module2["readBinary"] = function readBinary(f) {
           var data2;
           data2 = tryParseAsDataURI(f);
           if (data2) {
@@ -4292,7 +4214,7 @@ var require_libheif = __commonJS({
           data2 = read(f, "binary");
           assert(typeof data2 === "object");
           return data2;
-        }, "readBinary");
+        };
         if (typeof scriptArgs != "undefined") {
           Module2["arguments"] = scriptArgs;
         } else if (typeof arguments != "undefined") {
@@ -4304,7 +4226,7 @@ var require_libheif = __commonJS({
           };
         }
       } else if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
-        Module2["read"] = /* @__PURE__ */ __name(function shell_read(url) {
+        Module2["read"] = function shell_read(url) {
           try {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", url, false);
@@ -4317,9 +4239,9 @@ var require_libheif = __commonJS({
             }
             throw err;
           }
-        }, "shell_read");
+        };
         if (ENVIRONMENT_IS_WORKER) {
-          Module2["readBinary"] = /* @__PURE__ */ __name(function readBinary(url) {
+          Module2["readBinary"] = function readBinary(url) {
             try {
               var xhr = new XMLHttpRequest();
               xhr.open("GET", url, false);
@@ -4333,13 +4255,13 @@ var require_libheif = __commonJS({
               }
               throw err;
             }
-          }, "readBinary");
+          };
         }
-        Module2["readAsync"] = /* @__PURE__ */ __name(function readAsync(url, onload, onerror) {
+        Module2["readAsync"] = function readAsync(url, onload, onerror) {
           var xhr = new XMLHttpRequest();
           xhr.open("GET", url, true);
           xhr.responseType = "arraybuffer";
-          xhr.onload = /* @__PURE__ */ __name(function xhr_onload() {
+          xhr.onload = function xhr_onload() {
             if (xhr.status == 200 || xhr.status == 0 && xhr.response) {
               onload(xhr.response);
               return;
@@ -4350,22 +4272,22 @@ var require_libheif = __commonJS({
               return;
             }
             onerror();
-          }, "xhr_onload");
+          };
           xhr.onerror = onerror;
           xhr.send(null);
-        }, "readAsync");
+        };
         if (typeof arguments != "undefined") {
           Module2["arguments"] = arguments;
         }
         if (typeof console !== "undefined") {
           if (!Module2["print"])
-            Module2["print"] = /* @__PURE__ */ __name(function shell_print(x) {
+            Module2["print"] = function shell_print(x) {
               console.log(x);
-            }, "shell_print");
+            };
           if (!Module2["printErr"])
-            Module2["printErr"] = /* @__PURE__ */ __name(function shell_printErr(x) {
+            Module2["printErr"] = function shell_printErr(x) {
               console.warn(x);
-            }, "shell_printErr");
+            };
         } else {
           var TRY_USE_DUMP = false;
           if (!Module2["print"])
@@ -4497,17 +4419,17 @@ var require_libheif = __commonJS({
         var sigCache = Runtime.funcWrappers[sig];
         if (!sigCache[func]) {
           if (sig.length === 1) {
-            sigCache[func] = /* @__PURE__ */ __name(function dynCall_wrapper() {
+            sigCache[func] = function dynCall_wrapper() {
               return Runtime.dynCall(sig, func);
-            }, "dynCall_wrapper");
+            };
           } else if (sig.length === 2) {
-            sigCache[func] = /* @__PURE__ */ __name(function dynCall_wrapper(arg) {
+            sigCache[func] = function dynCall_wrapper(arg) {
               return Runtime.dynCall(sig, func, [arg]);
-            }, "dynCall_wrapper");
+            };
           } else {
-            sigCache[func] = /* @__PURE__ */ __name(function dynCall_wrapper() {
+            sigCache[func] = function dynCall_wrapper() {
               return Runtime.dynCall(sig, func, Array.prototype.slice.call(arguments));
-            }, "dynCall_wrapper");
+            };
           }
         }
         return sigCache[func];
@@ -4550,13 +4472,11 @@ var require_libheif = __commonJS({
           abort("Assertion failed: " + text);
         }
       }
-      __name(assert, "assert");
       function getCFunc(ident) {
         var func = Module2["_" + ident];
         assert(func, "Cannot call unknown function " + ident + ", make sure it is exported");
         return func;
       }
-      __name(getCFunc, "getCFunc");
       var JSfuncs = { "stackSave": function() {
         Runtime.stackSave();
       }, "stackRestore": function() {
@@ -4599,7 +4519,6 @@ var require_libheif = __commonJS({
         }
         return ret;
       }
-      __name(ccall, "ccall");
       function setValue(ptr, value, type, noSafe) {
         type = type || "i8";
         if (type.charAt(type.length - 1) === "*")
@@ -4630,7 +4549,6 @@ var require_libheif = __commonJS({
             abort("invalid type for setValue: " + type);
         }
       }
-      __name(setValue, "setValue");
       var ALLOC_NORMAL = 0;
       var ALLOC_STACK = 1;
       var ALLOC_STATIC = 2;
@@ -4701,7 +4619,6 @@ var require_libheif = __commonJS({
         }
         return ret;
       }
-      __name(allocate, "allocate");
       function getMemory(size) {
         if (!staticSealed)
           return Runtime.staticAlloc(size);
@@ -4709,7 +4626,6 @@ var require_libheif = __commonJS({
           return Runtime.dynamicAlloc(size);
         return _malloc(size);
       }
-      __name(getMemory, "getMemory");
       Module2["getMemory"] = getMemory;
       function Pointer_stringify(ptr, length) {
         if (length === 0 || !ptr)
@@ -4742,7 +4658,6 @@ var require_libheif = __commonJS({
         }
         return UTF8ToString(ptr);
       }
-      __name(Pointer_stringify, "Pointer_stringify");
       var UTF8Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf8") : void 0;
       function UTF8ArrayToString(u8Array, idx) {
         var endPtr = idx;
@@ -4792,11 +4707,9 @@ var require_libheif = __commonJS({
           }
         }
       }
-      __name(UTF8ArrayToString, "UTF8ArrayToString");
       function UTF8ToString(ptr) {
         return UTF8ArrayToString(HEAPU8, ptr);
       }
-      __name(UTF8ToString, "UTF8ToString");
       function stringToUTF8Array(str, outU8Array, outIdx, maxBytesToWrite) {
         if (!(maxBytesToWrite > 0))
           return 0;
@@ -4850,11 +4763,9 @@ var require_libheif = __commonJS({
         outU8Array[outIdx] = 0;
         return outIdx - startIdx;
       }
-      __name(stringToUTF8Array, "stringToUTF8Array");
       function stringToUTF8(str, outPtr, maxBytesToWrite) {
         return stringToUTF8Array(str, HEAPU8, outPtr, maxBytesToWrite);
       }
-      __name(stringToUTF8, "stringToUTF8");
       function lengthBytesUTF8(str) {
         var len = 0;
         for (var i = 0; i < str.length; ++i) {
@@ -4877,12 +4788,10 @@ var require_libheif = __commonJS({
         }
         return len;
       }
-      __name(lengthBytesUTF8, "lengthBytesUTF8");
       var UTF16Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf-16le") : void 0;
       function demangle(func) {
         return func;
       }
-      __name(demangle, "demangle");
       function demangleAll(text) {
         var regex = /__Z[\w\d_]+/g;
         return text.replace(regex, function(x) {
@@ -4890,7 +4799,6 @@ var require_libheif = __commonJS({
           return x === y ? x : x + " [" + y + "]";
         });
       }
-      __name(demangleAll, "demangleAll");
       function jsStackTrace() {
         var err = new Error();
         if (!err.stack) {
@@ -4905,14 +4813,12 @@ var require_libheif = __commonJS({
         }
         return err.stack.toString();
       }
-      __name(jsStackTrace, "jsStackTrace");
       function stackTrace() {
         var js = jsStackTrace();
         if (Module2["extraStackTrace"])
           js += "\n" + Module2["extraStackTrace"]();
         return demangleAll(js);
       }
-      __name(stackTrace, "stackTrace");
       var WASM_PAGE_SIZE = 65536;
       var ASMJS_PAGE_SIZE = 16777216;
       var MIN_TOTAL_MEMORY = 16777216;
@@ -4922,12 +4828,10 @@ var require_libheif = __commonJS({
         }
         return x;
       }
-      __name(alignUp, "alignUp");
       var HEAP, buffer, HEAP8, HEAPU8, HEAP16, HEAPU16, HEAP32, HEAPU32, HEAPF32, HEAPF64;
       function updateGlobalBuffer(buf) {
         Module2["buffer"] = buffer = buf;
       }
-      __name(updateGlobalBuffer, "updateGlobalBuffer");
       function updateGlobalBufferViews() {
         Module2["HEAP8"] = HEAP8 = new Int8Array(buffer);
         Module2["HEAP16"] = HEAP16 = new Int16Array(buffer);
@@ -4938,7 +4842,6 @@ var require_libheif = __commonJS({
         Module2["HEAPF32"] = HEAPF32 = new Float32Array(buffer);
         Module2["HEAPF64"] = HEAPF64 = new Float64Array(buffer);
       }
-      __name(updateGlobalBufferViews, "updateGlobalBufferViews");
       var STATIC_BASE, STATICTOP, staticSealed;
       var STACK_BASE, STACKTOP, STACK_MAX;
       var DYNAMIC_BASE, DYNAMICTOP_PTR;
@@ -4947,7 +4850,6 @@ var require_libheif = __commonJS({
       function abortOnCannotGrowMemory() {
         abort("Cannot enlarge memory arrays. Either (1) compile with  -s TOTAL_MEMORY=X  with X higher than the current value " + TOTAL_MEMORY + ", (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which allows increasing the size at runtime but prevents some optimizations, (3) set Module.TOTAL_MEMORY to a higher value before the program runs, or (4) if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ");
       }
-      __name(abortOnCannotGrowMemory, "abortOnCannotGrowMemory");
       if (!Module2["reallocBuffer"])
         Module2["reallocBuffer"] = function(size) {
           var ret;
@@ -4992,7 +4894,6 @@ var require_libheif = __commonJS({
         updateGlobalBufferViews();
         return true;
       }
-      __name(enlargeMemory, "enlargeMemory");
       var byteLength;
       try {
         byteLength = Function.prototype.call.bind(Object.getOwnPropertyDescriptor(ArrayBuffer.prototype, "byteLength").get);
@@ -5017,7 +4918,6 @@ var require_libheif = __commonJS({
       function getTotalMemory() {
         return TOTAL_MEMORY;
       }
-      __name(getTotalMemory, "getTotalMemory");
       HEAP32[0] = 1668509029;
       HEAP16[1] = 25459;
       if (HEAPU8[2] !== 115 || HEAPU8[3] !== 99)
@@ -5051,7 +4951,6 @@ var require_libheif = __commonJS({
           }
         }
       }
-      __name(callRuntimeCallbacks, "callRuntimeCallbacks");
       var __ATPRERUN__ = [];
       var __ATINIT__ = [];
       var __ATMAIN__ = [];
@@ -5069,23 +4968,19 @@ var require_libheif = __commonJS({
         }
         callRuntimeCallbacks(__ATPRERUN__);
       }
-      __name(preRun, "preRun");
       function ensureInitRuntime() {
         if (runtimeInitialized)
           return;
         runtimeInitialized = true;
         callRuntimeCallbacks(__ATINIT__);
       }
-      __name(ensureInitRuntime, "ensureInitRuntime");
       function preMain() {
         callRuntimeCallbacks(__ATMAIN__);
       }
-      __name(preMain, "preMain");
       function exitRuntime() {
         callRuntimeCallbacks(__ATEXIT__);
         runtimeExited = true;
       }
-      __name(exitRuntime, "exitRuntime");
       function postRun() {
         if (Module2["postRun"]) {
           if (typeof Module2["postRun"] == "function")
@@ -5096,19 +4991,15 @@ var require_libheif = __commonJS({
         }
         callRuntimeCallbacks(__ATPOSTRUN__);
       }
-      __name(postRun, "postRun");
       function addOnPreRun(cb) {
         __ATPRERUN__.unshift(cb);
       }
-      __name(addOnPreRun, "addOnPreRun");
       function addOnPostRun(cb) {
         __ATPOSTRUN__.unshift(cb);
       }
-      __name(addOnPostRun, "addOnPostRun");
       function writeArrayToMemory(array, buffer2) {
         HEAP8.set(array, buffer2);
       }
-      __name(writeArrayToMemory, "writeArrayToMemory");
       function writeAsciiToMemory(str, buffer2, dontAddNull) {
         for (var i = 0; i < str.length; ++i) {
           HEAP8[buffer2++ >> 0] = str.charCodeAt(i);
@@ -5116,15 +5007,14 @@ var require_libheif = __commonJS({
         if (!dontAddNull)
           HEAP8[buffer2 >> 0] = 0;
       }
-      __name(writeAsciiToMemory, "writeAsciiToMemory");
       if (!Math["imul"] || Math["imul"](4294967295, 5) !== -5)
-        Math["imul"] = /* @__PURE__ */ __name(function imul(a, b) {
+        Math["imul"] = function imul(a, b) {
           var ah = a >>> 16;
           var al = a & 65535;
           var bh = b >>> 16;
           var bl = b & 65535;
           return al * bl + (ah * bl + al * bh << 16) | 0;
-        }, "imul");
+        };
       Math.imul = Math["imul"];
       if (!Math["clz32"])
         Math["clz32"] = function(x) {
@@ -5167,14 +5057,12 @@ var require_libheif = __commonJS({
       function getUniqueRunDependency(id) {
         return id;
       }
-      __name(getUniqueRunDependency, "getUniqueRunDependency");
       function addRunDependency(id) {
         runDependencies++;
         if (Module2["monitorRunDependencies"]) {
           Module2["monitorRunDependencies"](runDependencies);
         }
       }
-      __name(addRunDependency, "addRunDependency");
       Module2["addRunDependency"] = addRunDependency;
       function removeRunDependency(id) {
         runDependencies--;
@@ -5193,7 +5081,6 @@ var require_libheif = __commonJS({
           }
         }
       }
-      __name(removeRunDependency, "removeRunDependency");
       Module2["removeRunDependency"] = removeRunDependency;
       Module2["preloadedImages"] = {};
       Module2["preloadedAudios"] = {};
@@ -5220,16 +5107,13 @@ var require_libheif = __commonJS({
       function __ZSt18uncaught_exceptionv() {
         return !!__ZSt18uncaught_exceptionv.uncaught_exception;
       }
-      __name(__ZSt18uncaught_exceptionv, "__ZSt18uncaught_exceptionv");
       function ___assert_fail(condition, filename, line, func) {
         ABORT = true;
         throw "Assertion failed: " + Pointer_stringify(condition) + ", at: " + [filename ? Pointer_stringify(filename) : "unknown filename", line, func ? Pointer_stringify(func) : "unknown function"] + " at " + stackTrace();
       }
-      __name(___assert_fail, "___assert_fail");
       function ___cxa_allocate_exception(size) {
         return _malloc(size);
       }
-      __name(___cxa_allocate_exception, "___cxa_allocate_exception");
       var EXCEPTIONS = { last: 0, caught: [], infos: {}, deAdjust: function(adjusted) {
         if (!adjusted || EXCEPTIONS.infos[adjusted])
           return adjusted;
@@ -5276,19 +5160,16 @@ var require_libheif = __commonJS({
         EXCEPTIONS.addRef(EXCEPTIONS.deAdjust(ptr));
         return ptr;
       }
-      __name(___cxa_begin_catch, "___cxa_begin_catch");
       function ___cxa_pure_virtual() {
         ABORT = true;
         throw "Pure virtual function called!";
       }
-      __name(___cxa_pure_virtual, "___cxa_pure_virtual");
       function ___resumeException(ptr) {
         if (!EXCEPTIONS.last) {
           EXCEPTIONS.last = ptr;
         }
         throw ptr + " - Exception catching is disabled, this exception cannot be caught. Compile with -s DISABLE_EXCEPTION_CATCHING=0 or DISABLE_EXCEPTION_CATCHING=2 to catch.";
       }
-      __name(___resumeException, "___resumeException");
       function ___cxa_find_matching_catch() {
         var thrown = EXCEPTIONS.last;
         if (!thrown) {
@@ -5315,7 +5196,6 @@ var require_libheif = __commonJS({
         thrown = HEAP32[thrown >> 2];
         return (Runtime.setTempRet0(throwntype), thrown) | 0;
       }
-      __name(___cxa_find_matching_catch, "___cxa_find_matching_catch");
       function ___cxa_throw(ptr, type, destructor) {
         EXCEPTIONS.infos[ptr] = { ptr, adjusted: ptr, type, destructor, refcount: 0, caught: false, rethrown: false };
         EXCEPTIONS.last = ptr;
@@ -5326,25 +5206,20 @@ var require_libheif = __commonJS({
         }
         throw ptr + " - Exception catching is disabled, this exception cannot be caught. Compile with -s DISABLE_EXCEPTION_CATCHING=0 or DISABLE_EXCEPTION_CATCHING=2 to catch.";
       }
-      __name(___cxa_throw, "___cxa_throw");
       function ___gxx_personality_v0() {
       }
-      __name(___gxx_personality_v0, "___gxx_personality_v0");
       function ___lock() {
       }
-      __name(___lock, "___lock");
       var ERRNO_CODES = { EPERM: 1, ENOENT: 2, ESRCH: 3, EINTR: 4, EIO: 5, ENXIO: 6, E2BIG: 7, ENOEXEC: 8, EBADF: 9, ECHILD: 10, EAGAIN: 11, EWOULDBLOCK: 11, ENOMEM: 12, EACCES: 13, EFAULT: 14, ENOTBLK: 15, EBUSY: 16, EEXIST: 17, EXDEV: 18, ENODEV: 19, ENOTDIR: 20, EISDIR: 21, EINVAL: 22, ENFILE: 23, EMFILE: 24, ENOTTY: 25, ETXTBSY: 26, EFBIG: 27, ENOSPC: 28, ESPIPE: 29, EROFS: 30, EMLINK: 31, EPIPE: 32, EDOM: 33, ERANGE: 34, ENOMSG: 42, EIDRM: 43, ECHRNG: 44, EL2NSYNC: 45, EL3HLT: 46, EL3RST: 47, ELNRNG: 48, EUNATCH: 49, ENOCSI: 50, EL2HLT: 51, EDEADLK: 35, ENOLCK: 37, EBADE: 52, EBADR: 53, EXFULL: 54, ENOANO: 55, EBADRQC: 56, EBADSLT: 57, EDEADLOCK: 35, EBFONT: 59, ENOSTR: 60, ENODATA: 61, ETIME: 62, ENOSR: 63, ENONET: 64, ENOPKG: 65, EREMOTE: 66, ENOLINK: 67, EADV: 68, ESRMNT: 69, ECOMM: 70, EPROTO: 71, EMULTIHOP: 72, EDOTDOT: 73, EBADMSG: 74, ENOTUNIQ: 76, EBADFD: 77, EREMCHG: 78, ELIBACC: 79, ELIBBAD: 80, ELIBSCN: 81, ELIBMAX: 82, ELIBEXEC: 83, ENOSYS: 38, ENOTEMPTY: 39, ENAMETOOLONG: 36, ELOOP: 40, EOPNOTSUPP: 95, EPFNOSUPPORT: 96, ECONNRESET: 104, ENOBUFS: 105, EAFNOSUPPORT: 97, EPROTOTYPE: 91, ENOTSOCK: 88, ENOPROTOOPT: 92, ESHUTDOWN: 108, ECONNREFUSED: 111, EADDRINUSE: 98, ECONNABORTED: 103, ENETUNREACH: 101, ENETDOWN: 100, ETIMEDOUT: 110, EHOSTDOWN: 112, EHOSTUNREACH: 113, EINPROGRESS: 115, EALREADY: 114, EDESTADDRREQ: 89, EMSGSIZE: 90, EPROTONOSUPPORT: 93, ESOCKTNOSUPPORT: 94, EADDRNOTAVAIL: 99, ENETRESET: 102, EISCONN: 106, ENOTCONN: 107, ETOOMANYREFS: 109, EUSERS: 87, EDQUOT: 122, ESTALE: 116, ENOTSUP: 95, ENOMEDIUM: 123, EILSEQ: 84, EOVERFLOW: 75, ECANCELED: 125, ENOTRECOVERABLE: 131, EOWNERDEAD: 130, ESTRPIPE: 86 };
       function ___setErrNo(value) {
         if (Module2["___errno_location"])
           HEAP32[Module2["___errno_location"]() >> 2] = value;
         return value;
       }
-      __name(___setErrNo, "___setErrNo");
       function ___map_file(pathname, size) {
         ___setErrNo(ERRNO_CODES.EPERM);
         return -1;
       }
-      __name(___map_file, "___map_file");
       var ERRNO_MESSAGES = { 0: "Success", 1: "Not super-user", 2: "No such file or directory", 3: "No such process", 4: "Interrupted system call", 5: "I/O error", 6: "No such device or address", 7: "Arg list too long", 8: "Exec format error", 9: "Bad file number", 10: "No children", 11: "No more processes", 12: "Not enough core", 13: "Permission denied", 14: "Bad address", 15: "Block device required", 16: "Mount device busy", 17: "File exists", 18: "Cross-device link", 19: "No such device", 20: "Not a directory", 21: "Is a directory", 22: "Invalid argument", 23: "Too many open files in system", 24: "Too many open files", 25: "Not a typewriter", 26: "Text file busy", 27: "File too large", 28: "No space left on device", 29: "Illegal seek", 30: "Read only file system", 31: "Too many links", 32: "Broken pipe", 33: "Math arg out of domain of func", 34: "Math result not representable", 35: "File locking deadlock error", 36: "File or path name too long", 37: "No record locks available", 38: "Function not implemented", 39: "Directory not empty", 40: "Too many symbolic links", 42: "No message of desired type", 43: "Identifier removed", 44: "Channel number out of range", 45: "Level 2 not synchronized", 46: "Level 3 halted", 47: "Level 3 reset", 48: "Link number out of range", 49: "Protocol driver not attached", 50: "No CSI structure available", 51: "Level 2 halted", 52: "Invalid exchange", 53: "Invalid request descriptor", 54: "Exchange full", 55: "No anode", 56: "Invalid request code", 57: "Invalid slot", 59: "Bad font file fmt", 60: "Device not a stream", 61: "No data (for no delay io)", 62: "Timer expired", 63: "Out of streams resources", 64: "Machine is not on the network", 65: "Package not installed", 66: "The object is remote", 67: "The link has been severed", 68: "Advertise error", 69: "Srmount error", 70: "Communication error on send", 71: "Protocol error", 72: "Multihop attempted", 73: "Cross mount point (not really error)", 74: "Trying to read unreadable message", 75: "Value too large for defined data type", 76: "Given log. name not unique", 77: "f.d. invalid for this operation", 78: "Remote address changed", 79: "Can   access a needed shared lib", 80: "Accessing a corrupted shared lib", 81: ".lib section in a.out corrupted", 82: "Attempting to link in too many libs", 83: "Attempting to exec a shared library", 84: "Illegal byte sequence", 86: "Streams pipe error", 87: "Too many users", 88: "Socket operation on non-socket", 89: "Destination address required", 90: "Message too long", 91: "Protocol wrong type for socket", 92: "Protocol not available", 93: "Unknown protocol", 94: "Socket type not supported", 95: "Not supported", 96: "Protocol family not supported", 97: "Address family not supported by protocol family", 98: "Address already in use", 99: "Address not available", 100: "Network interface is not configured", 101: "Network is unreachable", 102: "Connection reset by network", 103: "Connection aborted", 104: "Connection reset by peer", 105: "No buffer space available", 106: "Socket is already connected", 107: "Socket is not connected", 108: "Can't send after socket shutdown", 109: "Too many references", 110: "Connection timed out", 111: "Connection refused", 112: "Host is down", 113: "Host is unreachable", 114: "Socket already connected", 115: "Connection already in progress", 116: "Stale file handle", 122: "Quota exceeded", 123: "No medium (in tape drive)", 125: "Operation canceled", 130: "Previous owner died", 131: "State not recoverable" };
       var PATH = { splitPath: function(filename) {
         var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
@@ -5438,7 +5313,6 @@ var require_libheif = __commonJS({
             return [];
           return arr.slice(start, end - start + 1);
         }
-        __name(trim, "trim");
         var fromParts = trim(from.split("/"));
         var toParts = trim(to.split("/"));
         var length = Math.min(fromParts.length, toParts.length);
@@ -5919,13 +5793,11 @@ var require_libheif = __commonJS({
         function isRealDir(p) {
           return p !== "." && p !== "..";
         }
-        __name(isRealDir, "isRealDir");
         function toAbsolute(root2) {
           return function(p) {
             return PATH.join2(root2, p);
           };
         }
-        __name(toAbsolute, "toAbsolute");
         var check = FS.readdir(mount.mountpoint).filter(isRealDir).map(toAbsolute(mount.mountpoint));
         while (check.length) {
           var path2 = check.pop();
@@ -6077,7 +5949,6 @@ var require_libheif = __commonJS({
             return callback(null);
           }
         }
-        __name(done, "done");
         transaction.onerror = function(e2) {
           done(this.error);
           e2.preventDefault();
@@ -6345,12 +6216,10 @@ var require_libheif = __commonJS({
           }
           return parent;
         }
-        __name(ensureParent, "ensureParent");
         function base(path2) {
           var parts = path2.split("/");
           return parts[parts.length - 1];
         }
-        __name(base, "base");
         Array.prototype.forEach.call(mount.opts["files"] || [], function(file) {
           WORKERFS.createNode(ensureParent(file.name), base(file.name), WORKERFS.FILE_MODE, 0, file, file.lastModifiedDate);
         });
@@ -6750,7 +6619,6 @@ var require_libheif = __commonJS({
           FS.syncFSRequests--;
           return callback(err);
         }
-        __name(doCallback, "doCallback");
         function done(err) {
           if (err) {
             if (!done.errored) {
@@ -6763,7 +6631,6 @@ var require_libheif = __commonJS({
             doCallback(null);
           }
         }
-        __name(done, "done");
         mounts.forEach(function(mount) {
           if (!mount.type.syncfs) {
             return done(null);
@@ -7453,7 +7320,7 @@ var require_libheif = __commonJS({
       }, ensureErrnoError: function() {
         if (FS.ErrnoError)
           return;
-        FS.ErrnoError = /* @__PURE__ */ __name(function ErrnoError(errno, node) {
+        FS.ErrnoError = function ErrnoError(errno, node) {
           this.node = node;
           this.setErrno = function(errno2) {
             this.errno = errno2;
@@ -7468,7 +7335,7 @@ var require_libheif = __commonJS({
           this.message = ERRNO_MESSAGES[errno];
           if (this.stack)
             Object.defineProperty(this, "stack", { value: new Error().stack });
-        }, "ErrnoError");
+        };
         FS.ErrnoError.prototype = new Error();
         FS.ErrnoError.prototype.constructor = FS.ErrnoError;
         [ERRNO_CODES.ENOENT].forEach(function(code) {
@@ -7665,19 +7532,18 @@ var require_libheif = __commonJS({
           this.lengthKnown = false;
           this.chunks = [];
         }
-        __name(LazyUint8Array, "LazyUint8Array");
-        LazyUint8Array.prototype.get = /* @__PURE__ */ __name(function LazyUint8Array_get(idx) {
+        LazyUint8Array.prototype.get = function LazyUint8Array_get(idx) {
           if (idx > this.length - 1 || idx < 0) {
             return void 0;
           }
           var chunkOffset = idx % this.chunkSize;
           var chunkNum = idx / this.chunkSize | 0;
           return this.getter(chunkNum)[chunkOffset];
-        }, "LazyUint8Array_get");
-        LazyUint8Array.prototype.setDataGetter = /* @__PURE__ */ __name(function LazyUint8Array_setDataGetter(getter) {
+        };
+        LazyUint8Array.prototype.setDataGetter = function LazyUint8Array_setDataGetter(getter) {
           this.getter = getter;
-        }, "LazyUint8Array_setDataGetter");
-        LazyUint8Array.prototype.cacheLength = /* @__PURE__ */ __name(function LazyUint8Array_cacheLength() {
+        };
+        LazyUint8Array.prototype.cacheLength = function LazyUint8Array_cacheLength() {
           var xhr = new XMLHttpRequest();
           xhr.open("HEAD", url, false);
           xhr.send(null);
@@ -7690,7 +7556,7 @@ var require_libheif = __commonJS({
           var chunkSize = 1024 * 1024;
           if (!hasByteServing)
             chunkSize = datalength;
-          var doXHR = /* @__PURE__ */ __name(function(from, to) {
+          var doXHR = function(from, to) {
             if (from > to)
               throw new Error("invalid range (" + from + ", " + to + ") or no bytes requested!");
             if (to > datalength - 1)
@@ -7712,7 +7578,7 @@ var require_libheif = __commonJS({
             } else {
               return intArrayFromString(xhr2.responseText || "", true);
             }
-          }, "doXHR");
+          };
           var lazyArray2 = this;
           lazyArray2.setDataGetter(function(chunkNum) {
             var start = chunkNum * chunkSize;
@@ -7734,7 +7600,7 @@ var require_libheif = __commonJS({
           this._length = datalength;
           this._chunkSize = chunkSize;
           this.lengthKnown = true;
-        }, "LazyUint8Array_cacheLength");
+        };
         if (typeof XMLHttpRequest !== "undefined") {
           if (!ENVIRONMENT_IS_WORKER)
             throw "Cannot do synchronous binary XHRs outside webworkers in modern browsers. Use --embed-file or --preload-file in emcc";
@@ -7768,14 +7634,14 @@ var require_libheif = __commonJS({
         var keys = Object.keys(node.stream_ops);
         keys.forEach(function(key2) {
           var fn = node.stream_ops[key2];
-          stream_ops[key2] = /* @__PURE__ */ __name(function forceLoadLazyFile() {
+          stream_ops[key2] = function forceLoadLazyFile() {
             if (!FS.forceLoadFile(node)) {
               throw new FS.ErrnoError(ERRNO_CODES.EIO);
             }
             return fn.apply(null, arguments);
-          }, "forceLoadLazyFile");
+          };
         });
-        stream_ops.read = /* @__PURE__ */ __name(function stream_ops_read(stream, buffer2, offset, length, position) {
+        stream_ops.read = function stream_ops_read(stream, buffer2, offset, length, position) {
           if (!FS.forceLoadFile(node)) {
             throw new FS.ErrnoError(ERRNO_CODES.EIO);
           }
@@ -7794,7 +7660,7 @@ var require_libheif = __commonJS({
             }
           }
           return size;
-        }, "stream_ops_read");
+        };
         node.stream_ops = stream_ops;
         return node;
       }, createPreloadedFile: function(parent, name, url, canRead, canWrite, onload, onerror, dontCreateFile, canOwn, preFinish) {
@@ -7812,7 +7678,6 @@ var require_libheif = __commonJS({
               onload();
             removeRunDependency(dep);
           }
-          __name(finish, "finish");
           var handled = false;
           Module2["preloadPlugins"].forEach(function(plugin) {
             if (handled)
@@ -7829,7 +7694,6 @@ var require_libheif = __commonJS({
           if (!handled)
             finish(byteArray);
         }
-        __name(processData, "processData");
         addRunDependency(dep);
         if (typeof url == "string") {
           Browser.asyncLoad(url, function(byteArray) {
@@ -7853,12 +7717,12 @@ var require_libheif = __commonJS({
         } catch (e2) {
           return onerror(e2);
         }
-        openRequest.onupgradeneeded = /* @__PURE__ */ __name(function openRequest_onupgradeneeded() {
+        openRequest.onupgradeneeded = function openRequest_onupgradeneeded() {
           console.log("creating db");
           var db = openRequest.result;
           db.createObjectStore(FS.DB_STORE_NAME);
-        }, "openRequest_onupgradeneeded");
-        openRequest.onsuccess = /* @__PURE__ */ __name(function openRequest_onsuccess() {
+        };
+        openRequest.onsuccess = function openRequest_onsuccess() {
           var db = openRequest.result;
           var transaction = db.transaction([FS.DB_STORE_NAME], "readwrite");
           var files = transaction.objectStore(FS.DB_STORE_NAME);
@@ -7869,22 +7733,21 @@ var require_libheif = __commonJS({
             else
               onerror();
           }
-          __name(finish, "finish");
           paths.forEach(function(path2) {
             var putRequest = files.put(FS.analyzePath(path2).object.contents, path2);
-            putRequest.onsuccess = /* @__PURE__ */ __name(function putRequest_onsuccess() {
+            putRequest.onsuccess = function putRequest_onsuccess() {
               ok++;
               if (ok + fail == total)
                 finish();
-            }, "putRequest_onsuccess");
-            putRequest.onerror = /* @__PURE__ */ __name(function putRequest_onerror() {
+            };
+            putRequest.onerror = function putRequest_onerror() {
               fail++;
               if (ok + fail == total)
                 finish();
-            }, "putRequest_onerror");
+            };
           });
           transaction.onerror = onerror;
-        }, "openRequest_onsuccess");
+        };
         openRequest.onerror = onerror;
       }, loadFilesFromDB: function(paths, onload, onerror) {
         onload = onload || function() {
@@ -7898,7 +7761,7 @@ var require_libheif = __commonJS({
           return onerror(e2);
         }
         openRequest.onupgradeneeded = onerror;
-        openRequest.onsuccess = /* @__PURE__ */ __name(function openRequest_onsuccess() {
+        openRequest.onsuccess = function openRequest_onsuccess() {
           var db = openRequest.result;
           try {
             var transaction = db.transaction([FS.DB_STORE_NAME], "readonly");
@@ -7914,10 +7777,9 @@ var require_libheif = __commonJS({
             else
               onerror();
           }
-          __name(finish, "finish");
           paths.forEach(function(path2) {
             var getRequest = files.get(path2);
-            getRequest.onsuccess = /* @__PURE__ */ __name(function getRequest_onsuccess() {
+            getRequest.onsuccess = function getRequest_onsuccess() {
               if (FS.analyzePath(path2).exists) {
                 FS.unlink(path2);
               }
@@ -7925,15 +7787,15 @@ var require_libheif = __commonJS({
               ok++;
               if (ok + fail == total)
                 finish();
-            }, "getRequest_onsuccess");
-            getRequest.onerror = /* @__PURE__ */ __name(function getRequest_onerror() {
+            };
+            getRequest.onerror = function getRequest_onerror() {
               fail++;
               if (ok + fail == total)
                 finish();
-            }, "getRequest_onerror");
+            };
           });
           transaction.onerror = onerror;
-        }, "openRequest_onsuccess");
+        };
         openRequest.onerror = onerror;
       } };
       var SYSCALLS = { DEFAULT_POLLMASK: 5, mappings: {}, umask: 511, calculateAt: function(dirfd, path2) {
@@ -8109,7 +7971,6 @@ var require_libheif = __commonJS({
           return -e2.errno;
         }
       }
-      __name(___syscall140, "___syscall140");
       function ___syscall145(which, varargs) {
         SYSCALLS.varargs = varargs;
         try {
@@ -8121,7 +7982,6 @@ var require_libheif = __commonJS({
           return -e2.errno;
         }
       }
-      __name(___syscall145, "___syscall145");
       function ___syscall146(which, varargs) {
         SYSCALLS.varargs = varargs;
         try {
@@ -8133,7 +7993,6 @@ var require_libheif = __commonJS({
           return -e2.errno;
         }
       }
-      __name(___syscall146, "___syscall146");
       function ___syscall54(which, varargs) {
         SYSCALLS.varargs = varargs;
         try {
@@ -8191,7 +8050,6 @@ var require_libheif = __commonJS({
           return -e2.errno;
         }
       }
-      __name(___syscall54, "___syscall54");
       function ___syscall6(which, varargs) {
         SYSCALLS.varargs = varargs;
         try {
@@ -8204,7 +8062,6 @@ var require_libheif = __commonJS({
           return -e2.errno;
         }
       }
-      __name(___syscall6, "___syscall6");
       function ___syscall91(which, varargs) {
         SYSCALLS.varargs = varargs;
         try {
@@ -8228,11 +8085,9 @@ var require_libheif = __commonJS({
           return -e2.errno;
         }
       }
-      __name(___syscall91, "___syscall91");
       var cttz_i8 = allocate([8, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 7, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0], "i8", ALLOC_STATIC);
       function ___unlock() {
       }
-      __name(___unlock, "___unlock");
       var structRegistrations = {};
       function runDestructors(destructors) {
         while (destructors.length) {
@@ -8241,11 +8096,9 @@ var require_libheif = __commonJS({
           del(ptr);
         }
       }
-      __name(runDestructors, "runDestructors");
       function simpleReadValueFromPointer(pointer) {
         return this["fromWireType"](HEAPU32[pointer >> 2]);
       }
-      __name(simpleReadValueFromPointer, "simpleReadValueFromPointer");
       var awaitingDependencies = {};
       var registeredTypes = {};
       var typeDependencies = {};
@@ -8263,12 +8116,10 @@ var require_libheif = __commonJS({
           return name;
         }
       }
-      __name(makeLegalFunctionName, "makeLegalFunctionName");
       function createNamedFunction(name, body) {
         name = makeLegalFunctionName(name);
         return new Function("body", "return function " + name + '() {\n    "use strict";    return body.apply(this, arguments);\n};\n')(body);
       }
-      __name(createNamedFunction, "createNamedFunction");
       function extendError(baseErrorType, errorName) {
         var errorClass = createNamedFunction(errorName, function(message) {
           this.name = errorName;
@@ -8289,12 +8140,10 @@ var require_libheif = __commonJS({
         };
         return errorClass;
       }
-      __name(extendError, "extendError");
       var InternalError = void 0;
       function throwInternalError(message) {
         throw new InternalError(message);
       }
-      __name(throwInternalError, "throwInternalError");
       function whenDependentTypesAreResolved(myTypes, dependentTypes, getTypeConverters) {
         myTypes.forEach(function(type) {
           typeDependencies[type] = dependentTypes;
@@ -8308,7 +8157,6 @@ var require_libheif = __commonJS({
             registerType(myTypes[i], myTypeConverters[i]);
           }
         }
-        __name(onComplete, "onComplete");
         var typeConverters = new Array(dependentTypes.length);
         var unregisteredTypes = [];
         var registered = 0;
@@ -8333,7 +8181,6 @@ var require_libheif = __commonJS({
           onComplete(typeConverters);
         }
       }
-      __name(whenDependentTypesAreResolved, "whenDependentTypesAreResolved");
       function __embind_finalize_value_object(structType) {
         var reg = structRegistrations[structType];
         delete structRegistrations[structType];
@@ -8387,7 +8234,6 @@ var require_libheif = __commonJS({
           }, "argPackAdvance": 8, "readValueFromPointer": simpleReadValueFromPointer, destructorFunction: rawDestructor }];
         });
       }
-      __name(__embind_finalize_value_object, "__embind_finalize_value_object");
       function getShiftFromSize(size) {
         switch (size) {
           case 1:
@@ -8402,7 +8248,6 @@ var require_libheif = __commonJS({
             throw new TypeError("Unknown type size: " + size);
         }
       }
-      __name(getShiftFromSize, "getShiftFromSize");
       function embind_init_charCodes() {
         var codes = new Array(256);
         for (var i = 0; i < 256; ++i) {
@@ -8410,7 +8255,6 @@ var require_libheif = __commonJS({
         }
         embind_charCodes = codes;
       }
-      __name(embind_init_charCodes, "embind_init_charCodes");
       var embind_charCodes = void 0;
       function readLatin1String(ptr) {
         var ret = "";
@@ -8420,12 +8264,10 @@ var require_libheif = __commonJS({
         }
         return ret;
       }
-      __name(readLatin1String, "readLatin1String");
       var BindingError = void 0;
       function throwBindingError(message) {
         throw new BindingError(message);
       }
-      __name(throwBindingError, "throwBindingError");
       function registerType(rawType, registeredInstance, options) {
         options = options || {};
         if (!("argPackAdvance" in registeredInstance)) {
@@ -8452,7 +8294,6 @@ var require_libheif = __commonJS({
           });
         }
       }
-      __name(registerType, "registerType");
       function __embind_register_bool(rawType, name, size, trueValue, falseValue) {
         var shift = getShiftFromSize(size);
         name = readLatin1String(name);
@@ -8474,7 +8315,6 @@ var require_libheif = __commonJS({
           return this["fromWireType"](heap[pointer >> shift]);
         }, destructorFunction: null });
       }
-      __name(__embind_register_bool, "__embind_register_bool");
       function ClassHandle_isAliasOf(other) {
         if (!(this instanceof ClassHandle)) {
           return false;
@@ -8496,19 +8336,15 @@ var require_libheif = __commonJS({
         }
         return leftClass === rightClass && left === right;
       }
-      __name(ClassHandle_isAliasOf, "ClassHandle_isAliasOf");
       function shallowCopyInternalPointer(o) {
         return { count: o.count, deleteScheduled: o.deleteScheduled, preservePointerOnDelete: o.preservePointerOnDelete, ptr: o.ptr, ptrType: o.ptrType, smartPtr: o.smartPtr, smartPtrType: o.smartPtrType };
       }
-      __name(shallowCopyInternalPointer, "shallowCopyInternalPointer");
       function throwInstanceAlreadyDeleted(obj) {
         function getInstanceTypeName(handle) {
           return handle.$$.ptrType.registeredClass.name;
         }
-        __name(getInstanceTypeName, "getInstanceTypeName");
         throwBindingError(getInstanceTypeName(obj) + " instance already deleted");
       }
-      __name(throwInstanceAlreadyDeleted, "throwInstanceAlreadyDeleted");
       function ClassHandle_clone() {
         if (!this.$$.ptr) {
           throwInstanceAlreadyDeleted(this);
@@ -8523,7 +8359,6 @@ var require_libheif = __commonJS({
           return clone;
         }
       }
-      __name(ClassHandle_clone, "ClassHandle_clone");
       function runDestructor(handle) {
         var $$ = handle.$$;
         if ($$.smartPtr) {
@@ -8532,7 +8367,6 @@ var require_libheif = __commonJS({
           $$.ptrType.registeredClass.rawDestructor($$.ptr);
         }
       }
-      __name(runDestructor, "runDestructor");
       function ClassHandle_delete() {
         if (!this.$$.ptr) {
           throwInstanceAlreadyDeleted(this);
@@ -8550,11 +8384,9 @@ var require_libheif = __commonJS({
           this.$$.ptr = void 0;
         }
       }
-      __name(ClassHandle_delete, "ClassHandle_delete");
       function ClassHandle_isDeleted() {
         return !this.$$.ptr;
       }
-      __name(ClassHandle_isDeleted, "ClassHandle_isDeleted");
       var delayFunction = void 0;
       var deletionQueue = [];
       function flushPendingDeletes() {
@@ -8564,7 +8396,6 @@ var require_libheif = __commonJS({
           obj["delete"]();
         }
       }
-      __name(flushPendingDeletes, "flushPendingDeletes");
       function ClassHandle_deleteLater() {
         if (!this.$$.ptr) {
           throwInstanceAlreadyDeleted(this);
@@ -8579,7 +8410,6 @@ var require_libheif = __commonJS({
         this.$$.deleteScheduled = true;
         return this;
       }
-      __name(ClassHandle_deleteLater, "ClassHandle_deleteLater");
       function init_ClassHandle() {
         ClassHandle.prototype["isAliasOf"] = ClassHandle_isAliasOf;
         ClassHandle.prototype["clone"] = ClassHandle_clone;
@@ -8587,10 +8417,8 @@ var require_libheif = __commonJS({
         ClassHandle.prototype["isDeleted"] = ClassHandle_isDeleted;
         ClassHandle.prototype["deleteLater"] = ClassHandle_deleteLater;
       }
-      __name(init_ClassHandle, "init_ClassHandle");
       function ClassHandle() {
       }
-      __name(ClassHandle, "ClassHandle");
       var registeredPointers = {};
       function ensureOverloadTable(proto, methodName, humanName) {
         if (proto[methodName].overloadTable === void 0) {
@@ -8605,7 +8433,6 @@ var require_libheif = __commonJS({
           proto[methodName].overloadTable[prevFunc.argCount] = prevFunc;
         }
       }
-      __name(ensureOverloadTable, "ensureOverloadTable");
       function exposePublicSymbol(name, value, numArguments) {
         if (Module2.hasOwnProperty(name)) {
           if (numArguments === void 0 || Module2[name].overloadTable !== void 0 && Module2[name].overloadTable[numArguments] !== void 0) {
@@ -8623,7 +8450,6 @@ var require_libheif = __commonJS({
           }
         }
       }
-      __name(exposePublicSymbol, "exposePublicSymbol");
       function RegisteredClass(name, constructor, instancePrototype, rawDestructor, baseClass, getActualType, upcast, downcast) {
         this.name = name;
         this.constructor = constructor;
@@ -8635,7 +8461,6 @@ var require_libheif = __commonJS({
         this.downcast = downcast;
         this.pureVirtualFunctions = [];
       }
-      __name(RegisteredClass, "RegisteredClass");
       function upcastPointer(ptr, ptrClass, desiredClass) {
         while (ptrClass !== desiredClass) {
           if (!ptrClass.upcast) {
@@ -8646,7 +8471,6 @@ var require_libheif = __commonJS({
         }
         return ptr;
       }
-      __name(upcastPointer, "upcastPointer");
       function constNoSmartPtrRawPointerToWireType(destructors, handle) {
         if (handle === null) {
           if (this.isReference) {
@@ -8664,7 +8488,6 @@ var require_libheif = __commonJS({
         var ptr = upcastPointer(handle.$$.ptr, handleClass, this.registeredClass);
         return ptr;
       }
-      __name(constNoSmartPtrRawPointerToWireType, "constNoSmartPtrRawPointerToWireType");
       function genericPointerToWireType(destructors, handle) {
         var ptr;
         if (handle === null) {
@@ -8726,7 +8549,6 @@ var require_libheif = __commonJS({
         }
         return ptr;
       }
-      __name(genericPointerToWireType, "genericPointerToWireType");
       function nonConstNoSmartPtrRawPointerToWireType(destructors, handle) {
         if (handle === null) {
           if (this.isReference) {
@@ -8747,26 +8569,22 @@ var require_libheif = __commonJS({
         var ptr = upcastPointer(handle.$$.ptr, handleClass, this.registeredClass);
         return ptr;
       }
-      __name(nonConstNoSmartPtrRawPointerToWireType, "nonConstNoSmartPtrRawPointerToWireType");
       function RegisteredPointer_getPointee(ptr) {
         if (this.rawGetPointee) {
           ptr = this.rawGetPointee(ptr);
         }
         return ptr;
       }
-      __name(RegisteredPointer_getPointee, "RegisteredPointer_getPointee");
       function RegisteredPointer_destructor(ptr) {
         if (this.rawDestructor) {
           this.rawDestructor(ptr);
         }
       }
-      __name(RegisteredPointer_destructor, "RegisteredPointer_destructor");
       function RegisteredPointer_deleteObject(handle) {
         if (handle !== null) {
           handle["delete"]();
         }
       }
-      __name(RegisteredPointer_deleteObject, "RegisteredPointer_deleteObject");
       function downcastPointer(ptr, ptrClass, desiredClass) {
         if (ptrClass === desiredClass) {
           return ptr;
@@ -8780,11 +8598,9 @@ var require_libheif = __commonJS({
         }
         return desiredClass.downcast(rv);
       }
-      __name(downcastPointer, "downcastPointer");
       function getInheritedInstanceCount() {
         return Object.keys(registeredInstances).length;
       }
-      __name(getInheritedInstanceCount, "getInheritedInstanceCount");
       function getLiveInheritedInstances() {
         var rv = [];
         for (var k in registeredInstances) {
@@ -8794,21 +8610,18 @@ var require_libheif = __commonJS({
         }
         return rv;
       }
-      __name(getLiveInheritedInstances, "getLiveInheritedInstances");
       function setDelayFunction(fn) {
         delayFunction = fn;
         if (deletionQueue.length && delayFunction) {
           delayFunction(flushPendingDeletes);
         }
       }
-      __name(setDelayFunction, "setDelayFunction");
       function init_embind() {
         Module2["getInheritedInstanceCount"] = getInheritedInstanceCount;
         Module2["getLiveInheritedInstances"] = getLiveInheritedInstances;
         Module2["flushPendingDeletes"] = flushPendingDeletes;
         Module2["setDelayFunction"] = setDelayFunction;
       }
-      __name(init_embind, "init_embind");
       var registeredInstances = {};
       function getBasestPointer(class_, ptr) {
         if (ptr === void 0) {
@@ -8820,12 +8633,10 @@ var require_libheif = __commonJS({
         }
         return ptr;
       }
-      __name(getBasestPointer, "getBasestPointer");
       function getInheritedInstance(class_, ptr) {
         ptr = getBasestPointer(class_, ptr);
         return registeredInstances[ptr];
       }
-      __name(getInheritedInstance, "getInheritedInstance");
       function makeClassHandle(prototype, record) {
         if (!record.ptrType || !record.ptr) {
           throwInternalError("makeClassHandle requires ptr and ptrType");
@@ -8838,7 +8649,6 @@ var require_libheif = __commonJS({
         record.count = { value: 1 };
         return Object.create(prototype, { $$: { value: record } });
       }
-      __name(makeClassHandle, "makeClassHandle");
       function RegisteredPointer_fromWireType(ptr) {
         var rawPointer = this.getPointee(ptr);
         if (!rawPointer) {
@@ -8864,7 +8674,6 @@ var require_libheif = __commonJS({
             return makeClassHandle(this.registeredClass.instancePrototype, { ptrType: this, ptr });
           }
         }
-        __name(makeDefaultHandle, "makeDefaultHandle");
         var actualType = this.registeredClass.getActualType(rawPointer);
         var registeredPointerRecord = registeredPointers[actualType];
         if (!registeredPointerRecord) {
@@ -8886,7 +8695,6 @@ var require_libheif = __commonJS({
           return makeClassHandle(toType.registeredClass.instancePrototype, { ptrType: toType, ptr: dp });
         }
       }
-      __name(RegisteredPointer_fromWireType, "RegisteredPointer_fromWireType");
       function init_RegisteredPointer() {
         RegisteredPointer.prototype.getPointee = RegisteredPointer_getPointee;
         RegisteredPointer.prototype.destructor = RegisteredPointer_destructor;
@@ -8895,7 +8703,6 @@ var require_libheif = __commonJS({
         RegisteredPointer.prototype["deleteObject"] = RegisteredPointer_deleteObject;
         RegisteredPointer.prototype["fromWireType"] = RegisteredPointer_fromWireType;
       }
-      __name(init_RegisteredPointer, "init_RegisteredPointer");
       function RegisteredPointer(name, registeredClass, isReference, isConst, isSmartPointer, pointeeType, sharingPolicy, rawGetPointee, rawConstructor, rawShare, rawDestructor) {
         this.name = name;
         this.registeredClass = registeredClass;
@@ -8920,7 +8727,6 @@ var require_libheif = __commonJS({
           this["toWireType"] = genericPointerToWireType;
         }
       }
-      __name(RegisteredPointer, "RegisteredPointer");
       function replacePublicSymbol(name, value, numArguments) {
         if (!Module2.hasOwnProperty(name)) {
           throwInternalError("Replacing nonexistant public symbol");
@@ -8932,7 +8738,6 @@ var require_libheif = __commonJS({
           Module2[name].argCount = numArguments;
         }
       }
-      __name(replacePublicSymbol, "replacePublicSymbol");
       function requireFunction(signature, rawFunction) {
         signature = readLatin1String(signature);
         function makeDynCaller(dynCall) {
@@ -8946,7 +8751,6 @@ var require_libheif = __commonJS({
           body += "};\n";
           return new Function("dynCall", "rawFunction", body)(dynCall, rawFunction);
         }
-        __name(makeDynCaller, "makeDynCaller");
         var fp;
         if (Module2["FUNCTION_TABLE_" + signature] !== void 0) {
           fp = Module2["FUNCTION_TABLE_" + signature][rawFunction];
@@ -8967,7 +8771,6 @@ var require_libheif = __commonJS({
         }
         return fp;
       }
-      __name(requireFunction, "requireFunction");
       var UnboundTypeError = void 0;
       function getTypeName(type) {
         var ptr = ___getTypeName(type);
@@ -8975,7 +8778,6 @@ var require_libheif = __commonJS({
         _free(ptr);
         return rv;
       }
-      __name(getTypeName, "getTypeName");
       function throwUnboundTypeError(message, types) {
         var unboundTypes = [];
         var seen = {};
@@ -8993,11 +8795,9 @@ var require_libheif = __commonJS({
           unboundTypes.push(type);
           seen[type] = true;
         }
-        __name(visit, "visit");
         types.forEach(visit);
         throw new UnboundTypeError(message + ": " + unboundTypes.map(getTypeName).join([", "]));
       }
-      __name(throwUnboundTypeError, "throwUnboundTypeError");
       function __embind_register_class(rawType, rawPointerType, rawConstPointerType, baseClassRawType, getActualTypeSignature, getActualType, upcastSignature, upcast, downcastSignature, downcast, name, destructorSignature, rawDestructor) {
         name = readLatin1String(name);
         getActualType = requireFunction(getActualTypeSignature, getActualType);
@@ -9046,7 +8846,6 @@ var require_libheif = __commonJS({
           return [referenceConverter, pointerConverter, constPointerConverter];
         });
       }
-      __name(__embind_register_class, "__embind_register_class");
       var emval_free_list = [];
       var emval_handle_array = [{}, { value: void 0 }, { value: null }, { value: true }, { value: false }];
       function __emval_decref(handle) {
@@ -9055,7 +8854,6 @@ var require_libheif = __commonJS({
           emval_free_list.push(handle);
         }
       }
-      __name(__emval_decref, "__emval_decref");
       function count_emval_handles() {
         var count = 0;
         for (var i = 5; i < emval_handle_array.length; ++i) {
@@ -9065,7 +8863,6 @@ var require_libheif = __commonJS({
         }
         return count;
       }
-      __name(count_emval_handles, "count_emval_handles");
       function get_first_emval() {
         for (var i = 5; i < emval_handle_array.length; ++i) {
           if (emval_handle_array[i] !== void 0) {
@@ -9074,12 +8871,10 @@ var require_libheif = __commonJS({
         }
         return null;
       }
-      __name(get_first_emval, "get_first_emval");
       function init_emval() {
         Module2["count_emval_handles"] = count_emval_handles;
         Module2["get_first_emval"] = get_first_emval;
       }
-      __name(init_emval, "init_emval");
       function __emval_register(value) {
         switch (value) {
           case void 0:
@@ -9109,7 +8904,6 @@ var require_libheif = __commonJS({
           }
         }
       }
-      __name(__emval_register, "__emval_register");
       function __embind_register_emval(rawType, name) {
         name = readLatin1String(name);
         registerType(rawType, { name, "fromWireType": function(handle) {
@@ -9120,7 +8914,6 @@ var require_libheif = __commonJS({
           return __emval_register(value);
         }, "argPackAdvance": 8, "readValueFromPointer": simpleReadValueFromPointer, destructorFunction: null });
       }
-      __name(__embind_register_emval, "__embind_register_emval");
       function enumReadValueFromPointer(name, shift, signed) {
         switch (shift) {
           case 0:
@@ -9142,13 +8935,11 @@ var require_libheif = __commonJS({
             throw new TypeError("Unknown integer type: " + name);
         }
       }
-      __name(enumReadValueFromPointer, "enumReadValueFromPointer");
       function __embind_register_enum(rawType, name, size, isSigned) {
         var shift = getShiftFromSize(size);
         name = readLatin1String(name);
         function ctor() {
         }
-        __name(ctor, "ctor");
         ctor.values = {};
         registerType(rawType, { name, constructor: ctor, "fromWireType": function(c) {
           return this.constructor.values[c];
@@ -9157,7 +8948,6 @@ var require_libheif = __commonJS({
         }, "argPackAdvance": 8, "readValueFromPointer": enumReadValueFromPointer(name, shift, isSigned), destructorFunction: null });
         exposePublicSymbol(name, ctor);
       }
-      __name(__embind_register_enum, "__embind_register_enum");
       function requireRegisteredType(rawType, humanName) {
         var impl = registeredTypes[rawType];
         if (impl === void 0) {
@@ -9165,7 +8955,6 @@ var require_libheif = __commonJS({
         }
         return impl;
       }
-      __name(requireRegisteredType, "requireRegisteredType");
       function __embind_register_enum_value(rawEnumType, name, enumValue) {
         var enumType = requireRegisteredType(rawEnumType, "enum");
         name = readLatin1String(name);
@@ -9175,7 +8964,6 @@ var require_libheif = __commonJS({
         Enum.values[enumValue] = Value;
         Enum[name] = Value;
       }
-      __name(__embind_register_enum_value, "__embind_register_enum_value");
       function _embind_repr(v) {
         if (v === null) {
           return "null";
@@ -9187,7 +8975,6 @@ var require_libheif = __commonJS({
           return "" + v;
         }
       }
-      __name(_embind_repr, "_embind_repr");
       function floatReadValueFromPointer(name, shift) {
         switch (shift) {
           case 2:
@@ -9202,7 +8989,6 @@ var require_libheif = __commonJS({
             throw new TypeError("Unknown float type: " + name);
         }
       }
-      __name(floatReadValueFromPointer, "floatReadValueFromPointer");
       function __embind_register_float(rawType, name, size) {
         var shift = getShiftFromSize(size);
         name = readLatin1String(name);
@@ -9215,7 +9001,6 @@ var require_libheif = __commonJS({
           return value;
         }, "argPackAdvance": 8, "readValueFromPointer": floatReadValueFromPointer(name, shift), destructorFunction: null });
       }
-      __name(__embind_register_float, "__embind_register_float");
       function new_(constructor, argumentList) {
         if (!(constructor instanceof Function)) {
           throw new TypeError("new_ called with constructor type " + typeof constructor + " which is not a function");
@@ -9227,7 +9012,6 @@ var require_libheif = __commonJS({
         var r = constructor.apply(obj, argumentList);
         return r instanceof Object ? r : obj;
       }
-      __name(new_, "new_");
       function craftInvokerFunction(humanName, argTypes, classType, cppInvokerFunc, cppTargetFunc) {
         var argCount = argTypes.length;
         if (argCount < 2) {
@@ -9288,7 +9072,6 @@ var require_libheif = __commonJS({
         var invokerFunction = new_(Function, args1).apply(null, args2);
         return invokerFunction;
       }
-      __name(craftInvokerFunction, "craftInvokerFunction");
       function heap32VectorToArray(count, firstElement) {
         var array = [];
         for (var i = 0; i < count; i++) {
@@ -9296,7 +9079,6 @@ var require_libheif = __commonJS({
         }
         return array;
       }
-      __name(heap32VectorToArray, "heap32VectorToArray");
       function __embind_register_function(name, argCount, rawArgTypesAddr, signature, rawInvoker, fn) {
         var argTypes = heap32VectorToArray(argCount, rawArgTypesAddr);
         name = readLatin1String(name);
@@ -9310,41 +9092,39 @@ var require_libheif = __commonJS({
           return [];
         });
       }
-      __name(__embind_register_function, "__embind_register_function");
       function integerReadValueFromPointer(name, shift, signed) {
         switch (shift) {
           case 0:
-            return signed ? /* @__PURE__ */ __name(function readS8FromPointer(pointer) {
+            return signed ? function readS8FromPointer(pointer) {
               return HEAP8[pointer];
-            }, "readS8FromPointer") : /* @__PURE__ */ __name(function readU8FromPointer(pointer) {
+            } : function readU8FromPointer(pointer) {
               return HEAPU8[pointer];
-            }, "readU8FromPointer");
+            };
           case 1:
-            return signed ? /* @__PURE__ */ __name(function readS16FromPointer(pointer) {
+            return signed ? function readS16FromPointer(pointer) {
               return HEAP16[pointer >> 1];
-            }, "readS16FromPointer") : /* @__PURE__ */ __name(function readU16FromPointer(pointer) {
+            } : function readU16FromPointer(pointer) {
               return HEAPU16[pointer >> 1];
-            }, "readU16FromPointer");
+            };
           case 2:
-            return signed ? /* @__PURE__ */ __name(function readS32FromPointer(pointer) {
+            return signed ? function readS32FromPointer(pointer) {
               return HEAP32[pointer >> 2];
-            }, "readS32FromPointer") : /* @__PURE__ */ __name(function readU32FromPointer(pointer) {
+            } : function readU32FromPointer(pointer) {
               return HEAPU32[pointer >> 2];
-            }, "readU32FromPointer");
+            };
           default:
             throw new TypeError("Unknown integer type: " + name);
         }
       }
-      __name(integerReadValueFromPointer, "integerReadValueFromPointer");
       function __embind_register_integer(primitiveType, name, size, minRange, maxRange) {
         name = readLatin1String(name);
         if (maxRange === -1) {
           maxRange = 4294967295;
         }
         var shift = getShiftFromSize(size);
-        var fromWireType = /* @__PURE__ */ __name(function(value) {
+        var fromWireType = function(value) {
           return value;
-        }, "fromWireType");
+        };
         if (minRange === 0) {
           var bitshift = 32 - 8 * size;
           fromWireType = /* @__PURE__ */ __name(function(value) {
@@ -9362,7 +9142,6 @@ var require_libheif = __commonJS({
           return isUnsignedType ? value >>> 0 : value | 0;
         }, "argPackAdvance": 8, "readValueFromPointer": integerReadValueFromPointer(name, shift, minRange !== 0), destructorFunction: null });
       }
-      __name(__embind_register_integer, "__embind_register_integer");
       function __embind_register_memory_view(rawType, dataTypeIndex, name) {
         var typeMapping = [Int8Array, Uint8Array, Int16Array, Uint16Array, Int32Array, Uint32Array, Float32Array, Float64Array];
         var TA = typeMapping[dataTypeIndex];
@@ -9373,11 +9152,9 @@ var require_libheif = __commonJS({
           var data2 = heap[handle + 1];
           return new TA(heap["buffer"], data2, size);
         }
-        __name(decodeMemoryView, "decodeMemoryView");
         name = readLatin1String(name);
         registerType(rawType, { name, "fromWireType": decodeMemoryView, "argPackAdvance": 8, "readValueFromPointer": decodeMemoryView }, { ignoreDuplicateRegistrations: true });
       }
-      __name(__embind_register_memory_view, "__embind_register_memory_view");
       function __embind_register_std_string(rawType, name) {
         name = readLatin1String(name);
         registerType(rawType, { name, "fromWireType": function(value) {
@@ -9395,11 +9172,9 @@ var require_libheif = __commonJS({
           function getTAElement(ta, index) {
             return ta[index];
           }
-          __name(getTAElement, "getTAElement");
           function getStringElement(string, index) {
             return string.charCodeAt(index);
           }
-          __name(getStringElement, "getStringElement");
           var getElement;
           if (value instanceof Uint8Array) {
             getElement = getTAElement;
@@ -9431,7 +9206,6 @@ var require_libheif = __commonJS({
           _free(ptr);
         } });
       }
-      __name(__embind_register_std_string, "__embind_register_std_string");
       function __embind_register_std_wstring(rawType, charSize, name) {
         name = readLatin1String(name);
         var getHeap, shift;
@@ -9473,15 +9247,12 @@ var require_libheif = __commonJS({
           _free(ptr);
         } });
       }
-      __name(__embind_register_std_wstring, "__embind_register_std_wstring");
       function __embind_register_value_object(rawType, name, constructorSignature, rawConstructor, destructorSignature, rawDestructor) {
         structRegistrations[rawType] = { name: readLatin1String(name), rawConstructor: requireFunction(constructorSignature, rawConstructor), rawDestructor: requireFunction(destructorSignature, rawDestructor), fields: [] };
       }
-      __name(__embind_register_value_object, "__embind_register_value_object");
       function __embind_register_value_object_field(structType, fieldName, getterReturnType, getterSignature, getter, getterContext, setterArgumentType, setterSignature, setter, setterContext) {
         structRegistrations[structType].fields.push({ fieldName: readLatin1String(fieldName), getterReturnType, getter: requireFunction(getterSignature, getter), getterContext, setterArgumentType, setter: requireFunction(setterSignature, setter), setterContext });
       }
-      __name(__embind_register_value_object_field, "__embind_register_value_object_field");
       function __embind_register_void(rawType, name) {
         name = readLatin1String(name);
         registerType(rawType, { isVoid: true, name, "argPackAdvance": 0, "fromWireType": function() {
@@ -9490,17 +9261,14 @@ var require_libheif = __commonJS({
           return void 0;
         } });
       }
-      __name(__embind_register_void, "__embind_register_void");
       function __emval_incref(handle) {
         if (handle > 4) {
           emval_handle_array[handle].refcount += 1;
         }
       }
-      __name(__emval_incref, "__emval_incref");
       function __emval_new_array() {
         return __emval_register([]);
       }
-      __name(__emval_new_array, "__emval_new_array");
       var emval_symbols = {};
       function getStringOrSymbol(address) {
         var symbol = emval_symbols[address];
@@ -9510,39 +9278,32 @@ var require_libheif = __commonJS({
           return symbol;
         }
       }
-      __name(getStringOrSymbol, "getStringOrSymbol");
       function __emval_new_cstring(v) {
         return __emval_register(getStringOrSymbol(v));
       }
-      __name(__emval_new_cstring, "__emval_new_cstring");
       function __emval_new_object() {
         return __emval_register({});
       }
-      __name(__emval_new_object, "__emval_new_object");
       function requireHandle(handle) {
         if (!handle) {
           throwBindingError("Cannot use deleted val. handle = " + handle);
         }
         return emval_handle_array[handle].value;
       }
-      __name(requireHandle, "requireHandle");
       function __emval_set_property(handle, key2, value) {
         handle = requireHandle(handle);
         key2 = requireHandle(key2);
         value = requireHandle(value);
         handle[key2] = value;
       }
-      __name(__emval_set_property, "__emval_set_property");
       function __emval_take_value(type, argv) {
         type = requireRegisteredType(type, "_emval_take_value");
         var v = type["readValueFromPointer"](argv);
         return __emval_register(v);
       }
-      __name(__emval_take_value, "__emval_take_value");
       function _abort() {
         Module2["abort"]();
       }
-      __name(_abort, "_abort");
       var _environ = STATICTOP;
       STATICTOP += 16;
       function ___buildEnvironment(env) {
@@ -9587,7 +9348,6 @@ var require_libheif = __commonJS({
         }
         HEAP32[envPtr + strings.length * ptrSize >> 2] = 0;
       }
-      __name(___buildEnvironment, "___buildEnvironment");
       var ENV = {};
       function _getenv(name) {
         if (name === 0)
@@ -9600,36 +9360,28 @@ var require_libheif = __commonJS({
         _getenv.ret = allocate(intArrayFromString(ENV[name]), "i8", ALLOC_NORMAL);
         return _getenv.ret;
       }
-      __name(_getenv, "_getenv");
       function _emscripten_memcpy_big(dest, src, num) {
         HEAPU8.set(HEAPU8.subarray(src, src + num), dest);
         return dest;
       }
-      __name(_emscripten_memcpy_big, "_emscripten_memcpy_big");
       function _pthread_cond_destroy() {
         return 0;
       }
-      __name(_pthread_cond_destroy, "_pthread_cond_destroy");
       function _pthread_cond_init() {
         return 0;
       }
-      __name(_pthread_cond_init, "_pthread_cond_init");
       function _pthread_cond_signal() {
         return 0;
       }
-      __name(_pthread_cond_signal, "_pthread_cond_signal");
       function _pthread_cond_wait() {
         return 0;
       }
-      __name(_pthread_cond_wait, "_pthread_cond_wait");
       var PTHREAD_SPECIFIC = {};
       function _pthread_getspecific(key2) {
         return PTHREAD_SPECIFIC[key2] || 0;
       }
-      __name(_pthread_getspecific, "_pthread_getspecific");
       function _pthread_join() {
       }
-      __name(_pthread_join, "_pthread_join");
       var PTHREAD_SPECIFIC_NEXT_KEY = 1;
       function _pthread_key_create(key2, destructor) {
         if (key2 == 0) {
@@ -9640,13 +9392,10 @@ var require_libheif = __commonJS({
         PTHREAD_SPECIFIC_NEXT_KEY++;
         return 0;
       }
-      __name(_pthread_key_create, "_pthread_key_create");
       function _pthread_mutex_destroy() {
       }
-      __name(_pthread_mutex_destroy, "_pthread_mutex_destroy");
       function _pthread_mutex_init() {
       }
-      __name(_pthread_mutex_init, "_pthread_mutex_init");
       function _pthread_once(ptr, func) {
         if (!_pthread_once.seen)
           _pthread_once.seen = {};
@@ -9655,7 +9404,6 @@ var require_libheif = __commonJS({
         Module2["dynCall_v"](func);
         _pthread_once.seen[ptr] = 1;
       }
-      __name(_pthread_once, "_pthread_once");
       function _pthread_setspecific(key2, value) {
         if (!(key2 in PTHREAD_SPECIFIC)) {
           return ERRNO_CODES.EINVAL;
@@ -9663,18 +9411,15 @@ var require_libheif = __commonJS({
         PTHREAD_SPECIFIC[key2] = value;
         return 0;
       }
-      __name(_pthread_setspecific, "_pthread_setspecific");
       function __isLeapYear(year) {
         return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
       }
-      __name(__isLeapYear, "__isLeapYear");
       function __arraySum(array, index) {
         var sum = 0;
         for (var i = 0; i <= index; sum += array[i++])
           ;
         return sum;
       }
-      __name(__arraySum, "__arraySum");
       var __MONTH_DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
       var __MONTH_DAYS_REGULAR = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
       function __addDays(date, days) {
@@ -9699,7 +9444,6 @@ var require_libheif = __commonJS({
         }
         return newDate;
       }
-      __name(__addDays, "__addDays");
       function _strftime(s, maxsize, format, tm) {
         var tm_zone = HEAP32[tm + 40 >> 2];
         var date = { tm_sec: HEAP32[tm >> 2], tm_min: HEAP32[tm + 4 >> 2], tm_hour: HEAP32[tm + 8 >> 2], tm_mday: HEAP32[tm + 12 >> 2], tm_mon: HEAP32[tm + 16 >> 2], tm_year: HEAP32[tm + 20 >> 2], tm_wday: HEAP32[tm + 24 >> 2], tm_yday: HEAP32[tm + 28 >> 2], tm_isdst: HEAP32[tm + 32 >> 2], tm_gmtoff: HEAP32[tm + 36 >> 2], tm_zone: tm_zone ? Pointer_stringify(tm_zone) : "" };
@@ -9717,16 +9461,13 @@ var require_libheif = __commonJS({
           }
           return str;
         }
-        __name(leadingSomething, "leadingSomething");
         function leadingNulls(value, digits) {
           return leadingSomething(value, digits, "0");
         }
-        __name(leadingNulls, "leadingNulls");
         function compareByDay(date1, date2) {
           function sgn(value) {
             return value < 0 ? -1 : value > 0 ? 1 : 0;
           }
-          __name(sgn, "sgn");
           var compare;
           if ((compare = sgn(date1.getFullYear() - date2.getFullYear())) === 0) {
             if ((compare = sgn(date1.getMonth() - date2.getMonth())) === 0) {
@@ -9735,7 +9476,6 @@ var require_libheif = __commonJS({
           }
           return compare;
         }
-        __name(compareByDay, "compareByDay");
         function getFirstWeekStartDate(janFourth) {
           switch (janFourth.getDay()) {
             case 0:
@@ -9754,7 +9494,6 @@ var require_libheif = __commonJS({
               return new Date(janFourth.getFullYear() - 1, 11, 30);
           }
         }
-        __name(getFirstWeekStartDate, "getFirstWeekStartDate");
         function getWeekBasedYear(date2) {
           var thisDate = __addDays(new Date(date2.tm_year + 1900, 0, 1), date2.tm_yday);
           var janFourthThisYear = new Date(thisDate.getFullYear(), 0, 4);
@@ -9771,7 +9510,6 @@ var require_libheif = __commonJS({
             return thisDate.getFullYear() - 1;
           }
         }
-        __name(getWeekBasedYear, "getWeekBasedYear");
         var EXPANSION_RULES_2 = { "%a": function(date2) {
           return WEEKDAYS[date2.tm_wday].substring(0, 3);
         }, "%A": function(date2) {
@@ -9892,11 +9630,9 @@ var require_libheif = __commonJS({
         writeArrayToMemory(bytes, s);
         return bytes.length - 1;
       }
-      __name(_strftime, "_strftime");
       function _strftime_l(s, maxsize, format, tm) {
         return _strftime(s, maxsize, format, tm);
       }
-      __name(_strftime_l, "_strftime_l");
       FS.staticInit();
       __ATINIT__.unshift(function() {
         if (!Module2["noFSInit"] && !FS.init.initialized)
@@ -9951,7 +9687,6 @@ var require_libheif = __commonJS({
           u8array.length = numBytesWritten;
         return u8array;
       }
-      __name(intArrayFromString, "intArrayFromString");
       function intArrayToString(array) {
         var ret = [];
         for (var i = 0; i < array.length; i++) {
@@ -9966,7 +9701,6 @@ var require_libheif = __commonJS({
         }
         return ret.join("");
       }
-      __name(intArrayToString, "intArrayToString");
       var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
       var decodeBase64 = typeof atob === "function" ? atob : function(input) {
         var output = "";
@@ -10013,7 +9747,6 @@ var require_libheif = __commonJS({
           throw new Error("Converting base64 string to bytes failed.");
         }
       }
-      __name(intArrayFromBase64, "intArrayFromBase64");
       function tryParseAsDataURI(filename) {
         var dataURIPrefix = "data:application/octet-stream;base64,";
         if (!(String.prototype.startsWith ? filename.startsWith(dataURIPrefix) : filename.indexOf(dataURIPrefix) === 0)) {
@@ -10021,7 +9754,6 @@ var require_libheif = __commonJS({
         }
         return intArrayFromBase64(filename.slice(dataURIPrefix.length));
       }
-      __name(tryParseAsDataURI, "tryParseAsDataURI");
       function invoke_i(index) {
         try {
           return Module2["dynCall_i"](index);
@@ -10031,7 +9763,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_i, "invoke_i");
       function invoke_ii(index, a1) {
         try {
           return Module2["dynCall_ii"](index, a1);
@@ -10041,7 +9772,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_ii, "invoke_ii");
       function invoke_iii(index, a1, a2) {
         try {
           return Module2["dynCall_iii"](index, a1, a2);
@@ -10051,7 +9781,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_iii, "invoke_iii");
       function invoke_iiii(index, a1, a2, a3) {
         try {
           return Module2["dynCall_iiii"](index, a1, a2, a3);
@@ -10061,7 +9790,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_iiii, "invoke_iiii");
       function invoke_iiiii(index, a1, a2, a3, a4) {
         try {
           return Module2["dynCall_iiiii"](index, a1, a2, a3, a4);
@@ -10071,7 +9799,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_iiiii, "invoke_iiiii");
       function invoke_iiiiid(index, a1, a2, a3, a4, a5) {
         try {
           return Module2["dynCall_iiiiid"](index, a1, a2, a3, a4, a5);
@@ -10081,7 +9808,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_iiiiid, "invoke_iiiiid");
       function invoke_iiiiii(index, a1, a2, a3, a4, a5) {
         try {
           return Module2["dynCall_iiiiii"](index, a1, a2, a3, a4, a5);
@@ -10091,7 +9817,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_iiiiii, "invoke_iiiiii");
       function invoke_iiiiiid(index, a1, a2, a3, a4, a5, a6) {
         try {
           return Module2["dynCall_iiiiiid"](index, a1, a2, a3, a4, a5, a6);
@@ -10101,7 +9826,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_iiiiiid, "invoke_iiiiiid");
       function invoke_iiiiiii(index, a1, a2, a3, a4, a5, a6) {
         try {
           return Module2["dynCall_iiiiiii"](index, a1, a2, a3, a4, a5, a6);
@@ -10111,7 +9835,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_iiiiiii, "invoke_iiiiiii");
       function invoke_iiiiiiii(index, a1, a2, a3, a4, a5, a6, a7) {
         try {
           return Module2["dynCall_iiiiiiii"](index, a1, a2, a3, a4, a5, a6, a7);
@@ -10121,7 +9844,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_iiiiiiii, "invoke_iiiiiiii");
       function invoke_iiiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8) {
         try {
           return Module2["dynCall_iiiiiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8);
@@ -10131,7 +9853,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_iiiiiiiii, "invoke_iiiiiiiii");
       function invoke_v(index) {
         try {
           Module2["dynCall_v"](index);
@@ -10141,7 +9862,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_v, "invoke_v");
       function invoke_vi(index, a1) {
         try {
           Module2["dynCall_vi"](index, a1);
@@ -10151,7 +9871,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_vi, "invoke_vi");
       function invoke_vii(index, a1, a2) {
         try {
           Module2["dynCall_vii"](index, a1, a2);
@@ -10161,7 +9880,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_vii, "invoke_vii");
       function invoke_viii(index, a1, a2, a3) {
         try {
           Module2["dynCall_viii"](index, a1, a2, a3);
@@ -10171,7 +9889,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_viii, "invoke_viii");
       function invoke_viiii(index, a1, a2, a3, a4) {
         try {
           Module2["dynCall_viiii"](index, a1, a2, a3, a4);
@@ -10181,7 +9898,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_viiii, "invoke_viiii");
       function invoke_viiiii(index, a1, a2, a3, a4, a5) {
         try {
           Module2["dynCall_viiiii"](index, a1, a2, a3, a4, a5);
@@ -10191,7 +9907,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_viiiii, "invoke_viiiii");
       function invoke_viiiiii(index, a1, a2, a3, a4, a5, a6) {
         try {
           Module2["dynCall_viiiiii"](index, a1, a2, a3, a4, a5, a6);
@@ -10201,7 +9916,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_viiiiii, "invoke_viiiiii");
       function invoke_viiiiiii(index, a1, a2, a3, a4, a5, a6, a7) {
         try {
           Module2["dynCall_viiiiiii"](index, a1, a2, a3, a4, a5, a6, a7);
@@ -10211,7 +9925,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_viiiiiii, "invoke_viiiiiii");
       function invoke_viiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8) {
         try {
           Module2["dynCall_viiiiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8);
@@ -10221,7 +9934,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_viiiiiiii, "invoke_viiiiiiii");
       function invoke_viiiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
         try {
           Module2["dynCall_viiiiiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9);
@@ -10231,7 +9943,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_viiiiiiiii, "invoke_viiiiiiiii");
       function invoke_viiiiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10) {
         try {
           Module2["dynCall_viiiiiiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10);
@@ -10241,7 +9952,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_viiiiiiiiii, "invoke_viiiiiiiiii");
       function invoke_viiiiiiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12) {
         try {
           Module2["dynCall_viiiiiiiiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12);
@@ -10251,7 +9961,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_viiiiiiiiiiii, "invoke_viiiiiiiiiiii");
       function invoke_viiiiiiiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13) {
         try {
           Module2["dynCall_viiiiiiiiiiiii"](index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13);
@@ -10261,7 +9970,6 @@ var require_libheif = __commonJS({
           Module2["setThrew"](1, 0);
         }
       }
-      __name(invoke_viiiiiiiiiiiii, "invoke_viiiiiiiiiiiii");
       Module2.asmGlobalArg = { "Math": Math, "Int8Array": Int8Array, "Int16Array": Int16Array, "Int32Array": Int32Array, "Uint8Array": Uint8Array, "Uint16Array": Uint16Array, "Uint32Array": Uint32Array, "Float32Array": Float32Array, "Float64Array": Float64Array, "NaN": NaN, "Infinity": Infinity, "byteLength": byteLength };
       Module2.asmLibraryArg = { "abort": abort, "assert": assert, "enlargeMemory": enlargeMemory, "getTotalMemory": getTotalMemory, "abortOnCannotGrowMemory": abortOnCannotGrowMemory, "invoke_i": invoke_i, "invoke_ii": invoke_ii, "invoke_iii": invoke_iii, "invoke_iiii": invoke_iiii, "invoke_iiiii": invoke_iiiii, "invoke_iiiiid": invoke_iiiiid, "invoke_iiiiii": invoke_iiiiii, "invoke_iiiiiid": invoke_iiiiiid, "invoke_iiiiiii": invoke_iiiiiii, "invoke_iiiiiiii": invoke_iiiiiiii, "invoke_iiiiiiiii": invoke_iiiiiiiii, "invoke_v": invoke_v, "invoke_vi": invoke_vi, "invoke_vii": invoke_vii, "invoke_viii": invoke_viii, "invoke_viiii": invoke_viiii, "invoke_viiiii": invoke_viiiii, "invoke_viiiiii": invoke_viiiiii, "invoke_viiiiiii": invoke_viiiiiii, "invoke_viiiiiiii": invoke_viiiiiiii, "invoke_viiiiiiiii": invoke_viiiiiiiii, "invoke_viiiiiiiiii": invoke_viiiiiiiiii, "invoke_viiiiiiiiiiii": invoke_viiiiiiiiiiii, "invoke_viiiiiiiiiiiii": invoke_viiiiiiiiiiiii, "ClassHandle": ClassHandle, "ClassHandle_clone": ClassHandle_clone, "ClassHandle_delete": ClassHandle_delete, "ClassHandle_deleteLater": ClassHandle_deleteLater, "ClassHandle_isAliasOf": ClassHandle_isAliasOf, "ClassHandle_isDeleted": ClassHandle_isDeleted, "RegisteredClass": RegisteredClass, "RegisteredPointer": RegisteredPointer, "RegisteredPointer_deleteObject": RegisteredPointer_deleteObject, "RegisteredPointer_destructor": RegisteredPointer_destructor, "RegisteredPointer_fromWireType": RegisteredPointer_fromWireType, "RegisteredPointer_getPointee": RegisteredPointer_getPointee, "__ZSt18uncaught_exceptionv": __ZSt18uncaught_exceptionv, "___assert_fail": ___assert_fail, "___buildEnvironment": ___buildEnvironment, "___cxa_allocate_exception": ___cxa_allocate_exception, "___cxa_begin_catch": ___cxa_begin_catch, "___cxa_find_matching_catch": ___cxa_find_matching_catch, "___cxa_pure_virtual": ___cxa_pure_virtual, "___cxa_throw": ___cxa_throw, "___gxx_personality_v0": ___gxx_personality_v0, "___lock": ___lock, "___map_file": ___map_file, "___resumeException": ___resumeException, "___setErrNo": ___setErrNo, "___syscall140": ___syscall140, "___syscall145": ___syscall145, "___syscall146": ___syscall146, "___syscall54": ___syscall54, "___syscall6": ___syscall6, "___syscall91": ___syscall91, "___unlock": ___unlock, "__addDays": __addDays, "__arraySum": __arraySum, "__embind_finalize_value_object": __embind_finalize_value_object, "__embind_register_bool": __embind_register_bool, "__embind_register_class": __embind_register_class, "__embind_register_emval": __embind_register_emval, "__embind_register_enum": __embind_register_enum, "__embind_register_enum_value": __embind_register_enum_value, "__embind_register_float": __embind_register_float, "__embind_register_function": __embind_register_function, "__embind_register_integer": __embind_register_integer, "__embind_register_memory_view": __embind_register_memory_view, "__embind_register_std_string": __embind_register_std_string, "__embind_register_std_wstring": __embind_register_std_wstring, "__embind_register_value_object": __embind_register_value_object, "__embind_register_value_object_field": __embind_register_value_object_field, "__embind_register_void": __embind_register_void, "__emval_decref": __emval_decref, "__emval_incref": __emval_incref, "__emval_new_array": __emval_new_array, "__emval_new_cstring": __emval_new_cstring, "__emval_new_object": __emval_new_object, "__emval_register": __emval_register, "__emval_set_property": __emval_set_property, "__emval_take_value": __emval_take_value, "__isLeapYear": __isLeapYear, "_abort": _abort, "_embind_repr": _embind_repr, "_emscripten_memcpy_big": _emscripten_memcpy_big, "_getenv": _getenv, "_pthread_cond_destroy": _pthread_cond_destroy, "_pthread_cond_init": _pthread_cond_init, "_pthread_cond_signal": _pthread_cond_signal, "_pthread_cond_wait": _pthread_cond_wait, "_pthread_getspecific": _pthread_getspecific, "_pthread_join": _pthread_join, "_pthread_key_create": _pthread_key_create, "_pthread_mutex_destroy": _pthread_mutex_destroy, "_pthread_mutex_init": _pthread_mutex_init, "_pthread_once": _pthread_once, "_pthread_setspecific": _pthread_setspecific, "_strftime": _strftime, "_strftime_l": _strftime_l, "constNoSmartPtrRawPointerToWireType": constNoSmartPtrRawPointerToWireType, "count_emval_handles": count_emval_handles, "craftInvokerFunction": craftInvokerFunction, "createNamedFunction": createNamedFunction, "downcastPointer": downcastPointer, "embind_init_charCodes": embind_init_charCodes, "ensureOverloadTable": ensureOverloadTable, "enumReadValueFromPointer": enumReadValueFromPointer, "exposePublicSymbol": exposePublicSymbol, "extendError": extendError, "floatReadValueFromPointer": floatReadValueFromPointer, "flushPendingDeletes": flushPendingDeletes, "genericPointerToWireType": genericPointerToWireType, "getBasestPointer": getBasestPointer, "getInheritedInstance": getInheritedInstance, "getInheritedInstanceCount": getInheritedInstanceCount, "getLiveInheritedInstances": getLiveInheritedInstances, "getShiftFromSize": getShiftFromSize, "getStringOrSymbol": getStringOrSymbol, "getTypeName": getTypeName, "get_first_emval": get_first_emval, "heap32VectorToArray": heap32VectorToArray, "init_ClassHandle": init_ClassHandle, "init_RegisteredPointer": init_RegisteredPointer, "init_embind": init_embind, "init_emval": init_emval, "integerReadValueFromPointer": integerReadValueFromPointer, "makeClassHandle": makeClassHandle, "makeLegalFunctionName": makeLegalFunctionName, "new_": new_, "nonConstNoSmartPtrRawPointerToWireType": nonConstNoSmartPtrRawPointerToWireType, "readLatin1String": readLatin1String, "registerType": registerType, "replacePublicSymbol": replacePublicSymbol, "requireFunction": requireFunction, "requireHandle": requireHandle, "requireRegisteredType": requireRegisteredType, "runDestructor": runDestructor, "runDestructors": runDestructors, "setDelayFunction": setDelayFunction, "shallowCopyInternalPointer": shallowCopyInternalPointer, "simpleReadValueFromPointer": simpleReadValueFromPointer, "throwBindingError": throwBindingError, "throwInstanceAlreadyDeleted": throwInstanceAlreadyDeleted, "throwInternalError": throwInternalError, "throwUnboundTypeError": throwUnboundTypeError, "upcastPointer": upcastPointer, "whenDependentTypesAreResolved": whenDependentTypesAreResolved, "DYNAMICTOP_PTR": DYNAMICTOP_PTR, "tempDoublePtr": tempDoublePtr, "ABORT": ABORT, "STACKTOP": STACKTOP, "STACK_MAX": STACK_MAX, "cttz_i8": cttz_i8 };
       var asm = function(global, env, buffer2) {
@@ -10481,7 +10189,6 @@ var require_libheif = __commonJS({
           buffer2 = newBuffer;
           return true;
         }
-        __name(Sc, "Sc");
         function OC(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -10669,7 +10376,6 @@ var require_libheif = __commonJS({
           u = E2;
           return F2 | 0;
         }
-        __name(OC, "OC");
         function PC(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -10706,7 +10412,6 @@ var require_libheif = __commonJS({
           u = i2;
           return +d2;
         }
-        __name(PC, "PC");
         function QC(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -10894,7 +10599,6 @@ var require_libheif = __commonJS({
           u = E2;
           return F2 | 0;
         }
-        __name(QC, "QC");
         function RC(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -10931,7 +10635,6 @@ var require_libheif = __commonJS({
           u = i2;
           return +d2;
         }
-        __name(RC, "RC");
         function SC(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -11115,7 +10818,6 @@ var require_libheif = __commonJS({
           u = B2;
           return C2 | 0;
         }
-        __name(SC, "SC");
         function TC(a2) {
           a2 = a2 | 0;
           switch (f[a2 + 4 >> 2] & 74) {
@@ -11136,7 +10838,6 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(TC, "TC");
         function UC(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -11157,7 +10858,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(UC, "UC");
         function VC(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -11210,7 +10910,6 @@ var require_libheif = __commonJS({
           u = k2;
           return a2 | 0;
         }
-        __name(VC, "VC");
         function WC(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -11393,7 +11092,6 @@ var require_libheif = __commonJS({
           u = B2;
           return C2 | 0;
         }
-        __name(WC, "WC");
         function XC(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -11443,7 +11141,6 @@ var require_libheif = __commonJS({
           u = j2;
           return a2 | 0;
         }
-        __name(XC, "XC");
         function YC(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -11626,7 +11323,6 @@ var require_libheif = __commonJS({
           u = B2;
           return C2 | 0;
         }
-        __name(YC, "YC");
         function ZC(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -11676,7 +11372,6 @@ var require_libheif = __commonJS({
           u = j2;
           return a2 | 0;
         }
-        __name(ZC, "ZC");
         function _C(a2, c2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -11859,7 +11554,6 @@ var require_libheif = __commonJS({
           u = C2;
           return D2 | 0;
         }
-        __name(_C, "_C");
         function $C(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -11911,7 +11605,6 @@ var require_libheif = __commonJS({
           u = j2;
           return a2 | 0;
         }
-        __name($C, "$C");
         function aD(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -12095,7 +11788,6 @@ var require_libheif = __commonJS({
           u = B2;
           return C2 | 0;
         }
-        __name(aD, "aD");
         function bD(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -12139,7 +11831,6 @@ var require_libheif = __commonJS({
           u = i2;
           return a2 | 0;
         }
-        __name(bD, "bD");
         function cD(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -12322,7 +12013,6 @@ var require_libheif = __commonJS({
           u = B2;
           return C2 | 0;
         }
-        __name(cD, "cD");
         function dD(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -12381,7 +12071,6 @@ var require_libheif = __commonJS({
           u = i2;
           return a2 | 0;
         }
-        __name(dD, "dD");
         function eD(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -12633,20 +12322,17 @@ var require_libheif = __commonJS({
           u = y2;
           return d2 | 0;
         }
-        __name(eD, "eD");
         function fD(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(fD, "fD");
         function gD(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(gD, "gD");
         function hD(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -12710,7 +12396,6 @@ var require_libheif = __commonJS({
           u = o2;
           return i2 | 0;
         }
-        __name(hD, "hD");
         function iD(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -12733,7 +12418,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(iD, "iD");
         function jD(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -12756,7 +12440,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(jD, "jD");
         function kD(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -12779,7 +12462,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(kD, "kD");
         function lD(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -12802,7 +12484,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(lD, "lD");
         function mD(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -12825,7 +12506,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(mD, "mD");
         function nD(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -12848,7 +12528,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(nD, "nD");
         function oD(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -12871,7 +12550,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(oD, "oD");
         function pD(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -12894,7 +12572,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(pD, "pD");
         function qD(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -12917,7 +12594,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(qD, "qD");
         function rD(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -13110,7 +12786,6 @@ var require_libheif = __commonJS({
           u = z2;
           return A2 | 0;
         }
-        __name(rD, "rD");
         function sD(a2, c2, d2, e3, g2, h2, i2, j2, k2, l2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -13220,7 +12895,6 @@ var require_libheif = __commonJS({
             while (0);
           return m2 | 0;
         }
-        __name(sD, "sD");
         function tD(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -13408,7 +13082,6 @@ var require_libheif = __commonJS({
           u = E2;
           return F2 | 0;
         }
-        __name(tD, "tD");
         function uD(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -13432,7 +13105,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(uD, "uD");
         function vD(a2, c2, d2, e3, g2, h2, i2, j2, k2, l2, m2, n2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -13543,7 +13215,6 @@ var require_libheif = __commonJS({
             while (0);
           return k2 | 0;
         }
-        __name(vD, "vD");
         function wD(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -13731,7 +13402,6 @@ var require_libheif = __commonJS({
           u = E2;
           return F2 | 0;
         }
-        __name(wD, "wD");
         function xD(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -13919,7 +13589,6 @@ var require_libheif = __commonJS({
           u = E2;
           return F2 | 0;
         }
-        __name(xD, "xD");
         function yD(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -14103,7 +13772,6 @@ var require_libheif = __commonJS({
           u = B2;
           return C2 | 0;
         }
-        __name(yD, "yD");
         function zD(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -14124,7 +13792,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(zD, "zD");
         function AD(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -14307,7 +13974,6 @@ var require_libheif = __commonJS({
           u = B2;
           return C2 | 0;
         }
-        __name(AD, "AD");
         function BD(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -14490,7 +14156,6 @@ var require_libheif = __commonJS({
           u = B2;
           return C2 | 0;
         }
-        __name(BD, "BD");
         function CD(a2, c2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -14673,7 +14338,6 @@ var require_libheif = __commonJS({
           u = C2;
           return D2 | 0;
         }
-        __name(CD, "CD");
         function DD(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -14857,7 +14521,6 @@ var require_libheif = __commonJS({
           u = B2;
           return C2 | 0;
         }
-        __name(DD, "DD");
         function ED(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -15040,7 +14703,6 @@ var require_libheif = __commonJS({
           u = B2;
           return C2 | 0;
         }
-        __name(ED, "ED");
         function FD(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -15291,20 +14953,17 @@ var require_libheif = __commonJS({
           u = y2;
           return d2 | 0;
         }
-        __name(FD, "FD");
         function GD(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(GD, "GD");
         function HD(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(HD, "HD");
         function ID(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -15373,7 +15032,6 @@ var require_libheif = __commonJS({
           u = l2;
           return a2 | 0;
         }
-        __name(ID, "ID");
         function JD(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -15413,7 +15071,6 @@ var require_libheif = __commonJS({
           u = a2;
           return g2 | 0;
         }
-        __name(JD, "JD");
         function KD(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -15453,7 +15110,6 @@ var require_libheif = __commonJS({
           u = a2;
           return g2 | 0;
         }
-        __name(KD, "KD");
         function LD(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -15493,7 +15149,6 @@ var require_libheif = __commonJS({
           u = a2;
           return g2 | 0;
         }
-        __name(LD, "LD");
         function MD(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -15533,7 +15188,6 @@ var require_libheif = __commonJS({
           u = a2;
           return g2 | 0;
         }
-        __name(MD, "MD");
         function ND(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -15620,7 +15274,6 @@ var require_libheif = __commonJS({
           u = w2;
           return A2 | 0;
         }
-        __name(ND, "ND");
         function OD(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -15707,7 +15360,6 @@ var require_libheif = __commonJS({
           u = w2;
           return A2 | 0;
         }
-        __name(OD, "OD");
         function PD(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -15745,7 +15397,6 @@ var require_libheif = __commonJS({
           u = a2;
           return g2 | 0;
         }
-        __name(PD, "PD");
         function QD(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -15764,7 +15415,6 @@ var require_libheif = __commonJS({
           u = g2;
           return c2 | 0;
         }
-        __name(QD, "QD");
         function RD(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -15810,7 +15460,6 @@ var require_libheif = __commonJS({
             while (0);
           return a2 | 0;
         }
-        __name(RD, "RD");
         function SD(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -15867,7 +15516,6 @@ var require_libheif = __commonJS({
           b[a2 >> 0] = d2;
           return g2 | 0;
         }
-        __name(SD, "SD");
         function TD(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -15885,7 +15533,6 @@ var require_libheif = __commonJS({
           u = e3;
           return b2 | 0;
         }
-        __name(TD, "TD");
         function UD(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -16064,7 +15711,6 @@ var require_libheif = __commonJS({
           u = w2;
           return;
         }
-        __name(UD, "UD");
         function VD(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -16104,7 +15750,6 @@ var require_libheif = __commonJS({
           b[f2 >> 0] = a2;
           return;
         }
-        __name(VD, "VD");
         function WD(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -16226,20 +15871,17 @@ var require_libheif = __commonJS({
           u = r2;
           return;
         }
-        __name(WD, "WD");
         function XD(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(XD, "XD");
         function YD(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(YD, "YD");
         function ZD(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -16301,7 +15943,6 @@ var require_libheif = __commonJS({
           u = l2;
           return a2 | 0;
         }
-        __name(ZD, "ZD");
         function _D(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -16341,7 +15982,6 @@ var require_libheif = __commonJS({
           u = a2;
           return g2 | 0;
         }
-        __name(_D, "_D");
         function $D(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -16381,7 +16021,6 @@ var require_libheif = __commonJS({
           u = a2;
           return g2 | 0;
         }
-        __name($D, "$D");
         function aE(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -16421,7 +16060,6 @@ var require_libheif = __commonJS({
           u = a2;
           return g2 | 0;
         }
-        __name(aE, "aE");
         function bE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -16461,7 +16099,6 @@ var require_libheif = __commonJS({
           u = a2;
           return g2 | 0;
         }
-        __name(bE, "bE");
         function cE(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -16555,7 +16192,6 @@ var require_libheif = __commonJS({
           u = y2;
           return a2 | 0;
         }
-        __name(cE, "cE");
         function dE(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -16649,7 +16285,6 @@ var require_libheif = __commonJS({
           u = y2;
           return a2 | 0;
         }
-        __name(dE, "dE");
         function eE(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -16687,7 +16322,6 @@ var require_libheif = __commonJS({
           u = a2;
           return g2 | 0;
         }
-        __name(eE, "eE");
         function fE(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -16775,7 +16409,6 @@ var require_libheif = __commonJS({
           u = r2;
           return i2 | 0;
         }
-        __name(fE, "fE");
         function gE(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -16784,7 +16417,6 @@ var require_libheif = __commonJS({
             nz(a2, c2, b2) | 0;
           return a2 | 0;
         }
-        __name(gE, "gE");
         function hE(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -16970,7 +16602,6 @@ var require_libheif = __commonJS({
           u = y2;
           return;
         }
-        __name(hE, "hE");
         function iE(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -17093,25 +16724,21 @@ var require_libheif = __commonJS({
           u = t2;
           return;
         }
-        __name(iE, "iE");
         function jE(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(jE, "jE");
         function kE(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(kE, "kE");
         function lE(a2) {
           a2 = a2 | 0;
           return 2;
         }
-        __name(lE, "lE");
         function mE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -17134,7 +16761,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(mE, "mE");
         function nE(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -17163,7 +16789,6 @@ var require_libheif = __commonJS({
           u = i2;
           return h2 | 0;
         }
-        __name(nE, "nE");
         function oE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -17185,7 +16810,6 @@ var require_libheif = __commonJS({
           u = h2;
           return f[b2 >> 2] | 0;
         }
-        __name(oE, "oE");
         function pE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -17207,7 +16831,6 @@ var require_libheif = __commonJS({
           u = h2;
           return f[b2 >> 2] | 0;
         }
-        __name(pE, "pE");
         function qE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -17229,7 +16852,6 @@ var require_libheif = __commonJS({
           u = h2;
           return f[b2 >> 2] | 0;
         }
-        __name(qE, "qE");
         function rE(a2, c2, d2, e3, g2, h2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -17496,7 +17118,6 @@ var require_libheif = __commonJS({
           u = X2;
           return j2 | 0;
         }
-        __name(rE, "rE");
         function sE(a2) {
           a2 = a2 | 0;
           if ((b[56920] | 0) == 0 ? oM(56920) | 0 : 0) {
@@ -17505,7 +17126,6 @@ var require_libheif = __commonJS({
           }
           return f[15082] | 0;
         }
-        __name(sE, "sE");
         function tE(a2) {
           a2 = a2 | 0;
           if ((b[56904] | 0) == 0 ? oM(56904) | 0 : 0) {
@@ -17514,7 +17134,6 @@ var require_libheif = __commonJS({
           }
           return f[15039] | 0;
         }
-        __name(tE, "tE");
         function uE(a2) {
           a2 = a2 | 0;
           if ((b[56888] | 0) == 0 ? oM(56888) | 0 : 0) {
@@ -17523,7 +17142,6 @@ var require_libheif = __commonJS({
           }
           return f[14966] | 0;
         }
-        __name(uE, "uE");
         function vE(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -17554,7 +17172,6 @@ var require_libheif = __commonJS({
           u = e3;
           return 59564;
         }
-        __name(vE, "vE");
         function wE(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -17585,7 +17202,6 @@ var require_libheif = __commonJS({
           u = e3;
           return 59552;
         }
-        __name(wE, "wE");
         function xE(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -17616,7 +17232,6 @@ var require_libheif = __commonJS({
           u = e3;
           return 59540;
         }
-        __name(xE, "xE");
         function yE(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -17647,7 +17262,6 @@ var require_libheif = __commonJS({
           u = e3;
           return 59528;
         }
-        __name(yE, "yE");
         function zE() {
           var a2 = 0, c2 = 0;
           if ((b[56896] | 0) == 0 ? oM(56896) | 0 : 0) {
@@ -17670,7 +17284,6 @@ var require_libheif = __commonJS({
           eL(59588, 54386) | 0;
           return;
         }
-        __name(zE, "zE");
         function AE() {
           var a2 = 0, c2 = 0;
           if ((b[56912] | 0) == 0 ? oM(56912) | 0 : 0) {
@@ -17715,7 +17328,6 @@ var require_libheif = __commonJS({
           eL(60144, 54515) | 0;
           return;
         }
-        __name(AE, "AE");
         function BE() {
           var a2 = 0, c2 = 0;
           if ((b[56928] | 0) == 0 ? oM(56928) | 0 : 0) {
@@ -17750,7 +17362,6 @@ var require_libheif = __commonJS({
           eL(60316, 54600) | 0;
           return;
         }
-        __name(BE, "BE");
         function CE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -17773,7 +17384,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(CE, "CE");
         function DE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -17796,7 +17406,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(DE, "DE");
         function EE(a2, c2, e3, g2, h2, i2, j2, k2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -18094,7 +17703,6 @@ var require_libheif = __commonJS({
           u = B2;
           return l2 | 0;
         }
-        __name(EE, "EE");
         function FE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18118,7 +17726,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(FE, "FE");
         function GE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18142,7 +17749,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(GE, "GE");
         function HE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18166,7 +17772,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(HE, "HE");
         function IE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18190,7 +17795,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(IE, "IE");
         function JE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18214,7 +17818,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(JE, "JE");
         function KE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18238,7 +17841,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(KE, "KE");
         function LE(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -18369,7 +17971,6 @@ var require_libheif = __commonJS({
             f[g2 >> 2] = f[g2 >> 2] | 2;
           return;
         }
-        __name(LE, "LE");
         function ME(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -18412,7 +18013,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(ME, "ME");
         function NE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18436,7 +18036,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(NE, "NE");
         function OE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18460,7 +18059,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(OE, "OE");
         function PE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18486,7 +18084,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(PE, "PE");
         function QE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18507,7 +18104,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(QE, "QE");
         function RE(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -18641,7 +18237,6 @@ var require_libheif = __commonJS({
             f[e3 >> 2] = f[e3 >> 2] | a2;
           return;
         }
-        __name(RE, "RE");
         function SE(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -18855,25 +18450,21 @@ var require_libheif = __commonJS({
             while (0);
           return i2 | 0;
         }
-        __name(SE, "SE");
         function TE(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(TE, "TE");
         function UE(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(UE, "UE");
         function VE(a2) {
           a2 = a2 | 0;
           return 2;
         }
-        __name(VE, "VE");
         function WE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18896,7 +18487,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(WE, "WE");
         function XE(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -18925,7 +18515,6 @@ var require_libheif = __commonJS({
           u = i2;
           return h2 | 0;
         }
-        __name(XE, "XE");
         function YE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18947,7 +18536,6 @@ var require_libheif = __commonJS({
           u = h2;
           return f[b2 >> 2] | 0;
         }
-        __name(YE, "YE");
         function ZE(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18969,7 +18557,6 @@ var require_libheif = __commonJS({
           u = h2;
           return f[b2 >> 2] | 0;
         }
-        __name(ZE, "ZE");
         function _E(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -18991,7 +18578,6 @@ var require_libheif = __commonJS({
           u = h2;
           return f[b2 >> 2] | 0;
         }
-        __name(_E, "_E");
         function $E(a2, c2, d2, e3, g2, h2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -19258,7 +18844,6 @@ var require_libheif = __commonJS({
           u = X2;
           return j2 | 0;
         }
-        __name($E, "$E");
         function aF(a2) {
           a2 = a2 | 0;
           if ((b[57e3] | 0) == 0 ? oM(57e3) | 0 : 0) {
@@ -19267,7 +18852,6 @@ var require_libheif = __commonJS({
           }
           return f[15285] | 0;
         }
-        __name(aF, "aF");
         function bF(a2) {
           a2 = a2 | 0;
           if ((b[56984] | 0) == 0 ? oM(56984) | 0 : 0) {
@@ -19276,7 +18860,6 @@ var require_libheif = __commonJS({
           }
           return f[15242] | 0;
         }
-        __name(bF, "bF");
         function cF(a2) {
           a2 = a2 | 0;
           if ((b[56968] | 0) == 0 ? oM(56968) | 0 : 0) {
@@ -19285,7 +18868,6 @@ var require_libheif = __commonJS({
           }
           return f[15169] | 0;
         }
-        __name(cF, "cF");
         function dF(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -19323,7 +18905,6 @@ var require_libheif = __commonJS({
           u = e3;
           return 60376;
         }
-        __name(dF, "dF");
         function eF(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -19361,7 +18942,6 @@ var require_libheif = __commonJS({
           u = e3;
           return 60364;
         }
-        __name(eF, "eF");
         function fF(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -19399,7 +18979,6 @@ var require_libheif = __commonJS({
           u = e3;
           return 60352;
         }
-        __name(fF, "fF");
         function gF(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -19437,12 +19016,10 @@ var require_libheif = __commonJS({
           u = e3;
           return 60340;
         }
-        __name(gF, "gF");
         function hF(a2) {
           a2 = a2 | 0;
           return dy(a2) | 0;
         }
-        __name(hF, "hF");
         function iF() {
           var a2 = 0, c2 = 0;
           if ((b[56976] | 0) == 0 ? oM(56976) | 0 : 0) {
@@ -19465,7 +19042,6 @@ var require_libheif = __commonJS({
           qL(60400, 15372) | 0;
           return;
         }
-        __name(iF, "iF");
         function jF() {
           var a2 = 0, c2 = 0;
           if ((b[56992] | 0) == 0 ? oM(56992) | 0 : 0) {
@@ -19510,7 +19086,6 @@ var require_libheif = __commonJS({
           qL(60956, 15888) | 0;
           return;
         }
-        __name(jF, "jF");
         function kF() {
           var a2 = 0, c2 = 0;
           if ((b[57008] | 0) == 0 ? oM(57008) | 0 : 0) {
@@ -19545,7 +19120,6 @@ var require_libheif = __commonJS({
           qL(61128, 16228) | 0;
           return;
         }
-        __name(kF, "kF");
         function lF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -19568,7 +19142,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(lF, "lF");
         function mF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -19591,7 +19164,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(mF, "mF");
         function nF(a2, b2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -19882,7 +19454,6 @@ var require_libheif = __commonJS({
           u = x2;
           return j2 | 0;
         }
-        __name(nF, "nF");
         function oF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -19906,7 +19477,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(oF, "oF");
         function pF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -19930,7 +19500,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(pF, "pF");
         function qF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -19954,7 +19523,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(qF, "qF");
         function rF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -19978,7 +19546,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(rF, "rF");
         function sF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20002,7 +19569,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(sF, "sF");
         function tF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20026,7 +19592,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(tF, "tF");
         function uF(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20154,7 +19719,6 @@ var require_libheif = __commonJS({
             f[d2 >> 2] = f[d2 >> 2] | 2;
           return;
         }
-        __name(uF, "uF");
         function vF(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -20197,7 +19761,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(vF, "vF");
         function wF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20221,7 +19784,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(wF, "wF");
         function xF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20245,7 +19807,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(xF, "xF");
         function yF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20271,7 +19832,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(yF, "yF");
         function zF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20292,7 +19852,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(zF, "zF");
         function AF(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20426,7 +19985,6 @@ var require_libheif = __commonJS({
             f[d2 >> 2] = f[d2 >> 2] | a2;
           return;
         }
-        __name(AF, "AF");
         function BF(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20636,14 +20194,12 @@ var require_libheif = __commonJS({
             while (0);
           return g2 | 0;
         }
-        __name(BF, "BF");
         function CF(a2) {
           a2 = a2 | 0;
           HF(a2 + 8 | 0);
           eC(a2);
           return;
         }
-        __name(CF, "CF");
         function DF(a2) {
           a2 = a2 | 0;
           HF(a2 + 8 | 0);
@@ -20651,7 +20207,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(DF, "DF");
         function EF(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -20696,7 +20251,6 @@ var require_libheif = __commonJS({
           u = j2;
           return d2 | 0;
         }
-        __name(EF, "EF");
         function FF(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -20724,13 +20278,11 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(FF, "FF");
         function GF(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return b2 - a2 | 0;
         }
-        __name(GF, "GF");
         function HF(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -20739,14 +20291,12 @@ var require_libheif = __commonJS({
             zz(f[a2 >> 2] | 0);
           return;
         }
-        __name(HF, "HF");
         function IF(a2) {
           a2 = a2 | 0;
           HF(a2 + 8 | 0);
           eC(a2);
           return;
         }
-        __name(IF, "IF");
         function JF(a2) {
           a2 = a2 | 0;
           HF(a2 + 8 | 0);
@@ -20754,7 +20304,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(JF, "JF");
         function KF(a2, b2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20799,7 +20348,6 @@ var require_libheif = __commonJS({
           u = i2;
           return c2 | 0;
         }
-        __name(KF, "KF");
         function LF(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20834,41 +20382,34 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(LF, "LF");
         function MF(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return b2 - a2 >> 2 | 0;
         }
-        __name(MF, "MF");
         function NF(a2) {
           a2 = a2 | 0;
           Gb();
         }
-        __name(NF, "NF");
         function OF(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(OF, "OF");
         function PF(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(PF, "PF");
         function QF(a2) {
           a2 = a2 | 0;
           return 127;
         }
-        __name(QF, "QF");
         function RF(a2) {
           a2 = a2 | 0;
           return 127;
         }
-        __name(RF, "RF");
         function SF(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20884,7 +20425,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(SF, "SF");
         function TF(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20900,7 +20440,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(TF, "TF");
         function UF(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20916,7 +20455,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(UF, "UF");
         function VF(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -20934,12 +20472,10 @@ var require_libheif = __commonJS({
           u = c2;
           return;
         }
-        __name(VF, "VF");
         function WF(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(WF, "WF");
         function XF(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -20949,7 +20485,6 @@ var require_libheif = __commonJS({
           b[a2 + 3 >> 0] = 4;
           return;
         }
-        __name(XF, "XF");
         function YF(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -20959,7 +20494,6 @@ var require_libheif = __commonJS({
           b[a2 + 3 >> 0] = 4;
           return;
         }
-        __name(YF, "YF");
         function ZF(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -20968,30 +20502,25 @@ var require_libheif = __commonJS({
             IM(a2 | 0, (eA(c2) | 0) & 255 | 0, b2 | 0) | 0;
           return a2 | 0;
         }
-        __name(ZF, "ZF");
         function _F(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(_F, "_F");
         function $F(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name($F, "$F");
         function aG(a2) {
           a2 = a2 | 0;
           return 127;
         }
-        __name(aG, "aG");
         function bG(a2) {
           a2 = a2 | 0;
           return 127;
         }
-        __name(bG, "bG");
         function cG(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -21007,7 +20536,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(cG, "cG");
         function dG(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -21023,7 +20551,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(dG, "dG");
         function eG(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -21039,7 +20566,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(eG, "eG");
         function fG(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -21057,12 +20583,10 @@ var require_libheif = __commonJS({
           u = c2;
           return;
         }
-        __name(fG, "fG");
         function gG(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(gG, "gG");
         function hG(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -21072,7 +20596,6 @@ var require_libheif = __commonJS({
           b[a2 + 3 >> 0] = 4;
           return;
         }
-        __name(hG, "hG");
         function iG(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -21082,30 +20605,25 @@ var require_libheif = __commonJS({
           b[a2 + 3 >> 0] = 4;
           return;
         }
-        __name(iG, "iG");
         function jG(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(jG, "jG");
         function kG(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(kG, "kG");
         function lG(a2) {
           a2 = a2 | 0;
           return 2147483647;
         }
-        __name(lG, "lG");
         function mG(a2) {
           a2 = a2 | 0;
           return 2147483647;
         }
-        __name(mG, "mG");
         function nG(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -21121,7 +20639,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(nG, "nG");
         function oG(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -21137,7 +20654,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(oG, "oG");
         function pG(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -21153,7 +20669,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(pG, "pG");
         function qG(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -21171,12 +20686,10 @@ var require_libheif = __commonJS({
           u = c2;
           return;
         }
-        __name(qG, "qG");
         function rG(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(rG, "rG");
         function sG(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -21186,7 +20699,6 @@ var require_libheif = __commonJS({
           b[a2 + 3 >> 0] = 4;
           return;
         }
-        __name(sG, "sG");
         function tG(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -21196,30 +20708,25 @@ var require_libheif = __commonJS({
           b[a2 + 3 >> 0] = 4;
           return;
         }
-        __name(tG, "tG");
         function uG(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(uG, "uG");
         function vG(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(vG, "vG");
         function wG(a2) {
           a2 = a2 | 0;
           return 2147483647;
         }
-        __name(wG, "wG");
         function xG(a2) {
           a2 = a2 | 0;
           return 2147483647;
         }
-        __name(xG, "xG");
         function yG(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -21235,7 +20742,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(yG, "yG");
         function zG(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -21251,7 +20757,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(zG, "zG");
         function AG(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -21267,7 +20772,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(AG, "AG");
         function BG(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -21285,12 +20789,10 @@ var require_libheif = __commonJS({
           u = c2;
           return;
         }
-        __name(BG, "BG");
         function CG(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(CG, "CG");
         function DG(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -21300,7 +20802,6 @@ var require_libheif = __commonJS({
           b[a2 + 3 >> 0] = 4;
           return;
         }
-        __name(DG, "DG");
         function EG(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -21310,20 +20811,17 @@ var require_libheif = __commonJS({
           b[a2 + 3 >> 0] = 4;
           return;
         }
-        __name(EG, "EG");
         function FG(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(FG, "FG");
         function GG(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(GG, "GG");
         function HG(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -21463,7 +20961,6 @@ var require_libheif = __commonJS({
           u = x2;
           return e3 | 0;
         }
-        __name(HG, "HG");
         function IG(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -21575,12 +21072,10 @@ var require_libheif = __commonJS({
           u = t2;
           return g2 | 0;
         }
-        __name(IG, "IG");
         function JG(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(JG, "JG");
         function KG(a2, c2, e3, g2, i2, j2, k2, l2, m2, n2, o2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -22566,7 +22061,6 @@ var require_libheif = __commonJS({
           u = _2;
           return e3 | 0;
         }
-        __name(KG, "KG");
         function LG(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -22661,14 +22155,12 @@ var require_libheif = __commonJS({
           u = p2;
           return a2 | 0;
         }
-        __name(LG, "LG");
         function MG(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return b2 >>> 0 <= a2 >>> 0 & a2 >>> 0 < c2 >>> 0 | 0;
         }
-        __name(MG, "MG");
         function NG(a2, c2, d2, e3, g2, h2, i2, j2, k2, l2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -22924,7 +22416,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(NG, "NG");
         function OG(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -22954,7 +22445,6 @@ var require_libheif = __commonJS({
           f[c2 >> 2] = (f[a2 >> 2] | 0) + g2;
           return;
         }
-        __name(OG, "OG");
         function PG(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -22984,20 +22474,17 @@ var require_libheif = __commonJS({
           f[c2 >> 2] = (f[a2 >> 2] | 0) + (g2 >>> 2 << 2);
           return;
         }
-        __name(PG, "PG");
         function QG(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(QG, "QG");
         function RG(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(RG, "RG");
         function SG(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -23137,7 +22624,6 @@ var require_libheif = __commonJS({
           u = x2;
           return e3 | 0;
         }
-        __name(SG, "SG");
         function TG(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -23249,7 +22735,6 @@ var require_libheif = __commonJS({
           u = t2;
           return g2 | 0;
         }
-        __name(TG, "TG");
         function UG(a2, c2, d2, e3, g2, i2, j2, k2, l2, m2, n2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -24220,7 +23705,6 @@ var require_libheif = __commonJS({
           u = Y2;
           return d2 | 0;
         }
-        __name(UG, "UG");
         function VG(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -24322,14 +23806,12 @@ var require_libheif = __commonJS({
           u = r2;
           return a2 | 0;
         }
-        __name(VG, "VG");
         function WG(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return b2 >>> 0 <= a2 >>> 0 & a2 >>> 0 < c2 >>> 0 | 0;
         }
-        __name(WG, "WG");
         function XG(a2, c2, d2, e3, g2, h2, i2, j2, k2, l2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -24573,7 +24055,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(XG, "XG");
         function YG(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -24603,20 +24084,17 @@ var require_libheif = __commonJS({
           f[c2 >> 2] = (f[a2 >> 2] | 0) + (g2 >>> 2 << 2);
           return;
         }
-        __name(YG, "YG");
         function ZG(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(ZG, "ZG");
         function _G(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(_G, "_G");
         function $G(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -24755,7 +24233,6 @@ var require_libheif = __commonJS({
           u = F2;
           return a2 | 0;
         }
-        __name($G, "$G");
         function aH(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -24869,7 +24346,6 @@ var require_libheif = __commonJS({
           u = D2;
           return a2 | 0;
         }
-        __name(aH, "aH");
         function bH(a2, c2, d2, e3, g2, h2, i2, j2, k2, l2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -25147,7 +24623,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(bH, "bH");
         function cH(a2, c2, e3, g2, h2, i2, j2, k2, l2, m2, n2, o2, p2, q2, r2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -25365,20 +24840,17 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(cH, "cH");
         function dH(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(dH, "dH");
         function eH(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(eH, "eH");
         function fH(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -25517,7 +24989,6 @@ var require_libheif = __commonJS({
           u = F2;
           return a2 | 0;
         }
-        __name(fH, "fH");
         function gH(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -25631,7 +25102,6 @@ var require_libheif = __commonJS({
           u = D2;
           return a2 | 0;
         }
-        __name(gH, "gH");
         function hH(a2, c2, d2, e3, g2, h2, i2, j2, k2, l2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -25893,7 +25363,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(hH, "hH");
         function iH(a2, c2, d2, e3, g2, h2, i2, j2, k2, l2, m2, n2, o2, p2, q2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -26108,20 +25577,17 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(iH, "iH");
         function jH(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(jH, "jH");
         function kH(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(kH, "kH");
         function lH(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -26129,7 +25595,6 @@ var require_libheif = __commonJS({
           d2 = Az((b[c2 + 11 >> 0] | 0) < 0 ? f[c2 >> 2] | 0 : c2, 1) | 0;
           return d2 >>> ((d2 | 0) != (-1 | 0) & 1) | 0;
         }
-        __name(lH, "lH");
         function mH(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -26184,26 +25649,22 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(mH, "mH");
         function nH(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return;
         }
-        __name(nH, "nH");
         function oH(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(oH, "oH");
         function pH(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(pH, "pH");
         function qH(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -26211,7 +25672,6 @@ var require_libheif = __commonJS({
           d2 = Az((b[c2 + 11 >> 0] | 0) < 0 ? f[c2 >> 2] | 0 : c2, 1) | 0;
           return d2 >>> ((d2 | 0) != (-1 | 0) & 1) | 0;
         }
-        __name(qH, "qH");
         function rH(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -26320,20 +25780,17 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(rH, "rH");
         function sH(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return;
         }
-        __name(sH, "sH");
         function tH(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(tH, "tH");
         function uH(a2, b2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -26356,7 +25813,6 @@ var require_libheif = __commonJS({
           u = b2;
           return h2 | 0;
         }
-        __name(uH, "uH");
         function vH(a2, b2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -26379,7 +25835,6 @@ var require_libheif = __commonJS({
           u = b2;
           return h2 | 0;
         }
-        __name(vH, "vH");
         function wH(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -26389,17 +25844,14 @@ var require_libheif = __commonJS({
           f[e3 >> 2] = c2;
           return 3;
         }
-        __name(wH, "wH");
         function xH(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(xH, "xH");
         function yH(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(yH, "yH");
         function zH(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -26408,12 +25860,10 @@ var require_libheif = __commonJS({
           e3 = e3 | 0;
           return BH(c2, d2, e3, 1114111, 0) | 0;
         }
-        __name(zH, "zH");
         function AH(a2) {
           a2 = a2 | 0;
           return 4;
         }
-        __name(AH, "AH");
         function BH(a2, c2, d2, e3, f2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -26563,7 +26013,6 @@ var require_libheif = __commonJS({
             }
           return a2 - p2 | 0;
         }
-        __name(BH, "BH");
         function CH(a2, c2, d2, e3, g2, i2, j2, k2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -26728,7 +26177,6 @@ var require_libheif = __commonJS({
             }
           return a2 | 0;
         }
-        __name(CH, "CH");
         function DH(a2, c2, d2, e3, g2, h2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -26840,14 +26288,12 @@ var require_libheif = __commonJS({
             while (0);
           return a2 | 0;
         }
-        __name(DH, "DH");
         function EH(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(EH, "EH");
         function FH(a2, b2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -26861,7 +26307,6 @@ var require_libheif = __commonJS({
           f[i2 >> 2] = g2;
           return 3;
         }
-        __name(FH, "FH");
         function GH(a2, b2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -26875,7 +26320,6 @@ var require_libheif = __commonJS({
           f[i2 >> 2] = g2;
           return 3;
         }
-        __name(GH, "GH");
         function HH(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -26885,17 +26329,14 @@ var require_libheif = __commonJS({
           f[e3 >> 2] = c2;
           return 3;
         }
-        __name(HH, "HH");
         function IH(a2) {
           a2 = a2 | 0;
           return 1;
         }
-        __name(IH, "IH");
         function JH(a2) {
           a2 = a2 | 0;
           return 1;
         }
-        __name(JH, "JH");
         function KH(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -26905,12 +26346,10 @@ var require_libheif = __commonJS({
           d2 = d2 - c2 | 0;
           return (d2 >>> 0 < e3 >>> 0 ? d2 : e3) | 0;
         }
-        __name(KH, "KH");
         function LH(a2) {
           a2 = a2 | 0;
           return 1;
         }
-        __name(LH, "LH");
         function MH(a2, c2, d2, e3, g2, h2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -27050,7 +26489,6 @@ var require_libheif = __commonJS({
           u = q2;
           return d2 | 0;
         }
-        __name(MH, "MH");
         function NH(a2, c2, d2, e3, g2, h2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -27195,7 +26633,6 @@ var require_libheif = __commonJS({
           u = q2;
           return d2 | 0;
         }
-        __name(NH, "NH");
         function OH(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -27242,7 +26679,6 @@ var require_libheif = __commonJS({
           u = i2;
           return a2 | 0;
         }
-        __name(OH, "OH");
         function PH(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -27266,12 +26702,10 @@ var require_libheif = __commonJS({
             a2 = -1;
           return a2 | 0;
         }
-        __name(PH, "PH");
         function QH(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(QH, "QH");
         function RH(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -27308,7 +26742,6 @@ var require_libheif = __commonJS({
             }
           return i2 | 0;
         }
-        __name(RH, "RH");
         function SH(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -27322,7 +26755,6 @@ var require_libheif = __commonJS({
             a2 = 1;
           return a2 | 0;
         }
-        __name(SH, "SH");
         function TH(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -27334,14 +26766,12 @@ var require_libheif = __commonJS({
           eC(a2);
           return;
         }
-        __name(TH, "TH");
         function UH(a2) {
           a2 = a2 | 0;
           TH(a2);
           QK(a2);
           return;
         }
-        __name(UH, "UH");
         function VH(a2, b2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -27364,7 +26794,6 @@ var require_libheif = __commonJS({
           u = b2;
           return h2 | 0;
         }
-        __name(VH, "VH");
         function WH(a2, b2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -27387,7 +26816,6 @@ var require_libheif = __commonJS({
           u = b2;
           return h2 | 0;
         }
-        __name(WH, "WH");
         function XH(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -27397,17 +26825,14 @@ var require_libheif = __commonJS({
           f[e3 >> 2] = c2;
           return 3;
         }
-        __name(XH, "XH");
         function YH(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(YH, "YH");
         function ZH(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(ZH, "ZH");
         function _H(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -27416,12 +26841,10 @@ var require_libheif = __commonJS({
           e3 = e3 | 0;
           return aI(c2, d2, e3, 1114111, 0) | 0;
         }
-        __name(_H, "_H");
         function $H(a2) {
           a2 = a2 | 0;
           return 4;
         }
-        __name($H, "$H");
         function aI(a2, c2, d2, e3, f2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -27580,7 +27003,6 @@ var require_libheif = __commonJS({
             }
           return a2 - q2 | 0;
         }
-        __name(aI, "aI");
         function bI(a2, c2, e3, g2, i2, j2, k2, l2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -27758,7 +27180,6 @@ var require_libheif = __commonJS({
             a2 = a2 & 1;
           return a2 | 0;
         }
-        __name(bI, "bI");
         function cI(a2, c2, e3, g2, h2, i2, k2, l2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -27908,7 +27329,6 @@ var require_libheif = __commonJS({
             while (0);
           return a2 | 0;
         }
-        __name(cI, "cI");
         function dI(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0;
@@ -27930,14 +27350,12 @@ var require_libheif = __commonJS({
           eC(a2);
           return;
         }
-        __name(dI, "dI");
         function eI(a2) {
           a2 = a2 | 0;
           dI(a2);
           QK(a2);
           return;
         }
-        __name(eI, "eI");
         function fI(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -27964,7 +27382,6 @@ var require_libheif = __commonJS({
           while (0);
           return;
         }
-        __name(fI, "fI");
         function gI(a2) {
           a2 = a2 | 0;
           var c2 = 0;
@@ -27975,14 +27392,12 @@ var require_libheif = __commonJS({
           eC(a2);
           return;
         }
-        __name(gI, "gI");
         function hI(a2) {
           a2 = a2 | 0;
           gI(a2);
           QK(a2);
           return;
         }
-        __name(hI, "hI");
         function iI(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -27992,7 +27407,6 @@ var require_libheif = __commonJS({
           }
           return b2 | 0;
         }
-        __name(iI, "iI");
         function jI(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28010,7 +27424,6 @@ var require_libheif = __commonJS({
           }
           return d2 | 0;
         }
-        __name(jI, "jI");
         function kI(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -28020,7 +27433,6 @@ var require_libheif = __commonJS({
           }
           return b2 | 0;
         }
-        __name(kI, "kI");
         function lI(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28038,13 +27450,11 @@ var require_libheif = __commonJS({
           }
           return d2 | 0;
         }
-        __name(lI, "lI");
         function mI(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return b2 | 0;
         }
-        __name(mI, "mI");
         function nI(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28059,14 +27469,12 @@ var require_libheif = __commonJS({
           }
           return d2 | 0;
         }
-        __name(nI, "nI");
         function oI(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return (b2 << 24 >> 24 > -1 ? b2 : c2) | 0;
         }
-        __name(oI, "oI");
         function pI(a2, c2, d2, e3, f2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28083,25 +27491,21 @@ var require_libheif = __commonJS({
           }
           return d2 | 0;
         }
-        __name(pI, "pI");
         function qI() {
           var a2 = 0;
           a2 = vy() | 0;
           return f[a2 >> 2] | 0;
         }
-        __name(qI, "qI");
         function rI() {
           var a2 = 0;
           a2 = ty() | 0;
           return f[a2 >> 2] | 0;
         }
-        __name(rI, "rI");
         function sI() {
           var a2 = 0;
           a2 = qy() | 0;
           return f[a2 >> 2] | 0;
         }
-        __name(sI, "sI");
         function tI(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 17108;
@@ -28109,31 +27513,26 @@ var require_libheif = __commonJS({
           eC(a2);
           return;
         }
-        __name(tI, "tI");
         function uI(a2) {
           a2 = a2 | 0;
           tI(a2);
           QK(a2);
           return;
         }
-        __name(uI, "uI");
         function vI(a2) {
           a2 = a2 | 0;
           return b[a2 + 8 >> 0] | 0;
         }
-        __name(vI, "vI");
         function wI(a2) {
           a2 = a2 | 0;
           return b[a2 + 9 >> 0] | 0;
         }
-        __name(wI, "wI");
         function xI(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           ZK(a2, b2 + 12 | 0);
           return;
         }
-        __name(xI, "xI");
         function yI(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28163,7 +27562,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(yI, "yI");
         function zI(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28193,7 +27591,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(zI, "zI");
         function AI(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 17148;
@@ -28201,31 +27598,26 @@ var require_libheif = __commonJS({
           eC(a2);
           return;
         }
-        __name(AI, "AI");
         function BI(a2) {
           a2 = a2 | 0;
           AI(a2);
           QK(a2);
           return;
         }
-        __name(BI, "BI");
         function CI(a2) {
           a2 = a2 | 0;
           return f[a2 + 8 >> 2] | 0;
         }
-        __name(CI, "CI");
         function DI(a2) {
           a2 = a2 | 0;
           return f[a2 + 12 >> 2] | 0;
         }
-        __name(DI, "DI");
         function EI(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           ZK(a2, b2 + 16 | 0);
           return;
         }
-        __name(EI, "EI");
         function FI(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28262,7 +27654,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(FI, "FI");
         function GI(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28299,21 +27690,18 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(GI, "GI");
         function HI(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(HI, "HI");
         function II(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(II, "II");
         function JI(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -28325,7 +27713,6 @@ var require_libheif = __commonJS({
             a2 = 0;
           return a2 | 0;
         }
-        __name(JI, "JI");
         function KI(a2, b2, c2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -28345,7 +27732,6 @@ var require_libheif = __commonJS({
           }
           return c2 | 0;
         }
-        __name(KI, "KI");
         function LI(a2, b2, c2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -28362,7 +27748,6 @@ var require_libheif = __commonJS({
           }
           return c2 | 0;
         }
-        __name(LI, "LI");
         function MI(a2, b2, c2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -28382,7 +27767,6 @@ var require_libheif = __commonJS({
           }
           return c2 | 0;
         }
-        __name(MI, "MI");
         function NI(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -28392,7 +27776,6 @@ var require_libheif = __commonJS({
           }
           return b2 | 0;
         }
-        __name(NI, "NI");
         function OI(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -28410,7 +27793,6 @@ var require_libheif = __commonJS({
           }
           return c2 | 0;
         }
-        __name(OI, "OI");
         function PI(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -28420,7 +27802,6 @@ var require_libheif = __commonJS({
           }
           return b2 | 0;
         }
-        __name(PI, "PI");
         function QI(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -28438,13 +27819,11 @@ var require_libheif = __commonJS({
           }
           return c2 | 0;
         }
-        __name(QI, "QI");
         function RI(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return b2 << 24 >> 24 | 0;
         }
-        __name(RI, "RI");
         function SI(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28459,14 +27838,12 @@ var require_libheif = __commonJS({
           }
           return d2 | 0;
         }
-        __name(SI, "SI");
         function TI(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return (b2 >>> 0 < 128 ? b2 & 255 : c2) | 0;
         }
-        __name(TI, "TI");
         function UI(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28487,40 +27864,34 @@ var require_libheif = __commonJS({
           }
           return c2 + (h2 << 2) | 0;
         }
-        __name(UI, "UI");
         function VI(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(VI, "VI");
         function WI(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(WI, "WI");
         function XI(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(XI, "XI");
         function YI(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 17464;
           return;
         }
-        __name(YI, "YI");
         function ZI(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 17500;
           return;
         }
-        __name(ZI, "ZI");
         function _I(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28537,12 +27908,10 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(_I, "_I");
         function $I(a2) {
           a2 = a2 | 0;
           Gb();
         }
-        __name($I, "$I");
         function aJ(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28643,7 +28012,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(aJ, "aJ");
         function bJ(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -28657,289 +28025,244 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(bJ, "bJ");
         function cJ() {
           f[14255] = 0;
           f[14254] = 14700;
           return;
         }
-        __name(cJ, "cJ");
         function dJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(59440) | 0);
           return;
         }
-        __name(dJ, "dJ");
         function eJ() {
           f[14257] = 0;
           f[14256] = 14732;
           return;
         }
-        __name(eJ, "eJ");
         function fJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(59448) | 0);
           return;
         }
-        __name(fJ, "fJ");
         function gJ() {
           _I(57032, 0, 0, 1);
           return;
         }
-        __name(gJ, "gJ");
         function hJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(59456) | 0);
           return;
         }
-        __name(hJ, "hJ");
         function iJ() {
           f[14263] = 0;
           f[14262] = 17252;
           return;
         }
-        __name(iJ, "iJ");
         function jJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(59488) | 0);
           return;
         }
-        __name(jJ, "jJ");
         function kJ() {
           f[14265] = 0;
           f[14264] = 17320;
           return;
         }
-        __name(kJ, "kJ");
         function lJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61248) | 0);
           return;
         }
-        __name(lJ, "lJ");
         function mJ() {
           pK(57064, 1);
           return;
         }
-        __name(mJ, "mJ");
         function nJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61256) | 0);
           return;
         }
-        __name(nJ, "nJ");
         function oJ() {
           f[14271] = 0;
           f[14270] = 17368;
           return;
         }
-        __name(oJ, "oJ");
         function pJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61264) | 0);
           return;
         }
-        __name(pJ, "pJ");
         function qJ() {
           f[14273] = 0;
           f[14272] = 17416;
           return;
         }
-        __name(qJ, "qJ");
         function rJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61272) | 0);
           return;
         }
-        __name(rJ, "rJ");
         function sJ() {
           oK(57096, 1);
           return;
         }
-        __name(sJ, "sJ");
         function tJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(59472) | 0);
           return;
         }
-        __name(tJ, "tJ");
         function uJ() {
           nK(57120, 1);
           return;
         }
-        __name(uJ, "uJ");
         function vJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(59496) | 0);
           return;
         }
-        __name(vJ, "vJ");
         function wJ() {
           f[14289] = 0;
           f[14288] = 14764;
           return;
         }
-        __name(wJ, "wJ");
         function xJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(59480) | 0);
           return;
         }
-        __name(xJ, "xJ");
         function yJ() {
           f[14291] = 0;
           f[14290] = 14828;
           return;
         }
-        __name(yJ, "yJ");
         function zJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(59504) | 0);
           return;
         }
-        __name(zJ, "zJ");
         function AJ() {
           f[14293] = 0;
           f[14292] = 14892;
           return;
         }
-        __name(AJ, "AJ");
         function BJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(59512) | 0);
           return;
         }
-        __name(BJ, "BJ");
         function CJ() {
           f[14295] = 0;
           f[14294] = 14944;
           return;
         }
-        __name(CJ, "CJ");
         function DJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(59520) | 0);
           return;
         }
-        __name(DJ, "DJ");
         function EJ() {
           f[14297] = 0;
           f[14296] = 16492;
           return;
         }
-        __name(EJ, "EJ");
         function FJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61168) | 0);
           return;
         }
-        __name(FJ, "FJ");
         function GJ() {
           f[14299] = 0;
           f[14298] = 16548;
           return;
         }
-        __name(GJ, "GJ");
         function HJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61176) | 0);
           return;
         }
-        __name(HJ, "HJ");
         function IJ() {
           f[14301] = 0;
           f[14300] = 16604;
           return;
         }
-        __name(IJ, "IJ");
         function JJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61184) | 0);
           return;
         }
-        __name(JJ, "JJ");
         function KJ() {
           f[14303] = 0;
           f[14302] = 16660;
           return;
         }
-        __name(KJ, "KJ");
         function LJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61192) | 0);
           return;
         }
-        __name(LJ, "LJ");
         function MJ() {
           f[14305] = 0;
           f[14304] = 16716;
           return;
         }
-        __name(MJ, "MJ");
         function NJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61200) | 0);
           return;
         }
-        __name(NJ, "NJ");
         function OJ() {
           f[14307] = 0;
           f[14306] = 16744;
           return;
         }
-        __name(OJ, "OJ");
         function PJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61208) | 0);
           return;
         }
-        __name(PJ, "PJ");
         function QJ() {
           f[14309] = 0;
           f[14308] = 16772;
           return;
         }
-        __name(QJ, "QJ");
         function RJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61216) | 0);
           return;
         }
-        __name(RJ, "RJ");
         function SJ() {
           f[14311] = 0;
           f[14310] = 16800;
           return;
         }
-        __name(SJ, "SJ");
         function TJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61224) | 0);
           return;
         }
-        __name(TJ, "TJ");
         function UJ() {
           f[14313] = 0;
           f[14312] = 17232;
@@ -28948,14 +28271,12 @@ var require_libheif = __commonJS({
           f[14314] = 15044;
           return;
         }
-        __name(UJ, "UJ");
         function VJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(60332) | 0);
           return;
         }
-        __name(VJ, "VJ");
         function WJ() {
           f[14317] = 0;
           f[14316] = 17232;
@@ -28964,14 +28285,12 @@ var require_libheif = __commonJS({
           f[14318] = 15128;
           return;
         }
-        __name(WJ, "WJ");
         function XJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61144) | 0);
           return;
         }
-        __name(XJ, "XJ");
         function YJ() {
           var a2 = 0;
           f[14321] = 0;
@@ -28981,14 +28300,12 @@ var require_libheif = __commonJS({
           f[14320] = 16444;
           return;
         }
-        __name(YJ, "YJ");
         function ZJ(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61152) | 0);
           return;
         }
-        __name(ZJ, "ZJ");
         function _J() {
           var a2 = 0;
           f[14325] = 0;
@@ -28998,40 +28315,34 @@ var require_libheif = __commonJS({
           f[14324] = 16468;
           return;
         }
-        __name(_J, "_J");
         function $J(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61160) | 0);
           return;
         }
-        __name($J, "$J");
         function aK() {
           f[14329] = 0;
           f[14328] = 16828;
           return;
         }
-        __name(aK, "aK");
         function bK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61232) | 0);
           return;
         }
-        __name(bK, "bK");
         function cK() {
           f[14331] = 0;
           f[14330] = 16860;
           return;
         }
-        __name(cK, "cK");
         function dK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           eK(a2, b2, DC(61240) | 0);
           return;
         }
-        __name(dK, "dK");
         function eK(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29053,7 +28364,6 @@ var require_libheif = __commonJS({
           f[(f[a2 >> 2] | 0) + (c2 << 2) >> 2] = b2;
           return;
         }
-        __name(eK, "eK");
         function fK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29080,7 +28390,6 @@ var require_libheif = __commonJS({
             while (0);
           return;
         }
-        __name(fK, "fK");
         function gK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29113,7 +28422,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(gK, "gK");
         function hK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29129,12 +28437,10 @@ var require_libheif = __commonJS({
           } while ((a2 | 0) != 0);
           return;
         }
-        __name(hK, "hK");
         function iK(a2) {
           a2 = a2 | 0;
           return 1073741823;
         }
-        __name(iK, "iK");
         function jK(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29163,7 +28469,6 @@ var require_libheif = __commonJS({
           f[a2 + 12 >> 2] = e3 + (c2 << 2);
           return;
         }
-        __name(jK, "jK");
         function kK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29179,7 +28484,6 @@ var require_libheif = __commonJS({
           } while ((a2 | 0) != 0);
           return;
         }
-        __name(kK, "kK");
         function lK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29211,7 +28515,6 @@ var require_libheif = __commonJS({
           f[b2 >> 2] = f[d2 >> 2];
           return;
         }
-        __name(lK, "lK");
         function mK(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -29240,7 +28543,6 @@ var require_libheif = __commonJS({
           while (0);
           return;
         }
-        __name(mK, "mK");
         function nK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29261,7 +28563,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(nK, "nK");
         function oK(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29282,7 +28583,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(oK, "oK");
         function pK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29292,7 +28592,6 @@ var require_libheif = __commonJS({
           f[a2 + 8 >> 2] = b2;
           return;
         }
-        __name(pK, "pK");
         function qK(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29310,7 +28609,6 @@ var require_libheif = __commonJS({
           f[a2 + 8 >> 2] = d2 + (c2 << 2);
           return;
         }
-        __name(qK, "qK");
         function rK() {
           if ((b[57328] | 0) == 0 ? oM(57328) | 0 : 0) {
             sK() | 0;
@@ -29318,23 +28616,19 @@ var require_libheif = __commonJS({
           }
           return f[15321] | 0;
         }
-        __name(rK, "rK");
         function sK() {
           tK();
           f[15320] = 57336;
           return 61280;
         }
-        __name(sK, "sK");
         function tK() {
           aJ(57336, 1);
           return;
         }
-        __name(tK, "tK");
         function uK() {
           vK(61288, rK() | 0);
           return 61288;
         }
-        __name(uK, "uK");
         function vK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29343,7 +28637,6 @@ var require_libheif = __commonJS({
           EK(b2);
           return;
         }
-        __name(vK, "vK");
         function wK() {
           if ((b[57496] | 0) == 0 ? oM(57496) | 0 : 0) {
             uK() | 0;
@@ -29351,7 +28644,6 @@ var require_libheif = __commonJS({
           }
           return f[15323] | 0;
         }
-        __name(wK, "wK");
         function xK(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -29361,7 +28653,6 @@ var require_libheif = __commonJS({
           EK(b2);
           return;
         }
-        __name(xK, "xK");
         function yK(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29372,47 +28663,39 @@ var require_libheif = __commonJS({
             a2 = xy(a2, b2, c2) | 0;
           return a2 | 0;
         }
-        __name(yK, "yK");
         function zK(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(zK, "zK");
         function AK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return 0;
         }
-        __name(AK, "AK");
         function BK(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(BK, "BK");
         function CK(a2) {
           a2 = a2 | 0;
           BK(a2);
           QK(a2);
           return;
         }
-        __name(CK, "CK");
         function DK(a2) {
           a2 = a2 | 0;
           return 56064;
         }
-        __name(DK, "DK");
         function EK(a2) {
           a2 = a2 | 0;
           FK(a2 + 4 | 0);
           return;
         }
-        __name(EK, "EK");
         function FK(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = (f[a2 >> 2] | 0) + 1;
           return;
         }
-        __name(FK, "FK");
         function GK(a2) {
           a2 = a2 | 0;
           if ((HK(a2 + 4 | 0) | 0) == -1) {
@@ -29422,7 +28705,6 @@ var require_libheif = __commonJS({
             a2 = 0;
           return a2 | 0;
         }
-        __name(GK, "GK");
         function HK(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -29430,26 +28712,22 @@ var require_libheif = __commonJS({
           f[a2 >> 2] = b2 + -1;
           return b2 + -1 | 0;
         }
-        __name(HK, "HK");
         function IK(a2) {
           a2 = a2 | 0;
           EK(a2);
           return;
         }
-        __name(IK, "IK");
         function JK(a2) {
           a2 = a2 | 0;
           FK(a2 + 8 | 0);
           return;
         }
-        __name(JK, "JK");
         function KK(a2) {
           a2 = a2 | 0;
           if (GK(a2) | 0)
             LK(a2);
           return;
         }
-        __name(KK, "KK");
         function LK(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -29458,7 +28736,6 @@ var require_libheif = __commonJS({
             dd[f[(f[a2 >> 2] | 0) + 16 >> 2] & 511](a2);
           return;
         }
-        __name(LK, "LK");
         function MK(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0;
@@ -29478,7 +28755,6 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(MK, "MK");
         function NK(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29501,7 +28777,6 @@ var require_libheif = __commonJS({
             LM(61296) | 0;
           return;
         }
-        __name(NK, "NK");
         function OK(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -29519,28 +28794,23 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(OK, "OK");
         function PK(a2) {
           a2 = a2 | 0;
           return OK(a2) | 0;
         }
-        __name(PK, "PK");
         function QK(a2) {
           a2 = a2 | 0;
           ex(a2);
           return;
         }
-        __name(QK, "QK");
         function RK(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(RK, "RK");
         function SK() {
           Gb();
         }
-        __name(SK, "SK");
         function TK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29555,12 +28825,10 @@ var require_libheif = __commonJS({
           f[a2 >> 2] = c2;
           return;
         }
-        __name(TK, "TK");
         function UK(a2) {
           a2 = a2 | 0;
           return a2 + 12 | 0;
         }
-        __name(UK, "UK");
         function VK(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29568,22 +28836,18 @@ var require_libheif = __commonJS({
           TK(a2 + 4 | 0, b2);
           return;
         }
-        __name(VK, "VK");
         function WK(a2) {
           a2 = a2 | 0;
           return 1;
         }
-        __name(WK, "WK");
         function XK(a2) {
           a2 = a2 | 0;
           Gb();
         }
-        __name(XK, "XK");
         function YK(a2) {
           a2 = a2 | 0;
           Gb();
         }
-        __name(YK, "YK");
         function ZK(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29620,14 +28884,12 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(ZK, "ZK");
         function _K(a2) {
           a2 = a2 | 0;
           if ((b[a2 + 11 >> 0] | 0) < 0)
             QK(f[a2 >> 2] | 0);
           return;
         }
-        __name(_K, "_K");
         function $K(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29639,7 +28901,6 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name($K, "$K");
         function aL(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29682,7 +28943,6 @@ var require_libheif = __commonJS({
           u = k2;
           return a2 | 0;
         }
-        __name(aL, "aL");
         function bL(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -29691,7 +28951,6 @@ var require_libheif = __commonJS({
             HM(a2 | 0, b2 | 0, c2 | 0) | 0;
           return a2 | 0;
         }
-        __name(bL, "bL");
         function cL(a2, c2, d2, e3, g2, h2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29738,7 +28997,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(cL, "cL");
         function dL(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29808,13 +29066,11 @@ var require_libheif = __commonJS({
           while (0);
           return;
         }
-        __name(dL, "dL");
         function eL(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return aL(a2, b2, _A(b2) | 0) | 0;
         }
-        __name(eL, "eL");
         function fL(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29850,7 +29106,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(fL, "fL");
         function gL(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29889,7 +29144,6 @@ var require_libheif = __commonJS({
           u = l2;
           return a2 | 0;
         }
-        __name(gL, "gL");
         function hL(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29924,7 +29178,6 @@ var require_libheif = __commonJS({
           f[a2 + 8 >> 2] = j2 | -2147483648;
           return;
         }
-        __name(hL, "hL");
         function iL(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -29963,7 +29216,6 @@ var require_libheif = __commonJS({
           u = l2;
           return a2 | 0;
         }
-        __name(iL, "iL");
         function jL(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -30013,7 +29265,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(jL, "jL");
         function kL(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -30041,14 +29292,12 @@ var require_libheif = __commonJS({
             return a2 | 0;
           return 0;
         }
-        __name(kL, "kL");
         function lL(a2) {
           a2 = a2 | 0;
           if ((b[a2 + 8 + 3 >> 0] | 0) < 0)
             QK(f[a2 >> 2] | 0);
           return;
         }
-        __name(lL, "lL");
         function mL(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -30092,7 +29341,6 @@ var require_libheif = __commonJS({
           u = l2;
           return a2 | 0;
         }
-        __name(mL, "mL");
         function nL(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -30101,7 +29349,6 @@ var require_libheif = __commonJS({
             oz(a2, b2, c2) | 0;
           return a2 | 0;
         }
-        __name(nL, "nL");
         function oL(a2, c2, d2, e3, g2, h2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -30153,7 +29400,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(oL, "oL");
         function pL(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -30227,13 +29473,11 @@ var require_libheif = __commonJS({
           while (0);
           return;
         }
-        __name(pL, "pL");
         function qL(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return mL(a2, b2, hF(b2) | 0) | 0;
         }
-        __name(qL, "qL");
         function rL(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -30273,7 +29517,6 @@ var require_libheif = __commonJS({
           f[m2 >> 2] = k2 | -2147483648;
           return;
         }
-        __name(rL, "rL");
         function pd(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -30282,23 +29525,19 @@ var require_libheif = __commonJS({
           u = u + 15 & -16;
           return b2 | 0;
         }
-        __name(pd, "pd");
         function qd() {
           return u | 0;
         }
-        __name(qd, "qd");
         function rd(a2) {
           a2 = a2 | 0;
           u = a2;
         }
-        __name(rd, "rd");
         function sd(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           u = a2;
           v = b2;
         }
-        __name(sd, "sd");
         function td(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -30307,16 +29546,13 @@ var require_libheif = __commonJS({
             y = b2;
           }
         }
-        __name(td, "td");
         function ud(a2) {
           a2 = a2 | 0;
           I = a2;
         }
-        __name(ud, "ud");
         function vd() {
           return I | 0;
         }
-        __name(vd, "vd");
         function wd(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 4232;
@@ -30326,7 +29562,6 @@ var require_libheif = __commonJS({
           RK(a2);
           return;
         }
-        __name(wd, "wd");
         function xd(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -30340,14 +29575,12 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(xd, "xd");
         function yd(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           I = f[a2 + 4 >> 2] | 0;
           return f[a2 >> 2] | 0;
         }
-        __name(yd, "yd");
         function zd(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -30357,7 +29590,6 @@ var require_libheif = __commonJS({
           d2 = f[a2 + 4 >> 2] | 0;
           return ((d2 | 0) < (c2 | 0) | ((d2 | 0) == (c2 | 0) ? (f[a2 >> 2] | 0) >>> 0 < b2 >>> 0 : 0) ? 2 : 0) | 0;
         }
-        __name(zd, "zd");
         function Ad(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -30383,7 +29615,6 @@ var require_libheif = __commonJS({
           j2 = 1;
           return j2 | 0;
         }
-        __name(Ad, "Ad");
         function Bd(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -30401,7 +29632,6 @@ var require_libheif = __commonJS({
           e3 = 1;
           return e3 | 0;
         }
-        __name(Bd, "Bd");
         function Cd(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -30433,7 +29663,6 @@ var require_libheif = __commonJS({
           f[e3 >> 2] = d2;
           return;
         }
-        __name(Cd, "Cd");
         function Dd(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -30472,7 +29701,6 @@ var require_libheif = __commonJS({
           f[k2 >> 2] = (f[g2 + 12 >> 2] | 0) + 1;
           return;
         }
-        __name(Dd, "Dd");
         function Ed(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -30501,7 +29729,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(Ed, "Ed");
         function Fd(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -30584,7 +29811,6 @@ var require_libheif = __commonJS({
           l2 = 0;
           return l2 | 0;
         }
-        __name(Fd, "Fd");
         function Gd(a2) {
           a2 = a2 | 0;
           var c2 = 0;
@@ -30602,7 +29828,6 @@ var require_libheif = __commonJS({
           b[c2 >> 0] = 1;
           return;
         }
-        __name(Gd, "Gd");
         function Hd(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -30631,7 +29856,6 @@ var require_libheif = __commonJS({
           u = g2;
           return e3 | 0;
         }
-        __name(Hd, "Hd");
         function Id(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -30660,7 +29884,6 @@ var require_libheif = __commonJS({
           u = g2;
           return e3 | 0;
         }
-        __name(Id, "Id");
         function Jd(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -30744,7 +29967,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(Jd, "Jd");
         function Kd(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -30771,7 +29993,6 @@ var require_libheif = __commonJS({
           a2 = d2;
           return a2 | 0;
         }
-        __name(Kd, "Kd");
         function Ld(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -30783,7 +30004,6 @@ var require_libheif = __commonJS({
           b2 = f[a2 >> 2] | 0;
           return Wc[f[(f[b2 >> 2] | 0) + 12 >> 2] & 63](b2, c2, I) | 0;
         }
-        __name(Ld, "Ld");
         function Md(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -30813,7 +30033,6 @@ var require_libheif = __commonJS({
           else if ((a2 | 0) == 5)
             return;
         }
-        __name(Md, "Md");
         function Nd(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -30962,7 +30181,6 @@ var require_libheif = __commonJS({
           f[j2 >> 2] = m2;
           return;
         }
-        __name(Nd, "Nd");
         function Od(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -31009,7 +30227,6 @@ var require_libheif = __commonJS({
           f[i2 >> 2] = c2 - b2;
           return m2 | 0;
         }
-        __name(Od, "Od");
         function Pd(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -31053,7 +30270,6 @@ var require_libheif = __commonJS({
           f[i2 >> 2] = c2 - b2;
           return;
         }
-        __name(Pd, "Pd");
         function Qd(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -31160,7 +30376,6 @@ var require_libheif = __commonJS({
             Pa(18749, 47599, 435, 47620);
           return 0;
         }
-        __name(Qd, "Qd");
         function Rd(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31207,7 +30422,6 @@ var require_libheif = __commonJS({
           f[k2 >> 2] = (f[k2 >> 2] | 0) + 1;
           return;
         }
-        __name(Rd, "Rd");
         function Sd(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31231,7 +30445,6 @@ var require_libheif = __commonJS({
           b[(f[g2 >> 2] | 0) + a2 >> 0] = c2;
           return;
         }
-        __name(Sd, "Sd");
         function Td(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31284,7 +30497,6 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(Td, "Td");
         function Ud(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31314,7 +30526,6 @@ var require_libheif = __commonJS({
           b[(f[g2 >> 2] | 0) + a2 >> 0] = c2;
           return;
         }
-        __name(Ud, "Ud");
         function Vd(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31363,7 +30574,6 @@ var require_libheif = __commonJS({
           b[(f[h2 >> 2] | 0) + d2 >> 0] = c2;
           return;
         }
-        __name(Vd, "Vd");
         function Wd(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31439,7 +30649,6 @@ var require_libheif = __commonJS({
               Pa(55956, 47599, 566, 19563);
           }
         }
-        __name(Wd, "Wd");
         function Xd(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31485,7 +30694,6 @@ var require_libheif = __commonJS({
           b[k2 >> 0] = 0;
           return;
         }
-        __name(Xd, "Xd");
         function Yd(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -31509,7 +30717,6 @@ var require_libheif = __commonJS({
           f[j2 >> 2] = (f[k2 >> 2] | 0) - (f[b2 >> 2] | 0) + (f[j2 >> 2] | 0);
           return;
         }
-        __name(Yd, "Yd");
         function Zd(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -31532,7 +30739,6 @@ var require_libheif = __commonJS({
           f[j2 >> 2] = c2 + b2;
           return;
         }
-        __name(Zd, "Zd");
         function _d(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -31567,7 +30773,6 @@ var require_libheif = __commonJS({
           HM(a2 + b2 | 0, a2 | 0, c2 - d2 | 0) | 0;
           return;
         }
-        __name(_d, "_d");
         function $d(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -31581,7 +30786,6 @@ var require_libheif = __commonJS({
           QK(b2);
           return;
         }
-        __name($d, "$d");
         function ae(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -31598,7 +30802,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(ae, "ae");
         function be(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31697,7 +30900,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(be, "be");
         function ce(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31760,7 +30962,6 @@ var require_libheif = __commonJS({
           f[c2 >> 2] = d2 + h2;
           return;
         }
-        __name(ce, "ce");
         function de(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31804,7 +31005,6 @@ var require_libheif = __commonJS({
           u = m2;
           return a2 | 0;
         }
-        __name(de, "de");
         function ee(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31884,7 +31084,6 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(ee, "ee");
         function fe(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -31969,7 +31168,6 @@ var require_libheif = __commonJS({
           b[a2 >> 0] = 0;
           return;
         }
-        __name(fe, "fe");
         function ge(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -32045,13 +31243,11 @@ var require_libheif = __commonJS({
           u = o2;
           return n2 | 0;
         }
-        __name(ge, "ge");
         function he(a2) {
           a2 = a2 | 0;
           Sa(a2 | 0) | 0;
           RL();
         }
-        __name(he, "he");
         function ie(a2) {
           a2 = a2 | 0;
           var c2 = 0;
@@ -32062,7 +31258,6 @@ var require_libheif = __commonJS({
           Rz(a2);
           return;
         }
-        __name(ie, "ie");
         function je(a2) {
           a2 = a2 | 0;
           var c2 = 0;
@@ -32074,7 +31269,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(je, "je");
         function ke(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -32182,7 +31376,6 @@ var require_libheif = __commonJS({
           f[a2 + 4 >> 2] = i2;
           return;
         }
-        __name(ke, "ke");
         function le(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -32192,7 +31385,6 @@ var require_libheif = __commonJS({
           id[f[(f[b2 >> 2] | 0) + 16 >> 2] & 15](a2, b2, f[c2 >> 2] | 0, f[c2 + 4 >> 2] | 0, 0, d2);
           return;
         }
-        __name(le, "le");
         function me(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0;
@@ -32221,7 +31413,6 @@ var require_libheif = __commonJS({
           a2 = h[b2 >> 0] | 0;
           return a2 | 0;
         }
-        __name(me, "me");
         function ne(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -32261,7 +31452,6 @@ var require_libheif = __commonJS({
           b[e3 >> 0] = g2;
           return c2 | 0;
         }
-        __name(ne, "ne");
         function oe(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -32351,7 +31541,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(oe, "oe");
         function pe(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -32368,7 +31557,6 @@ var require_libheif = __commonJS({
           Mz(c2);
           return;
         }
-        __name(pe, "pe");
         function qe(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -32386,7 +31574,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(qe, "qe");
         function re(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -32404,7 +31591,6 @@ var require_libheif = __commonJS({
           Mz(c2);
           return;
         }
-        __name(re, "re");
         function se(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -32423,7 +31609,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(se, "se");
         function te(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -32462,7 +31647,6 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(te, "te");
         function ue(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -32504,7 +31688,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(ue, "ue");
         function ve(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -32562,7 +31745,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(ve, "ve");
         function we(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -32616,13 +31798,11 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(we, "we");
         function xe(a2) {
           a2 = a2 | 0;
           b[a2 + 37 >> 0] = 0;
           return;
         }
-        __name(xe, "xe");
         function ye(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -32704,7 +31884,6 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(ye, "ye");
         function ze(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -32751,7 +31930,6 @@ var require_libheif = __commonJS({
           ZK(a2 + 8 | 0, 56824);
           return;
         }
-        __name(ze, "ze");
         function Ae(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -32796,7 +31974,6 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(Ae, "Ae");
         function Be(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -32844,7 +32021,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Be, "Be");
         function Ce(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -32977,7 +32153,6 @@ var require_libheif = __commonJS({
           u = r2;
           return;
         }
-        __name(Ce, "Ce");
         function De(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -33010,7 +32185,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(De, "De");
         function Ee(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -33098,7 +32272,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(Ee, "Ee");
         function Fe(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -33141,7 +32314,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(Fe, "Fe");
         function Ge(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -33183,7 +32355,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Ge, "Ge");
         function He(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -33248,7 +32419,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(He, "He");
         function Ie(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -33265,7 +32435,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(Ie, "Ie");
         function Je(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -33302,7 +32471,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(Je, "Je");
         function Ke(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -33458,7 +32626,6 @@ var require_libheif = __commonJS({
           u = M2;
           return;
         }
-        __name(Ke, "Ke");
         function Le(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -35221,7 +34388,6 @@ var require_libheif = __commonJS({
           u = A2;
           return;
         }
-        __name(Le, "Le");
         function Me(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -35292,7 +34458,6 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(Me, "Me");
         function Ne(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -35310,7 +34475,6 @@ var require_libheif = __commonJS({
           Mz(c2);
           return;
         }
-        __name(Ne, "Ne");
         function Oe(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -35329,7 +34493,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Oe, "Oe");
         function Pe(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -35348,7 +34511,6 @@ var require_libheif = __commonJS({
           Mz(c2);
           return;
         }
-        __name(Pe, "Pe");
         function Qe(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -35368,7 +34530,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Qe, "Qe");
         function Re(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -35387,7 +34548,6 @@ var require_libheif = __commonJS({
           Mz(c2);
           return;
         }
-        __name(Re, "Re");
         function Se(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -35407,7 +34567,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Se, "Se");
         function Te(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -35587,7 +34746,6 @@ var require_libheif = __commonJS({
           u = r2;
           return;
         }
-        __name(Te, "Te");
         function Ue(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -35631,7 +34789,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Ue, "Ue");
         function Ve(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -35677,20 +34834,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Ve, "Ve");
         function We(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(We, "We");
         function Xe(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Xe, "Xe");
         function Ye(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -35734,7 +34888,6 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(Ye, "Ye");
         function Ze(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -35781,7 +34934,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Ze, "Ze");
         function _e(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -35863,7 +35015,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(_e, "_e");
         function $e(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -35906,7 +35057,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name($e, "$e");
         function af(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -35972,7 +35122,6 @@ var require_libheif = __commonJS({
           u = n2;
           return;
         }
-        __name(af, "af");
         function bf(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -36021,7 +35170,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(bf, "bf");
         function cf(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -36072,20 +35220,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(cf, "cf");
         function df(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(df, "df");
         function ef(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(ef, "ef");
         function ff(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -36128,7 +35273,6 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(ff, "ff");
         function gf(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -36174,7 +35318,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(gf, "gf");
         function hf(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -36267,7 +35410,6 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(hf, "hf");
         function jf(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -36321,7 +35463,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(jf, "jf");
         function kf(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -36488,7 +35629,6 @@ var require_libheif = __commonJS({
           u = q2;
           return;
         }
-        __name(kf, "kf");
         function lf(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -36527,7 +35667,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(lf, "lf");
         function mf(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -36609,7 +35748,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(mf, "mf");
         function nf(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -36623,7 +35761,6 @@ var require_libheif = __commonJS({
           QK(b2);
           return;
         }
-        __name(nf, "nf");
         function of(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -36640,12 +35777,10 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(of, "of");
         function pf(a2) {
           a2 = a2 | 0;
           return f[a2 + 4 >> 2] | 0;
         }
-        __name(pf, "pf");
         function qf(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -36705,7 +35840,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(qf, "qf");
         function rf(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -36720,7 +35854,6 @@ var require_libheif = __commonJS({
           ZK(a2 + 8 | 0, 56824);
           return;
         }
-        __name(rf, "rf");
         function sf(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -36738,7 +35871,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(sf, "sf");
         function tf(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -36758,36 +35890,30 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(tf, "tf");
         function uf(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(uf, "uf");
         function vf(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(vf, "vf");
         function wf(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(wf, "wf");
         function xf(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(xf, "xf");
         function yf(a2) {
           a2 = a2 | 0;
           return 1852009592;
         }
-        __name(yf, "yf");
         function zf(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -36874,7 +36000,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(zf, "zf");
         function Af(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -36892,33 +36017,28 @@ var require_libheif = __commonJS({
           ZK(a2 + 8 | 0, 56824);
           return;
         }
-        __name(Af, "Af");
         function Bf(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Bf, "Bf");
         function Cf(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(Cf, "Cf");
         function Df(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Df, "Df");
         function Ef(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Ef, "Ef");
         function Ff(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -36966,7 +36086,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Ff, "Ff");
         function Gf(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -37016,20 +36135,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Gf, "Gf");
         function Hf(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Hf, "Hf");
         function If(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(If, "If");
         function Jf(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -37069,7 +36185,6 @@ var require_libheif = __commonJS({
           QK(d2);
           return;
         }
-        __name(Jf, "Jf");
         function Kf(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -37112,7 +36227,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Kf, "Kf");
         function Lf(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -37182,7 +36296,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(Lf, "Lf");
         function Mf(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -37232,7 +36345,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(Mf, "Mf");
         function Nf(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0;
@@ -37277,7 +36389,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Nf, "Nf");
         function Of(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0;
@@ -37324,20 +36435,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Of, "Of");
         function Pf(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Pf, "Pf");
         function Qf(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Qf, "Qf");
         function Rf(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -37379,7 +36487,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Rf, "Rf");
         function Sf(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -37444,7 +36551,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(Sf, "Sf");
         function Tf(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -37461,7 +36567,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(Tf, "Tf");
         function Uf(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -37548,7 +36653,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(Uf, "Uf");
         function Vf(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -37592,7 +36696,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Vf, "Vf");
         function Wf(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -37638,20 +36741,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Wf, "Wf");
         function Xf(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Xf, "Xf");
         function Yf(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Yf, "Yf");
         function Zf(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -37693,7 +36793,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Zf, "Zf");
         function _f(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -37758,7 +36857,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(_f, "_f");
         function $f(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -37766,7 +36864,6 @@ var require_libheif = __commonJS({
           Ke(a2, b2, c2, -1);
           return;
         }
-        __name($f, "$f");
         function ag(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -37810,7 +36907,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(ag, "ag");
         function bg(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -37856,20 +36952,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(bg, "bg");
         function cg(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(cg, "cg");
         function dg(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(dg, "dg");
         function eg(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0;
@@ -37937,14 +37030,12 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(eg, "eg");
         function fg(a2) {
           a2 = a2 | 0;
           eg(a2);
           QK(a2);
           return;
         }
-        __name(fg, "fg");
         function gg(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -38050,7 +37141,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(gg, "gg");
         function hg(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -38195,7 +37285,6 @@ var require_libheif = __commonJS({
           u = F2;
           return;
         }
-        __name(hg, "hg");
         function ig(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -38238,7 +37327,6 @@ var require_libheif = __commonJS({
           kg(a2 + 52 | 0, b2 + 52 | 0);
           return;
         }
-        __name(ig, "ig");
         function jg(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -38322,7 +37410,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(jg, "jg");
         function kg(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -38350,7 +37437,6 @@ var require_libheif = __commonJS({
           f[h2 >> 2] = e3 + (c2 >>> 2 << 2);
           return;
         }
-        __name(kg, "kg");
         function lg(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 5676;
@@ -38358,7 +37444,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(lg, "lg");
         function mg(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 5676;
@@ -38367,20 +37452,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(mg, "mg");
         function ng(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(ng, "ng");
         function og(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(og, "og");
         function pg(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -38424,7 +37506,6 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(pg, "pg");
         function qg(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -38471,7 +37552,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(qg, "qg");
         function rg(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -38540,7 +37620,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(rg, "rg");
         function sg(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -38565,7 +37644,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(sg, "sg");
         function tg(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -38617,7 +37695,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(tg, "tg");
         function ug(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -38666,7 +37743,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(ug, "ug");
         function vg(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -38717,20 +37793,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(vg, "vg");
         function wg(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(wg, "wg");
         function xg(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(xg, "xg");
         function yg(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -38774,7 +37847,6 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(yg, "yg");
         function zg(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -38821,7 +37893,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(zg, "zg");
         function Ag(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -38988,7 +38059,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(Ag, "Ag");
         function Bg(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -39037,7 +38107,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(Bg, "Bg");
         function Cg(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -39103,7 +38172,6 @@ var require_libheif = __commonJS({
           u = n2;
           return;
         }
-        __name(Cg, "Cg");
         function Dg(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -39152,7 +38220,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Dg, "Dg");
         function Eg(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -39203,20 +38270,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Eg, "Eg");
         function Fg(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Fg, "Fg");
         function Gg(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Gg, "Gg");
         function Hg(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0;
@@ -39299,14 +38363,12 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(Hg, "Hg");
         function Ig(a2) {
           a2 = a2 | 0;
           Hg(a2);
           QK(a2);
           return;
         }
-        __name(Ig, "Ig");
         function Jg(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -39610,7 +38672,6 @@ var require_libheif = __commonJS({
           u = q2;
           return;
         }
-        __name(Jg, "Jg");
         function Kg(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -39693,7 +38754,6 @@ var require_libheif = __commonJS({
           u = n2;
           return;
         }
-        __name(Kg, "Kg");
         function Lg(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -39959,7 +39019,6 @@ var require_libheif = __commonJS({
           u = G2;
           return;
         }
-        __name(Lg, "Lg");
         function Mg(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -40074,7 +39133,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Mg, "Mg");
         function Ng(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -40167,7 +39225,6 @@ var require_libheif = __commonJS({
           QK(b2);
           return;
         }
-        __name(Ng, "Ng");
         function Og(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 5496;
@@ -40175,7 +39232,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Og, "Og");
         function Pg(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 5496;
@@ -40184,20 +39240,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Pg, "Pg");
         function Qg(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Qg, "Qg");
         function Rg(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Rg, "Rg");
         function Sg(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0;
@@ -40265,14 +39318,12 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(Sg, "Sg");
         function Tg(a2) {
           a2 = a2 | 0;
           Sg(a2);
           QK(a2);
           return;
         }
-        __name(Tg, "Tg");
         function Ug(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -40362,7 +39413,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(Ug, "Ug");
         function Vg(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -40427,7 +39477,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(Vg, "Vg");
         function Wg(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0;
@@ -40466,7 +39515,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(Wg, "Wg");
         function Xg(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -40613,7 +39661,6 @@ var require_libheif = __commonJS({
           u = E2;
           return;
         }
-        __name(Xg, "Xg");
         function Yg(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -40656,7 +39703,6 @@ var require_libheif = __commonJS({
           kg(a2 + 52 | 0, b2 + 52 | 0);
           return;
         }
-        __name(Yg, "Yg");
         function Zg(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -40740,7 +39786,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(Zg, "Zg");
         function _g(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 5436;
@@ -40748,7 +39793,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(_g, "_g");
         function $g(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 5436;
@@ -40757,20 +39801,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name($g, "$g");
         function ah(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(ah, "ah");
         function bh(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(bh, "bh");
         function ch(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -40812,7 +39853,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(ch, "ch");
         function dh(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -40894,7 +39934,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(dh, "dh");
         function eh(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -40926,7 +39965,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(eh, "eh");
         function fh(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -41027,7 +40065,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(fh, "fh");
         function gh(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -41071,7 +40108,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(gh, "gh");
         function hh(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -41117,20 +40153,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(hh, "hh");
         function ih(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(ih, "ih");
         function jh(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(jh, "jh");
         function kh(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -41172,7 +40205,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(kh, "kh");
         function lh(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -41250,7 +40282,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(lh, "lh");
         function mh(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -41283,7 +40314,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(mh, "mh");
         function nh(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -41327,7 +40357,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(nh, "nh");
         function oh(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -41373,20 +40402,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(oh, "oh");
         function ph(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(ph, "ph");
         function qh(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(qh, "qh");
         function rh(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -41428,7 +40454,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(rh, "rh");
         function sh(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -41495,7 +40520,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(sh, "sh");
         function th(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -41528,7 +40552,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(th, "th");
         function uh(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -41572,7 +40595,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(uh, "uh");
         function vh(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -41618,20 +40640,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(vh, "vh");
         function wh(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(wh, "wh");
         function xh(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(xh, "xh");
         function yh(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -41678,7 +40697,6 @@ var require_libheif = __commonJS({
           QK(d2);
           return;
         }
-        __name(yh, "yh");
         function zh(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -41728,7 +40746,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(zh, "zh");
         function Ah(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -41819,7 +40836,6 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(Ah, "Ah");
         function Bh(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -41851,7 +40867,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(Bh, "Bh");
         function Ch(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -41949,7 +40964,6 @@ var require_libheif = __commonJS({
           u = r2;
           return;
         }
-        __name(Ch, "Ch");
         function Dh(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0;
@@ -42001,27 +41015,23 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Dh, "Dh");
         function Eh(a2) {
           a2 = a2 | 0;
           Dh(a2);
           QK(a2);
           return;
         }
-        __name(Eh, "Eh");
         function Fh(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Fh, "Fh");
         function Gh(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Gh, "Gh");
         function Hh(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -42063,7 +41073,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Hh, "Hh");
         function Ih(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -42139,7 +41148,6 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(Ih, "Ih");
         function Jh(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -42165,7 +41173,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(Jh, "Jh");
         function Kh(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -42205,7 +41212,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(Kh, "Kh");
         function Lh(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -42249,7 +41255,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Lh, "Lh");
         function Mh(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -42295,20 +41300,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Mh, "Mh");
         function Nh(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Nh, "Nh");
         function Oh(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Oh, "Oh");
         function Ph(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -42373,14 +41375,12 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(Ph, "Ph");
         function Qh(a2) {
           a2 = a2 | 0;
           Ph(a2);
           QK(a2);
           return;
         }
-        __name(Qh, "Qh");
         function Rh(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -42479,7 +41479,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(Rh, "Rh");
         function Sh(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -42556,7 +41555,6 @@ var require_libheif = __commonJS({
           u = q2;
           return;
         }
-        __name(Sh, "Sh");
         function Th(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0;
@@ -42595,7 +41593,6 @@ var require_libheif = __commonJS({
           f[i2 >> 2] = h2;
           return;
         }
-        __name(Th, "Th");
         function Uh(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -42736,7 +41733,6 @@ var require_libheif = __commonJS({
           u = E2;
           return;
         }
-        __name(Uh, "Uh");
         function Vh(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -42824,7 +41820,6 @@ var require_libheif = __commonJS({
           QK(h2);
           return;
         }
-        __name(Vh, "Vh");
         function Wh(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -42870,7 +41865,6 @@ var require_libheif = __commonJS({
           QK(o2);
           return;
         }
-        __name(Wh, "Wh");
         function Xh(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -42898,7 +41892,6 @@ var require_libheif = __commonJS({
           f[h2 >> 2] = e3 + (c2 >>> 2 << 2);
           return;
         }
-        __name(Xh, "Xh");
         function Yh(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 5076;
@@ -42906,7 +41899,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Yh, "Yh");
         function Zh(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 5076;
@@ -42915,20 +41907,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Zh, "Zh");
         function _h(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(_h, "_h");
         function $h(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name($h, "$h");
         function ai(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -42970,7 +41959,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(ai, "ai");
         function bi(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -43035,7 +42023,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(bi, "bi");
         function ci(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -43043,7 +42030,6 @@ var require_libheif = __commonJS({
           Ke(a2, b2, c2, -1);
           return;
         }
-        __name(ci, "ci");
         function di(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -43087,7 +42073,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(di, "di");
         function ei(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -43133,20 +42118,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(ei, "ei");
         function fi(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(fi, "fi");
         function gi(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(gi, "gi");
         function hi(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -43188,7 +42170,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(hi, "hi");
         function ii(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -43253,7 +42234,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(ii, "ii");
         function ji(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -43261,7 +42241,6 @@ var require_libheif = __commonJS({
           Ke(a2, b2, c2, -1);
           return;
         }
-        __name(ji, "ji");
         function ki(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -43305,7 +42284,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(ki, "ki");
         function li(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -43351,20 +42329,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(li, "li");
         function mi(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(mi, "mi");
         function ni(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(ni, "ni");
         function oi(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -43416,14 +42391,12 @@ var require_libheif = __commonJS({
           QK(d2);
           return;
         }
-        __name(oi, "oi");
         function pi(a2) {
           a2 = a2 | 0;
           oi(a2);
           QK(a2);
           return;
         }
-        __name(pi, "pi");
         function qi(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -43570,7 +42543,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(qi, "qi");
         function ri(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -43681,7 +42653,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(ri, "ri");
         function si(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -43703,7 +42674,6 @@ var require_libheif = __commonJS({
           b[g2 >> 0] = e3;
           return;
         }
-        __name(si, "si");
         function ti(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -43907,7 +42877,6 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(ti, "ti");
         function ui(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 4896;
@@ -43915,7 +42884,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(ui, "ui");
         function vi(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 4896;
@@ -43924,20 +42892,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(vi, "vi");
         function wi(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(wi, "wi");
         function xi(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(xi, "xi");
         function yi(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -43979,7 +42944,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(yi, "yi");
         function zi(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -44044,7 +43008,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(zi, "zi");
         function Ai(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -44100,13 +43063,11 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(Ai, "Ai");
         function Bi(a2) {
           a2 = a2 | 0;
           b[a2 + 37 >> 0] = (f[a2 + 48 >> 2] | 0) - (f[a2 + 44 >> 2] | 0) >> 3 >>> 0 > 65535 & 1;
           return;
         }
-        __name(Bi, "Bi");
         function Ci(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -44138,7 +43099,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(Ci, "Ci");
         function Di(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -44182,7 +43142,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Di, "Di");
         function Ei(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -44228,20 +43187,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Ei, "Ei");
         function Fi(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Fi, "Fi");
         function Gi(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Gi, "Gi");
         function Hi(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0;
@@ -44324,14 +43280,12 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(Hi, "Hi");
         function Ii(a2) {
           a2 = a2 | 0;
           Hi(a2);
           QK(a2);
           return;
         }
-        __name(Ii, "Ii");
         function Ji(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -44465,7 +43419,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(Ji, "Ji");
         function Ki(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -44582,7 +43535,6 @@ var require_libheif = __commonJS({
           u = A2;
           return;
         }
-        __name(Ki, "Ki");
         function Li(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, i2 = 0, j2 = 0, k2 = 0;
@@ -44623,7 +43575,6 @@ var require_libheif = __commonJS({
           b[k2 >> 0] = j2;
           return;
         }
-        __name(Li, "Li");
         function Mi(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -45052,7 +44003,6 @@ var require_libheif = __commonJS({
           u = ea2;
           return;
         }
-        __name(Mi, "Mi");
         function Ni(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -45170,7 +44120,6 @@ var require_libheif = __commonJS({
           QK(h2);
           return;
         }
-        __name(Ni, "Ni");
         function Oi(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -45193,7 +44142,6 @@ var require_libheif = __commonJS({
           Qi(a2, f[b2 >> 2] | 0, f[d2 >> 2] | 0, g2);
           return;
         }
-        __name(Oi, "Oi");
         function Pi(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -45306,7 +44254,6 @@ var require_libheif = __commonJS({
           QK(k2);
           return;
         }
-        __name(Pi, "Pi");
         function Qi(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -45361,7 +44308,6 @@ var require_libheif = __commonJS({
           else if ((a2 | 0) == 9)
             return;
         }
-        __name(Qi, "Qi");
         function Ri(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 4776;
@@ -45369,7 +44315,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Ri, "Ri");
         function Si(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 4776;
@@ -45378,20 +44323,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Si, "Si");
         function Ti(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Ti, "Ti");
         function Ui(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Ui, "Ui");
         function Vi(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -45433,7 +44375,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Vi, "Vi");
         function Wi(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -45500,7 +44441,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(Wi, "Wi");
         function Xi(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -45535,13 +44475,11 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(Xi, "Xi");
         function Yi(a2) {
           a2 = a2 | 0;
           b[a2 + 37 >> 0] = (f[a2 + 56 >> 2] | 0) >>> 0 > 65535 & 1;
           return;
         }
-        __name(Yi, "Yi");
         function Zi(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -45582,7 +44520,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(Zi, "Zi");
         function _i(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -45626,7 +44563,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(_i, "_i");
         function $i(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -45672,20 +44608,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name($i, "$i");
         function aj(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(aj, "aj");
         function bj(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(bj, "bj");
         function cj(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -45725,7 +44658,6 @@ var require_libheif = __commonJS({
           QK(d2);
           return;
         }
-        __name(cj, "cj");
         function dj(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -45768,7 +44700,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(dj, "dj");
         function ej(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -45869,7 +44800,6 @@ var require_libheif = __commonJS({
           u = n2;
           return;
         }
-        __name(ej, "ej");
         function fj(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -45899,7 +44829,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(fj, "fj");
         function gj(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -45959,7 +44888,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(gj, "gj");
         function hj(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0;
@@ -46004,7 +44932,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(hj, "hj");
         function ij(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0;
@@ -46051,20 +44978,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(ij, "ij");
         function jj(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(jj, "jj");
         function kj(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(kj, "kj");
         function lj(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -46108,7 +45032,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(lj, "lj");
         function mj(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -46154,20 +45077,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(mj, "mj");
         function nj(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(nj, "nj");
         function oj(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(oj, "oj");
         function pj(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -46217,7 +45137,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(pj, "pj");
         function qj(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -46269,20 +45188,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(qj, "qj");
         function rj(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(rj, "rj");
         function sj(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(sj, "sj");
         function tj() {
           var a2 = 0, c2 = 0;
           c2 = u;
@@ -46300,7 +45216,6 @@ var require_libheif = __commonJS({
           u = c2;
           return;
         }
-        __name(tj, "tj");
         function uj(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -46317,7 +45232,6 @@ var require_libheif = __commonJS({
           d[b2 + 28 >> 1] = 0;
           return;
         }
-        __name(uj, "uj");
         function vj(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -46350,7 +45264,6 @@ var require_libheif = __commonJS({
           f[a2 + 4 >> 2] = 0;
           return;
         }
-        __name(vj, "vj");
         function wj(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -46389,7 +45302,6 @@ var require_libheif = __commonJS({
           } while ((d2 | 0) != (h2 | 0));
           return;
         }
-        __name(wj, "wj");
         function xj(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -46465,7 +45377,6 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(xj, "xj");
         function yj(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -46493,7 +45404,6 @@ var require_libheif = __commonJS({
             return c2 | 0;
           return 0;
         }
-        __name(yj, "yj");
         function zj(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -46852,7 +45762,6 @@ var require_libheif = __commonJS({
           u = L2;
           return;
         }
-        __name(zj, "zj");
         function Aj(a2, c2, d2, e3, g2, h2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -47005,7 +45914,6 @@ var require_libheif = __commonJS({
           u = w2;
           return;
         }
-        __name(Aj, "Aj");
         function Bj(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -47067,7 +45975,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(Bj, "Bj");
         function Cj(a2) {
           a2 = a2 | 0;
           d[a2 + 4 >> 1] = 2;
@@ -47076,7 +45983,6 @@ var require_libheif = __commonJS({
           b[a2 + 10 >> 0] = 1;
           return;
         }
-        __name(Cj, "Cj");
         function Dj(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -47271,7 +46177,6 @@ var require_libheif = __commonJS({
           u = y2;
           return;
         }
-        __name(Dj, "Dj");
         function Ej(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -47353,7 +46258,6 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(Ej, "Ej");
         function Fj(a2, b2, c2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -47422,7 +46326,6 @@ var require_libheif = __commonJS({
           f[a2 + 4 >> 2] = 0;
           return;
         }
-        __name(Fj, "Fj");
         function Gj(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -47529,7 +46432,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(Gj, "Gj");
         function Hj(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -47569,7 +46471,6 @@ var require_libheif = __commonJS({
           b2 = (b2 | 0) / (c2 | 0) | 0;
           return b2 | 0;
         }
-        __name(Hj, "Hj");
         function Ij(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -47684,7 +46585,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(Ij, "Ij");
         function Jj(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -47724,7 +46624,6 @@ var require_libheif = __commonJS({
           b2 = (b2 | 0) / (c2 | 0) | 0;
           return b2 | 0;
         }
-        __name(Jj, "Jj");
         function Kj(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -47821,7 +46720,6 @@ var require_libheif = __commonJS({
           g2 = e3 + g2 | 0;
           return g2 | 0;
         }
-        __name(Kj, "Kj");
         function Lj(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -47918,7 +46816,6 @@ var require_libheif = __commonJS({
           g2 = e3 + g2 | 0;
           return g2 | 0;
         }
-        __name(Lj, "Lj");
         function Mj(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -47952,7 +46849,6 @@ var require_libheif = __commonJS({
           } while ((b2 | 0) != (g2 | 0));
           return;
         }
-        __name(Mj, "Mj");
         function Nj(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -47980,7 +46876,6 @@ var require_libheif = __commonJS({
           f[a2 + 8 >> 2] = 0;
           return;
         }
-        __name(Nj, "Nj");
         function Oj(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -48185,7 +47080,6 @@ var require_libheif = __commonJS({
             $I(c2);
           return 0;
         }
-        __name(Oj, "Oj");
         function Pj(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -48311,7 +47205,6 @@ var require_libheif = __commonJS({
           q2 = l2;
           return q2 | 0;
         }
-        __name(Pj, "Pj");
         function Qj(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 0;
@@ -48321,7 +47214,6 @@ var require_libheif = __commonJS({
           f[a2 + 16 >> 2] = 0;
           return;
         }
-        __name(Qj, "Qj");
         function Rj(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -48332,7 +47224,6 @@ var require_libheif = __commonJS({
           ZK(a2 + 8 | 0, d2);
           return;
         }
-        __name(Rj, "Rj");
         function Sj(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -48540,7 +47431,6 @@ var require_libheif = __commonJS({
           while (0);
           return b2 | 0;
         }
-        __name(Sj, "Sj");
         function Tj(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -48693,7 +47583,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(Tj, "Tj");
         function Uj(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0;
@@ -48709,7 +47598,6 @@ var require_libheif = __commonJS({
           f[d2 >> 2] = c2;
           return;
         }
-        __name(Uj, "Uj");
         function Vj(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -48774,7 +47662,6 @@ var require_libheif = __commonJS({
           KK(b2);
           return;
         }
-        __name(Vj, "Vj");
         function Wj(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -48788,7 +47675,6 @@ var require_libheif = __commonJS({
           QK(b2);
           return;
         }
-        __name(Wj, "Wj");
         function Xj(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -48845,7 +47731,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(Xj, "Xj");
         function Yj(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -48889,7 +47774,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(Yj, "Yj");
         function Cn(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -50080,7 +48964,6 @@ var require_libheif = __commonJS({
           u = xa2;
           return wa2 | 0;
         }
-        __name(Cn, "Cn");
         function Dn(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -50151,7 +49034,6 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(Dn, "Dn");
         function En(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -50266,7 +49148,6 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(En, "En");
         function Fn(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -50381,7 +49262,6 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(Fn, "Fn");
         function Gn(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -50457,117 +49337,99 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(Gn, "Gn");
         function Hn(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Hn, "Hn");
         function In(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(In, "In");
         function Jn(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Jn, "Jn");
         function Kn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Kn, "Kn");
         function Ln(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Ln, "Ln");
         function Mn(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(Mn, "Mn");
         function Nn(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Nn, "Nn");
         function On(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(On, "On");
         function Pn(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Pn, "Pn");
         function Qn(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(Qn, "Qn");
         function Rn(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Rn, "Rn");
         function Sn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Sn, "Sn");
         function Tn(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Tn, "Tn");
         function Un(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(Un, "Un");
         function Vn(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Vn, "Vn");
         function Wn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Wn, "Wn");
         function Xn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Xn, "Xn");
         function Yn(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -50620,7 +49482,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(Yn, "Yn");
         function Zn(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -50907,39 +49768,33 @@ var require_libheif = __commonJS({
           u = fa2;
           return;
         }
-        __name(Zn, "Zn");
         function _n(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(_n, "_n");
         function $n(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name($n, "$n");
         function ao(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(ao, "ao");
         function bo(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(bo, "bo");
         function co(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(co, "co");
         function eo(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -50991,7 +49846,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(eo, "eo");
         function fo(a2, c2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -51266,325 +50120,275 @@ var require_libheif = __commonJS({
           u = Z2;
           return;
         }
-        __name(fo, "fo");
         function go(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(go, "go");
         function ho(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(ho, "ho");
         function io(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(io, "io");
         function jo(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(jo, "jo");
         function ko(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(ko, "ko");
         function lo(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(lo, "lo");
         function mo(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(mo, "mo");
         function no(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(no, "no");
         function oo(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(oo, "oo");
         function po(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(po, "po");
         function qo(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(qo, "qo");
         function ro(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(ro, "ro");
         function so(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(so, "so");
         function to(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(to, "to");
         function uo(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(uo, "uo");
         function vo(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(vo, "vo");
         function wo(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(wo, "wo");
         function xo(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(xo, "xo");
         function yo(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(yo, "yo");
         function zo(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(zo, "zo");
         function Ao(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Ao, "Ao");
         function Bo(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(Bo, "Bo");
         function Co(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Co, "Co");
         function Do(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Do, "Do");
         function Eo(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Eo, "Eo");
         function Fo(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(Fo, "Fo");
         function Go(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Go, "Go");
         function Ho(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Ho, "Ho");
         function Io(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Io, "Io");
         function Jo(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(Jo, "Jo");
         function Ko(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Ko, "Ko");
         function Lo(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Lo, "Lo");
         function Mo(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Mo, "Mo");
         function No(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(No, "No");
         function Oo(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Oo, "Oo");
         function Po(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Po, "Po");
         function Qo(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Qo, "Qo");
         function Ro(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(Ro, "Ro");
         function So(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(So, "So");
         function To(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(To, "To");
         function Uo(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Uo, "Uo");
         function Vo(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(Vo, "Vo");
         function Wo(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Wo, "Wo");
         function Xo(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Xo, "Xo");
         function Yo(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(Yo, "Yo");
         function Zo(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(Zo, "Zo");
         function _o(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(_o, "_o");
         function $o(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name($o, "$o");
         function ap(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(ap, "ap");
         function bp(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -51635,7 +50439,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(bp, "bp");
         function cp(a2, c2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -51874,39 +50677,33 @@ var require_libheif = __commonJS({
           u = ca2;
           return;
         }
-        __name(cp, "cp");
         function dp(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(dp, "dp");
         function ep(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(ep, "ep");
         function fp(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(fp, "fp");
         function gp(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(gp, "gp");
         function hp(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(hp, "hp");
         function ip(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -51958,7 +50755,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(ip, "ip");
         function jp(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -52213,59 +51009,50 @@ var require_libheif = __commonJS({
           u = ma2;
           return;
         }
-        __name(jp, "jp");
         function kp(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(kp, "kp");
         function lp(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(lp, "lp");
         function mp(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(mp, "mp");
         function np(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(np, "np");
         function op(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(op, "op");
         function pp(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(pp, "pp");
         function qp(a2) {
           a2 = a2 | 0;
           a2 = a2 + 12 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(qp, "qp");
         function rp(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(rp, "rp");
         function sp(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -52400,7 +51187,6 @@ var require_libheif = __commonJS({
           u = E2;
           return;
         }
-        __name(sp, "sp");
         function tp(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -52553,7 +51339,6 @@ var require_libheif = __commonJS({
           u = D2;
           return;
         }
-        __name(tp, "tp");
         function up(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -52734,7 +51519,6 @@ var require_libheif = __commonJS({
           n[l2 >> 2] = d2;
           return;
         }
-        __name(up, "up");
         function vp(a2) {
           a2 = a2 | 0;
           b[a2 >> 0] = 1;
@@ -52744,7 +51528,6 @@ var require_libheif = __commonJS({
           n[a2 + 16 >> 2] = 1.7719999551773071;
           return;
         }
-        __name(vp, "vp");
         function wp(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -52783,7 +51566,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(wp, "wp");
         function xp(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -52834,7 +51616,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(xp, "xp");
         function yp(a2) {
           a2 = a2 | 0;
           b[a2 >> 0] = 1;
@@ -52849,11 +51630,9 @@ var require_libheif = __commonJS({
           n[a2 + 36 >> 2] = -0.08131200075149536;
           return;
         }
-        __name(yp, "yp");
         function zp() {
           return 7580;
         }
-        __name(zp, "zp");
         function Ap() {
           var a2 = 0, c2 = 0, d2 = 0, e3 = 0;
           c2 = 61385;
@@ -52878,22 +51657,18 @@ var require_libheif = __commonJS({
           pz(61385, a2) | 0;
           return 61385;
         }
-        __name(Ap, "Ap");
         function Bp() {
           Jp() | 0;
           return;
         }
-        __name(Bp, "Bp");
         function Cp() {
           Kp() | 0;
           return;
         }
-        __name(Cp, "Cp");
         function Dp(a2) {
           a2 = a2 | 0;
           return ((a2 | 0) == 1 ? 100 : 0) | 0;
         }
-        __name(Dp, "Dp");
         function Ep(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -52910,7 +51685,6 @@ var require_libheif = __commonJS({
           f[b2 >> 2] = c2;
           return;
         }
-        __name(Ep, "Ep");
         function Fp(a2) {
           a2 = a2 | 0;
           Mp(f[a2 >> 2] | 0) | 0;
@@ -52919,7 +51693,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Fp, "Fp");
         function Gp(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -52964,7 +51737,6 @@ var require_libheif = __commonJS({
           f[a2 + 8 >> 2] = f[1906];
           return;
         }
-        __name(Gp, "Gp");
         function Hp(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -53146,11 +51918,9 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(Hp, "Hp");
         function Ip() {
           return 34759;
         }
-        __name(Ip, "Ip");
         function Jp() {
           var a2 = 0;
           a2 = f[14210] | 0;
@@ -53168,7 +51938,6 @@ var require_libheif = __commonJS({
           a2 = 11;
           return a2 | 0;
         }
-        __name(Jp, "Jp");
         function Kp() {
           var a2 = 0;
           a2 = f[14210] | 0;
@@ -53187,7 +51956,6 @@ var require_libheif = __commonJS({
           a2 = 0;
           return a2 | 0;
         }
-        __name(Kp, "Kp");
         function Lp() {
           var a2 = 0;
           a2 = f[14210] | 0;
@@ -53201,7 +51969,6 @@ var require_libheif = __commonJS({
           fq(a2);
           return a2 | 0;
         }
-        __name(Lp, "Lp");
         function Mp(a2) {
           a2 = a2 | 0;
           gq(a2);
@@ -53223,7 +51990,6 @@ var require_libheif = __commonJS({
           a2 = 0;
           return a2 | 0;
         }
-        __name(Mp, "Mp");
         function Np(a2) {
           a2 = a2 | 0;
           a2 = a2 + 548 | 0;
@@ -53232,13 +51998,11 @@ var require_libheif = __commonJS({
           b[a2 >> 0] = 1;
           return 0;
         }
-        __name(Np, "Np");
         function Op(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return Pq(a2, b2) | 0;
         }
-        __name(Op, "Op");
         function Pp(a2, b2, c2, d2, e3, f2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -53248,7 +52012,6 @@ var require_libheif = __commonJS({
           f2 = f2 | 0;
           return Jt(a2 + 548 | 0, b2, c2, d2, e3, f2) | 0;
         }
-        __name(Pp, "Pp");
         function Qp(a2) {
           a2 = a2 | 0;
           var c2 = 0;
@@ -53266,7 +52029,6 @@ var require_libheif = __commonJS({
           Ns(a2 + 376148 | 0);
           return c2 | 0;
         }
-        __name(Qp, "Qp");
         function Rp(a2) {
           a2 = a2 | 0;
           var c2 = 0;
@@ -53277,7 +52039,6 @@ var require_libheif = __commonJS({
           Ns(a2 + 376148 | 0);
           return;
         }
-        __name(Rp, "Rp");
         function Sp(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -53303,7 +52064,6 @@ var require_libheif = __commonJS({
               Pa(55956, 34765, 503, 34774);
           }
         }
-        __name(Sp, "Sp");
         function Tp(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -53325,7 +52085,6 @@ var require_libheif = __commonJS({
           b2 = f[a2 >> 2] | 0;
           return b2 | 0;
         }
-        __name(Tp, "Tp");
         function Up(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -53347,7 +52106,6 @@ var require_libheif = __commonJS({
           b2 = f[a2 >> 2] | 0;
           return b2 | 0;
         }
-        __name(Up, "Up");
         function Vp(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -53369,12 +52127,10 @@ var require_libheif = __commonJS({
           b2 = f[a2 >> 2] | 0;
           return b2 | 0;
         }
-        __name(Vp, "Vp");
         function Wp(a2) {
           a2 = a2 | 0;
           return f[a2 + 20 >> 2] | 0;
         }
-        __name(Wp, "Wp");
         function Xp(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -53407,7 +52163,6 @@ var require_libheif = __commonJS({
           f[c2 >> 2] = g2;
           return e3 | 0;
         }
-        __name(Xp, "Xp");
         function Yp(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0;
@@ -53554,14 +52309,12 @@ var require_libheif = __commonJS({
           wt(a2 + 548 | 0);
           return;
         }
-        __name(Yp, "Yp");
         function Zp(a2) {
           a2 = a2 | 0;
           Yp(a2);
           QK(a2);
           return;
         }
-        __name(Zp, "Zp");
         function _p(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -53574,7 +52327,6 @@ var require_libheif = __commonJS({
           c2 = f[c2 + (b2 << 2) >> 2] | 0;
           return c2 | 0;
         }
-        __name(_p, "_p");
         function $p(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -53585,7 +52337,6 @@ var require_libheif = __commonJS({
           b2 = ((f[a2 + 376160 >> 2] | 0) - (f[a2 + 376156 >> 2] | 0) >> 2 | 0) > (b2 | 0);
           return b2 | 0;
         }
-        __name($p, "$p");
         function aq(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0;
@@ -53695,7 +52446,6 @@ var require_libheif = __commonJS({
           Us(l2);
           return;
         }
-        __name(aq, "aq");
         function bq(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0;
@@ -53772,7 +52522,6 @@ var require_libheif = __commonJS({
           QK(b2);
           return;
         }
-        __name(bq, "bq");
         function cq(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -53818,18 +52567,15 @@ var require_libheif = __commonJS({
           f[k2 >> 2] = b2;
           return;
         }
-        __name(cq, "cq");
         function dq(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(dq, "dq");
         function eq(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(eq, "eq");
         function fq(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0;
@@ -54094,7 +52840,6 @@ var require_libheif = __commonJS({
           f[k2 >> 2] = -1;
           return;
         }
-        __name(fq, "fq");
         function gq(a2) {
           a2 = a2 | 0;
           if ((f[a2 + 375892 >> 2] | 0) <= 0)
@@ -54102,7 +52847,6 @@ var require_libheif = __commonJS({
           hv(a2 + 375396 | 0);
           return;
         }
-        __name(gq, "gq");
         function hq(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -54137,7 +52881,6 @@ var require_libheif = __commonJS({
           f[c2 + 18528 >> 2] = b[i2 >> 0];
           return;
         }
-        __name(hq, "hq");
         function iq(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -54180,7 +52923,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(iq, "iq");
         function jq(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -54272,7 +53014,6 @@ var require_libheif = __commonJS({
           u = j2;
           return h2 | 0;
         }
-        __name(jq, "jq");
         function kq(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -54501,7 +53242,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(kq, "kq");
         function lq(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -54569,7 +53309,6 @@ var require_libheif = __commonJS({
           f[e3 >> 2] = c2 + (i2 >>> 1 << 1);
           return;
         }
-        __name(lq, "lq");
         function mq(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -54631,7 +53370,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(mq, "mq");
         function nq(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -54709,7 +53447,6 @@ var require_libheif = __commonJS({
           u = q2;
           return;
         }
-        __name(nq, "nq");
         function oq(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -54831,7 +53568,6 @@ var require_libheif = __commonJS({
           f[r2 >> 2] = q2;
           return;
         }
-        __name(oq, "oq");
         function pq(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -54861,7 +53597,6 @@ var require_libheif = __commonJS({
           u = d2;
           return e3 | 0;
         }
-        __name(pq, "pq");
         function qq(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -54930,7 +53665,6 @@ var require_libheif = __commonJS({
           f[e3 >> 2] = c2 + (((h2 >>> 0) / 100 | 0) * 100 | 0);
           return;
         }
-        __name(qq, "qq");
         function rq(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -54968,7 +53702,6 @@ var require_libheif = __commonJS({
           u = g2;
           return h2 | 0;
         }
-        __name(rq, "rq");
         function sq(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -55037,7 +53770,6 @@ var require_libheif = __commonJS({
           f[e3 >> 2] = c2 + (i2 >>> 2 << 2);
           return;
         }
-        __name(sq, "sq");
         function tq(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -55088,7 +53820,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(tq, "tq");
         function uq(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -55136,7 +53867,6 @@ var require_libheif = __commonJS({
           f[a2 + (c2 << 2) >> 2] = b2;
           return;
         }
-        __name(uq, "uq");
         function vq(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -55303,7 +54033,6 @@ var require_libheif = __commonJS({
           u = o2;
           return q2 | 0;
         }
-        __name(vq, "vq");
         function wq(a2) {
           a2 = a2 | 0;
           f[a2 + 776 >> 2] = 0;
@@ -55316,7 +54045,6 @@ var require_libheif = __commonJS({
           Eu(a2);
           return;
         }
-        __name(wq, "wq");
         function xq(a2, c2, d2, e3, g2, h2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -55462,7 +54190,6 @@ var require_libheif = __commonJS({
           u = q2;
           return d2 | 0;
         }
-        __name(xq, "xq");
         function yq(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -55505,7 +54232,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(yq, "yq");
         function zq(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -55548,7 +54274,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(zq, "zq");
         function Aq(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -55591,7 +54316,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(Aq, "Aq");
         function Bq(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -55777,7 +54501,6 @@ var require_libheif = __commonJS({
           u = q2;
           return p2 | 0;
         }
-        __name(Bq, "Bq");
         function Cq(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -56048,7 +54771,6 @@ var require_libheif = __commonJS({
             return s2 | 0;
           return 0;
         }
-        __name(Cq, "Cq");
         function Dq(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -56091,7 +54813,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(Dq, "Dq");
         function Eq(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -56181,7 +54902,6 @@ var require_libheif = __commonJS({
           u = p2;
           return o2 | 0;
         }
-        __name(Eq, "Eq");
         function Fq(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -56366,7 +55086,6 @@ var require_libheif = __commonJS({
           u = D2;
           return 0;
         }
-        __name(Fq, "Fq");
         function Gq(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -56504,7 +55223,6 @@ var require_libheif = __commonJS({
           u = G2;
           return F2 | 0;
         }
-        __name(Gq, "Gq");
         function Hq(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -56588,7 +55306,6 @@ var require_libheif = __commonJS({
           QK(d2);
           return;
         }
-        __name(Hq, "Hq");
         function Iq(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0;
@@ -56657,7 +55374,6 @@ var require_libheif = __commonJS({
           f[a2 + 375912 >> 2] = l2;
           return;
         }
-        __name(Iq, "Iq");
         function Jq(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -56701,7 +55417,6 @@ var require_libheif = __commonJS({
           f[c2 + 376220 >> 2] = f[g2 >> 2];
           return;
         }
-        __name(Jq, "Jq");
         function Kq(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -57055,7 +55770,6 @@ var require_libheif = __commonJS({
           u = C2;
           return;
         }
-        __name(Kq, "Kq");
         function Lq(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -57316,7 +56030,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(Lq, "Lq");
         function Mq(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -57359,7 +56072,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(Mq, "Mq");
         function Nq(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -57399,7 +56111,6 @@ var require_libheif = __commonJS({
           b[a2 + 10516 >> 0] = 1;
           return k2 | 0;
         }
-        __name(Nq, "Nq");
         function Oq(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -57519,7 +56230,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(Oq, "Oq");
         function Pq(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -57611,7 +56321,6 @@ var require_libheif = __commonJS({
           u = l2;
           return k2 | 0;
         }
-        __name(Pq, "Pq");
         function Qq(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 1;
@@ -57701,7 +56410,6 @@ var require_libheif = __commonJS({
           f[a2 + 336 >> 2] = 98;
           return;
         }
-        __name(Qq, "Qq");
         function Rq(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -57728,7 +56436,6 @@ var require_libheif = __commonJS({
           } while ((g2 | 0) != (e3 | 0));
           return;
         }
-        __name(Rq, "Rq");
         function Sq(a2, b2, c2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -57755,14 +56462,12 @@ var require_libheif = __commonJS({
           } while ((g2 | 0) != (e3 | 0));
           return;
         }
-        __name(Sq, "Sq");
         function Tq(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           Pa(44673, 35354, 51, 35370);
         }
-        __name(Tq, "Tq");
         function Uq(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -57770,7 +56475,6 @@ var require_libheif = __commonJS({
           d2 = d2 | 0;
           Pa(44673, 35354, 68, 35396);
         }
-        __name(Uq, "Uq");
         function Vq(a2, b2, c2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -57795,7 +56499,6 @@ var require_libheif = __commonJS({
           } while ((i2 | 0) != (c2 | 0));
           return;
         }
-        __name(Vq, "Vq");
         function Wq(a2, c2, e3, f2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -57822,7 +56525,6 @@ var require_libheif = __commonJS({
           } while ((j2 | 0) < (l2 | 0));
           return;
         }
-        __name(Wq, "Wq");
         function Xq(a2, c2, e3, f2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -57851,7 +56553,6 @@ var require_libheif = __commonJS({
           } while ((j2 | 0) < (l2 | 0));
           return;
         }
-        __name(Xq, "Xq");
         function Yq(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -57874,7 +56575,6 @@ var require_libheif = __commonJS({
           } while ((g2 | 0) != (c2 | 0));
           return;
         }
-        __name(Yq, "Yq");
         function Zq(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -57898,7 +56598,6 @@ var require_libheif = __commonJS({
           } while ((g2 | 0) != (c2 | 0));
           return;
         }
-        __name(Zq, "Zq");
         function _q(a2, b2, c2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -57924,7 +56623,6 @@ var require_libheif = __commonJS({
           } while ((j2 | 0) != (c2 | 0));
           return;
         }
-        __name(_q, "_q");
         function $q(a2, b2, c2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -57951,7 +56649,6 @@ var require_libheif = __commonJS({
           } while ((j2 | 0) != (c2 | 0));
           return;
         }
-        __name($q, "$q");
         function ar(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -57973,7 +56670,6 @@ var require_libheif = __commonJS({
           } while ((g2 | 0) != (c2 | 0));
           return;
         }
-        __name(ar, "ar");
         function br(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -57999,7 +56695,6 @@ var require_libheif = __commonJS({
           } while ((c2 | 0) < (f2 | 0));
           return;
         }
-        __name(br, "br");
         function cr(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -58052,7 +56747,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(cr, "cr");
         function dr(a2, b2, c2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58111,7 +56805,6 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(dr, "dr");
         function er(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58158,7 +56851,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(er, "er");
         function fr(a2, b2, c2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58209,7 +56901,6 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(fr, "fr");
         function gr(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -58345,7 +57036,6 @@ var require_libheif = __commonJS({
           u = v2;
           return;
         }
-        __name(gr, "gr");
         function hr(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58354,7 +57044,6 @@ var require_libheif = __commonJS({
           gr(a2, 4, b2, c2, d2);
           return;
         }
-        __name(hr, "hr");
         function ir(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58363,7 +57052,6 @@ var require_libheif = __commonJS({
           gr(a2, 8, b2, c2, d2);
           return;
         }
-        __name(ir, "ir");
         function jr(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58372,7 +57060,6 @@ var require_libheif = __commonJS({
           gr(a2, 16, b2, c2, d2);
           return;
         }
-        __name(jr, "jr");
         function kr(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58381,7 +57068,6 @@ var require_libheif = __commonJS({
           gr(a2, 32, b2, c2, d2);
           return;
         }
-        __name(kr, "kr");
         function lr(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58389,7 +57075,6 @@ var require_libheif = __commonJS({
           mr(a2, c2, 4, b2, 8);
           return;
         }
-        __name(lr, "lr");
         function mr(a2, c2, e3, f2, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -58524,7 +57209,6 @@ var require_libheif = __commonJS({
           u = v2;
           return;
         }
-        __name(mr, "mr");
         function nr(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58532,7 +57216,6 @@ var require_libheif = __commonJS({
           mr(a2, c2, 8, b2, 8);
           return;
         }
-        __name(nr, "nr");
         function or(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58540,7 +57223,6 @@ var require_libheif = __commonJS({
           mr(a2, c2, 16, b2, 8);
           return;
         }
-        __name(or, "or");
         function pr(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58548,7 +57230,6 @@ var require_libheif = __commonJS({
           mr(a2, c2, 32, b2, 8);
           return;
         }
-        __name(pr, "pr");
         function qr(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58557,7 +57238,6 @@ var require_libheif = __commonJS({
           rr(a2, c2, 4, b2, d2);
           return;
         }
-        __name(qr, "qr");
         function rr(a2, c2, e3, f2, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -58692,7 +57372,6 @@ var require_libheif = __commonJS({
           u = v2;
           return;
         }
-        __name(rr, "rr");
         function sr(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58701,7 +57380,6 @@ var require_libheif = __commonJS({
           rr(a2, c2, 8, b2, d2);
           return;
         }
-        __name(sr, "sr");
         function tr(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58710,7 +57388,6 @@ var require_libheif = __commonJS({
           rr(a2, c2, 16, b2, d2);
           return;
         }
-        __name(tr, "tr");
         function ur(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58719,7 +57396,6 @@ var require_libheif = __commonJS({
           rr(a2, c2, 32, b2, d2);
           return;
         }
-        __name(ur, "ur");
         function vr(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58727,7 +57403,6 @@ var require_libheif = __commonJS({
           wr(a2, 4, b2, c2);
           return;
         }
-        __name(vr, "vr");
         function wr(a2, c2, e3, f2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -58828,7 +57503,6 @@ var require_libheif = __commonJS({
           u = s2;
           return;
         }
-        __name(wr, "wr");
         function xr(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58836,7 +57510,6 @@ var require_libheif = __commonJS({
           wr(a2, 8, b2, c2);
           return;
         }
-        __name(xr, "xr");
         function yr(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58844,7 +57517,6 @@ var require_libheif = __commonJS({
           wr(a2, 16, b2, c2);
           return;
         }
-        __name(yr, "yr");
         function zr(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -58852,7 +57524,6 @@ var require_libheif = __commonJS({
           wr(a2, 32, b2, c2);
           return;
         }
-        __name(zr, "zr");
         function Ar(a2, b2, c2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59018,7 +57689,6 @@ var require_libheif = __commonJS({
           u = w2;
           return;
         }
-        __name(Ar, "Ar");
         function Br(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59143,7 +57813,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(Br, "Br");
         function Cr(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59236,7 +57905,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(Cr, "Cr");
         function Dr(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59244,7 +57912,6 @@ var require_libheif = __commonJS({
           Ar(a2, 16, b2, c2);
           return;
         }
-        __name(Dr, "Dr");
         function Er(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59252,7 +57919,6 @@ var require_libheif = __commonJS({
           Ar(a2, 32, b2, c2);
           return;
         }
-        __name(Er, "Er");
         function Fr(a2, c2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -59288,7 +57954,6 @@ var require_libheif = __commonJS({
           } while ((k2 | 0) != (h2 | 0));
           return;
         }
-        __name(Fr, "Fr");
         function Gr(a2, c2, e3, f2, g2, h2, i2, j2, k2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -59326,7 +57991,6 @@ var require_libheif = __commonJS({
           } while ((n2 | 0) != (h2 | 0));
           return;
         }
-        __name(Gr, "Gr");
         function Hr(a2, c2, e3, f2, g2, h2, i2, j2, k2, l2, m2, n2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -59374,7 +58038,6 @@ var require_libheif = __commonJS({
           } while ((o2 | 0) != (i2 | 0));
           return;
         }
-        __name(Hr, "Hr");
         function Ir(a2, c2, e3, f2, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -59414,7 +58077,6 @@ var require_libheif = __commonJS({
           } while ((m2 | 0) != (i2 | 0));
           return;
         }
-        __name(Ir, "Ir");
         function Jr(a2, b2, c2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59457,7 +58119,6 @@ var require_libheif = __commonJS({
           } while ((j2 | 0) != (g2 | 0));
           return;
         }
-        __name(Jr, "Jr");
         function Kr(a2, b2, c2, e3, f2, g2, h2, i2, j2, k2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59500,7 +58161,6 @@ var require_libheif = __commonJS({
           } while ((m2 | 0) != (g2 | 0));
           return;
         }
-        __name(Kr, "Kr");
         function Lr(a2, b2, c2, e3, f2, g2, h2, i2, j2, k2, l2, m2, n2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59551,7 +58211,6 @@ var require_libheif = __commonJS({
           } while ((n2 | 0) != (h2 | 0));
           return;
         }
-        __name(Lr, "Lr");
         function Mr(a2, b2, c2, e3, f2, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59598,7 +58257,6 @@ var require_libheif = __commonJS({
           } while ((l2 | 0) != (h2 | 0));
           return;
         }
-        __name(Mr, "Mr");
         function Nr(a2, b2, c2, e3, f2, g2, i2, j2, k2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59632,7 +58290,6 @@ var require_libheif = __commonJS({
           } while ((k2 | 0) != (g2 | 0));
           return;
         }
-        __name(Nr, "Nr");
         function Or(a2, b2, c2, e3, f2, g2, h2, i2, k2, l2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59668,7 +58325,6 @@ var require_libheif = __commonJS({
           } while ((k2 | 0) != (g2 | 0));
           return;
         }
-        __name(Or, "Or");
         function Pr(a2, b2, c2, e3, f2, g2, i2, j2, k2, l2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -59835,7 +58491,6 @@ var require_libheif = __commonJS({
           u = t2;
           return;
         }
-        __name(Pr, "Pr");
         function Qr(a2, b2, c2, e3, f2, g2, h2, i2, k2, l2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60002,7 +58657,6 @@ var require_libheif = __commonJS({
           u = t2;
           return;
         }
-        __name(Qr, "Qr");
         function Rr(a2, b2, c2, e3, f2, g2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60040,7 +58694,6 @@ var require_libheif = __commonJS({
           } while ((l2 | 0) != (g2 | 0));
           return;
         }
-        __name(Rr, "Rr");
         function Sr(a2, b2, c2, e3, f2, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60074,7 +58727,6 @@ var require_libheif = __commonJS({
           } while ((k2 | 0) != (g2 | 0));
           return;
         }
-        __name(Sr, "Sr");
         function Tr(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60086,7 +58738,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 0, 1, 8);
           return;
         }
-        __name(Tr, "Tr");
         function Ur(a2, b2, c2, e3, g2, i2, j2, k2, l2, m2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60304,7 +58955,6 @@ var require_libheif = __commonJS({
               return;
           }
         }
-        __name(Ur, "Ur");
         function Vr(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60316,7 +58966,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 0, 2, 8);
           return;
         }
-        __name(Vr, "Vr");
         function Wr(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60328,7 +58977,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 0, 3, 8);
           return;
         }
-        __name(Wr, "Wr");
         function Xr(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60340,7 +58988,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 1, 0, 8);
           return;
         }
-        __name(Xr, "Xr");
         function Yr(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60352,7 +58999,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 1, 1, 8);
           return;
         }
-        __name(Yr, "Yr");
         function Zr(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60364,7 +59010,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 1, 2, 8);
           return;
         }
-        __name(Zr, "Zr");
         function _r(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60376,7 +59021,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 1, 3, 8);
           return;
         }
-        __name(_r, "_r");
         function $r(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60388,7 +59032,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 2, 0, 8);
           return;
         }
-        __name($r, "$r");
         function as(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60400,7 +59043,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 2, 1, 8);
           return;
         }
-        __name(as, "as");
         function bs(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60412,7 +59054,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 2, 2, 8);
           return;
         }
-        __name(bs, "bs");
         function cs(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60424,7 +59065,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 2, 3, 8);
           return;
         }
-        __name(cs, "cs");
         function ds(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60436,7 +59076,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 3, 0, 8);
           return;
         }
-        __name(ds, "ds");
         function es(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60448,7 +59087,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 3, 1, 8);
           return;
         }
-        __name(es, "es");
         function fs2(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60472,7 +59110,6 @@ var require_libheif = __commonJS({
           Ur(a2, b2, c2, d2, e3, f2, g2, 3, 3, 8);
           return;
         }
-        __name(gs, "gs");
         function hs(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60485,7 +59122,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 0, 1, h2);
           return;
         }
-        __name(hs, "hs");
         function is(a2, b2, c2, e3, g2, h2, i2, k2, l2, m2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60703,7 +59339,6 @@ var require_libheif = __commonJS({
               return;
           }
         }
-        __name(is, "is");
         function js(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60716,7 +59351,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 0, 2, h2);
           return;
         }
-        __name(js, "js");
         function ks(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60729,7 +59363,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 0, 3, h2);
           return;
         }
-        __name(ks, "ks");
         function ls(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60742,7 +59375,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 1, 0, h2);
           return;
         }
-        __name(ls, "ls");
         function ms(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60755,7 +59387,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 1, 1, h2);
           return;
         }
-        __name(ms, "ms");
         function ns(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60768,7 +59399,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 1, 2, h2);
           return;
         }
-        __name(ns, "ns");
         function os(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60781,7 +59411,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 1, 3, h2);
           return;
         }
-        __name(os, "os");
         function ps(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60794,7 +59423,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 2, 0, h2);
           return;
         }
-        __name(ps, "ps");
         function qs(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60807,7 +59435,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 2, 1, h2);
           return;
         }
-        __name(qs, "qs");
         function rs(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60820,7 +59447,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 2, 2, h2);
           return;
         }
-        __name(rs, "rs");
         function ss(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60833,7 +59459,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 2, 3, h2);
           return;
         }
-        __name(ss, "ss");
         function ts(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60846,7 +59471,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 3, 0, h2);
           return;
         }
-        __name(ts, "ts");
         function us(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60859,7 +59483,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 3, 1, h2);
           return;
         }
-        __name(us, "us");
         function vs(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60872,7 +59495,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 3, 2, h2);
           return;
         }
-        __name(vs, "vs");
         function ws(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -60885,7 +59507,6 @@ var require_libheif = __commonJS({
           is(a2, b2, c2, d2, e3, f2, g2, 3, 3, h2);
           return;
         }
-        __name(ws, "ws");
         function xs(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -60899,7 +59520,6 @@ var require_libheif = __commonJS({
           f[a2 + 4 >> 2] = 30;
           return;
         }
-        __name(xs, "xs");
         function ys(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0;
@@ -61007,12 +59627,10 @@ var require_libheif = __commonJS({
           QK(b2);
           return;
         }
-        __name(ys, "ys");
         function zs(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(zs, "zs");
         function As(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -61052,7 +59670,6 @@ var require_libheif = __commonJS({
             return c2 | 0;
           return 0;
         }
-        __name(As, "As");
         function Bs(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -61114,7 +59731,6 @@ var require_libheif = __commonJS({
             return d2 | 0;
           return 0;
         }
-        __name(Bs, "Bs");
         function Cs(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -61176,7 +59792,6 @@ var require_libheif = __commonJS({
             return d2 | 0;
           return 0;
         }
-        __name(Cs, "Cs");
         function Ds(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -61206,7 +59821,6 @@ var require_libheif = __commonJS({
             return a2 | 0;
           return 0;
         }
-        __name(Ds, "Ds");
         function Es(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0;
@@ -61254,7 +59868,6 @@ var require_libheif = __commonJS({
           f[l2 >> 2] = (f[l2 >> 2] | 0) + -4;
           return;
         }
-        __name(Es, "Es");
         function Fs(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0;
@@ -61481,7 +60094,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(Fs, "Fs");
         function Gs(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -61557,7 +60169,6 @@ var require_libheif = __commonJS({
           f[n2 >> 2] = (f[n2 >> 2] | 0) + 4;
           return;
         }
-        __name(Gs, "Gs");
         function Hs(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -61632,7 +60243,6 @@ var require_libheif = __commonJS({
           f[o2 >> 2] = (f[o2 >> 2] | 0) + -4;
           return;
         }
-        __name(Hs, "Hs");
         function Is(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -61708,7 +60318,6 @@ var require_libheif = __commonJS({
           f[n2 >> 2] = (f[n2 >> 2] | 0) + 4;
           return;
         }
-        __name(Is, "Is");
         function Js(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -61783,7 +60392,6 @@ var require_libheif = __commonJS({
           f[o2 >> 2] = (f[o2 >> 2] | 0) + -4;
           return;
         }
-        __name(Js, "Js");
         function Ks(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -61799,7 +60407,6 @@ var require_libheif = __commonJS({
           a2 = 1;
           return a2 | 0;
         }
-        __name(Ks, "Ks");
         function Ls(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -61877,7 +60484,6 @@ var require_libheif = __commonJS({
             Pa(44673, 36771, 259, 36816);
           return 0;
         }
-        __name(Ls, "Ls");
         function Ms(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -61920,7 +60526,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(Ms, "Ms");
         function Ns(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -61937,12 +60542,10 @@ var require_libheif = __commonJS({
           f[c2 >> 2] = (f[c2 >> 2] | 0) + -1024;
           return;
         }
-        __name(Ns, "Ns");
         function Os(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(Os, "Os");
         function Ps(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -62006,7 +60609,6 @@ var require_libheif = __commonJS({
           c2 = 1;
           return c2 | 0;
         }
-        __name(Ps, "Ps");
         function Qs(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -62023,7 +60625,6 @@ var require_libheif = __commonJS({
           ex(a2);
           return;
         }
-        __name(Qs, "Qs");
         function Rs(a2) {
           a2 = a2 | 0;
           var c2 = 0;
@@ -62082,7 +60683,6 @@ var require_libheif = __commonJS({
           Zu(a2 + 10576 | 0);
           return;
         }
-        __name(Rs, "Rs");
         function Ss(a2, c2, d2, e3, g2, h2, i2, j2, k2, l2, m2, n2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -62545,7 +61145,6 @@ var require_libheif = __commonJS({
           u = z2;
           return A2 | 0;
         }
-        __name(Ss, "Ss");
         function Ts(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0;
@@ -62613,7 +61212,6 @@ var require_libheif = __commonJS({
           f[i2 >> 2] = b2 + (~((b2 + -4 - c2 | 0) >>> 2) << 2);
           return;
         }
-        __name(Ts, "Ts");
         function Us(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -62686,31 +61284,26 @@ var require_libheif = __commonJS({
           QK(d2);
           return;
         }
-        __name(Us, "Us");
         function Vs(a2) {
           a2 = a2 | 0;
           ex(f[a2 >> 2] | 0);
           return;
         }
-        __name(Vs, "Vs");
         function Ws(a2) {
           a2 = a2 | 0;
           ex(f[a2 >> 2] | 0);
           return;
         }
-        __name(Ws, "Ws");
         function Xs(a2) {
           a2 = a2 | 0;
           ex(f[a2 >> 2] | 0);
           return;
         }
-        __name(Xs, "Xs");
         function Ys(a2) {
           a2 = a2 | 0;
           ex(f[a2 >> 2] | 0);
           return;
         }
-        __name(Ys, "Ys");
         function Zs(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0;
@@ -62750,7 +61343,6 @@ var require_libheif = __commonJS({
           QK(b2);
           return;
         }
-        __name(Zs, "Zs");
         function _s(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -62764,7 +61356,6 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(_s, "_s");
         function $s(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -62779,7 +61370,6 @@ var require_libheif = __commonJS({
           IM(f[a2 + 12 >> 2] | 0, d2 & 255 | 0, X(f[a2 + 36 >> 2] | 0, f[a2 + 44 >> 2] | 0) | 0) | 0;
           return;
         }
-        __name($s, "$s");
         function at(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -62855,7 +61445,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(at, "at");
         function bt(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -62928,7 +61517,6 @@ var require_libheif = __commonJS({
           f[b2 + 4 >> 2] = a2;
           return;
         }
-        __name(bt, "bt");
         function ct(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -62942,7 +61530,6 @@ var require_libheif = __commonJS({
           Yu(c2);
           return;
         }
-        __name(ct, "ct");
         function dt(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -62956,7 +61543,6 @@ var require_libheif = __commonJS({
           Yu(b2);
           return;
         }
-        __name(dt, "dt");
         function et(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -62979,7 +61565,6 @@ var require_libheif = __commonJS({
           Yu(b2);
           return;
         }
-        __name(et, "et");
         function ft(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -62989,7 +61574,6 @@ var require_libheif = __commonJS({
           gt(a2, b2, (X(f[a2 + 5820 >> 2] | 0, d2) | 0) + c2 | 0, e3);
           return;
         }
-        __name(ft, "ft");
         function gt(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -63018,7 +61602,6 @@ var require_libheif = __commonJS({
           Yu(e3);
           return;
         }
-        __name(gt, "gt");
         function ht(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0;
@@ -63037,7 +61620,6 @@ var require_libheif = __commonJS({
           Yu(b2);
           return;
         }
-        __name(ht, "ht");
         function it(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -63061,7 +61643,6 @@ var require_libheif = __commonJS({
           } while ((b2 | 0) < (c2 | 0));
           return;
         }
-        __name(it, "it");
         function jt(a2, b2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -63099,7 +61680,6 @@ var require_libheif = __commonJS({
           } while ((b2 | 0) != (j2 | 0));
           return;
         }
-        __name(jt, "jt");
         function kt(a2, b2, c2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -63148,7 +61728,6 @@ var require_libheif = __commonJS({
           k2 = (f[a2 + (j2 << 2) >> 2] | 0) == (f[k2 >> 2] | 0);
           return k2 | 0;
         }
-        __name(kt, "kt");
         function lt(a2, b2, c2, e3, g2, i2, j2, k2, l2, m2, n2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -63213,7 +61792,6 @@ var require_libheif = __commonJS({
             Pa(48760, 37063, 119, 48756);
           return 0;
         }
-        __name(lt, "lt");
         function mt(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -63227,32 +61805,26 @@ var require_libheif = __commonJS({
           b[a2 + 2 >> 0] = c2;
           return;
         }
-        __name(mt, "mt");
         function nt(a2) {
           a2 = a2 | 0;
           return (a2 + -19 & 255) < 2 | 0;
         }
-        __name(nt, "nt");
         function ot(a2) {
           a2 = a2 | 0;
           return (a2 + -16 & 255) < 3 | 0;
         }
-        __name(ot, "ot");
         function pt(a2) {
           a2 = a2 | 0;
           return (a2 | 1) << 24 >> 24 == 9 | 0;
         }
-        __name(pt, "pt");
         function qt(a2) {
           a2 = a2 | 0;
           return (a2 & -8) << 24 >> 24 == 16 | 0;
         }
-        __name(qt, "qt");
         function rt(a2) {
           a2 = a2 | 0;
           return (a2 | 1) << 24 >> 24 == 7 | 0;
         }
-        __name(rt, "rt");
         function st(a2) {
           a2 = a2 | 0;
           if ((a2 & 255) < 15)
@@ -63261,7 +61833,6 @@ var require_libheif = __commonJS({
             return 0;
           return 0;
         }
-        __name(st, "st");
         function tt(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -63304,7 +61875,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(tt, "tt");
         function ut(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -63331,7 +61901,6 @@ var require_libheif = __commonJS({
             return a2 | 0;
           return 0;
         }
-        __name(ut, "ut");
         function vt(a2) {
           a2 = a2 | 0;
           var c2 = 0;
@@ -63345,7 +61914,6 @@ var require_libheif = __commonJS({
           } while ((a2 | 0) < (c2 | 0));
           return;
         }
-        __name(vt, "vt");
         function wt(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0, p2 = 0;
@@ -63550,7 +62118,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(wt, "wt");
         function xt(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -63593,7 +62160,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(xt, "xt");
         function yt(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -63607,7 +62173,6 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(yt, "yt");
         function zt(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0;
@@ -63632,7 +62197,6 @@ var require_libheif = __commonJS({
           QK(b2);
           return;
         }
-        __name(zt, "zt");
         function At(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0;
@@ -63690,7 +62254,6 @@ var require_libheif = __commonJS({
           f[l2 >> 2] = a2;
           return;
         }
-        __name(At, "At");
         function Bt(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0;
@@ -63718,7 +62281,6 @@ var require_libheif = __commonJS({
           i2 = c2;
           return i2 | 0;
         }
-        __name(Bt, "Bt");
         function Ct(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -63759,7 +62321,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(Ct, "Ct");
         function Dt(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -63868,7 +62429,6 @@ var require_libheif = __commonJS({
           u = p2;
           return o2 | 0;
         }
-        __name(Dt, "Dt");
         function Et(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0;
@@ -64095,7 +62655,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(Et, "Et");
         function Ft(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -64171,7 +62730,6 @@ var require_libheif = __commonJS({
           f[n2 >> 2] = (f[n2 >> 2] | 0) + 4;
           return;
         }
-        __name(Ft, "Ft");
         function Gt(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -64246,7 +62804,6 @@ var require_libheif = __commonJS({
           f[o2 >> 2] = (f[o2 >> 2] | 0) + -4;
           return;
         }
-        __name(Gt, "Gt");
         function Ht(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -64322,7 +62879,6 @@ var require_libheif = __commonJS({
           f[n2 >> 2] = (f[n2 >> 2] | 0) + 4;
           return;
         }
-        __name(Ht, "Ht");
         function It(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -64397,7 +62953,6 @@ var require_libheif = __commonJS({
           f[o2 >> 2] = (f[o2 >> 2] | 0) + -4;
           return;
         }
-        __name(It, "It");
         function Jt(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -64548,7 +63103,6 @@ var require_libheif = __commonJS({
           u = r2;
           return q2 | 0;
         }
-        __name(Jt, "Jt");
         function Kt(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0;
@@ -64641,7 +63195,6 @@ var require_libheif = __commonJS({
           m2 = 0;
           return m2 | 0;
         }
-        __name(Kt, "Kt");
         function Lt(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -64734,7 +63287,6 @@ var require_libheif = __commonJS({
           k2 = 0;
           return k2 | 0;
         }
-        __name(Lt, "Lt");
         function Mt(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -64795,7 +63347,6 @@ var require_libheif = __commonJS({
           u = r2;
           return;
         }
-        __name(Mt, "Mt");
         function Nt(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0;
@@ -64816,7 +63367,6 @@ var require_libheif = __commonJS({
           Ot(a2, 0);
           return;
         }
-        __name(Nt, "Nt");
         function Ot(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -64913,7 +63463,6 @@ var require_libheif = __commonJS({
           d[a2 + 4 >> 1] = 0;
           return;
         }
-        __name(Ot, "Ot");
         function Pt(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0;
@@ -64959,7 +63508,6 @@ var require_libheif = __commonJS({
           QK(d2);
           return;
         }
-        __name(Pt, "Pt");
         function Qt(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -65250,7 +63798,6 @@ var require_libheif = __commonJS({
           d2 = 1;
           return d2 | 0;
         }
-        __name(Qt, "Qt");
         function Rt(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -65559,7 +64106,6 @@ var require_libheif = __commonJS({
           u = C2;
           return;
         }
-        __name(Rt, "Rt");
         function St(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -65609,7 +64155,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(St, "St");
         function Tt(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -65814,7 +64359,6 @@ var require_libheif = __commonJS({
           u = da2;
           return;
         }
-        __name(Tt, "Tt");
         function Ut(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -65864,18 +64408,15 @@ var require_libheif = __commonJS({
             while (0);
           return c2 & e3 | 0;
         }
-        __name(Ut, "Ut");
         function Vt(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(Vt, "Vt");
         function Wt(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Wt, "Wt");
         function Xt(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0, p2 = 0, q2 = 0, r2 = 0, s2 = 0, t2 = 0, u2 = 0;
@@ -65992,7 +64533,6 @@ var require_libheif = __commonJS({
           et(c2, a2);
           return;
         }
-        __name(Xt, "Xt");
         function Yt(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -66033,7 +64573,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(Yt, "Yt");
         function Zt(a2, c2, e3, g2, i2, k2, l2, m2, n2, o2, p2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -66519,7 +65058,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(Zt, "Zt");
         function _t(a2, c2, d2, e3, g2, i2, k2, l2, m2, n2, o2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -67013,7 +65551,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(_t, "_t");
         function $t(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0, p2 = 0, q2 = 0, r2 = 0, s2 = 0, t2 = 0, u2 = 0, v2 = 0, w2 = 0, x2 = 0, y2 = 0, z2 = 0, A2 = 0, B2 = 0, C2 = 0, D2 = 0, E2 = 0, F2 = 0, G2 = 0, H2 = 0, I2 = 0;
@@ -67130,7 +65667,6 @@ var require_libheif = __commonJS({
           } else if ((c2 | 0) == 21)
             return;
         }
-        __name($t, "$t");
         function au(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -67188,7 +65724,6 @@ var require_libheif = __commonJS({
           u = o2;
           return n2 | 0;
         }
-        __name(au, "au");
         function bu(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -67216,7 +65751,6 @@ var require_libheif = __commonJS({
             b2 = f[b2 + (a2 << 2) >> 2] | 0;
           return b2 | 0;
         }
-        __name(bu, "bu");
         function cu(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -67229,7 +65763,6 @@ var require_libheif = __commonJS({
           b[a2 + 1 >> 0] = g2 >> 8;
           return;
         }
-        __name(cu, "cu");
         function du() {
           var a2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0, p2 = 0, q2 = 0, r2 = 0, s2 = 0, t2 = 0, u2 = 0;
           j2 = 1;
@@ -67399,7 +65932,6 @@ var require_libheif = __commonJS({
           } while ((l2 | 0) != 6);
           return;
         }
-        __name(du, "du");
         function eu(a2, c2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -67490,13 +66022,11 @@ var require_libheif = __commonJS({
           }
           return e3 | 0;
         }
-        __name(eu, "eu");
         function fu(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return;
         }
-        __name(fu, "fu");
         function gu(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -67869,13 +66399,11 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(gu, "gu");
         function hu(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(hu, "hu");
         function iu(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0;
@@ -67923,7 +66451,6 @@ var require_libheif = __commonJS({
           et(i2, a2);
           return;
         }
-        __name(iu, "iu");
         function ju(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -67966,7 +66493,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(ju, "ju");
         function ku(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, k2 = 0, l2 = 0;
@@ -68048,7 +66574,6 @@ var require_libheif = __commonJS({
           a2 = 1;
           return a2 | 0;
         }
-        __name(ku, "ku");
         function lu(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -68209,7 +66734,6 @@ var require_libheif = __commonJS({
             return d2 | 0;
           return 0;
         }
-        __name(lu, "lu");
         function mu(a2) {
           a2 = a2 | 0;
           var c2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0, p2 = 0, q2 = 0;
@@ -68249,7 +66773,6 @@ var require_libheif = __commonJS({
           ou(a2, g2, h2, q2, 0);
           return;
         }
-        __name(mu, "mu");
         function nu(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -68455,7 +66978,6 @@ var require_libheif = __commonJS({
           u = I2;
           return;
         }
-        __name(nu, "nu");
         function ou(a2, c2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -68621,7 +67143,6 @@ var require_libheif = __commonJS({
           } else if ((c2 | 0) == 48)
             return;
         }
-        __name(ou, "ou");
         function pu(a2, c2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -69347,7 +67868,6 @@ var require_libheif = __commonJS({
           u = S2;
           return;
         }
-        __name(pu, "pu");
         function qu(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -69393,7 +67913,6 @@ var require_libheif = __commonJS({
           } else
             Pa(48760, 48736, 129, 48756);
         }
-        __name(qu, "qu");
         function ru(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -69443,7 +67962,6 @@ var require_libheif = __commonJS({
           } else
             Pa(48760, 48736, 129, 48756);
         }
-        __name(ru, "ru");
         function su(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -69493,7 +68011,6 @@ var require_libheif = __commonJS({
           } else
             Pa(48760, 48736, 129, 48756);
         }
-        __name(su, "su");
         function tu(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -69550,7 +68067,6 @@ var require_libheif = __commonJS({
           else if ((g2 | 0) == 12)
             Pa(39825, 48736, 663, 39782);
         }
-        __name(tu, "tu");
         function uu(a2, c2, e3, g2, h2, i2, j2, k2, l2, m2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -69681,7 +68197,6 @@ var require_libheif = __commonJS({
           Yw(s2, t2, v2, u2, c2, e3, g2, h2, l2, i2, j2, m2);
           return;
         }
-        __name(uu, "uu");
         function vu(a2, c2, d2, e3, g2, i2, j2, k2, l2, m2, n2, o2, p2, q2, r2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -69900,7 +68415,6 @@ var require_libheif = __commonJS({
             }
           }
         }
-        __name(vu, "vu");
         function wu(a2, c2, d2, e3, g2, i2, j2, k2, l2, m2, n2, o2, p2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -70144,7 +68658,6 @@ var require_libheif = __commonJS({
           yu(a2, (c2 | 0) / (v2 | 0) | 0, ((d2 | 0) / (w2 | 0) | 0) + u2 | 0, (i2 | 0) / (v2 | 0) | 0, ((j2 | 0) / (w2 | 0) | 0) + u2 | 0, u2, 2, C2, l2);
           return 0;
         }
-        __name(wu, "wu");
         function xu(a2, c2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -70737,7 +69250,6 @@ var require_libheif = __commonJS({
             Pa(48760, 48736, 119, 48756);
           return 0;
         }
-        __name(xu, "xu");
         function yu(a2, c2, e3, g2, h2, i2, j2, k2, l2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -70824,7 +69336,6 @@ var require_libheif = __commonJS({
           pv(a2, c2, e3, g2, h2, i2, j2, (b[a2 + 33 + j2 >> 0] | 0) != 0, r2, 0);
           return;
         }
-        __name(yu, "yu");
         function zu(a2, b2, c2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -70912,13 +69423,11 @@ var require_libheif = __commonJS({
           u = n2;
           return;
         }
-        __name(zu, "zu");
         function Au(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Au, "Au");
         function Bu(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0;
@@ -70986,7 +69495,6 @@ var require_libheif = __commonJS({
           et(n2, a2);
           return;
         }
-        __name(Bu, "Bu");
         function Cu(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -71027,7 +69535,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(Cu, "Cu");
         function Du(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -71178,7 +69685,6 @@ var require_libheif = __commonJS({
             return g2 | 0;
           return 0;
         }
-        __name(Du, "Du");
         function Eu(a2) {
           a2 = a2 | 0;
           var c2 = 0, e3 = 0, g2 = 0;
@@ -71348,7 +69854,6 @@ var require_libheif = __commonJS({
           b[a2 >> 0] = 0;
           return;
         }
-        __name(Eu, "Eu");
         function Fu(a2, c2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -72059,7 +70564,6 @@ var require_libheif = __commonJS({
           w2 = 8;
           return w2 | 0;
         }
-        __name(Fu, "Fu");
         function Gu(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -72406,7 +70910,6 @@ var require_libheif = __commonJS({
           u = ia2;
           return;
         }
-        __name(Gu, "Gu");
         function Hu() {
           var a2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0, p2 = 0, q2 = 0, r2 = 0, s2 = 0, t2 = 0, u2 = 0, v2 = 0, w2 = 0, x2 = 0;
           a2 = dx(11296) | 0;
@@ -72610,13 +71113,11 @@ var require_libheif = __commonJS({
             return a2 | 0;
           return 0;
         }
-        __name(Hu, "Hu");
         function Iu() {
           ex(f[14383] | 0);
           f[14383] = 0;
           return;
         }
-        __name(Iu, "Iu");
         function Ju(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0;
@@ -72684,7 +71185,6 @@ var require_libheif = __commonJS({
             return c2 | 0;
           return 0;
         }
-        __name(Ju, "Ju");
         function Ku(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0;
@@ -72701,7 +71201,6 @@ var require_libheif = __commonJS({
           b[a2 >> 0] = 0;
           return;
         }
-        __name(Ku, "Ku");
         function Lu(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -72715,7 +71214,6 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(Lu, "Lu");
         function Mu(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -73153,7 +71651,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(Mu, "Mu");
         function Nu(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -73340,7 +71837,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(Nu, "Nu");
         function Ou(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, f2 = 0, g2 = 0, i2 = 0, j2 = 0;
@@ -73449,7 +71945,6 @@ var require_libheif = __commonJS({
           Su(a2 + 3040 | 0, 41943, 3);
           return;
         }
-        __name(Ou, "Ou");
         function Pu(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -73520,7 +72015,6 @@ var require_libheif = __commonJS({
           QK(b2);
           return;
         }
-        __name(Pu, "Pu");
         function Qu(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -73545,7 +72039,6 @@ var require_libheif = __commonJS({
           b[a2 + 8 >> 0] = d2;
           return 0;
         }
-        __name(Qu, "Qu");
         function Ru(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0, p2 = 0, q2 = 0, r2 = 0;
@@ -73654,7 +72147,6 @@ var require_libheif = __commonJS({
           r2 = 0;
           return r2 | 0;
         }
-        __name(Ru, "Ru");
         function Su(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -73717,7 +72209,6 @@ var require_libheif = __commonJS({
               Pa(44673, 41856, 810, 42007);
           }
         }
-        __name(Su, "Su");
         function Tu(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -73987,7 +72478,6 @@ var require_libheif = __commonJS({
           u = pa2;
           return;
         }
-        __name(Tu, "Tu");
         function Uu(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -74041,57 +72531,48 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(Uu, "Uu");
         function Vu(a2) {
           a2 = a2 | 0;
           Sb(a2 | 0, 0) | 0;
           return;
         }
-        __name(Vu, "Vu");
         function Wu(a2) {
           a2 = a2 | 0;
           Rb(a2 | 0) | 0;
           return;
         }
-        __name(Wu, "Wu");
         function Xu(a2) {
           a2 = a2 | 0;
           KM(a2 | 0) | 0;
           return;
         }
-        __name(Xu, "Xu");
         function Yu(a2) {
           a2 = a2 | 0;
           LM(a2 | 0) | 0;
           return;
         }
-        __name(Yu, "Yu");
         function Zu(a2) {
           a2 = a2 | 0;
           Lb(a2 | 0, 0) | 0;
           return;
         }
-        __name(Zu, "Zu");
         function _u(a2) {
           a2 = a2 | 0;
           Kb(a2 | 0) | 0;
           return;
         }
-        __name(_u, "_u");
         function $u(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           JM(a2 | 0) | 0;
           return;
         }
-        __name($u, "$u");
         function av(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           Nb(a2 | 0, b2 | 0) | 0;
           return;
         }
-        __name(av, "av");
         function bv(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 0;
@@ -74099,14 +72580,12 @@ var require_libheif = __commonJS({
           Lb(a2 + 32 | 0, 0) | 0;
           return;
         }
-        __name(bv, "bv");
         function cv(a2) {
           a2 = a2 | 0;
           Rb(a2 + 4 | 0) | 0;
           Kb(a2 + 32 | 0) | 0;
           return;
         }
-        __name(cv, "cv");
         function dv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -74124,7 +72603,6 @@ var require_libheif = __commonJS({
           LM(c2 | 0) | 0;
           return;
         }
-        __name(dv, "dv");
         function ev(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -74140,7 +72618,6 @@ var require_libheif = __commonJS({
           LM(c2 | 0) | 0;
           return;
         }
-        __name(ev, "ev");
         function fv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -74152,12 +72629,10 @@ var require_libheif = __commonJS({
           LM(c2 | 0) | 0;
           return;
         }
-        __name(fv, "fv");
         function gv(a2) {
           a2 = a2 | 0;
           return f[a2 >> 2] | 0;
         }
-        __name(gv, "gv");
         function hv(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -74183,7 +72658,6 @@ var require_libheif = __commonJS({
           Kb(e3 | 0) | 0;
           return;
         }
-        __name(hv, "hv");
         function iv(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -74215,7 +72689,6 @@ var require_libheif = __commonJS({
           LM(k2 | 0) | 0;
           return;
         }
-        __name(iv, "iv");
         function jv(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0;
@@ -74442,7 +72915,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(jv, "jv");
         function kv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -74518,7 +72990,6 @@ var require_libheif = __commonJS({
           f[n2 >> 2] = (f[n2 >> 2] | 0) + 4;
           return;
         }
-        __name(kv, "kv");
         function lv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -74593,7 +73064,6 @@ var require_libheif = __commonJS({
           f[o2 >> 2] = (f[o2 >> 2] | 0) + -4;
           return;
         }
-        __name(lv, "lv");
         function mv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -74669,7 +73139,6 @@ var require_libheif = __commonJS({
           f[n2 >> 2] = (f[n2 >> 2] | 0) + 4;
           return;
         }
-        __name(mv, "mv");
         function nv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -74744,7 +73213,6 @@ var require_libheif = __commonJS({
           f[o2 >> 2] = (f[o2 >> 2] | 0) + -4;
           return;
         }
-        __name(nv, "nv");
         function ov(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -74917,7 +73385,6 @@ var require_libheif = __commonJS({
           f[a2 >> 2] = p2;
           return;
         }
-        __name(ov, "ov");
         function pv(a2, b2, c2, d2, e3, g2, h2, i2, j2, k2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -74939,7 +73406,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(pv, "pv");
         function qv(a2, c2, e3, g2, i2, j2, k2, l2, m2, n2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -75235,7 +73701,6 @@ var require_libheif = __commonJS({
           u = L2;
           return;
         }
-        __name(qv, "qv");
         function rv(a2, c2, e3, g2, i2, j2, k2, l2, m2, n2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -75529,7 +73994,6 @@ var require_libheif = __commonJS({
           u = K2;
           return;
         }
-        __name(rv, "rv");
         function sv(a2, b2, c2, d2, e3, g2, h2, i2, j2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -75590,7 +74054,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(sv, "sv");
         function tv(a2, b2, c2, d2, e3, g2, h2, i2, j2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -75651,13 +74114,11 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(tv, "tv");
         function uv(a2) {
           a2 = a2 | 0;
           f[14447] = a2;
           return;
         }
-        __name(uv, "uv");
         function vv(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -75680,7 +74141,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(vv, "vv");
         function wv(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -75699,7 +74159,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(wv, "wv");
         function xv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -75778,7 +74237,6 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(xv, "xv");
         function yv(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -75974,7 +74432,6 @@ var require_libheif = __commonJS({
           e3 = 0;
           return e3 | 0;
         }
-        __name(yv, "yv");
         function zv(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -76012,7 +74469,6 @@ var require_libheif = __commonJS({
           } while ((e3 | 0) != (g2 | 0));
           return;
         }
-        __name(zv, "zv");
         function Av(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -76133,7 +74589,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(Av, "Av");
         function Bv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -76182,7 +74637,6 @@ var require_libheif = __commonJS({
           QK(j2);
           return;
         }
-        __name(Bv, "Bv");
         function Cv(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -76235,7 +74689,6 @@ var require_libheif = __commonJS({
           QK(c2);
           return;
         }
-        __name(Cv, "Cv");
         function Dv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -76284,7 +74737,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(Dv, "Dv");
         function Ev(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -76352,7 +74804,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(Ev, "Ev");
         function Fv(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -76467,7 +74918,6 @@ var require_libheif = __commonJS({
           f[n2 >> 2] = d2;
           return;
         }
-        __name(Fv, "Fv");
         function Gv(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -76501,7 +74951,6 @@ var require_libheif = __commonJS({
           f[a2 + 48 >> 2] = e3;
           return;
         }
-        __name(Gv, "Gv");
         function Hv(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -76647,7 +75096,6 @@ var require_libheif = __commonJS({
           u = H2;
           return;
         }
-        __name(Hv, "Hv");
         function Iv(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -76740,7 +75188,6 @@ var require_libheif = __commonJS({
           u = t2;
           return;
         }
-        __name(Iv, "Iv");
         function Jv(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -76766,7 +75213,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(Jv, "Jv");
         function Kv(a2) {
           a2 = a2 | 0;
           var c2 = 0, e3 = 0, g2 = 0;
@@ -76805,7 +75251,6 @@ var require_libheif = __commonJS({
           b[a2 + 75 >> 0] = 15;
           return;
         }
-        __name(Kv, "Kv");
         function Lv(a2, c2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -77069,7 +75514,6 @@ var require_libheif = __commonJS({
           m2 = 0;
           return m2 | 0;
         }
-        __name(Lv, "Lv");
         function Mv(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -77244,7 +75688,6 @@ var require_libheif = __commonJS({
           u = T2;
           return;
         }
-        __name(Mv, "Mv");
         function Nv(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -77392,7 +75835,6 @@ var require_libheif = __commonJS({
           f[l2 >> 2] = m2;
           return;
         }
-        __name(Nv, "Nv");
         function Ov(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -77439,7 +75881,6 @@ var require_libheif = __commonJS({
           f[i2 >> 2] = c2 - b2;
           return m2 | 0;
         }
-        __name(Ov, "Ov");
         function Pv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -77483,7 +75924,6 @@ var require_libheif = __commonJS({
           f[i2 >> 2] = c2 - b2;
           return;
         }
-        __name(Pv, "Pv");
         function Qv(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0;
@@ -77498,7 +75938,6 @@ var require_libheif = __commonJS({
           f[b2 >> 2] = 0;
           return;
         }
-        __name(Qv, "Qv");
         function Rv(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0;
@@ -77600,7 +76039,6 @@ var require_libheif = __commonJS({
           n2 = b2 + -1 | 0;
           return n2 | 0;
         }
-        __name(Rv, "Rv");
         function Sv(a2) {
           a2 = a2 | 0;
           a2 = Rv(a2) | 0;
@@ -77630,7 +76068,6 @@ var require_libheif = __commonJS({
           a2 = (((a2 & 1 | 0) == 0 ? 0 - a2 | 0 : a2 + 1 | 0) | 0) / 2 | 0;
           return a2 | 0;
         }
-        __name(Sv, "Sv");
         function Tv(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -77643,7 +76080,6 @@ var require_libheif = __commonJS({
           } else
             Pa(48054, 48045, 138, 48066);
         }
-        __name(Tv, "Tv");
         function Uv(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, e3 = 0, g2 = 0, i2 = 0, j2 = 0;
@@ -77669,7 +76105,6 @@ var require_libheif = __commonJS({
           d[j2 >> 1] = -8;
           return;
         }
-        __name(Uv, "Uv");
         function Vv(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -77744,7 +76179,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(Vv, "Vv");
         function Wv(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, e3 = 0, g2 = 0, i2 = 0;
@@ -77784,7 +76218,6 @@ var require_libheif = __commonJS({
           i2 = 0;
           return i2 | 0;
         }
-        __name(Wv, "Wv");
         function Xv(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, e3 = 0, g2 = 0, i2 = 0, j2 = 0;
@@ -77809,7 +76242,6 @@ var require_libheif = __commonJS({
           j2 = 1;
           return j2 | 0;
         }
-        __name(Xv, "Xv");
         function Yv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -77857,7 +76289,6 @@ var require_libheif = __commonJS({
             return a2 | 0;
           return 0;
         }
-        __name(Yv, "Yv");
         function Zv(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -77948,7 +76379,6 @@ var require_libheif = __commonJS({
           }
           return c2 | 0;
         }
-        __name(Zv, "Zv");
         function _v(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -77994,14 +76424,12 @@ var require_libheif = __commonJS({
           q2 = (Zv(a2, b2) | 0) + i2 | 0;
           return q2 | 0;
         }
-        __name(_v, "_v");
         function $v(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 0;
           f[a2 + 4 >> 2] = 0;
           return;
         }
-        __name($v, "$v");
         function aw(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -78022,7 +76450,6 @@ var require_libheif = __commonJS({
           u = d2;
           return;
         }
-        __name(aw, "aw");
         function bw(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -78062,7 +76489,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(bw, "bw");
         function cw(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -78107,7 +76533,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(cw, "cw");
         function dw(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -78821,7 +77246,6 @@ var require_libheif = __commonJS({
             Pa(48206, 48144, 210, 48227);
           }
         }
-        __name(dw, "dw");
         function ew(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0;
@@ -78846,7 +77270,6 @@ var require_libheif = __commonJS({
           u = d2;
           return;
         }
-        __name(ew, "ew");
         function fw(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0;
@@ -78879,7 +77302,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(fw, "fw");
         function gw(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -78936,13 +77358,11 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(gw, "gw");
         function hw(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(hw, "hw");
         function iw(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0, p2 = 0, q2 = 0, r2 = 0;
@@ -79039,7 +77459,6 @@ var require_libheif = __commonJS({
           et(c2, a2);
           return;
         }
-        __name(iw, "iw");
         function jw(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -79080,7 +77499,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(jw, "jw");
         function kw(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -79241,7 +77659,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(kw, "kw");
         function lw(a2, c2, e3, g2, i2, k2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -79676,7 +78093,6 @@ var require_libheif = __commonJS({
             }
           }
         }
-        __name(lw, "lw");
         function mw(a2, c2, e3, g2, i2, k2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -80333,7 +78749,6 @@ var require_libheif = __commonJS({
             }
           }
         }
-        __name(mw, "mw");
         function nw(a2, c2, d2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -80905,7 +79320,6 @@ var require_libheif = __commonJS({
             }
           }
         }
-        __name(nw, "nw");
         function ow(a2, c2, e3, g2, i2, k2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -81363,7 +79777,6 @@ var require_libheif = __commonJS({
             }
           }
         }
-        __name(ow, "ow");
         function pw(a2, c2, d2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -81871,7 +80284,6 @@ var require_libheif = __commonJS({
             }
           }
         }
-        __name(pw, "pw");
         function qw(a2, c2, d2, e3, g2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -81982,7 +80394,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(qw, "qw");
         function rw(a2, c2, d2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -82160,7 +80571,6 @@ var require_libheif = __commonJS({
               return;
           }
         }
-        __name(rw, "rw");
         function sw(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0;
@@ -82225,7 +80635,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(sw, "sw");
         function tw(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -82284,7 +80693,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(tw, "tw");
         function uw(a2, b2, c2, d2, e3, g2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -82358,7 +80766,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(uw, "uw");
         function vw(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -82379,7 +80786,6 @@ var require_libheif = __commonJS({
             return 0;
           return ((b2 + -6 | 0) >>> 0 < 9 ? 2 : (b2 + -22 | 0) >>> 0 < 9 & 1) | 0;
         }
-        __name(vw, "vw");
         function ww(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -82395,7 +80801,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(ww, "ww");
         function xw(a2, c2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -82470,7 +80875,6 @@ var require_libheif = __commonJS({
             }
           }
         }
-        __name(xw, "xw");
         function yw(a2, c2, d2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -82545,7 +80949,6 @@ var require_libheif = __commonJS({
             }
           }
         }
-        __name(yw, "yw");
         function zw(a2, c2, d2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -82897,7 +81300,6 @@ var require_libheif = __commonJS({
           u = ia2;
           return;
         }
-        __name(zw, "zw");
         function Aw(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -82978,7 +81380,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(Aw, "Aw");
         function Bw(a2, c2, d2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -83059,7 +81460,6 @@ var require_libheif = __commonJS({
           } while ((g2 | 0) != (a2 | 0));
           return;
         }
-        __name(Bw, "Bw");
         function Cw(a2, c2, d2, e3, g2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -83245,7 +81645,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(Cw, "Cw");
         function Dw(a2, c2, e3, g2, i2, k2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -83602,7 +82001,6 @@ var require_libheif = __commonJS({
           u = ha2;
           return;
         }
-        __name(Dw, "Dw");
         function Ew(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -83683,7 +82081,6 @@ var require_libheif = __commonJS({
           u = n2;
           return;
         }
-        __name(Ew, "Ew");
         function Fw(a2, b2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -83770,7 +82167,6 @@ var require_libheif = __commonJS({
           } while ((a2 | 0) != (e3 | 0));
           return;
         }
-        __name(Fw, "Fw");
         function Gw(a2, c2, e3, g2, i2, k2, l2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -83962,7 +82358,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(Gw, "Gw");
         function Hw(a2) {
           a2 = a2 | 0;
           f[a2 + 8 >> 2] = 1732584193;
@@ -83973,7 +82368,6 @@ var require_libheif = __commonJS({
           f[a2 + 4 >> 2] = 0;
           return;
         }
-        __name(Hw, "Hw");
         function Iw(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -84012,7 +82406,6 @@ var require_libheif = __commonJS({
           GM(a2 + 24 | 0, b2 | 0, c2 | 0) | 0;
           return;
         }
-        __name(Iw, "Iw");
         function Jw(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -84231,7 +82624,6 @@ var require_libheif = __commonJS({
           f[B2 >> 2] = e3;
           return b2 | 0;
         }
-        __name(Jw, "Jw");
         function Kw(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -84285,7 +82677,6 @@ var require_libheif = __commonJS({
           IM(c2 | 0, 0, 152) | 0;
           return;
         }
-        __name(Kw, "Kw");
         function Lw(a2, c2, e3, g2, i2, j2, k2, l2, m2, n2, o2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -84603,7 +82994,6 @@ var require_libheif = __commonJS({
               Pa(48612, 48645, 489, 48655);
           }
         }
-        __name(Lw, "Lw");
         function Mw(a2, b2, c2, e3, g2, h2, i2, k2, l2, m2, n2, o2, p2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -84704,7 +83094,6 @@ var require_libheif = __commonJS({
           u = F2;
           return;
         }
-        __name(Mw, "Mw");
         function Nw(a2, c2, e3, g2, i2, j2, k2, l2, m2, n2, o2, p2, q2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -84805,7 +83194,6 @@ var require_libheif = __commonJS({
           u = G2;
           return;
         }
-        __name(Nw, "Nw");
         function Ow(a2, b2, c2, e3, g2, h2, i2, k2, l2, m2, n2, o2, p2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -84934,7 +83322,6 @@ var require_libheif = __commonJS({
           u = D2;
           return;
         }
-        __name(Ow, "Ow");
         function Pw(a2, c2, e3, g2, i2, j2, k2, l2, m2, n2, o2, p2, q2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -85063,7 +83450,6 @@ var require_libheif = __commonJS({
           u = E2;
           return;
         }
-        __name(Pw, "Pw");
         function Qw(a2, c2, e3, g2, i2, j2, k2, l2, m2, n2, o2, p2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -85449,7 +83835,6 @@ var require_libheif = __commonJS({
           o2 = q2 + 1 | 0;
           return o2 | 0;
         }
-        __name(Qw, "Qw");
         function Rw(a2, c2, e3, g2, i2, k2, l2, m2, n2, o2, p2, q2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -85594,7 +83979,6 @@ var require_libheif = __commonJS({
           b[q2 >> 0] = 0;
           return;
         }
-        __name(Rw, "Rw");
         function Sw(a2, c2, e3, g2, h2, i2, j2, k2, l2, m2, n2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -85641,7 +84025,6 @@ var require_libheif = __commonJS({
           Rw(a2, c2, e3, 0, 0, o2, (i2 >> 1) + g2 & -16, (j2 >> 1) + h2 & -16, k2, l2, m2, n2);
           return;
         }
-        __name(Sw, "Sw");
         function Tw(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -85720,7 +84103,6 @@ var require_libheif = __commonJS({
           else if ((i2 | 0) == 18)
             return;
         }
-        __name(Tw, "Tw");
         function Uw(a2, c2, e3, g2, h2, i2, j2, k2, l2, m2, n2, o2, p2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -85822,7 +84204,6 @@ var require_libheif = __commonJS({
           u = y2;
           return;
         }
-        __name(Uw, "Uw");
         function Vw(a2, c2, e3, g2, i2, k2, l2, m2, n2, o2, p2, q2, r2, s2, t2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -86347,7 +84728,6 @@ var require_libheif = __commonJS({
           else if ((v2 | 0) == 18)
             Pa(48760, 48736, 119, 48756);
         }
-        __name(Vw, "Vw");
         function Ww(a2, c2, e3, g2, h2, i2, j2, k2, l2, m2, n2, o2, p2, q2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -86424,7 +84804,6 @@ var require_libheif = __commonJS({
           } else
             Pa(48954, 48645, 1943, 48970);
         }
-        __name(Ww, "Ww");
         function Xw(a2, c2, e3, g2, i2, k2, l2, m2, n2, o2, p2, q2, r2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -86536,7 +84915,6 @@ var require_libheif = __commonJS({
           u = A2;
           return;
         }
-        __name(Xw, "Xw");
         function Yw(a2, b2, c2, d2, e3, f2, g2, h2, i2, j2, k2, l2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -86560,7 +84938,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(Yw, "Yw");
         function Zw(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -86571,7 +84948,6 @@ var require_libheif = __commonJS({
           } while ((a2 | 0) < (b2 | 0));
           return;
         }
-        __name(Zw, "Zw");
         function _w(a2, c2, e3, g2, i2, j2, k2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -86932,7 +85308,6 @@ var require_libheif = __commonJS({
           u = H2;
           return g2 | 0;
         }
-        __name(_w, "_w");
         function $w(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -86993,12 +85368,10 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name($w, "$w");
         function ax() {
           bx(0);
           return;
         }
-        __name(ax, "ax");
         function bx(a2) {
           a2 = a2 | 0;
           wb(4080, 49124);
@@ -87038,12 +85411,10 @@ var require_libheif = __commonJS({
           rb(2472, 7, 49884);
           return;
         }
-        __name(bx, "bx");
         function cx(a2) {
           a2 = a2 | 0;
           return gy(f[a2 + 4 >> 2] | 0) | 0;
         }
-        __name(cx, "cx");
         function dx(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0, p2 = 0, q2 = 0, r2 = 0, s2 = 0, t2 = 0, v2 = 0, w2 = 0, x2 = 0;
@@ -88165,7 +86536,6 @@ var require_libheif = __commonJS({
           u = x2;
           return w2 | 0;
         }
-        __name(dx, "dx");
         function ex(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0;
@@ -88523,7 +86893,6 @@ var require_libheif = __commonJS({
           f[14456] = -1;
           return;
         }
-        __name(ex, "ex");
         function fx(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -88555,7 +86924,6 @@ var require_libheif = __commonJS({
           b2 = c2;
           return b2 | 0;
         }
-        __name(fx, "fx");
         function gx(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -88741,7 +87109,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(gx, "gx");
         function hx(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -89072,7 +87439,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(hx, "hx");
         function ix(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -89085,7 +87451,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(ix, "ix");
         function jx(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -89160,7 +87525,6 @@ var require_libheif = __commonJS({
           i2 = b2 + 8 | 0;
           return i2 | 0;
         }
-        __name(jx, "jx");
         function kx(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -89173,7 +87537,6 @@ var require_libheif = __commonJS({
           u = b2;
           return a2 | 0;
         }
-        __name(kx, "kx");
         function lx(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -89190,7 +87553,6 @@ var require_libheif = __commonJS({
           u = g2;
           return h2 | 0;
         }
-        __name(lx, "lx");
         function mx(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -89214,7 +87576,6 @@ var require_libheif = __commonJS({
           u = e3;
           return a2 | 0;
         }
-        __name(mx, "mx");
         function nx(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -89225,19 +87586,15 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(nx, "nx");
         function ox() {
           return (px() | 0) + 64 | 0;
         }
-        __name(ox, "ox");
         function px() {
           return qx() | 0;
         }
-        __name(px, "px");
         function qx() {
           return 10228;
         }
-        __name(qx, "qx");
         function rx(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -89308,12 +87665,10 @@ var require_libheif = __commonJS({
           u = m2;
           return c2 | 0;
         }
-        __name(rx, "rx");
         function sx(a2) {
           a2 = a2 | 0;
           return a2 | 0;
         }
-        __name(sx, "sx");
         function tx(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -89356,11 +87711,9 @@ var require_libheif = __commonJS({
           u = k2;
           return e3 | 0;
         }
-        __name(tx, "tx");
         function ux() {
           return 58288;
         }
-        __name(ux, "ux");
         function vx(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -89400,7 +87753,6 @@ var require_libheif = __commonJS({
           }
           return a2 - e3 | 0;
         }
-        __name(vx, "vx");
         function wx(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -89415,7 +87767,6 @@ var require_libheif = __commonJS({
           u = e3;
           return d2 | 0;
         }
-        __name(wx, "wx");
         function xx(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -89466,7 +87817,6 @@ var require_libheif = __commonJS({
           u = m2;
           return c2 | 0;
         }
-        __name(xx, "xx");
         function yx(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -89530,7 +87880,6 @@ var require_libheif = __commonJS({
           u = r2;
           return d2 | 0;
         }
-        __name(yx, "yx");
         function zx(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -90099,17 +88448,14 @@ var require_libheif = __commonJS({
           u = G2;
           return i2 | 0;
         }
-        __name(zx, "zx");
         function Ax(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(Ax, "Ax");
         function Bx(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(Bx, "Bx");
         function Cx(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -90118,7 +88464,6 @@ var require_libheif = __commonJS({
             Zx(b2, c2, a2) | 0;
           return;
         }
-        __name(Cx, "Cx");
         function Dx(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -90136,7 +88481,6 @@ var require_libheif = __commonJS({
             c2 = 0;
           return c2 | 0;
         }
-        __name(Dx, "Dx");
         function Ex(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -90242,7 +88586,6 @@ var require_libheif = __commonJS({
             while (0);
           return;
         }
-        __name(Ex, "Ex");
         function Fx(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -90257,7 +88600,6 @@ var require_libheif = __commonJS({
             } while (!((a2 | 0) == 0 & (c2 | 0) == 0));
           return d2 | 0;
         }
-        __name(Fx, "Fx");
         function Gx(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -90271,7 +88613,6 @@ var require_libheif = __commonJS({
             } while (!((a2 | 0) == 0 & (c2 | 0) == 0));
           return d2 | 0;
         }
-        __name(Gx, "Gx");
         function Hx(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -90303,14 +88644,12 @@ var require_libheif = __commonJS({
             }
           return d2 | 0;
         }
-        __name(Hx, "Hx");
         function Ix(a2) {
           a2 = a2 | 0;
           var b2 = 0;
           b2 = (Sx() | 0) + 188 | 0;
           return Tx(a2, f[b2 >> 2] | 0) | 0;
         }
-        __name(Ix, "Ix");
         function Jx(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -90387,7 +88726,6 @@ var require_libheif = __commonJS({
             while (0);
           return (d2 | 0 ? a2 : 0) | 0;
         }
-        __name(Jx, "Jx");
         function Kx(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -90414,7 +88752,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name(Kx, "Kx");
         function Lx(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -90424,7 +88761,6 @@ var require_libheif = __commonJS({
             a2 = Qx(a2, b2, 0) | 0;
           return a2 | 0;
         }
-        __name(Lx, "Lx");
         function Mx(a2, c2, d2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = +c2;
@@ -90886,7 +89222,6 @@ var require_libheif = __commonJS({
           u = G2;
           return ((j2 | 0) < (d2 | 0) ? d2 : j2) | 0;
         }
-        __name(Mx, "Mx");
         function Nx(a2) {
           a2 = +a2;
           var b2 = 0;
@@ -90895,13 +89230,11 @@ var require_libheif = __commonJS({
           I = f[s + 4 >> 2] | 0;
           return b2 | 0;
         }
-        __name(Nx, "Nx");
         function Ox(a2, b2) {
           a2 = +a2;
           b2 = b2 | 0;
           return + +Px(a2, b2);
         }
-        __name(Ox, "Ox");
         function Px(a2, b2) {
           a2 = +a2;
           b2 = b2 | 0;
@@ -90931,7 +89264,6 @@ var require_libheif = __commonJS({
           }
           return +a2;
         }
-        __name(Px, "Px");
         function Qx(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -90986,15 +89318,12 @@ var require_libheif = __commonJS({
           while (0);
           return a2 | 0;
         }
-        __name(Qx, "Qx");
         function Rx() {
           return qx() | 0;
         }
-        __name(Rx, "Rx");
         function Sx() {
           return qx() | 0;
         }
-        __name(Sx, "Sx");
         function Tx(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -91035,13 +89364,11 @@ var require_libheif = __commonJS({
             }
           return Ux(d2, f[c2 + 20 >> 2] | 0) | 0;
         }
-        __name(Tx, "Tx");
         function Ux(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return Vx(a2, b2) | 0;
         }
-        __name(Ux, "Ux");
         function Vx(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -91051,7 +89378,6 @@ var require_libheif = __commonJS({
             b2 = Wx(f[b2 >> 2] | 0, f[b2 + 4 >> 2] | 0, a2) | 0;
           return (b2 | 0 ? b2 : a2) | 0;
         }
-        __name(Vx, "Vx");
         function Wx(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -91106,7 +89432,6 @@ var require_libheif = __commonJS({
             while (0);
           return e3 | 0;
         }
-        __name(Wx, "Wx");
         function Xx(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -91114,7 +89439,6 @@ var require_libheif = __commonJS({
           c2 = FM(a2 | 0) | 0;
           return ((b2 | 0) == 0 ? a2 : c2) | 0;
         }
-        __name(Xx, "Xx");
         function Yx(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -91134,7 +89458,6 @@ var require_libheif = __commonJS({
           }
           return (d2 & 255) - (a2 & 255) | 0;
         }
-        __name(Yx, "Yx");
         function Zx(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -91195,7 +89518,6 @@ var require_libheif = __commonJS({
             while (0);
           return e3 | 0;
         }
-        __name(Zx, "Zx");
         function _x(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0;
@@ -91217,7 +89539,6 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(_x, "_x");
         function $x(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -91231,14 +89552,12 @@ var require_libheif = __commonJS({
           f[d2 >> 2] = (f[d2 >> 2] | 0) + a2;
           return c2 | 0;
         }
-        __name($x, "$x");
         function ay(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           by(a2, b2) | 0;
           return a2 | 0;
         }
-        __name(ay, "ay");
         function by(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -91287,7 +89606,6 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(by, "by");
         function cy(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -91359,7 +89677,6 @@ var require_libheif = __commonJS({
           u = j2;
           return a2 | 0;
         }
-        __name(cy, "cy");
         function dy(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -91371,11 +89688,9 @@ var require_libheif = __commonJS({
               b2 = b2 + 4 | 0;
           return b2 - a2 >> 2 | 0;
         }
-        __name(dy, "dy");
         function ey() {
           return qx() | 0;
         }
-        __name(ey, "ey");
         function fy(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -91420,7 +89735,6 @@ var require_libheif = __commonJS({
             while (0);
           return a2 | 0;
         }
-        __name(fy, "fy");
         function gy(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -91432,7 +89746,6 @@ var require_libheif = __commonJS({
             GM(b2 | 0, a2 | 0, c2 | 0) | 0;
           return b2 | 0;
         }
-        __name(gy, "gy");
         function hy(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -91528,11 +89841,9 @@ var require_libheif = __commonJS({
           u = k2;
           return e3 | 0;
         }
-        __name(hy, "hy");
         function iy() {
           return qx() | 0;
         }
-        __name(iy, "iy");
         function jy(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -91803,11 +90114,9 @@ var require_libheif = __commonJS({
             }
           return 0;
         }
-        __name(jy, "jy");
         function ky() {
           return qx() | 0;
         }
-        __name(ky, "ky");
         function ly(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -91897,7 +90206,6 @@ var require_libheif = __commonJS({
           u = n2;
           return d2 | 0;
         }
-        __name(ly, "ly");
         function my(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -92014,7 +90322,6 @@ var require_libheif = __commonJS({
           u = j2;
           return d2 | 0;
         }
-        __name(my, "my");
         function ny(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -92093,14 +90400,12 @@ var require_libheif = __commonJS({
           u = l2;
           return e3 | 0;
         }
-        __name(ny, "ny");
         function oy(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return hy(0, a2, b2, c2 | 0 ? c2 : 58380) | 0;
         }
-        __name(oy, "oy");
         function py(a2) {
           a2 = a2 | 0;
           if (!a2)
@@ -92109,39 +90414,31 @@ var require_libheif = __commonJS({
             a2 = (f[a2 >> 2] | 0) == 0;
           return a2 & 1 | 0;
         }
-        __name(py, "py");
         function qy() {
           return 10928;
         }
-        __name(qy, "qy");
         function ry() {
           var a2 = 0;
           a2 = (sy() | 0) + 188 | 0;
           return (f[f[a2 >> 2] >> 2] | 0 ? 4 : 1) | 0;
         }
-        __name(ry, "ry");
         function sy() {
           return qx() | 0;
         }
-        __name(sy, "sy");
         function ty() {
           return 10932;
         }
-        __name(ty, "ty");
         function uy(a2) {
           a2 = a2 | 0;
           return ((a2 + -48 | 0) >>> 0 < 10 | ((a2 | 32) + -97 | 0) >>> 0 < 6) & 1 | 0;
         }
-        __name(uy, "uy");
         function vy() {
           return 12472;
         }
-        __name(vy, "vy");
         function wy(a2) {
           a2 = a2 | 0;
           return ((a2 | 0) == 32 | (a2 + -9 | 0) >>> 0 < 5) & 1 | 0;
         }
-        __name(wy, "wy");
         function xy(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -92171,7 +90468,6 @@ var require_libheif = __commonJS({
             while (0);
           return a2 | 0;
         }
-        __name(xy, "xy");
         function yy(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0;
@@ -92201,7 +90497,6 @@ var require_libheif = __commonJS({
           while (0);
           return b2 | 0;
         }
-        __name(yy, "yy");
         function zy(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -92209,7 +90504,6 @@ var require_libheif = __commonJS({
           c2 = Ay(a2, b2, c2, -1, -1) | 0;
           return c2 | 0;
         }
-        __name(zy, "zy");
         function Ay(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -92234,7 +90528,6 @@ var require_libheif = __commonJS({
           u = j2;
           return c2 | 0;
         }
-        __name(Ay, "Ay");
         function By(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -92247,7 +90540,6 @@ var require_libheif = __commonJS({
           f[a2 + 100 >> 2] = (b2 | 0) != 0 & (e3 | 0) > (b2 | 0) ? d2 + b2 | 0 : c2;
           return;
         }
-        __name(By, "By");
         function Cy(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -92578,7 +90870,6 @@ var require_libheif = __commonJS({
           I = g2;
           return e3 | 0;
         }
-        __name(Cy, "Cy");
         function Dy(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, i2 = 0, j2 = 0, k2 = 0;
@@ -92625,7 +90916,6 @@ var require_libheif = __commonJS({
           }
           return c2 | 0;
         }
-        __name(Dy, "Dy");
         function Ey(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -92639,7 +90929,6 @@ var require_libheif = __commonJS({
           u = c2;
           return a2 | 0;
         }
-        __name(Ey, "Ey");
         function Fy(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0;
@@ -92665,7 +90954,6 @@ var require_libheif = __commonJS({
           }
           return c2 | 0;
         }
-        __name(Fy, "Fy");
         function Gy(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -92679,7 +90967,6 @@ var require_libheif = __commonJS({
           u = d2;
           return c2 | 0;
         }
-        __name(Gy, "Gy");
         function Hy(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -92693,14 +90980,12 @@ var require_libheif = __commonJS({
           u = d2;
           return c2 | 0;
         }
-        __name(Hy, "Hy");
         function Iy(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return xx(a2, 2147483647, b2, c2) | 0;
         }
-        __name(Iy, "Iy");
         function Jy(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -92738,7 +91023,6 @@ var require_libheif = __commonJS({
           u = l2;
           return d2 | 0;
         }
-        __name(Jy, "Jy");
         function Ky(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -92786,7 +91070,6 @@ var require_libheif = __commonJS({
           while (0);
           return a2 | 0;
         }
-        __name(Ky, "Ky");
         function Ly(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -92805,7 +91088,6 @@ var require_libheif = __commonJS({
           f[d2 >> 2] = b2;
           return c2 | 0;
         }
-        __name(Ly, "Ly");
         function My(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -92828,14 +91110,12 @@ var require_libheif = __commonJS({
           u = g2;
           return h2 | 0;
         }
-        __name(My, "My");
         function Ny(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return Ly(a2, b2, c2) | 0;
         }
-        __name(Ny, "Ny");
         function Oy(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -93479,7 +91759,6 @@ var require_libheif = __commonJS({
           u = Q2;
           return c2 | 0;
         }
-        __name(Oy, "Oy");
         function Py(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -93500,7 +91779,6 @@ var require_libheif = __commonJS({
           u = d2;
           return a2 | 0;
         }
-        __name(Py, "Py");
         function Qy(a2, c2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -93538,7 +91816,6 @@ var require_libheif = __commonJS({
             while (0);
           return;
         }
-        __name(Qy, "Qy");
         function Ry(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -93772,7 +92049,6 @@ var require_libheif = __commonJS({
             while (0);
           return +e3;
         }
-        __name(Ry, "Ry");
         function Sy(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -94062,7 +92338,6 @@ var require_libheif = __commonJS({
           while (0);
           return +g2;
         }
-        __name(Sy, "Sy");
         function Ty(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -94572,7 +92847,6 @@ var require_libheif = __commonJS({
           u = H2;
           return +i2;
         }
-        __name(Ty, "Ty");
         function Uy(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -94665,7 +92939,6 @@ var require_libheif = __commonJS({
           I = d2;
           return c2 | 0;
         }
-        __name(Uy, "Uy");
         function Vy(a2, b2) {
           a2 = +a2;
           b2 = b2 | 0;
@@ -94693,25 +92966,21 @@ var require_libheif = __commonJS({
           f[s + 4 >> 2] = d2;
           return +(a2 * +p[s >> 3]);
         }
-        __name(Vy, "Vy");
         function Wy(a2, b2) {
           a2 = +a2;
           b2 = +b2;
           return + +$y(a2, b2);
         }
-        __name(Wy, "Wy");
         function Xy(a2, b2) {
           a2 = +a2;
           b2 = +b2;
           return + +Zy(a2, b2);
         }
-        __name(Xy, "Xy");
         function Yy(a2, b2) {
           a2 = +a2;
           b2 = b2 | 0;
           return + +Vy(a2, b2);
         }
-        __name(Yy, "Yy");
         function Zy(a2, b2) {
           a2 = +a2;
           b2 = +b2;
@@ -94833,7 +93102,6 @@ var require_libheif = __commonJS({
           }
           return +b2;
         }
-        __name(Zy, "Zy");
         function _y(a2) {
           a2 = +a2;
           var b2 = 0;
@@ -94842,7 +93110,6 @@ var require_libheif = __commonJS({
           I = f[s + 4 >> 2] | 0;
           return b2 | 0;
         }
-        __name(_y, "_y");
         function $y(a2, b2) {
           a2 = +a2;
           b2 = +b2;
@@ -94856,17 +93123,14 @@ var require_libheif = __commonJS({
           f[s + 4 >> 2] = c2;
           return + +p[s >> 3];
         }
-        __name($y, "$y");
         function az() {
           Xa(58384);
           return 58392;
         }
-        __name(az, "az");
         function bz() {
           fb(58384);
           return;
         }
-        __name(bz, "bz");
         function cz(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -94904,7 +93168,6 @@ var require_libheif = __commonJS({
           while (0);
           return b2 | 0;
         }
-        __name(cz, "cz");
         function dz(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -94928,7 +93191,6 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(dz, "dz");
         function ez(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -94948,7 +93210,6 @@ var require_libheif = __commonJS({
             c2 = (a2 >>> 0) / (b2 >>> 0) | 0;
           return c2 | 0;
         }
-        __name(ez, "ez");
         function fz(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -94961,7 +93222,6 @@ var require_libheif = __commonJS({
           u = c2;
           return b2 | 0;
         }
-        __name(fz, "fz");
         function gz(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -94989,7 +93249,6 @@ var require_libheif = __commonJS({
           while (0);
           return d2 | 0;
         }
-        __name(gz, "gz");
         function hz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95003,7 +93262,6 @@ var require_libheif = __commonJS({
           u = d2;
           return c2 | 0;
         }
-        __name(hz, "hz");
         function iz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95021,11 +93279,9 @@ var require_libheif = __commonJS({
           u = h2;
           return a2 | 0;
         }
-        __name(iz, "iz");
         function jz() {
           return;
         }
-        __name(jz, "jz");
         function kz(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95039,18 +93295,15 @@ var require_libheif = __commonJS({
           u = c2;
           return b2 | 0;
         }
-        __name(kz, "kz");
         function lz(a2) {
           a2 = +a2;
           return ~~+MM(+a2) | 0;
         }
-        __name(lz, "lz");
         function mz(a2, b2) {
           a2 = +a2;
           b2 = b2 | 0;
           return + +Vy(a2, b2);
         }
-        __name(mz, "mz");
         function nz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95069,7 +93322,6 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(nz, "nz");
         function oz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95096,14 +93348,12 @@ var require_libheif = __commonJS({
             } while ((c2 | 0) != 0);
           return a2 | 0;
         }
-        __name(oz, "oz");
         function pz(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           ay(a2 + (vx(a2) | 0) | 0, b2) | 0;
           return a2 | 0;
         }
-        __name(pz, "pz");
         function qz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95124,7 +93374,6 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(qz, "qz");
         function rz(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95133,7 +93382,6 @@ var require_libheif = __commonJS({
           d2 = zy(a2, b2, c2) | 0;
           return d2 | 0;
         }
-        __name(rz, "rz");
         function sz(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95142,7 +93390,6 @@ var require_libheif = __commonJS({
           d2 = tz(a2, b2, c2) | 0;
           return d2 | 0;
         }
-        __name(sz, "sz");
         function tz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95150,18 +93397,15 @@ var require_libheif = __commonJS({
           c2 = Ay(a2, b2, c2, 0, -2147483648) | 0;
           return c2 | 0;
         }
-        __name(tz, "tz");
         function uz(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return (a2 + -48 | 0) >>> 0 < 10 | 0;
         }
-        __name(uz, "uz");
         function vz(a2) {
           a2 = a2 | 0;
           return (a2 | 0) != 10780 & ((a2 | 0) != 0 & (a2 | 0) != 58352) & 1 | 0;
         }
-        __name(vz, "vz");
         function wz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95215,7 +93459,6 @@ var require_libheif = __commonJS({
           u = j2;
           return c2 | 0;
         }
-        __name(wz, "wz");
         function xz(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -95373,7 +93616,6 @@ var require_libheif = __commonJS({
           u = o2;
           return c2 | 0;
         }
-        __name(xz, "xz");
         function yz(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95381,31 +93623,26 @@ var require_libheif = __commonJS({
           d2 = d2 | 0;
           return d2 | 0;
         }
-        __name(yz, "yz");
         function zz(a2) {
           a2 = a2 | 0;
           if (vz(a2) | 0)
             ex(a2);
           return;
         }
-        __name(zz, "zz");
         function Az(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return -1 | 0;
         }
-        __name(Az, "Az");
         function Bz(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return uy(a2) | 0;
         }
-        __name(Bz, "Bz");
         function Cz(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(Cz, "Cz");
         function Dz(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -95415,17 +93652,14 @@ var require_libheif = __commonJS({
             f[b2 >> 2] = (a2 | 0) == (-1 | 0) ? 58328 : a2;
           return ((c2 | 0) == 58328 ? -1 : c2) | 0;
         }
-        __name(Dz, "Dz");
         function Ez() {
           return qx() | 0;
         }
-        __name(Ez, "Ez");
         function Fz(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return + +Gz(a2, b2, 0);
         }
-        __name(Fz, "Fz");
         function Gz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95454,46 +93688,39 @@ var require_libheif = __commonJS({
           u = i2;
           return +d2;
         }
-        __name(Gz, "Gz");
         function Hz(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return + +Gz(a2, b2, 1);
         }
-        __name(Hz, "Hz");
         function Iz(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return + +Gz(a2, b2, 2);
         }
-        __name(Iz, "Iz");
         function Jz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return + +Fz(a2, b2);
         }
-        __name(Jz, "Jz");
         function Kz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return + +Hz(a2, b2);
         }
-        __name(Kz, "Kz");
         function Lz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return + +Iz(a2, b2);
         }
-        __name(Lz, "Lz");
         function Mz(a2) {
           a2 = a2 | 0;
           Nz(a2);
           return;
         }
-        __name(Mz, "Mz");
         function Nz(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 14060;
@@ -95505,7 +93732,6 @@ var require_libheif = __commonJS({
           ex(f[a2 + 60 >> 2] | 0);
           return;
         }
-        __name(Nz, "Nz");
         function Oz(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95522,47 +93748,40 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(Oz, "Oz");
         function Pz(a2) {
           a2 = a2 | 0;
           Nz(a2);
           QK(a2);
           return;
         }
-        __name(Pz, "Pz");
         function Qz(a2) {
           a2 = a2 | 0;
           Nz(a2);
           return;
         }
-        __name(Qz, "Qz");
         function Rz(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 14076;
           zC(a2 + 4 | 0);
           return;
         }
-        __name(Rz, "Rz");
         function Sz(a2) {
           a2 = a2 | 0;
           Rz(a2);
           QK(a2);
           return;
         }
-        __name(Sz, "Sz");
         function Tz(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return;
         }
-        __name(Tz, "Tz");
         function Uz(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return a2 | 0;
         }
-        __name(Uz, "Uz");
         function Vz(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95578,7 +93797,6 @@ var require_libheif = __commonJS({
           f[g2 + 4 >> 2] = -1;
           return;
         }
-        __name(Vz, "Vz");
         function Wz(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95592,17 +93810,14 @@ var require_libheif = __commonJS({
           f[d2 + 4 >> 2] = -1;
           return;
         }
-        __name(Wz, "Wz");
         function Xz(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(Xz, "Xz");
         function Yz(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(Yz, "Yz");
         function Zz(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -95637,12 +93852,10 @@ var require_libheif = __commonJS({
           }
           return h2 | 0;
         }
-        __name(Zz, "Zz");
         function _z(a2) {
           a2 = a2 | 0;
           return dA() | 0;
         }
-        __name(_z, "_z");
         function $z(a2) {
           a2 = a2 | 0;
           var c2 = 0;
@@ -95657,13 +93870,11 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name($z, "$z");
         function aA(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return dA() | 0;
         }
-        __name(aA, "aA");
         function bA(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -95697,22 +93908,18 @@ var require_libheif = __commonJS({
           }
           return e3 | 0;
         }
-        __name(bA, "bA");
         function cA(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return dA() | 0;
         }
-        __name(cA, "cA");
         function dA() {
           return -1;
         }
-        __name(dA, "dA");
         function eA(a2) {
           a2 = a2 | 0;
           return a2 & 255 | 0;
         }
-        __name(eA, "eA");
         function fA(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95721,39 +93928,33 @@ var require_libheif = __commonJS({
             GM(a2 | 0, b2 | 0, c2 | 0) | 0;
           return a2 | 0;
         }
-        __name(fA, "fA");
         function gA(a2) {
           a2 = a2 | 0;
           return a2 & 255 | 0;
         }
-        __name(gA, "gA");
         function hA(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 14140;
           zC(a2 + 4 | 0);
           return;
         }
-        __name(hA, "hA");
         function iA(a2) {
           a2 = a2 | 0;
           hA(a2);
           QK(a2);
           return;
         }
-        __name(iA, "iA");
         function jA(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return;
         }
-        __name(jA, "jA");
         function kA(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return a2 | 0;
         }
-        __name(kA, "kA");
         function lA(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95769,7 +93970,6 @@ var require_libheif = __commonJS({
           f[g2 + 4 >> 2] = -1;
           return;
         }
-        __name(lA, "lA");
         function mA(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95783,17 +93983,14 @@ var require_libheif = __commonJS({
           f[d2 + 4 >> 2] = -1;
           return;
         }
-        __name(mA, "mA");
         function nA(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(nA, "nA");
         function oA(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(oA, "oA");
         function pA(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95828,12 +94025,10 @@ var require_libheif = __commonJS({
           }
           return g2 | 0;
         }
-        __name(pA, "pA");
         function qA(a2) {
           a2 = a2 | 0;
           return vA() | 0;
         }
-        __name(qA, "qA");
         function rA(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -95848,13 +94043,11 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(rA, "rA");
         function sA(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return vA() | 0;
         }
-        __name(sA, "sA");
         function tA(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95888,22 +94081,18 @@ var require_libheif = __commonJS({
           }
           return d2 | 0;
         }
-        __name(tA, "tA");
         function uA(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return vA() | 0;
         }
-        __name(uA, "uA");
         function vA() {
           return -1;
         }
-        __name(vA, "vA");
         function wA(a2) {
           a2 = a2 | 0;
           return a2 | 0;
         }
-        __name(wA, "wA");
         function xA(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -95912,178 +94101,150 @@ var require_libheif = __commonJS({
             qz(a2, b2, c2) | 0;
           return a2 | 0;
         }
-        __name(xA, "xA");
         function yA(a2) {
           a2 = a2 | 0;
           return a2 | 0;
         }
-        __name(yA, "yA");
         function zA(a2) {
           a2 = a2 | 0;
           DA(a2, 14236);
           Mz(a2 + 8 | 0);
           return;
         }
-        __name(zA, "zA");
         function AA(a2) {
           a2 = a2 | 0;
           zA(a2);
           QK(a2);
           return;
         }
-        __name(AA, "AA");
         function BA(a2) {
           a2 = a2 | 0;
           zA(a2 + (f[(f[a2 >> 2] | 0) + -12 >> 2] | 0) | 0);
           return;
         }
-        __name(BA, "BA");
         function CA(a2) {
           a2 = a2 | 0;
           AA(a2 + (f[(f[a2 >> 2] | 0) + -12 >> 2] | 0) | 0);
           return;
         }
-        __name(CA, "CA");
         function DA(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return;
         }
-        __name(DA, "DA");
         function EA(a2) {
           a2 = a2 | 0;
           IA(a2, 14284);
           Qz(a2 + 8 | 0);
           return;
         }
-        __name(EA, "EA");
         function FA(a2) {
           a2 = a2 | 0;
           EA(a2);
           QK(a2);
           return;
         }
-        __name(FA, "FA");
         function GA(a2) {
           a2 = a2 | 0;
           EA(a2 + (f[(f[a2 >> 2] | 0) + -12 >> 2] | 0) | 0);
           return;
         }
-        __name(GA, "GA");
         function HA(a2) {
           a2 = a2 | 0;
           FA(a2 + (f[(f[a2 >> 2] | 0) + -12 >> 2] | 0) | 0);
           return;
         }
-        __name(HA, "HA");
         function IA(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return;
         }
-        __name(IA, "IA");
         function JA(a2) {
           a2 = a2 | 0;
           NA(a2, 14292);
           Mz(a2 + 4 | 0);
           return;
         }
-        __name(JA, "JA");
         function KA(a2) {
           a2 = a2 | 0;
           JA(a2);
           QK(a2);
           return;
         }
-        __name(KA, "KA");
         function LA(a2) {
           a2 = a2 | 0;
           JA(a2 + (f[(f[a2 >> 2] | 0) + -12 >> 2] | 0) | 0);
           return;
         }
-        __name(LA, "LA");
         function MA(a2) {
           a2 = a2 | 0;
           KA(a2 + (f[(f[a2 >> 2] | 0) + -12 >> 2] | 0) | 0);
           return;
         }
-        __name(MA, "MA");
         function NA(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return;
         }
-        __name(NA, "NA");
         function OA(a2) {
           a2 = a2 | 0;
           SA(a2, 14340);
           Qz(a2 + 4 | 0);
           return;
         }
-        __name(OA, "OA");
         function PA(a2) {
           a2 = a2 | 0;
           OA(a2);
           QK(a2);
           return;
         }
-        __name(PA, "PA");
         function QA(a2) {
           a2 = a2 | 0;
           OA(a2 + (f[(f[a2 >> 2] | 0) + -12 >> 2] | 0) | 0);
           return;
         }
-        __name(QA, "QA");
         function RA(a2) {
           a2 = a2 | 0;
           PA(a2 + (f[(f[a2 >> 2] | 0) + -12 >> 2] | 0) | 0);
           return;
         }
-        __name(RA, "RA");
         function SA(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return;
         }
-        __name(SA, "SA");
         function TA(a2) {
           a2 = a2 | 0;
           ZA(a2, 14408);
           Mz(a2 + 12 | 0);
           return;
         }
-        __name(TA, "TA");
         function UA(a2) {
           a2 = a2 | 0;
           TA(a2);
           QK(a2);
           return;
         }
-        __name(UA, "UA");
         function VA(a2) {
           a2 = a2 | 0;
           TA(a2 + -8 | 0);
           return;
         }
-        __name(VA, "VA");
         function WA(a2) {
           a2 = a2 | 0;
           UA(a2 + -8 | 0);
           return;
         }
-        __name(WA, "WA");
         function XA(a2) {
           a2 = a2 | 0;
           TA(a2 + (f[(f[a2 >> 2] | 0) + -12 >> 2] | 0) | 0);
           return;
         }
-        __name(XA, "XA");
         function YA(a2) {
           a2 = a2 | 0;
           UA(a2 + (f[(f[a2 >> 2] | 0) + -12 >> 2] | 0) | 0);
           return;
         }
-        __name(YA, "YA");
         function ZA(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -96091,26 +94252,22 @@ var require_libheif = __commonJS({
           DA(a2, b2 + 4 | 0);
           return;
         }
-        __name(ZA, "ZA");
         function _A(a2) {
           a2 = a2 | 0;
           return vx(a2) | 0;
         }
-        __name(_A, "_A");
         function $A(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
           b[a2 >> 0] = b[c2 >> 0] | 0;
           return;
         }
-        __name($A, "$A");
         function aB(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           f[a2 + 16 >> 2] = (f[a2 + 24 >> 2] | 0) == 0 | b2;
           return;
         }
-        __name(aB, "aB");
         function bB(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -96131,26 +94288,22 @@ var require_libheif = __commonJS({
           xK(c2);
           return;
         }
-        __name(bB, "bB");
         function cB(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return (a2 | 0) == (b2 | 0) | 0;
         }
-        __name(cB, "cB");
         function dB(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           vK(a2, b2 + 28 | 0);
           return;
         }
-        __name(dB, "dB");
         function eB(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return (a2 | 0) == (b2 | 0) | 0;
         }
-        __name(eB, "eB");
         function fB(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 14076;
@@ -96164,7 +94317,6 @@ var require_libheif = __commonJS({
           f[a2 + 20 >> 2] = 0;
           return;
         }
-        __name(fB, "fB");
         function gB(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 14140;
@@ -96178,7 +94330,6 @@ var require_libheif = __commonJS({
           f[a2 + 20 >> 2] = 0;
           return;
         }
-        __name(gB, "gB");
         function hB(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0;
@@ -96196,7 +94347,6 @@ var require_libheif = __commonJS({
           u = d2;
           return a2 | 0;
         }
-        __name(hB, "hB");
         function iB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96211,7 +94361,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(iB, "iB");
         function jB(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -96225,7 +94374,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(jB, "jB");
         function kB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96266,7 +94414,6 @@ var require_libheif = __commonJS({
           u = l2;
           return a2 | 0;
         }
-        __name(kB, "kB");
         function lB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96307,7 +94454,6 @@ var require_libheif = __commonJS({
           u = l2;
           return a2 | 0;
         }
-        __name(lB, "lB");
         function mB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96348,7 +94494,6 @@ var require_libheif = __commonJS({
           u = l2;
           return a2 | 0;
         }
-        __name(mB, "mB");
         function nB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96389,7 +94534,6 @@ var require_libheif = __commonJS({
           u = l2;
           return a2 | 0;
         }
-        __name(nB, "nB");
         function oB(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96431,28 +94575,23 @@ var require_libheif = __commonJS({
           u = m2;
           return a2 | 0;
         }
-        __name(oB, "oB");
         function pB(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           f[a2 >> 2] = f[a2 >> 2] | 1;
           return;
         }
-        __name(pB, "pB");
         function qB() {
           sB();
           return;
         }
-        __name(qB, "qB");
         function rB() {
           return;
         }
-        __name(rB, "rB");
         function sB() {
           tB(0);
           return;
         }
-        __name(sB, "sB");
         function tB(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -96527,7 +94666,6 @@ var require_libheif = __commonJS({
           f[58836 + (f[(f[14709] | 0) + -12 >> 2] | 0) + 72 >> 2] = 58668;
           return;
         }
-        __name(tB, "tB");
         function uB(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96550,7 +94688,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(uB, "uB");
         function vB(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96573,7 +94710,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(vB, "vB");
         function wB(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96595,7 +94731,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(wB, "wB");
         function xB(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96617,20 +94752,17 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(xB, "xB");
         function yB(a2) {
           a2 = a2 | 0;
           hA(a2);
           return;
         }
-        __name(yB, "yB");
         function zB(a2) {
           a2 = a2 | 0;
           yB(a2);
           QK(a2);
           return;
         }
-        __name(zB, "zB");
         function AB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96641,7 +94773,6 @@ var require_libheif = __commonJS({
           b[a2 + 44 >> 0] = c2;
           return;
         }
-        __name(AB, "AB");
         function BB(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0;
@@ -96681,7 +94812,6 @@ var require_libheif = __commonJS({
           u = k2;
           return a2 | 0;
         }
-        __name(BB, "BB");
         function CB(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96707,7 +94837,6 @@ var require_libheif = __commonJS({
             while (0);
           return e3 | 0;
         }
-        __name(CB, "CB");
         function DB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96783,27 +94912,23 @@ var require_libheif = __commonJS({
           u = p2;
           return a2 | 0;
         }
-        __name(DB, "DB");
         function EB(a2) {
           a2 = a2 | 0;
           if (eB(a2, vA() | 0) | 0)
             a2 = ~(vA() | 0);
           return a2 | 0;
         }
-        __name(EB, "EB");
         function FB(a2) {
           a2 = a2 | 0;
           Rz(a2);
           return;
         }
-        __name(FB, "FB");
         function GB(a2) {
           a2 = a2 | 0;
           FB(a2);
           QK(a2);
           return;
         }
-        __name(GB, "GB");
         function HB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96814,7 +94939,6 @@ var require_libheif = __commonJS({
           b[a2 + 44 >> 0] = c2;
           return;
         }
-        __name(HB, "HB");
         function IB(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0;
@@ -96854,7 +94978,6 @@ var require_libheif = __commonJS({
           u = k2;
           return a2 | 0;
         }
-        __name(IB, "IB");
         function JB(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96880,7 +95003,6 @@ var require_libheif = __commonJS({
             while (0);
           return e3 | 0;
         }
-        __name(JB, "JB");
         function KB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96956,27 +95078,23 @@ var require_libheif = __commonJS({
           u = p2;
           return a2 | 0;
         }
-        __name(KB, "KB");
         function LB(a2) {
           a2 = a2 | 0;
           if (cB(a2, dA() | 0) | 0)
             a2 = ~(dA() | 0);
           return a2 | 0;
         }
-        __name(LB, "LB");
         function MB(a2) {
           a2 = a2 | 0;
           hA(a2);
           return;
         }
-        __name(MB, "MB");
         function NB(a2) {
           a2 = a2 | 0;
           MB(a2);
           QK(a2);
           return;
         }
-        __name(NB, "NB");
         function OB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -96995,17 +95113,14 @@ var require_libheif = __commonJS({
           else
             return;
         }
-        __name(OB, "OB");
         function PB(a2) {
           a2 = a2 | 0;
           return SB(a2, 0) | 0;
         }
-        __name(PB, "PB");
         function QB(a2) {
           a2 = a2 | 0;
           return SB(a2, 1) | 0;
         }
-        __name(QB, "QB");
         function RB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -97084,7 +95199,6 @@ var require_libheif = __commonJS({
           u = l2;
           return d2 | 0;
         }
-        __name(RB, "RB");
         function SB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -97206,20 +95320,17 @@ var require_libheif = __commonJS({
           u = r2;
           return d2 | 0;
         }
-        __name(SB, "SB");
         function TB(a2) {
           a2 = a2 | 0;
           Rz(a2);
           return;
         }
-        __name(TB, "TB");
         function UB(a2) {
           a2 = a2 | 0;
           TB(a2);
           QK(a2);
           return;
         }
-        __name(UB, "UB");
         function VB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -97238,17 +95349,14 @@ var require_libheif = __commonJS({
           else
             return;
         }
-        __name(VB, "VB");
         function WB(a2) {
           a2 = a2 | 0;
           return ZB(a2, 0) | 0;
         }
-        __name(WB, "WB");
         function XB(a2) {
           a2 = a2 | 0;
           return ZB(a2, 1) | 0;
         }
-        __name(XB, "XB");
         function YB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -97327,7 +95435,6 @@ var require_libheif = __commonJS({
           u = l2;
           return d2 | 0;
         }
-        __name(YB, "YB");
         function ZB(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -97449,27 +95556,23 @@ var require_libheif = __commonJS({
           u = r2;
           return d2 | 0;
         }
-        __name(ZB, "ZB");
         function _B(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(_B, "_B");
         function $B(a2) {
           a2 = a2 | 0;
           _B(a2);
           QK(a2);
           return;
         }
-        __name($B, "$B");
         function aC(a2) {
           a2 = a2 | 0;
           if (a2 | 0)
             dd[f[(f[a2 >> 2] | 0) + 4 >> 2] & 511](a2);
           return;
         }
-        __name(aC, "aC");
         function bC(a2, c2, d2, e3, f2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -97504,7 +95607,6 @@ var require_libheif = __commonJS({
             a2 = (a2 | 0) != (d2 | 0) & 1;
           return a2 | 0;
         }
-        __name(bC, "bC");
         function cC(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -97544,7 +95646,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(cC, "cC");
         function dC(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -97561,25 +95662,21 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(dC, "dC");
         function eC(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(eC, "eC");
         function fC(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(fC, "fC");
         function gC(a2) {
           a2 = a2 | 0;
           fC(a2);
           QK(a2);
           return;
         }
-        __name(gC, "gC");
         function hC(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -97614,7 +95711,6 @@ var require_libheif = __commonJS({
             a2 = (a2 | 0) != (c2 | 0) & 1;
           return a2 | 0;
         }
-        __name(hC, "hC");
         function iC(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -97661,7 +95757,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(iC, "iC");
         function jC(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -97678,27 +95773,23 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(jC, "jC");
         function kC(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           f[a2 >> 2] = f[b2 >> 2];
           return;
         }
-        __name(kC, "kC");
         function lC(a2) {
           a2 = a2 | 0;
           eC(a2);
           return;
         }
-        __name(lC, "lC");
         function mC(a2) {
           a2 = a2 | 0;
           eC(a2);
           QK(a2);
           return;
         }
-        __name(mC, "mC");
         function nC(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -97762,7 +95853,6 @@ var require_libheif = __commonJS({
           u = o2;
           return i2 | 0;
         }
-        __name(nC, "nC");
         function oC(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -97785,7 +95875,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(oC, "oC");
         function pC(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -97808,7 +95897,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(pC, "pC");
         function qC(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -97831,7 +95919,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(qC, "qC");
         function rC(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -97854,7 +95941,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(rC, "rC");
         function sC(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -97877,7 +95963,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(sC, "sC");
         function tC(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -97900,7 +95985,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(tC, "tC");
         function uC(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -97923,7 +96007,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(uC, "uC");
         function vC(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -97946,7 +96029,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(vC, "vC");
         function wC(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -97969,7 +96051,6 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name(wC, "wC");
         function xC(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -98162,20 +96243,17 @@ var require_libheif = __commonJS({
           u = z2;
           return A2 | 0;
         }
-        __name(xC, "xC");
         function yC(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           a2 = f[a2 >> 2] | 0;
           return EC(a2, DC(b2) | 0) | 0;
         }
-        __name(yC, "yC");
         function zC(a2) {
           a2 = a2 | 0;
           GK(f[a2 >> 2] | 0) | 0;
           return;
         }
-        __name(zC, "zC");
         function AC(a2, c2, d2, e3, g2, h2, i2, j2, k2, l2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -98284,7 +96362,6 @@ var require_libheif = __commonJS({
             while (0);
           return m2 | 0;
         }
-        __name(AC, "AC");
         function BC() {
           var a2 = 0;
           if ((b[56848] | 0) == 0 ? oM(56848) | 0 : 0) {
@@ -98293,7 +96370,6 @@ var require_libheif = __commonJS({
           }
           return f[14866] | 0;
         }
-        __name(BC, "BC");
         function CC(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -98311,7 +96387,6 @@ var require_libheif = __commonJS({
           u = e3;
           return b2 | 0;
         }
-        __name(CC, "CC");
         function DC(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -98335,13 +96410,11 @@ var require_libheif = __commonJS({
           u = e3;
           return (f[a2 + 4 >> 2] | 0) + -1 | 0;
         }
-        __name(DC, "DC");
         function EC(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return f[(f[a2 + 8 >> 2] | 0) + (b2 << 2) >> 2] | 0;
         }
-        __name(EC, "EC");
         function FC(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -98350,7 +96423,6 @@ var require_libheif = __commonJS({
           f[a2 + 4 >> 2] = b2 + 1;
           return;
         }
-        __name(FC, "FC");
         function GC(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -98363,13 +96435,11 @@ var require_libheif = __commonJS({
           f[a2 + 8 >> 2] = b2;
           return;
         }
-        __name(GC, "GC");
         function HC(a2) {
           a2 = a2 | 0;
           IC(f[f[a2 >> 2] >> 2] | 0);
           return;
         }
-        __name(HC, "HC");
         function IC(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0;
@@ -98383,7 +96453,6 @@ var require_libheif = __commonJS({
           dd[a2 & 511](c2);
           return;
         }
-        __name(IC, "IC");
         function JC(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -98571,7 +96640,6 @@ var require_libheif = __commonJS({
           u = E2;
           return F2 | 0;
         }
-        __name(JC, "JC");
         function KC(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -98595,7 +96663,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(KC, "KC");
         function LC(a2, c2, d2, e3, g2, h2, i2, j2, k2, l2, m2, n2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -98711,7 +96778,6 @@ var require_libheif = __commonJS({
             while (0);
           return k2 | 0;
         }
-        __name(LC, "LC");
         function MC(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -98748,7 +96814,6 @@ var require_libheif = __commonJS({
           u = i2;
           return +d2;
         }
-        __name(MC, "MC");
         function NC(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -98802,7 +96867,6 @@ var require_libheif = __commonJS({
           while (0);
           return;
         }
-        __name(NC, "NC");
         function Zj(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -99532,7 +97596,6 @@ var require_libheif = __commonJS({
           u = P2;
           return;
         }
-        __name(Zj, "Zj");
         function _j(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -99662,7 +97725,6 @@ var require_libheif = __commonJS({
           } else if ((d2 | 0) == 23)
             return;
         }
-        __name(_j, "_j");
         function $j(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -99688,7 +97750,6 @@ var require_libheif = __commonJS({
           u = g2;
           return;
         }
-        __name($j, "$j");
         function ak(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 6180;
@@ -99696,7 +97757,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(ak, "ak");
         function bk(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 6180;
@@ -99705,20 +97765,17 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(bk, "bk");
         function ck(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(ck, "ck");
         function dk(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(dk, "dk");
         function ek(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0, k2 = 0, l2 = 0, m2 = 0, n2 = 0, o2 = 0, p2 = 0, q2 = 0, r2 = 0, s2 = 0, t2 = 0, v2 = 0, w2 = 0, x2 = 0, y2 = 0, z2 = 0, A2 = 0, B2 = 0, C2 = 0, D2 = 0, E2 = 0, F2 = 0, G2 = 0, H2 = 0, I2 = 0, J2 = 0, K2 = 0, L2 = 0;
@@ -100176,7 +98233,6 @@ var require_libheif = __commonJS({
           u = L2;
           return;
         }
-        __name(ek, "ek");
         function fk(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -100233,7 +98289,6 @@ var require_libheif = __commonJS({
           KK(b2);
           return;
         }
-        __name(fk, "fk");
         function gk(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -100290,7 +98345,6 @@ var require_libheif = __commonJS({
           KK(b2);
           return;
         }
-        __name(gk, "gk");
         function hk(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -100333,7 +98387,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(hk, "hk");
         function ik(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -100418,7 +98471,6 @@ var require_libheif = __commonJS({
           u = o2;
           return d2 | 0;
         }
-        __name(ik, "ik");
         function jk(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -101041,7 +99093,6 @@ var require_libheif = __commonJS({
           u = K2;
           return;
         }
-        __name(jk, "jk");
         function kk(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -101077,7 +99128,6 @@ var require_libheif = __commonJS({
           } while ((a2 | 0) != (b2 | 0));
           return;
         }
-        __name(kk, "kk");
         function lk(a2) {
           a2 = a2 | 0;
           if (a2 >>> 0 < 4)
@@ -101086,7 +99136,6 @@ var require_libheif = __commonJS({
             Pa(55956, 25626, 47, 25640);
           return 0;
         }
-        __name(lk, "lk");
         function mk(a2) {
           a2 = a2 | 0;
           if (a2 >>> 0 < 4)
@@ -101095,7 +99144,6 @@ var require_libheif = __commonJS({
             Pa(55956, 25626, 66, 25661);
           return 0;
         }
-        __name(mk, "mk");
         function nk(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -101148,7 +99196,6 @@ var require_libheif = __commonJS({
           LK(c2);
           return;
         }
-        __name(nk, "nk");
         function ok(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -101161,7 +99208,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(ok, "ok");
         function pk(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -101191,7 +99237,6 @@ var require_libheif = __commonJS({
           }
           return b2 | 0;
         }
-        __name(pk, "pk");
         function qk(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -101204,7 +99249,6 @@ var require_libheif = __commonJS({
           f[a2 + 36 >> 2] = e3;
           return;
         }
-        __name(qk, "qk");
         function rk(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -101314,7 +99358,6 @@ var require_libheif = __commonJS({
           u = k2;
           return a2 | 0;
         }
-        __name(rk, "rk");
         function sk(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -101376,7 +99419,6 @@ var require_libheif = __commonJS({
           f[a2 + 20 >> 2] = (g2 | 0) == 0 ? j2 : j2 + (16 - g2) | 0;
           return 1;
         }
-        __name(sk, "sk");
         function tk(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -101413,7 +99455,6 @@ var require_libheif = __commonJS({
           b2 = (b2 | 0) != (e3 | 0);
           return b2 | 0;
         }
-        __name(tk, "tk");
         function uk(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -101455,7 +99496,6 @@ var require_libheif = __commonJS({
           b2 = f[a2 + 24 >> 2] | 0;
           return b2 | 0;
         }
-        __name(uk, "uk");
         function vk(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -101497,7 +99537,6 @@ var require_libheif = __commonJS({
           b2 = f[a2 + 28 >> 2] | 0;
           return b2 | 0;
         }
-        __name(vk, "vk");
         function wk(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -101600,7 +99639,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(wk, "wk");
         function xk(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -101613,7 +99651,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(xk, "xk");
         function yk(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -101677,7 +99714,6 @@ var require_libheif = __commonJS({
           c2 = a2 & 255;
           return c2 | 0;
         }
-        __name(yk, "yk");
         function zk(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -101719,7 +99755,6 @@ var require_libheif = __commonJS({
           c2 = b[a2 + 20 >> 0] | 0;
           return c2 | 0;
         }
-        __name(zk, "zk");
         function Ak(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -101764,7 +99799,6 @@ var require_libheif = __commonJS({
           c2 = f[a2 + 40 >> 2] | 0;
           return c2 | 0;
         }
-        __name(Ak, "Ak");
         function Bk(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -101809,7 +99843,6 @@ var require_libheif = __commonJS({
           c2 = f[a2 + 40 >> 2] | 0;
           return c2 | 0;
         }
-        __name(Bk, "Bk");
         function Ck(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -102070,7 +100103,6 @@ var require_libheif = __commonJS({
           } while ((g2 | 0) != (q2 | 0));
           return;
         }
-        __name(Ck, "Ck");
         function Dk(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -102305,7 +100337,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(Dk, "Dk");
         function Ek(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -102570,7 +100601,6 @@ var require_libheif = __commonJS({
           f[n2 >> 2] = a2;
           return;
         }
-        __name(Ek, "Ek");
         function Fk(a2) {
           a2 = a2 | 0;
           switch (a2 | 0) {
@@ -102596,7 +100626,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(Fk, "Fk");
         function Gk(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -102963,7 +100992,6 @@ var require_libheif = __commonJS({
           ZK(a2 + 8 | 0, 56824);
           return;
         }
-        __name(Gk, "Gk");
         function Hk(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 6208;
@@ -102971,7 +100999,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Hk, "Hk");
         function Ik(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 6208;
@@ -102980,19 +101007,16 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Ik, "Ik");
         function Jk(a2) {
           a2 = a2 | 0;
           nk(a2 + 12 | 0);
           return;
         }
-        __name(Jk, "Jk");
         function Kk(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Kk, "Kk");
         function Lk(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -103108,7 +101132,6 @@ var require_libheif = __commonJS({
           u = t2;
           return;
         }
-        __name(Lk, "Lk");
         function Mk(a2, c2, d2, e3, g2, i2, j2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -103338,7 +101361,6 @@ var require_libheif = __commonJS({
           ZK(a2, 56824);
           return;
         }
-        __name(Mk, "Mk");
         function Nk(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -103474,7 +101496,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(Nk, "Nk");
         function Ok(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -103902,12 +101923,10 @@ var require_libheif = __commonJS({
           u = G2;
           return;
         }
-        __name(Ok, "Ok");
         function Pk() {
           Qk(0);
           return;
         }
-        __name(Pk, "Pk");
         function Qk(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -104034,7 +102053,6 @@ var require_libheif = __commonJS({
           ib(1392);
           return;
         }
-        __name(Qk, "Qk");
         function Rk(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 0;
@@ -104050,7 +102068,6 @@ var require_libheif = __commonJS({
           b[a2 + 6 >> 0] = 0;
           return;
         }
-        __name(Rk, "Rk");
         function Sk(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -104073,16 +102090,13 @@ var require_libheif = __commonJS({
           u = d2;
           return a2 | 0;
         }
-        __name(Sk, "Sk");
         function Tk() {
           return 17563648;
         }
-        __name(Tk, "Tk");
         function Uk(a2) {
           a2 = a2 | 0;
           return Tc[a2 & 7]() | 0;
         }
-        __name(Uk, "Uk");
         function Vk() {
           var a2 = 0, b2 = 0, c2 = 0, d2 = 0;
           a2 = OK(8) | 0;
@@ -104099,12 +102113,10 @@ var require_libheif = __commonJS({
           f[b2 >> 2] = c2;
           return a2 | 0;
         }
-        __name(Vk, "Vk");
         function Wk(a2) {
           a2 = a2 | 0;
           return Tc[a2 & 7]() | 0;
         }
-        __name(Wk, "Wk");
         function Xk(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -104116,14 +102128,12 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Xk, "Xk");
         function Yk(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           dd[a2 & 511](b2);
           return;
         }
-        __name(Yk, "Yk");
         function Zk(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -104145,7 +102155,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(Zk, "Zk");
         function _k(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -104194,7 +102203,6 @@ var require_libheif = __commonJS({
           u = k2;
           return d2 | 0;
         }
-        __name(_k, "_k");
         function $k(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -104231,13 +102239,11 @@ var require_libheif = __commonJS({
           u = h2;
           return g2 | 0;
         }
-        __name($k, "$k");
         function al(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return Uc[a2 & 127](b2) | 0;
         }
-        __name(al, "al");
         function bl(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104363,7 +102369,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(bl, "bl");
         function cl(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104378,7 +102383,6 @@ var require_libheif = __commonJS({
           u = c2;
           return b2 | 0;
         }
-        __name(cl, "cl");
         function dl(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104415,7 +102419,6 @@ var require_libheif = __commonJS({
           u = i2;
           return;
         }
-        __name(dl, "dl");
         function el(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104431,7 +102434,6 @@ var require_libheif = __commonJS({
           u = d2;
           return c2 | 0;
         }
-        __name(el, "el");
         function fl(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -104657,7 +102659,6 @@ var require_libheif = __commonJS({
           u = w2;
           return;
         }
-        __name(fl, "fl");
         function gl(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104674,7 +102675,6 @@ var require_libheif = __commonJS({
           u = e3;
           return d2 | 0;
         }
-        __name(gl, "gl");
         function hl(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -104689,19 +102689,16 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(hl, "hl");
         function il(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           dd[a2 & 511](b2);
           return;
         }
-        __name(il, "il");
         function jl(a2) {
           a2 = a2 | 0;
           return 1272;
         }
-        __name(jl, "jl");
         function kl(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -104713,12 +102710,10 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(kl, "kl");
         function ll(a2) {
           a2 = a2 | 0;
           return 1312;
         }
-        __name(ll, "ll");
         function ml(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -104733,12 +102728,10 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(ml, "ml");
         function nl(a2) {
           a2 = a2 | 0;
           return 1352;
         }
-        __name(nl, "nl");
         function ol(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -104750,7 +102743,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(ol, "ol");
         function pl() {
           var a2 = 0;
           a2 = OK(12) | 0;
@@ -104759,7 +102751,6 @@ var require_libheif = __commonJS({
           f[a2 + 8 >> 2] = 0;
           return a2 | 0;
         }
-        __name(pl, "pl");
         function ql(a2) {
           a2 = a2 | 0;
           if (!a2)
@@ -104767,13 +102758,11 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(ql, "ql");
         function rl(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return f[b2 + (f[a2 >> 2] | 0) >> 2] | 0;
         }
-        __name(rl, "rl");
         function sl(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104781,13 +102770,11 @@ var require_libheif = __commonJS({
           f[b2 + (f[a2 >> 2] | 0) >> 2] = c2;
           return;
         }
-        __name(sl, "sl");
         function tl(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return f[b2 + (f[a2 >> 2] | 0) >> 2] | 0;
         }
-        __name(tl, "tl");
         function ul(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104795,7 +102782,6 @@ var require_libheif = __commonJS({
           f[b2 + (f[a2 >> 2] | 0) >> 2] = c2;
           return;
         }
-        __name(ul, "ul");
         function vl(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -104836,7 +102822,6 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(vl, "vl");
         function wl(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104855,7 +102840,6 @@ var require_libheif = __commonJS({
           u = d2;
           return;
         }
-        __name(wl, "wl");
         function xl(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104874,7 +102858,6 @@ var require_libheif = __commonJS({
           u = d2;
           return;
         }
-        __name(xl, "xl");
         function yl(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104893,7 +102876,6 @@ var require_libheif = __commonJS({
           u = d2;
           return;
         }
-        __name(yl, "yl");
         function zl(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104912,7 +102894,6 @@ var require_libheif = __commonJS({
           u = d2;
           return;
         }
-        __name(zl, "zl");
         function Al(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -104931,7 +102912,6 @@ var require_libheif = __commonJS({
           u = d2;
           return;
         }
-        __name(Al, "Al");
         function Bl(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -104956,7 +102936,6 @@ var require_libheif = __commonJS({
           u = e3;
           return;
         }
-        __name(Bl, "Bl");
         function Cl(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -105081,7 +103060,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(Cl, "Cl");
         function Dl(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -105117,7 +103095,6 @@ var require_libheif = __commonJS({
           } while ((c2 | 0) != (b2 | 0));
           return;
         }
-        __name(Dl, "Dl");
         function El(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -105137,7 +103114,6 @@ var require_libheif = __commonJS({
           u = d2;
           return;
         }
-        __name(El, "El");
         function Fl(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 6336;
@@ -105145,7 +103121,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Fl, "Fl");
         function Gl(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 6336;
@@ -105154,19 +103129,16 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Gl, "Gl");
         function Hl(a2) {
           a2 = a2 | 0;
           Wl(a2 + 12 | 0);
           return;
         }
-        __name(Hl, "Hl");
         function Il(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Il, "Il");
         function Jl(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -105242,7 +103214,6 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(Jl, "Jl");
         function Kl(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -105254,7 +103225,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Kl, "Kl");
         function Ll(a2, c2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -105337,7 +103307,6 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(Ll, "Ll");
         function Ml(a2, c2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -105556,7 +103525,6 @@ var require_libheif = __commonJS({
           u = w2;
           return;
         }
-        __name(Ml, "Ml");
         function Nl(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -105623,7 +103591,6 @@ var require_libheif = __commonJS({
           QK(b2);
           return;
         }
-        __name(Nl, "Nl");
         function Ol(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -105651,7 +103618,6 @@ var require_libheif = __commonJS({
           Pl(a2);
           return;
         }
-        __name(Ol, "Ol");
         function Pl(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0;
@@ -105701,7 +103667,6 @@ var require_libheif = __commonJS({
           KK(b2);
           return;
         }
-        __name(Pl, "Pl");
         function Ql(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -105715,7 +103680,6 @@ var require_libheif = __commonJS({
           QK(b2);
           return;
         }
-        __name(Ql, "Ql");
         function Rl(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -105728,7 +103692,6 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(Rl, "Rl");
         function Sl(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 6364;
@@ -105736,7 +103699,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(Sl, "Sl");
         function Tl(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 6364;
@@ -105745,19 +103707,16 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(Tl, "Tl");
         function Ul(a2) {
           a2 = a2 | 0;
           Vj(a2 + 12 | 0);
           return;
         }
-        __name(Ul, "Ul");
         function Vl(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Vl, "Vl");
         function Wl(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0, j2 = 0;
@@ -105834,7 +103793,6 @@ var require_libheif = __commonJS({
           QK(f[a2 >> 2] | 0);
           return;
         }
-        __name(Wl, "Wl");
         function Xl(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0;
@@ -105887,7 +103845,6 @@ var require_libheif = __commonJS({
           } while ((b2 | 0) != (e3 | 0));
           return;
         }
-        __name(Xl, "Xl");
         function Yl(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -108291,7 +106248,6 @@ var require_libheif = __commonJS({
           u = Db2;
           return;
         }
-        __name(Yl, "Yl");
         function Zl(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -108350,7 +106306,6 @@ var require_libheif = __commonJS({
           KK(g2);
           return;
         }
-        __name(Zl, "Zl");
         function _l(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -108430,7 +106385,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(_l, "_l");
         function $l(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -108501,7 +106455,6 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name($l, "$l");
         function am(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -108572,7 +106525,6 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(am, "am");
         function bm(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0;
@@ -108596,7 +106548,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(bm, "bm");
         function cm(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0;
@@ -108622,7 +106573,6 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(cm, "cm");
         function dm(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0;
@@ -108642,13 +106592,11 @@ var require_libheif = __commonJS({
           QK(f[c2 >> 2] | 0);
           return;
         }
-        __name(dm, "dm");
         function em(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(em, "em");
         function fm(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -108769,7 +106717,6 @@ var require_libheif = __commonJS({
           } while ((d2 | 0) != (c2 | 0));
           return;
         }
-        __name(fm, "fm");
         function gm(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 6392;
@@ -108777,7 +106724,6 @@ var require_libheif = __commonJS({
           zK(a2);
           return;
         }
-        __name(gm, "gm");
         function hm(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 6392;
@@ -108786,19 +106732,16 @@ var require_libheif = __commonJS({
           QK(a2);
           return;
         }
-        __name(hm, "hm");
         function im(a2) {
           a2 = a2 | 0;
           km(a2 + 16 | 0);
           return;
         }
-        __name(im, "im");
         function jm(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(jm, "jm");
         function km(a2) {
           a2 = a2 | 0;
           var c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -108885,7 +106828,6 @@ var require_libheif = __commonJS({
           QK(f[a2 >> 2] | 0);
           return;
         }
-        __name(km, "km");
         function lm(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -108938,7 +106880,6 @@ var require_libheif = __commonJS({
           u = l2;
           return;
         }
-        __name(lm, "lm");
         function mm(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -109062,7 +107003,6 @@ var require_libheif = __commonJS({
           u = s2;
           return;
         }
-        __name(mm, "mm");
         function nm(a2, c2, d2, e3, g2, h2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -109151,7 +107091,6 @@ var require_libheif = __commonJS({
           u = q2;
           return;
         }
-        __name(nm, "nm");
         function om(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -110425,7 +108364,6 @@ var require_libheif = __commonJS({
           u = T2;
           return;
         }
-        __name(om, "om");
         function pm(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -111091,7 +109029,6 @@ var require_libheif = __commonJS({
           u = U2;
           return;
         }
-        __name(pm, "pm");
         function qm(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -111183,7 +109120,6 @@ var require_libheif = __commonJS({
           u = n2;
           return;
         }
-        __name(qm, "qm");
         function rm(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -111619,7 +109555,6 @@ var require_libheif = __commonJS({
           u = J2;
           return;
         }
-        __name(rm, "rm");
         function sm(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -111786,7 +109721,6 @@ var require_libheif = __commonJS({
           u = z2;
           return;
         }
-        __name(sm, "sm");
         function tm(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -111911,7 +109845,6 @@ var require_libheif = __commonJS({
           u = r2;
           return;
         }
-        __name(tm, "tm");
         function um(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, f2 = 0, g2 = 0;
@@ -111936,7 +109869,6 @@ var require_libheif = __commonJS({
           }
           return 0;
         }
-        __name(um, "um");
         function vm(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -112012,44 +109944,37 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(vm, "vm");
         function wm(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(wm, "wm");
         function xm(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(xm, "xm");
         function ym(a2) {
           a2 = a2 | 0;
           zK(a2);
           return;
         }
-        __name(ym, "ym");
         function zm(a2) {
           a2 = a2 | 0;
           zK(a2);
           QK(a2);
           return;
         }
-        __name(zm, "zm");
         function Am(a2) {
           a2 = a2 | 0;
           a2 = a2 + 16 | 0;
           dd[f[f[a2 >> 2] >> 2] & 511](a2);
           return;
         }
-        __name(Am, "Am");
         function Bm(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Bm, "Bm");
         function Cm() {
           f[14377] = 0;
           f[14378] = 0;
@@ -112060,7 +109985,6 @@ var require_libheif = __commonJS({
           Dm(61384);
           return;
         }
-        __name(Cm, "Cm");
         function Dm(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0;
@@ -112130,7 +110054,6 @@ var require_libheif = __commonJS({
           f[14378] = (f[14378] | 0) + 1;
           return;
         }
-        __name(Dm, "Dm");
         function Em(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0;
@@ -112173,18 +110096,15 @@ var require_libheif = __commonJS({
           } while ((c2 | 0) != 57508);
           return b2 | 0;
         }
-        __name(Em, "Em");
         function Fm(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(Fm, "Fm");
         function Gm(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Gm, "Gm");
         function Hm(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -112281,7 +110201,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(Hm, "Hm");
         function Im(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -112452,7 +110371,6 @@ var require_libheif = __commonJS({
           u = z2;
           return;
         }
-        __name(Im, "Im");
         function Jm(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -112545,13 +110463,11 @@ var require_libheif = __commonJS({
           QK(g2);
           return;
         }
-        __name(Jm, "Jm");
         function Km(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Km, "Km");
         function Lm(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -112618,7 +110534,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(Lm, "Lm");
         function Mm(a2, c2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -112747,13 +110662,11 @@ var require_libheif = __commonJS({
           u = E2;
           return;
         }
-        __name(Mm, "Mm");
         function Nm(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Nm, "Nm");
         function Om(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -112820,7 +110733,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(Om, "Om");
         function Pm(a2, c2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -112988,13 +110900,11 @@ var require_libheif = __commonJS({
           u = H2;
           return;
         }
-        __name(Pm, "Pm");
         function Qm(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Qm, "Qm");
         function Rm(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -113093,7 +111003,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(Rm, "Rm");
         function Sm(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -113297,13 +111206,11 @@ var require_libheif = __commonJS({
           u = A2;
           return;
         }
-        __name(Sm, "Sm");
         function Tm(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Tm, "Tm");
         function Um(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -113402,7 +111309,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(Um, "Um");
         function Vm(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -113580,13 +111486,11 @@ var require_libheif = __commonJS({
           u = z2;
           return;
         }
-        __name(Vm, "Vm");
         function Wm(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Wm, "Wm");
         function Xm(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -113629,7 +111533,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(Xm, "Xm");
         function Ym(a2, c2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -113764,13 +111667,11 @@ var require_libheif = __commonJS({
           u = D2;
           return;
         }
-        __name(Ym, "Ym");
         function Zm(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(Zm, "Zm");
         function _m(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -113876,7 +111777,6 @@ var require_libheif = __commonJS({
           u = m2;
           return;
         }
-        __name(_m, "_m");
         function $m(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -113988,13 +111888,11 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name($m, "$m");
         function an(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(an, "an");
         function bn(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -114039,7 +111937,6 @@ var require_libheif = __commonJS({
           u = h2;
           return;
         }
-        __name(bn, "bn");
         function cn(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -114194,13 +112091,11 @@ var require_libheif = __commonJS({
           u = C2;
           return;
         }
-        __name(cn, "cn");
         function dn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(dn, "dn");
         function en(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -114305,7 +112200,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(en, "en");
         function fn(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -114466,13 +112360,11 @@ var require_libheif = __commonJS({
           u = t2;
           return;
         }
-        __name(fn, "fn");
         function gn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(gn, "gn");
         function hn(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -114584,7 +112476,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(hn, "hn");
         function jn(a2, c2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -114806,13 +112697,11 @@ var require_libheif = __commonJS({
           u = M2;
           return;
         }
-        __name(jn, "jn");
         function kn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(kn, "kn");
         function ln(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -114929,7 +112818,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(ln, "ln");
         function mn(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -115066,13 +112954,11 @@ var require_libheif = __commonJS({
             return;
           }
         }
-        __name(mn, "mn");
         function nn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(nn, "nn");
         function on(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -115160,7 +113046,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(on, "on");
         function pn(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -115226,13 +113111,11 @@ var require_libheif = __commonJS({
           Ck(i2, d2, 5, 5);
           return;
         }
-        __name(pn, "pn");
         function qn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(qn, "qn");
         function rn(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -115321,7 +113204,6 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(rn, "rn");
         function sn(a2, c2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -115397,13 +113279,11 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(sn, "sn");
         function tn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(tn, "tn");
         function un(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -115491,7 +113371,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(un, "un");
         function vn(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -115580,13 +113459,11 @@ var require_libheif = __commonJS({
           u = p2;
           return;
         }
-        __name(vn, "vn");
         function wn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(wn, "wn");
         function xn(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -115654,7 +113531,6 @@ var require_libheif = __commonJS({
           u = j2;
           return;
         }
-        __name(xn, "xn");
         function yn(a2, c2, e3, g2, i2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -115914,13 +113790,11 @@ var require_libheif = __commonJS({
           u = ea2;
           return;
         }
-        __name(yn, "yn");
         function zn(a2) {
           a2 = a2 | 0;
           QK(a2);
           return;
         }
-        __name(zn, "zn");
         function An(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -116026,7 +113900,6 @@ var require_libheif = __commonJS({
           u = o2;
           return;
         }
-        __name(An, "An");
         function Bn(a2, c2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -116236,7 +114109,6 @@ var require_libheif = __commonJS({
           u = aa2;
           return;
         }
-        __name(Bn, "Bn");
         function sL(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -116276,7 +114148,6 @@ var require_libheif = __commonJS({
           u = l2;
           return a2 | 0;
         }
-        __name(sL, "sL");
         function tL(a2, c2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -116327,7 +114198,6 @@ var require_libheif = __commonJS({
           u = k2;
           return;
         }
-        __name(tL, "tL");
         function uL() {
           var a2 = 0, b2 = 0, c2 = 0, d2 = 0, e3 = 0, g2 = 0, h2 = 0, i2 = 0;
           e3 = u = u + 31 & -32;
@@ -116368,7 +114238,6 @@ var require_libheif = __commonJS({
           }
           wL(56224, h2);
         }
-        __name(uL, "uL");
         function vL() {
           var a2 = 0, b2 = 0;
           a2 = u;
@@ -116382,7 +114251,6 @@ var require_libheif = __commonJS({
             wL(56375, b2);
           return 0;
         }
-        __name(vL, "vL");
         function wL(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -116395,29 +114263,24 @@ var require_libheif = __commonJS({
           gz(10, b2) | 0;
           Gb();
         }
-        __name(wL, "wL");
         function xL(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(xL, "xL");
         function yL(a2) {
           a2 = a2 | 0;
           xL(a2);
           QK(a2);
           return;
         }
-        __name(yL, "yL");
         function zL(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(zL, "zL");
         function AL(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(AL, "AL");
         function BL(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -116451,7 +114314,6 @@ var require_libheif = __commonJS({
           u = h2;
           return b2 | 0;
         }
-        __name(BL, "BL");
         function CL(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -116463,7 +114325,6 @@ var require_libheif = __commonJS({
             IL(0, b2, c2, d2, e3);
           return;
         }
-        __name(CL, "CL");
         function DL(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -116493,7 +114354,6 @@ var require_libheif = __commonJS({
           while (0);
           return;
         }
-        __name(DL, "DL");
         function EL(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -116503,14 +114363,12 @@ var require_libheif = __commonJS({
             GL(0, b2, c2, d2);
           return;
         }
-        __name(EL, "EL");
         function FL(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return (a2 | 0) == (b2 | 0) | 0;
         }
-        __name(FL, "FL");
         function GL(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -116539,7 +114397,6 @@ var require_libheif = __commonJS({
           while (0);
           return;
         }
-        __name(GL, "GL");
         function HL(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -116550,7 +114407,6 @@ var require_libheif = __commonJS({
             f[e3 >> 2] = d2;
           return;
         }
-        __name(HL, "HL");
         function IL(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -116593,7 +114449,6 @@ var require_libheif = __commonJS({
           while (0);
           return;
         }
-        __name(IL, "IL");
         function JL(a2, c2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -116654,14 +114509,12 @@ var require_libheif = __commonJS({
           u = p2;
           return a2 | 0;
         }
-        __name(JL, "JL");
         function KL(a2) {
           a2 = a2 | 0;
           xL(a2);
           QK(a2);
           return;
         }
-        __name(KL, "KL");
         function LL(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -116677,7 +114530,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(LL, "LL");
         function ML(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -116732,7 +114584,6 @@ var require_libheif = __commonJS({
           while (0);
           return;
         }
-        __name(ML, "ML");
         function NL(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -116746,12 +114597,10 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(NL, "NL");
         function OL(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(OL, "OL");
         function PL() {
           var a2 = 0, b2 = 0;
           a2 = u;
@@ -116763,7 +114612,6 @@ var require_libheif = __commonJS({
           } else
             wL(56424, b2);
         }
-        __name(PL, "PL");
         function QL(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -116777,7 +114625,6 @@ var require_libheif = __commonJS({
           } else
             wL(56474, c2);
         }
-        __name(QL, "QL");
         function RL() {
           var a2 = 0, b2 = 0;
           a2 = vL() | 0;
@@ -116785,7 +114632,6 @@ var require_libheif = __commonJS({
             SL(f[b2 + 12 >> 2] | 0);
           SL(TL() | 0);
         }
-        __name(RL, "RL");
         function SL(a2) {
           a2 = a2 | 0;
           var b2 = 0;
@@ -116794,43 +114640,36 @@ var require_libheif = __commonJS({
           cd[a2 & 7]();
           wL(56527, b2);
         }
-        __name(SL, "SL");
         function TL() {
           var a2 = 0;
           a2 = f[4387] | 0;
           f[4387] = a2 + 0;
           return a2 | 0;
         }
-        __name(TL, "TL");
         function UL(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(UL, "UL");
         function VL(a2) {
           a2 = a2 | 0;
           f[a2 >> 2] = 17640;
           ZL(a2 + 4 | 0);
           return;
         }
-        __name(VL, "VL");
         function WL(a2) {
           a2 = a2 | 0;
           VL(a2);
           QK(a2);
           return;
         }
-        __name(WL, "WL");
         function XL(a2) {
           a2 = a2 | 0;
           return YL(a2 + 4 | 0) | 0;
         }
-        __name(XL, "XL");
         function YL(a2) {
           a2 = a2 | 0;
           return f[a2 >> 2] | 0;
         }
-        __name(YL, "YL");
         function ZL(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -116838,40 +114677,34 @@ var require_libheif = __commonJS({
             QK(b2);
           return;
         }
-        __name(ZL, "ZL");
         function _L(a2) {
           a2 = a2 | 0;
           return a2 + -12 | 0;
         }
-        __name(_L, "_L");
         function $L(a2) {
           a2 = a2 | 0;
           VL(a2);
           QK(a2);
           return;
         }
-        __name($L, "$L");
         function aM(a2) {
           a2 = a2 | 0;
           xL(a2);
           QK(a2);
           return;
         }
-        __name(aM, "aM");
         function bM(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return FL(a2, b2, 0) | 0;
         }
-        __name(bM, "bM");
         function cM(a2) {
           a2 = a2 | 0;
           xL(a2);
           QK(a2);
           return;
         }
-        __name(cM, "cM");
         function dM(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -116915,7 +114748,6 @@ var require_libheif = __commonJS({
           u = j2;
           return a2 | 0;
         }
-        __name(dM, "dM");
         function eM(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -116926,28 +114758,24 @@ var require_libheif = __commonJS({
             a2 = FL(b2, 4088, 0) | 0;
           return a2 | 0;
         }
-        __name(eM, "eM");
         function fM(a2) {
           a2 = a2 | 0;
           xL(a2);
           QK(a2);
           return;
         }
-        __name(fM, "fM");
         function gM(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return FL(a2, b2, 0) | 0;
         }
-        __name(gM, "gM");
         function hM(a2) {
           a2 = a2 | 0;
           xL(a2);
           QK(a2);
           return;
         }
-        __name(hM, "hM");
         function iM(a2, c2, d2, e3, g2, h2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -116999,7 +114827,6 @@ var require_libheif = __commonJS({
           }
           return;
         }
-        __name(iM, "iM");
         function jM(a2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -117140,7 +114967,6 @@ var require_libheif = __commonJS({
             while (0);
           return;
         }
-        __name(jM, "jM");
         function kM(a2, c2, d2, e3) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -117168,7 +114994,6 @@ var require_libheif = __commonJS({
             while (0);
           return;
         }
-        __name(kM, "kM");
         function lM(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117183,7 +115008,6 @@ var require_libheif = __commonJS({
           gd[f[(f[a2 >> 2] | 0) + 28 >> 2] & 31](a2, b2, c2 + e3 | 0, g2 & 2 | 0 ? d2 : 2);
           return;
         }
-        __name(lM, "lM");
         function mM(a2, b2, c2, d2, e3, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117200,7 +115024,6 @@ var require_libheif = __commonJS({
           id[f[(f[a2 >> 2] | 0) + 20 >> 2] & 15](a2, b2, c2, d2 + h2 | 0, i2 & 2 | 0 ? e3 : 2, g2);
           return;
         }
-        __name(mM, "mM");
         function nM(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117216,7 +115039,6 @@ var require_libheif = __commonJS({
           hd[f[(f[a2 >> 2] | 0) + 24 >> 2] & 63](a2, b2, c2 + g2 | 0, h2 & 2 | 0 ? d2 : 2, e3);
           return;
         }
-        __name(nM, "nM");
         function oM(a2) {
           a2 = a2 | 0;
           if ((b[a2 >> 0] | 0) == 1)
@@ -117227,19 +115049,16 @@ var require_libheif = __commonJS({
           }
           return a2 | 0;
         }
-        __name(oM, "oM");
         function pM(a2) {
           a2 = a2 | 0;
           return;
         }
-        __name(pM, "pM");
         function qM() {
           var a2 = 0;
           a2 = f[15345] | 0;
           f[15345] = a2 + 0;
           return a2 | 0;
         }
-        __name(qM, "qM");
         function rM(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117255,7 +115074,6 @@ var require_libheif = __commonJS({
           u = e3;
           return a2 & 1 | 0;
         }
-        __name(rM, "rM");
         function sM(a2) {
           a2 = a2 | 0;
           if (!a2)
@@ -117264,10 +115082,8 @@ var require_libheif = __commonJS({
             a2 = (JL(a2, 3960, 4048, 0) | 0) != 0;
           return a2 & 1 | 0;
         }
-        __name(sM, "sM");
         function tM() {
         }
-        __name(tM, "tM");
         function uM(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117281,7 +115097,6 @@ var require_libheif = __commonJS({
           b2 = X(e3, f2) | 0;
           return (I = (a2 >>> 16) + (X(e3, d2) | 0) + (((a2 & 65535) + b2 | 0) >>> 16) | 0, a2 + b2 << 16 | c2 & 65535 | 0) | 0;
         }
-        __name(uM, "uM");
         function vM(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117294,7 +115109,6 @@ var require_libheif = __commonJS({
           a2 = I;
           return (I = (X(b2, f2) | 0) + (X(d2, e3) | 0) + a2 | a2 & 0, c2 | 0 | 0) | 0;
         }
-        __name(vM, "vM");
         function wM(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117303,7 +115117,6 @@ var require_libheif = __commonJS({
           c2 = a2 + c2 >>> 0;
           return (I = b2 + d2 + (c2 >>> 0 < a2 >>> 0 | 0) >>> 0, c2 | 0) | 0;
         }
-        __name(wM, "wM");
         function xM(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117312,7 +115125,6 @@ var require_libheif = __commonJS({
           d2 = b2 - d2 - (c2 >>> 0 > a2 >>> 0 | 0) >>> 0;
           return (I = d2, a2 - c2 >>> 0 | 0) | 0;
         }
-        __name(xM, "xM");
         function yM(a2) {
           a2 = a2 | 0;
           var c2 = 0;
@@ -117327,7 +115139,6 @@ var require_libheif = __commonJS({
             return c2 + 16 | 0;
           return (b[w + (a2 >>> 24) >> 0] | 0) + 24 | 0;
         }
-        __name(yM, "yM");
         function zM(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117509,7 +115320,6 @@ var require_libheif = __commonJS({
           p2 = (g2 << 1 | 0 >>> 31) & -2 | i2;
           return (I = o2, p2) | 0;
         }
-        __name(zM, "zM");
         function AM(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117517,7 +115327,6 @@ var require_libheif = __commonJS({
           d2 = d2 | 0;
           return zM(a2, b2, c2, d2, 0) | 0;
         }
-        __name(AM, "AM");
         function BM(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117531,7 +115340,6 @@ var require_libheif = __commonJS({
           u = g2;
           return (I = f[e3 + 4 >> 2] | 0, f[e3 >> 2] | 0) | 0;
         }
-        __name(BM, "BM");
         function CM(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117543,7 +115351,6 @@ var require_libheif = __commonJS({
           I = (b2 | 0) < 0 ? -1 : 0;
           return b2 >> c2 - 32 | 0;
         }
-        __name(CM, "CM");
         function DM(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117555,7 +115362,6 @@ var require_libheif = __commonJS({
           I = 0;
           return b2 >>> c2 - 32 | 0;
         }
-        __name(DM, "DM");
         function EM(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117567,12 +115373,10 @@ var require_libheif = __commonJS({
           I = a2 << c2 - 32;
           return 0;
         }
-        __name(EM, "EM");
         function FM(a2) {
           a2 = a2 | 0;
           return (a2 & 255) << 24 | (a2 >> 8 & 255) << 16 | (a2 >> 16 & 255) << 8 | a2 >>> 24 | 0;
         }
-        __name(FM, "FM");
         function GM(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -117636,7 +115440,6 @@ var require_libheif = __commonJS({
           }
           return h2 | 0;
         }
-        __name(GM, "GM");
         function HM(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -117657,7 +115460,6 @@ var require_libheif = __commonJS({
             GM(a2, c2, d2) | 0;
           return a2 | 0;
         }
-        __name(HM, "HM");
         function IM(a2, c2, d2) {
           a2 = a2 | 0;
           c2 = c2 | 0;
@@ -117703,27 +115505,22 @@ var require_libheif = __commonJS({
           }
           return h2 - d2 | 0;
         }
-        __name(IM, "IM");
         function JM(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(JM, "JM");
         function KM(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(KM, "KM");
         function LM(a2) {
           a2 = a2 | 0;
           return 0;
         }
-        __name(LM, "LM");
         function MM(a2) {
           a2 = +a2;
           return a2 >= 0 ? +J(a2 + 0.5) : +W(a2 - 0.5);
         }
-        __name(MM, "MM");
         function NM(a2) {
           a2 = a2 | 0;
           var b2 = 0, c2 = 0;
@@ -117743,25 +115540,21 @@ var require_libheif = __commonJS({
           }
           return b2 | 0;
         }
-        __name(NM, "NM");
         function OM(a2) {
           a2 = a2 | 0;
           return Tc[a2 & 7]() | 0;
         }
-        __name(OM, "OM");
         function PM(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           return Uc[a2 & 127](b2 | 0) | 0;
         }
-        __name(PM, "PM");
         function QM(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           return Vc[a2 & 31](b2 | 0, c2 | 0) | 0;
         }
-        __name(QM, "QM");
         function RM(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117769,7 +115562,6 @@ var require_libheif = __commonJS({
           d2 = d2 | 0;
           return Wc[a2 & 63](b2 | 0, c2 | 0, d2 | 0) | 0;
         }
-        __name(RM, "RM");
         function SM(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117778,7 +115570,6 @@ var require_libheif = __commonJS({
           e3 = e3 | 0;
           return Xc[a2 & 7](b2 | 0, c2 | 0, d2 | 0, e3 | 0) | 0;
         }
-        __name(SM, "SM");
         function TM(a2, b2, c2, d2, e3, f2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117788,7 +115579,6 @@ var require_libheif = __commonJS({
           f2 = +f2;
           return Yc[a2 & 7](b2 | 0, c2 | 0, d2 | 0, e3 | 0, +f2) | 0;
         }
-        __name(TM, "TM");
         function UM(a2, b2, c2, d2, e3, f2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117798,7 +115588,6 @@ var require_libheif = __commonJS({
           f2 = f2 | 0;
           return Zc[a2 & 31](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0) | 0;
         }
-        __name(UM, "UM");
         function VM(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117809,7 +115598,6 @@ var require_libheif = __commonJS({
           g2 = +g2;
           return _c[a2 & 3](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0, +g2) | 0;
         }
-        __name(VM, "VM");
         function WM(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117820,7 +115608,6 @@ var require_libheif = __commonJS({
           g2 = g2 | 0;
           return $c[a2 & 63](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0, g2 | 0) | 0;
         }
-        __name(WM, "WM");
         function XM(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117832,7 +115619,6 @@ var require_libheif = __commonJS({
           h2 = h2 | 0;
           return ad[a2 & 7](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0, g2 | 0, h2 | 0) | 0;
         }
-        __name(XM, "XM");
         function YM(a2, b2, c2, d2, e3, f2, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117845,25 +115631,21 @@ var require_libheif = __commonJS({
           i2 = i2 | 0;
           return bd[a2 & 15](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0, g2 | 0, h2 | 0, i2 | 0) | 0;
         }
-        __name(YM, "YM");
         function ZM(a2) {
           a2 = a2 | 0;
           cd[a2 & 7]();
         }
-        __name(ZM, "ZM");
         function _M(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           dd[a2 & 511](b2 | 0);
         }
-        __name(_M, "_M");
         function $M(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           ed[a2 & 63](b2 | 0, c2 | 0);
         }
-        __name($M, "$M");
         function aN(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117871,7 +115653,6 @@ var require_libheif = __commonJS({
           d2 = d2 | 0;
           fd[a2 & 127](b2 | 0, c2 | 0, d2 | 0);
         }
-        __name(aN, "aN");
         function bN(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117880,7 +115661,6 @@ var require_libheif = __commonJS({
           e3 = e3 | 0;
           gd[a2 & 31](b2 | 0, c2 | 0, d2 | 0, e3 | 0);
         }
-        __name(bN, "bN");
         function cN(a2, b2, c2, d2, e3, f2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117890,7 +115670,6 @@ var require_libheif = __commonJS({
           f2 = f2 | 0;
           hd[a2 & 63](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0);
         }
-        __name(cN, "cN");
         function dN(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117901,7 +115680,6 @@ var require_libheif = __commonJS({
           g2 = g2 | 0;
           id[a2 & 15](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0, g2 | 0);
         }
-        __name(dN, "dN");
         function eN(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117913,7 +115691,6 @@ var require_libheif = __commonJS({
           h2 = h2 | 0;
           jd[a2 & 31](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0, g2 | 0, h2 | 0);
         }
-        __name(eN, "eN");
         function fN(a2, b2, c2, d2, e3, f2, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117926,7 +115703,6 @@ var require_libheif = __commonJS({
           i2 = i2 | 0;
           kd[a2 & 31](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0, g2 | 0, h2 | 0, i2 | 0);
         }
-        __name(fN, "fN");
         function gN(a2, b2, c2, d2, e3, f2, g2, h2, i2, j2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117940,7 +115716,6 @@ var require_libheif = __commonJS({
           j2 = j2 | 0;
           ld[a2 & 3](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0, g2 | 0, h2 | 0, i2 | 0, j2 | 0);
         }
-        __name(gN, "gN");
         function hN(a2, b2, c2, d2, e3, f2, g2, h2, i2, j2, k2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117955,7 +115730,6 @@ var require_libheif = __commonJS({
           k2 = k2 | 0;
           md[a2 & 7](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0, g2 | 0, h2 | 0, i2 | 0, j2 | 0, k2 | 0);
         }
-        __name(hN, "hN");
         function iN(a2, b2, c2, d2, e3, f2, g2, h2, i2, j2, k2, l2, m2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117972,7 +115746,6 @@ var require_libheif = __commonJS({
           m2 = m2 | 0;
           nd[a2 & 1](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0, g2 | 0, h2 | 0, i2 | 0, j2 | 0, k2 | 0, l2 | 0, m2 | 0);
         }
-        __name(iN, "iN");
         function jN(a2, b2, c2, d2, e3, f2, g2, h2, i2, j2, k2, l2, m2, n2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -117990,25 +115763,21 @@ var require_libheif = __commonJS({
           n2 = n2 | 0;
           od[a2 & 1](b2 | 0, c2 | 0, d2 | 0, e3 | 0, f2 | 0, g2 | 0, h2 | 0, i2 | 0, j2 | 0, k2 | 0, l2 | 0, m2 | 0, n2 | 0);
         }
-        __name(jN, "jN");
         function kN() {
           $(0);
           return 0;
         }
-        __name(kN, "kN");
         function lN(a2) {
           a2 = a2 | 0;
           $(1);
           return 0;
         }
-        __name(lN, "lN");
         function mN(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           $(2);
           return 0;
         }
-        __name(mN, "mN");
         function nN(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118016,7 +115785,6 @@ var require_libheif = __commonJS({
           $(3);
           return 0;
         }
-        __name(nN, "nN");
         function oN(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118025,7 +115793,6 @@ var require_libheif = __commonJS({
           $(4);
           return 0;
         }
-        __name(oN, "oN");
         function pN(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118035,7 +115802,6 @@ var require_libheif = __commonJS({
           $(5);
           return 0;
         }
-        __name(pN, "pN");
         function qN(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118045,7 +115811,6 @@ var require_libheif = __commonJS({
           $(6);
           return 0;
         }
-        __name(qN, "qN");
         function rN(a2, b2, c2, d2, e3, f2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118056,7 +115821,6 @@ var require_libheif = __commonJS({
           $(7);
           return 0;
         }
-        __name(rN, "rN");
         function sN(a2, b2, c2, d2, e3, f2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118067,7 +115831,6 @@ var require_libheif = __commonJS({
           $(8);
           return 0;
         }
-        __name(sN, "sN");
         function tN(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118079,7 +115842,6 @@ var require_libheif = __commonJS({
           $(9);
           return 0;
         }
-        __name(tN, "tN");
         function uN(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118092,33 +115854,27 @@ var require_libheif = __commonJS({
           $(10);
           return 0;
         }
-        __name(uN, "uN");
         function vN() {
           $(11);
         }
-        __name(vN, "vN");
         function wN() {
           Ua();
         }
-        __name(wN, "wN");
         function xN(a2) {
           a2 = a2 | 0;
           $(12);
         }
-        __name(xN, "xN");
         function yN(a2, b2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           $(13);
         }
-        __name(yN, "yN");
         function zN(a2, b2, c2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
           c2 = c2 | 0;
           $(14);
         }
-        __name(zN, "zN");
         function AN(a2, b2, c2, d2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118126,7 +115882,6 @@ var require_libheif = __commonJS({
           d2 = d2 | 0;
           $(15);
         }
-        __name(AN, "AN");
         function BN(a2, b2, c2, d2, e3) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118135,7 +115890,6 @@ var require_libheif = __commonJS({
           e3 = e3 | 0;
           $(16);
         }
-        __name(BN, "BN");
         function CN(a2, b2, c2, d2, e3, f2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118145,7 +115899,6 @@ var require_libheif = __commonJS({
           f2 = f2 | 0;
           $(17);
         }
-        __name(CN, "CN");
         function DN(a2, b2, c2, d2, e3, f2, g2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118156,7 +115909,6 @@ var require_libheif = __commonJS({
           g2 = g2 | 0;
           $(18);
         }
-        __name(DN, "DN");
         function EN(a2, b2, c2, d2, e3, f2, g2, h2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118168,7 +115920,6 @@ var require_libheif = __commonJS({
           h2 = h2 | 0;
           $(19);
         }
-        __name(EN, "EN");
         function FN(a2, b2, c2, d2, e3, f2, g2, h2, i2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118181,7 +115932,6 @@ var require_libheif = __commonJS({
           i2 = i2 | 0;
           $(20);
         }
-        __name(FN, "FN");
         function GN(a2, b2, c2, d2, e3, f2, g2, h2, i2, j2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118195,7 +115945,6 @@ var require_libheif = __commonJS({
           j2 = j2 | 0;
           $(21);
         }
-        __name(GN, "GN");
         function HN(a2, b2, c2, d2, e3, f2, g2, h2, i2, j2, k2, l2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118211,7 +115960,6 @@ var require_libheif = __commonJS({
           l2 = l2 | 0;
           $(22);
         }
-        __name(HN, "HN");
         function IN(a2, b2, c2, d2, e3, f2, g2, h2, i2, j2, k2, l2, m2) {
           a2 = a2 | 0;
           b2 = b2 | 0;
@@ -118228,7 +115976,6 @@ var require_libheif = __commonJS({
           m2 = m2 | 0;
           $(23);
         }
-        __name(IN, "IN");
         var Tc = [kN, Ap, Tk, Vk, pl, kN, kN, kN];
         var Uc = [lN, yd, Xz, Yz, me, $z, yf, pf, Dp, kx, _z, nA, oA, qA, rA, BB, IB, PB, QB, WB, XB, lE, sE, tE, uE, vE, wE, xE, yE, VE, aF, bF, cF, dF, eF, fF, gF, QF, RF, WF, aG, bG, gG, lG, mG, rG, wG, xG, CG, xH, yH, AH, PH, QH, SH, vI, wI, CI, DI, IH, JH, LH, YH, ZH, $H, DK, XL, Sk, Uk, Wk, $k, jl, ll, nl, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN, lN];
         var Vc = [mN, ne, oe, AK, _p, $p, aA, cA, sA, uA, DB, KB, RB, YB, iI, kI, mI, NI, PI, RI, al, cl, rl, tl, mN, mN, mN, mN, mN, mN, mN, mN];
@@ -118343,14 +116090,14 @@ var require_libheif = __commonJS({
           var doBrowserLoad = doBrowserLoad2;
           __name(doBrowserLoad2, "doBrowserLoad");
           addRunDependency("memory initializer");
-          var applyMemoryInitializer = /* @__PURE__ */ __name(function(data2) {
+          var applyMemoryInitializer = function(data2) {
             if (data2.byteLength)
               data2 = new Uint8Array(data2);
             HEAPU8.set(data2, Runtime.GLOBAL_BASE);
             if (Module2["memoryInitializerRequest"])
               delete Module2["memoryInitializerRequest"].response;
             removeRunDependency("memory initializer");
-          }, "applyMemoryInitializer");
+          };
           var memoryInitializerBytes = tryParseAsDataURI(memoryInitializer);
           if (memoryInitializerBytes) {
             applyMemoryInitializer(memoryInitializerBytes.buffer);
@@ -118387,17 +116134,16 @@ var require_libheif = __commonJS({
         this.message = "Program terminated with exit(" + status + ")";
         this.status = status;
       }
-      __name(ExitStatus, "ExitStatus");
       ExitStatus.prototype = new Error();
       ExitStatus.prototype.constructor = ExitStatus;
       var initialStackTop;
       var preloadStartTime = null;
-      dependenciesFulfilled = /* @__PURE__ */ __name(function runCaller() {
+      dependenciesFulfilled = function runCaller() {
         if (!Module2["calledRun"])
           run();
         if (!Module2["calledRun"])
           dependenciesFulfilled = runCaller;
-      }, "runCaller");
+      };
       function run(args) {
         args = args || Module2["arguments"];
         if (preloadStartTime === null)
@@ -118422,7 +116168,6 @@ var require_libheif = __commonJS({
             Module2["onRuntimeInitialized"]();
           postRun();
         }
-        __name(doRun, "doRun");
         if (Module2["setStatus"]) {
           Module2["setStatus"]("Running...");
           setTimeout(function() {
@@ -118435,7 +116180,6 @@ var require_libheif = __commonJS({
           doRun();
         }
       }
-      __name(run, "run");
       Module2["run"] = run;
       function exit(status, implicit) {
         if (implicit && Module2["noExitRuntime"] && status === 0) {
@@ -118455,7 +116199,6 @@ var require_libheif = __commonJS({
         }
         Module2["quit"](status, new ExitStatus(status));
       }
-      __name(exit, "exit");
       Module2["exit"] = exit;
       var abortDecorators = [];
       function abort(what) {
@@ -118480,7 +116223,6 @@ var require_libheif = __commonJS({
         }
         throw output;
       }
-      __name(abort, "abort");
       Module2["abort"] = abort;
       if (Module2["preInit"]) {
         if (typeof Module2["preInit"] == "function")
@@ -118499,11 +116241,10 @@ var require_libheif = __commonJS({
         }
         return buf;
       }
-      __name(StringToArrayBuffer, "StringToArrayBuffer");
-      var HeifImage = /* @__PURE__ */ __name(function(handle) {
+      var HeifImage = function(handle) {
         this.handle = handle;
         this.img = null;
-      }, "HeifImage");
+      };
       HeifImage.prototype.free = function() {
         if (this.handle) {
           libheif.heif_image_handle_release(this.handle);
@@ -118594,9 +116335,9 @@ var require_libheif = __commonJS({
           callback(image_data);
         }.bind(this), 0);
       };
-      var HeifDecoder = /* @__PURE__ */ __name(function() {
+      var HeifDecoder = function() {
         this.decoder = null;
-      }, "HeifDecoder");
+      };
       HeifDecoder.prototype.decode = function(buffer2) {
         if (this.decoder) {
           libheif.heif_context_free(this.decoder);
@@ -118661,13 +116402,12 @@ var require_libheif = __commonJS({
         name = makeLegalFunctionName(name);
         return new Function("body", "return function " + name + '() {\n    "use strict";    return body.apply(this, arguments);\n};\n')(body);
       }
-      __name(createNamedFunction, "createNamedFunction");
       var root = this;
-      if (typeof exports2 !== "undefined") {
+      if (typeof exports !== "undefined") {
         if (typeof module2 !== "undefined" && module2.exports) {
-          exports2 = module2.exports = libheif;
+          exports = module2.exports = libheif;
         }
-        exports2.libheif = libheif;
+        exports.libheif = libheif;
       } else {
         root.libheif = libheif;
       }
@@ -118676,18 +116416,18 @@ var require_libheif = __commonJS({
           return libheif;
         });
       }
-    }).call(exports2);
+    }).call(exports);
   }
 });
 
 // node_modules/heic-decode/index.js
 var require_heic_decode = __commonJS({
-  "node_modules/heic-decode/index.js"(exports2, module2) {
+  "node_modules/heic-decode/index.js"(exports, module2) {
     var libheif = require_libheif();
-    var uint8ArrayUtf8ByteString = /* @__PURE__ */ __name((array, start, end) => {
+    var uint8ArrayUtf8ByteString = (array, start, end) => {
       return String.fromCharCode(...array.slice(start, end));
-    }, "uint8ArrayUtf8ByteString");
-    var isHeic = /* @__PURE__ */ __name((buffer) => {
+    };
+    var isHeic = (buffer) => {
       const brandMajor = uint8ArrayUtf8ByteString(buffer, 8, 12).replace("\0", " ").trim();
       switch (brandMajor) {
         case "mif1":
@@ -118702,8 +116442,8 @@ var require_heic_decode = __commonJS({
           return true;
       }
       return false;
-    }, "isHeic");
-    var decodeImage = /* @__PURE__ */ __name(async (image) => {
+    };
+    var decodeImage = async (image) => {
       const width = image.get_width();
       const height = image.get_height();
       const arrayBuffer = await new Promise((resolve, reject) => {
@@ -118715,8 +116455,8 @@ var require_heic_decode = __commonJS({
         });
       });
       return { width, height, data: arrayBuffer };
-    }, "decodeImage");
-    var decodeBuffer = /* @__PURE__ */ __name(async ({ buffer, all }) => {
+    };
+    var decodeBuffer = async ({ buffer, all }) => {
       if (!isHeic(buffer)) {
         throw new TypeError("input buffer is not a HEIC image");
       }
@@ -118733,7 +116473,7 @@ var require_heic_decode = __commonJS({
           decode: async () => await decodeImage(image)
         };
       });
-    }, "decodeBuffer");
+    };
     module2.exports = async ({ buffer }) => await decodeBuffer({ buffer, all: false });
     module2.exports.all = async ({ buffer }) => await decodeBuffer({ buffer, all: true });
   }
@@ -118741,7 +116481,7 @@ var require_heic_decode = __commonJS({
 
 // node_modules/heic-convert/index.js
 var require_heic_convert = __commonJS({
-  "node_modules/heic-convert/index.js"(exports2, module2) {
+  "node_modules/heic-convert/index.js"(exports, module2) {
     var jpegJs = require_jpeg_js();
     var { PNG } = require_png();
     var decode = require_heic_decode();
@@ -118761,15 +116501,15 @@ var require_heic_convert = __commonJS({
         });
       }
     };
-    var convertImage = /* @__PURE__ */ __name(async ({ image, format, quality }) => {
+    var convertImage = async ({ image, format, quality }) => {
       return await to[format]({
         width: image.width,
         height: image.height,
         data: Buffer.from(image.data),
         quality: Math.floor(quality * 100)
       });
-    }, "convertImage");
-    var convert = /* @__PURE__ */ __name(async ({ buffer, format, quality, all }) => {
+    };
+    var convert = async ({ buffer, format, quality, all }) => {
       if (!to[format]) {
         throw new Error(`output format needs to be one of [${Object.keys(to)}]`);
       }
@@ -118787,15 +116527,15 @@ var require_heic_convert = __commonJS({
           })
         };
       });
-    }, "convert");
+    };
     module2.exports = async ({ buffer, format, quality = 0.92 }) => await convert({ buffer, format, quality, all: false });
     module2.exports.all = async ({ buffer, format, quality = 0.92 }) => await convert({ buffer, format, quality, all: true });
   }
 });
 
 // ts/workers/heicConverterWorker.ts
-var import_heic_convert = __toModule(require_heic_convert());
-var import_worker_threads = __toModule(require("worker_threads"));
+var import_heic_convert = __toESM(require_heic_convert());
+var import_worker_threads = require("worker_threads");
 if (!import_worker_threads.parentPort) {
   throw new Error("Must run as a worker thread");
 }
@@ -118808,7 +116548,6 @@ function respond(uuid, error, response) {
   };
   port.postMessage(wrappedResponse);
 }
-__name(respond, "respond");
 port.on("message", async ({ uuid, data }) => {
   try {
     const file = await (0, import_heic_convert.default)({

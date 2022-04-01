@@ -29,7 +29,7 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## Successful Builds:
 
-  + 21 releases
+  `+` 21 releases
 * [x] 5.31.1
 * [x] 5.32.0
 * [x] 5.34.0
