@@ -2,9 +2,9 @@
 
 # Signal Desktop Builder For Mobian
 
-## signal-desktop_5.36.0_arm64/stable
+## signal-desktop_5.37.0_arm64/stable
 
-This project builds Signal Desktop for Mobian/stable on Arm64, currently targeting release `5.36.x`.
+This project builds Signal Desktop for Mobian/stable on Arm64, currently targeting release `5.37.x`.
 
 This is the signed release: `builds/release/signal-desktop_5.xx.x_arm64.deb`.
 
@@ -29,12 +29,13 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## Successful Builds:
 
-  `+` 21 releases
-* [x] 5.31.1
+  `+` 22 releases
+  
 * [x] 5.32.0
 * [x] 5.34.0
 * [x] 5.35.0
 * [x] 5.36.0
+* [x] 5.37.0
 
 ## See also:
 
