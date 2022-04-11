@@ -15,7 +15,7 @@ mac:
     - provider: generic
       url: https://updates.signal.org/desktop
   mergeASARs: true
-  singleArchFiles: node_modules/{@signalapp/signal-client/prebuilds/**,ringrtc/build/**,sharp/**}
+  singleArchFiles: node_modules/{@signalapp/libsignal-client/prebuilds/**,ringrtc/build/**,sharp/**}
   target:
     - target: zip
       arch:
@@ -73,8 +73,6 @@ beforeBuild: scripts/install-cross-deps.js
 afterPack: ts/scripts/after-pack.js
 afterSign: ts/scripts/after-sign.js
 asarUnpack:
-  - ts/workers/heicConverter.bundle.js
-  - ts/sql/mainWorker.bundle.js
   - node_modules/better-sqlite3/build/Release/better_sqlite3.node
 files:
   - filter:
@@ -138,11 +136,11 @@ files:
       - '!node_modules/better-sqlite3/deps/*'
       - '!node_modules/better-sqlite3/src/*'
       - node_modules/better-sqlite3/build/Release/better_sqlite3.node
-      - node_modules/@signalapp/signal-client/prebuilds/${platform}-${arch}/*.node
+      - node_modules/@signalapp/libsignal-client/prebuilds/${platform}-${arch}/*.node
       - node_modules/ringrtc/build/${platform}/*${arch}*.node
       - node_modules/mac-screen-capture-permissions/build/Release/*.node
       - '!**/node_modules/react-dom/*/*.development.js'
       - '!node_modules/.cache'
 extraMetadata:
   environment: production
-electronVersion: 17.2.0
+electronVersion: 17.3.1

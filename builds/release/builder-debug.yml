@@ -63,7 +63,7 @@ arm64:
     - '!node_modules/better-sqlite3/deps/*'
     - '!node_modules/better-sqlite3/src/*'
     - node_modules/better-sqlite3/build/Release/better_sqlite3.node
-    - node_modules/@signalapp/signal-client/prebuilds/linux-arm64/*.node
+    - node_modules/@signalapp/libsignal-client/prebuilds/linux-arm64/*.node
     - node_modules/ringrtc/build/linux/*arm64*.node
     - node_modules/mac-screen-capture-permissions/build/Release/*.node
     - '!**/node_modules/react-dom/*/*.development.js'
@@ -137,7 +137,7 @@ arm64:
     - '!node_modules/better-sqlite3/deps/*'
     - '!node_modules/better-sqlite3/src/*'
     - node_modules/better-sqlite3/build/Release/better_sqlite3.node
-    - node_modules/@signalapp/signal-client/prebuilds/linux-arm64/*.node
+    - node_modules/@signalapp/libsignal-client/prebuilds/linux-arm64/*.node
     - node_modules/ringrtc/build/linux/*arm64*.node
     - node_modules/mac-screen-capture-permissions/build/Release/*.node
     - '!**/node_modules/react-dom/*/*.development.js'
