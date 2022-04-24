@@ -2,9 +2,9 @@
 
 # Signal Desktop Builder For Mobian
 
-## signal-desktop_5.38.0_arm64.deb
+## signal-desktop_5.40.1_arm64.deb
 
-This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting release `5.38.x`.
+This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting release `5.40.x`.
 
 This is the signed release: `builds/release/signal-desktop_5.xx.x_arm64.deb`.
 
@@ -19,7 +19,7 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## Current Status:
 
-* [x] Built with mobian:bookworm gitlab.com/0mniteck/docker-mobian-images/
+* [x] Built with mobian:bookworm gitlab.com/0mniteck/docker-images/
 * [x] Signal Desktop builds
 * [x] better-sqlite3 builds
 * [x] ringrtc builds
@@ -28,18 +28,18 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## Successful Builds:
 
-  `+` 23 releases
+  `+` 24 releases
   
-* [x] 5.34.0
 * [x] 5.35.0
 * [x] 5.36.0
 * [x] 5.37.0
 * [x] 5.38.0
+* [x] 5.40.1
 
 ## See also:
 
 * Included buildscript-demo.cast, it's an asciinema demo file.
-* https://gitlab.com/0mniteck/docker-mobian-images/container_registry/
+* https://gitlab.com/0mniteck/docker-images/container_registry/
 * https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md
 * https://wiki.mobian-project.org/doku.php?id=signaldesktop
 * https://gitlab.com/ohfp/pinebookpro-things/-/blob/master/signal-desktop/PKGBUILD

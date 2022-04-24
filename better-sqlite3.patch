@@ -1,4 +1,4 @@
-From 2afe7d26c4ff4411153443bebde5112047cbdaa4 Mon Sep 17 00:00:00 2001
+From 0mniteck Mon Sep 17 00:00:00 2001
 From: local <local@localhost>
 Date: Mon, 3 May 2021 04:49:52 +0000
 Subject: [PATCH] Dynamically link libcrypto
@@ -8,18 +8,18 @@ Subject: [PATCH] Dynamically link libcrypto
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/deps/sqlite3.gyp b/deps/sqlite3.gyp
-index 21051da..6850f12 100755
+index 7774bcb..fa88222 100755
 --- a/deps/sqlite3.gyp
 +++ b/deps/sqlite3.gyp
 @@ -99,7 +99,7 @@
            'link_settings': {
              'libraries': [
                # This statically links libcrypto, whereas -lcrypto would dynamically link it
--              '<(SHARED_INTERMEDIATE_DIR)/sqlite3/OpenSSL-Linux/libcrypto.a'
+-              '<(SHARED_INTERMEDIATE_DIR)/sqlite3/OpenSSL-linux-<(target_arch)/libcrypto.a'
 +              '-lcrypto'
              ]
            }
          }],
 -- 
-2.30.2
+2.35.1
 

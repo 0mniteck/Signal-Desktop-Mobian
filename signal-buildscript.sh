@@ -21,7 +21,8 @@ git-lfs install
 sed -r 's#("better-sqlite3": ").*"#\1file:../better-sqlite3"#' -i package.json
 nvm use
 yarn install && yarn install --frozen-lockfile
-yarn build:dev && yarn build:release --arm64 --linux deb && debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
+yarn build:dev && yarn build:release --arm64 --linux deb
+debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
 if [ ! -f /Signal-Desktop/release/private.key ]; then
   echo "Generating New Keypair."
   yarn node ts/updater/generateKeyPair.js --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/private.key
