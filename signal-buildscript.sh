@@ -8,7 +8,7 @@ pushd /better-sqlite3
 # Apply patch to use local (dynamic) libraries
 patch -Np1 -i ../better-sqlite3.patch
 rm -f Relase/obj/gen/sqlite3/OpenSSL-Linux/libcrypto.a
-nvm use 16.13.0
+nvm use 16.13.2
 npm install tar
 npm run build-release
 yarn install

@@ -8,14 +8,14 @@ RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
 # Rustup-init
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-# Node via NVM v16.3.0
+# Node via NVM v16.3.2
 ENV HOME="/root"
 ENV NVM_DIR="$HOME/.nvm"
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.13.0 && nvm use 16.13.0 && npm install -g npm@latest && npm install --global yarn node-gyp
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.13.2 && nvm use 16.13.2 && npm install -g npm@latest && npm install --global yarn node-gyp
 
 # Clone Repos
-# Signal-Desktop v5.41.0
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.41.x
+# Signal-Desktop v5.42.0
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.42.x
 RUN mkdir /Signal-Desktop/release/
 # better-sqlite3 branch feature/log-corruption v4.5.1
 RUN git clone https://github.com/signalapp/better-sqlite3.git -b tmp
