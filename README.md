@@ -2,9 +2,9 @@
 
 # Signal Desktop Builder For Mobian
 
-## signal-desktop_5.43.0_arm64.deb
+## signal-desktop_5.44.1_arm64.deb
 
-This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting release `5.43.x`.
+This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting release `5.44.x`.
 
 This is the signed release: `builds/release/signal-desktop_5.xx.x_arm64.deb`.
 
@@ -22,19 +22,18 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 * [x] Built with mobian:bookworm gitlab.com/0mniteck/docker-images/
 * [x] Signal Desktop builds
 * [x] better-sqlite3 builds
-* [x] ringrtc builds
 * [x] Bundle all builds and outputs
 * [x] Sign `.deb` with keypair
 
 ## Successful Builds:
 
-  `+` 27 releases
+  `+` 28 releases
 
-* [x] 5.38.0
 * [x] 5.40.1
 * [x] 5.41.0
 * [x] 5.42.0
 * [x] 5.43.0
+* [x] 5.44.1
 
 ## See also:
 
