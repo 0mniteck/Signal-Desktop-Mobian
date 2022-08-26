@@ -13,8 +13,8 @@ ENV NVM_DIR="$HOME/.nvm"
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.13.2 && nvm use 16.13.2 && npm install -g npm@latest && npm install --location=global yarn node-gyp npm-run-all
 
 # Clone Repos
-# Signal-Desktop v5.50.1
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.50.x
+# Signal-Desktop v5.56.0
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.56.x
 RUN mkdir /Signal-Desktop/release/
 # better-sqlite3 branch feature/log-corruption v4.5.1
 RUN git clone https://github.com/signalapp/better-sqlite3.git -b tmp
