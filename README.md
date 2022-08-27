@@ -15,7 +15,7 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 ## Usage:
 
 1. Build with docker: `sudo ./buildscript.sh`, it takes about 1 hour.
-2. Install libssl1.1 from 'https://packages.debian.org/bullseye/arm64/libssl1.1/download'
+2. Install libssl1.1 from `https://packages.debian.org/bullseye/arm64/libssl1.1/download`
 3. Copy the `.deb` to your device and `sudo apt install ./signal-desktop_5.xx.x_arm64.deb`.
 
 ## Current Status:

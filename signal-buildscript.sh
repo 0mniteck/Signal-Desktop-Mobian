@@ -1,18 +1,5 @@
 #!/bin/bash
-source $HOME/.cargo/env
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-# Build better-sqlite3
-echo "Entering /better-sqlite3"
-pushd /better-sqlite3
-# Apply patch to use local (dynamic) libraries
-patch -Np1 -i ../better-sqlite3.patch
-rm -f Relase/obj/gen/sqlite3/OpenSSL-Linux/libcrypto.a
-nvm use 16.13.2
-npm install tar
-npm run build-release
-yarn install
-popd
 
 # Build Signal-Desktop
 echo "Entering /Signal-Desktop"
@@ -20,7 +7,7 @@ pushd /Signal-Desktop
 git-lfs install
 sed -r 's#("better-sqlite3": ").*"#\1file:../better-sqlite3"#' -i package.json
 nvm use
-yarn install && yarn install --frozen-lockfile
+yarn install --network-timeout 600000 && yarn install --frozen-lockfile --network-timeout 600000
 yarn build:dev && yarn build:release --arm64 --linux deb
 debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
 if [ ! -f /Signal-Desktop/release/private.key ]; then
