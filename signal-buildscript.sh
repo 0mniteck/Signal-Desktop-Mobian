@@ -5,9 +5,8 @@
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
-sed -r 's#("better-sqlite3": ").*"#\1file:../better-sqlite3"#' -i package.json
 nvm use
-yarn install --network-timeout 600000 && yarn install --frozen-lockfile --network-timeout 600000
+yarn install --frozen-lockfile --network-timeout 600000
 yarn build:dev && yarn build:release --arm64 --linux deb
 debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
 if [ ! -f /Signal-Desktop/release/private.key ]; then
