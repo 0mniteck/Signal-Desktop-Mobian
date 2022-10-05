@@ -11,8 +11,8 @@ ENV NVM_DIR="$HOME/.nvm"
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.15.0 && nvm use 16.15.0 && npm install -g npm@latest && npm install --location=global yarn node-gyp npm-run-all
 
 # Clone Repos
-# Signal-Desktop v5.58.0
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.58.x
+# Signal-Desktop v5.61.1
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 5.61.x
 RUN mkdir /Signal-Desktop/release/
 
 # Copy Files
