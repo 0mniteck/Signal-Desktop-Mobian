@@ -2,20 +2,20 @@
 
 # Signal Desktop Builder For Mobian
 
-## stable: signal-desktop_5.63.0_arm64.deb
+## stable: signal-desktop_6.1.0_arm64.deb
 
-This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting release `5.63.x`.
+This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting release `6.1.x`.
 
-This is the signed release: `builds/release/signal-desktop_5.xx.x_arm64.deb`.
+This is the signed release: `builds/release/signal-desktop_6.xx.x_arm64.deb`.
 
-Signature: `builds/release/signal-desktop_5.xx.x_arm64.deb.sig`.
+Signature: `builds/release/signal-desktop_6.xx.x_arm64.deb.sig`.
 
 Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## Usage:
 
 1. Build with docker: `sudo ./buildscript.sh`, it takes about 1 hour.
-3. Copy the `.deb` to your device and `sudo apt install ./signal-desktop_5.xx.x_arm64.deb`.
+3. Copy the `.deb` to your device and `sudo apt install ./signal-desktop_6.xx.x_arm64.deb`.
 
 ## Current Status:
 
@@ -25,13 +25,13 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## Working Builds:
 
-  `+` 36 releases
+  `+` 37 releases
 
-* [x] 5.57.0
 * [x] 5.58.0
 * [x] 5.61.0
 * [x] 5.61.1
 * [x] 5.63.0
+* [ ] 6.1.0
 
 ## See also:
 
