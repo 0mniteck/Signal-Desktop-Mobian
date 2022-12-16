@@ -13,7 +13,7 @@ mac:
     - provider: generic
       url: https://updates.signal.org/desktop
   mergeASARs: true
-  singleArchFiles: node_modules/{@signalapp/libsignal-client/prebuilds/**,ringrtc/build/**,sharp/**}
+  singleArchFiles: node_modules/{@signalapp/libsignal-client/prebuilds/**,ringrtc/build/**}
   target:
     - target: zip
       arch:
@@ -59,7 +59,6 @@ protocols:
   schemes:
     - sgnl
     - signalcaptcha
-beforeBuild: scripts/install-cross-deps.js
 afterPack: ts/scripts/after-pack.js
 afterSign: ts/scripts/after-sign.js
 afterAllArtifactBuild: ts/scripts/after-all-artifact-build.js
@@ -67,8 +66,6 @@ asar:
   smartUnpack: false
 asarUnpack:
   - '**/*.node'
-  - node_modules/sharp/{build,vendor}/**
-  - '!node_modules/sharp/**/*.{js,json}'
 files:
   - filter:
       - package.json
@@ -102,6 +99,7 @@ files:
       - sticker-creator/preload.js
       - sticker-creator/window/*.js
       - sticker-creator/dist/**
+      - '!node_modules/underscore/**'
       - '!node_modules/emoji-datasource/emoji_pretty.json'
       - '!node_modules/emoji-datasource/**/*.png'
       - '!node_modules/emoji-datasource-apple/emoji_pretty.json'
@@ -122,13 +120,6 @@ files:
       - node_modules/socks/build/common/*.js
       - node_modules/socks/build/client/*.js
       - node_modules/smart-buffer/build/*.js
-      - node_modules/sharp/build/**/*${arch}*.node
-      - node_modules/sharp/build/**/*.dll
-      - '!node_modules/sharp/{install,src,vendor}'
-      - '!node_modules/sharp/vendor'
-      - node_modules/sharp/vendor/*/*${arch}*/**
-      - '!node_modules/sharp/vendor/*/*${arch}*/**/include/**'
-      - '!node_modules/sharp/vendor/*/*win32*/**/*.{dll,lib}'
       - '!node_modules/better-sqlite3/deps/*'
       - '!node_modules/better-sqlite3/src/*'
       - node_modules/better-sqlite3/build/Release/better_sqlite3.node
@@ -139,4 +130,4 @@ files:
       - '!node_modules/.cache'
 extraMetadata:
   environment: production
-electronVersion: 20.3.4
+electronVersion: 21.3.3

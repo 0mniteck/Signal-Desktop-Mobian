@@ -25,10 +25,8 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## Working Builds:
 
-  `+` 33 releases
+  `+` 36 releases
 
-* [x] 5.45.0
-* [x] 5.56.0
 * [x] 5.57.0
 * [x] 5.58.0
 * [x] 5.61.0

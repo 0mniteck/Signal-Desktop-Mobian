@@ -34,6 +34,7 @@ arm64:
     - sticker-creator/preload.js
     - sticker-creator/window/*.js
     - sticker-creator/dist/**
+    - '!node_modules/underscore/**'
     - '!node_modules/emoji-datasource/emoji_pretty.json'
     - '!node_modules/emoji-datasource/**/*.png'
     - '!node_modules/emoji-datasource-apple/emoji_pretty.json'
@@ -54,13 +55,6 @@ arm64:
     - node_modules/socks/build/common/*.js
     - node_modules/socks/build/client/*.js
     - node_modules/smart-buffer/build/*.js
-    - node_modules/sharp/build/**/*arm64*.node
-    - node_modules/sharp/build/**/*.dll
-    - '!node_modules/sharp/{install,src,vendor}'
-    - '!node_modules/sharp/vendor'
-    - node_modules/sharp/vendor/*/*arm64*/**
-    - '!node_modules/sharp/vendor/*/*arm64*/**/include/**'
-    - '!node_modules/sharp/vendor/*/*win32*/**/*.{dll,lib}'
     - '!node_modules/better-sqlite3/deps/*'
     - '!node_modules/better-sqlite3/src/*'
     - node_modules/better-sqlite3/build/Release/better_sqlite3.node
@@ -109,6 +103,7 @@ arm64:
     - sticker-creator/preload.js
     - sticker-creator/window/*.js
     - sticker-creator/dist/**
+    - '!node_modules/underscore/**'
     - '!node_modules/emoji-datasource/emoji_pretty.json'
     - '!node_modules/emoji-datasource/**/*.png'
     - '!node_modules/emoji-datasource-apple/emoji_pretty.json'
@@ -129,13 +124,6 @@ arm64:
     - node_modules/socks/build/common/*.js
     - node_modules/socks/build/client/*.js
     - node_modules/smart-buffer/build/*.js
-    - node_modules/sharp/build/**/*arm64*.node
-    - node_modules/sharp/build/**/*.dll
-    - '!node_modules/sharp/{install,src,vendor}'
-    - '!node_modules/sharp/vendor'
-    - node_modules/sharp/vendor/*/*arm64*/**
-    - '!node_modules/sharp/vendor/*/*arm64*/**/include/**'
-    - '!node_modules/sharp/vendor/*/*win32*/**/*.{dll,lib}'
     - '!node_modules/better-sqlite3/deps/*'
     - '!node_modules/better-sqlite3/src/*'
     - node_modules/better-sqlite3/build/Release/better_sqlite3.node
