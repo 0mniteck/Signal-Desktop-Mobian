@@ -13,7 +13,10 @@ mac:
     - provider: generic
       url: https://updates.signal.org/desktop
   mergeASARs: true
-  singleArchFiles: node_modules/{@signalapp/libsignal-client/prebuilds/**,ringrtc/build/**}
+  releaseInfo:
+    vendor:
+      minOSVersion: 17.0.0
+  singleArchFiles: node_modules/@signalapp/{libsignal-client/prebuilds/**,ringrtc/build/**}
   target:
     - target: zip
       arch:
@@ -36,6 +39,9 @@ win:
   publish:
     - provider: generic
       url: https://updates.signal.org/desktop
+  releaseInfo:
+    vendor:
+      minOSVersion: 6.1.0
   target:
     - nsis
 nsis:
@@ -138,7 +144,8 @@ files:
       - '!node_modules/@signalapp/better-sqlite3/src/*'
       - node_modules/@signalapp/better-sqlite3/build/Release/better_sqlite3.node
       - node_modules/@signalapp/libsignal-client/prebuilds/${platform}-${arch}/*.node
-      - node_modules/ringrtc/build/${platform}/*${arch}*.node
+      - '!node_modules/@signalapp/ringrtc/scripts/*'
+      - node_modules/@signalapp/ringrtc/build/${platform}/*${arch}*.node
       - node_modules/mac-screen-capture-permissions/build/Release/*.node
       - '!**/node_modules/react-dom/*/*.development.js'
       - '!node_modules/mp4box/**'
@@ -147,4 +154,4 @@ files:
       - '!node_modules/.cache'
 extraMetadata:
   environment: production
-electronVersion: 21.3.3
+electronVersion: 22.0.0
