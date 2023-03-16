@@ -1,8 +1,8 @@
 # Fetch arm64 Mobian Bookworm Image
-FROM registry.gitlab.com/0mniteck/docker-images/mobian-builder-arm64:latest
-RUN apt update
-RUN apt upgrade -y
+FROM registry.salsa.debian.org/mobian-team/docker-images/mobian-builder-arm64:latest
 # fpm
+RUN apt update
+RUN apt install -y build-essential generate-ninja ninja-build rubygems
 RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
 # Node via NVM v16.17.1
@@ -11,8 +11,8 @@ ENV NVM_DIR="$HOME/.nvm"
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash && . $NVM_DIR/nvm.sh && nvm install 16.17.1 && nvm use 16.17.1 && npm install --location=global npm@latest && npm install --location=global yarn node-gyp npm-run-all
 
 # Clone Repos
-# Signal-Desktop v6.4.1
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 6.4.x
+# Signal-Desktop v6.10.0
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 6.10.x
 RUN mkdir /Signal-Desktop/release/
 
 # Copy Files
