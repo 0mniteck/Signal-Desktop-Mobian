@@ -111,6 +111,8 @@ files:
       - app/*
       - preload.bundle.js
       - preload_utils.js
+      - about.preload.bundle.js
+      - about.browser.bundle.js
       - main.js
       - images/**
       - fonts/**

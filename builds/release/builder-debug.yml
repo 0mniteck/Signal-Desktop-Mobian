@@ -39,6 +39,8 @@ arm64:
     - app/*
     - preload.bundle.js
     - preload_utils.js
+    - about.preload.bundle.js
+    - about.browser.bundle.js
     - main.js
     - images/**
     - fonts/**
@@ -127,6 +129,8 @@ arm64:
     - app/*
     - preload.bundle.js
     - preload_utils.js
+    - about.preload.bundle.js
+    - about.browser.bundle.js
     - main.js
     - images/**
     - fonts/**
