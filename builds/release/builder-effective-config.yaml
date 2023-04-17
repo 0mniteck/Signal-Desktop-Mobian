@@ -47,6 +47,7 @@ win:
     - nsis
 nsis:
   deleteAppDataOnUninstall: true
+  differentialPackage: true
 linux:
   category: Network;InstantMessaging;Chat
   desktop:
@@ -155,4 +156,4 @@ files:
       - '!node_modules/.cache'
 extraMetadata:
   environment: production
-electronVersion: 22.3.3
+electronVersion: 22.3.5
