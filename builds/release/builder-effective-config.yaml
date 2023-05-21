@@ -80,6 +80,7 @@ files:
       - config/default.json
       - config/${env.SIGNAL_ENV}.json
       - config/local-${env.SIGNAL_ENV}.json
+      - bundles/**
       - background.html
       - about.html
       - screenShare.html
@@ -112,13 +113,12 @@ files:
       - app/*
       - preload.bundle.js
       - preload_utils.js
-      - about.preload.bundle.js
-      - about.browser.bundle.js
       - main.js
       - images/**
       - fonts/**
       - sounds/*
       - build/icons
+      - build/available-locales.json
       - node_modules/**
       - '!node_modules/underscore/**'
       - '!node_modules/emoji-datasource/emoji_pretty.json'
@@ -154,6 +154,7 @@ files:
       - node_modules/mp4box/package.json
       - node_modules/mp4box/dist/mp4box.all.js
       - '!node_modules/.cache'
+      - sticker-creator/dist/**
 extraMetadata:
   environment: production
 electronVersion: 22.3.5
