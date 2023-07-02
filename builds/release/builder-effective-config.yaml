@@ -8,6 +8,7 @@ mac:
   darkModeSupport: true
   hardenedRuntime: true
   entitlements: ./build/entitlements.mac.plist
+  entitlementsInherit: ./build/entitlements.mac.inherit.plist
   icon: build/icons/mac/icon.icns
   publish:
     - provider: generic
@@ -158,4 +159,4 @@ files:
       - sticker-creator/dist/**
 extraMetadata:
   environment: production
-electronVersion: 24.3.0
+electronVersion: 25.2.0
