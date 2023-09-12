@@ -56,6 +56,7 @@ linux:
   target:
     - deb
   icon: build/icons/png
+  publish: []
 deb:
   depends:
     - libnotify4
@@ -69,8 +70,8 @@ protocols:
   schemes:
     - sgnl
     - signalcaptcha
-afterPack: ts/scripts/after-pack.js
 afterSign: ts/scripts/after-sign.js
+afterPack: ts/scripts/after-pack.js
 afterAllArtifactBuild: ts/scripts/after-all-artifact-build.js
 asar:
   smartUnpack: false
@@ -151,6 +152,9 @@ files:
       - node_modules/@signalapp/ringrtc/build/${platform}/*${arch}*.node
       - node_modules/mac-screen-capture-permissions/build/Release/*.node
       - node_modules/fs-xattr/build/Release/*.node
+      - node_modules/@nodert-win10-rs4/windows.data.xml.dom/build/Release/*.node
+      - node_modules/@nodert-win10-rs4/windows.ui.notifications/build/Release/*.node
+      - node_modules/@signalapp/windows-dummy-keystroke/build/Release/*.node
       - '!**/node_modules/react-dom/*/*.development.js'
       - '!node_modules/mp4box/**'
       - node_modules/mp4box/package.json
@@ -159,4 +163,4 @@ files:
       - sticker-creator/dist/**
 extraMetadata:
   environment: production
-electronVersion: 25.2.0
+electronVersion: 25.4.0
