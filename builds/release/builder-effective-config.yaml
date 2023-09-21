@@ -65,6 +65,9 @@ deb:
     - libasound2
     - libxss1
     - libc6 (>= 2.31)
+    - libgtk-3-0
+    - libgbm1
+    - libx11-xcb1
 protocols:
   name: sgnl-url-scheme
   schemes:
@@ -129,6 +132,8 @@ files:
       - '!node_modules/emoji-datasource-apple/emoji_pretty.json'
       - '!node_modules/emoji-datasource-apple/img/apple/sheets*'
       - '!node_modules/spellchecker/vendor/hunspell/**/*'
+      - '!node_modules/@formatjs/intl-displaynames/**/*'
+      - '!node_modules/@formatjs/intl-listformat/**/*'
       - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts,.snyk-*.flag,benchmark}'
       - '!**/node_modules/.bin'
       - '!**/node_modules/**/build/**'
@@ -163,4 +168,4 @@ files:
       - sticker-creator/dist/**
 extraMetadata:
   environment: production
-electronVersion: 25.4.0
+electronVersion: 25.8.1
