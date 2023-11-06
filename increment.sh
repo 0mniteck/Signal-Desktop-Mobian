@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Last_Version_Number=6.36
+Last_Version_Number=6.37
 Version_Number=$(echo "$Last_Version_Number + .01" | bc -l)
 Last_Branch_Number=$Last_Version_Number.x
 Branch_Number=$Version_Number.x
@@ -8,6 +8,8 @@ Branch_Number=$Version_Number.x
 sed -i s/signal-desktop_$(echo $Last_Version_Number).0_arm64.deb/signal-desktop_$(echo $Version_Number).0_arm64.deb/g _layouts/default.html
 
 sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g README.md
+
+sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g re-run.sh
 
 sed -i s/$(echo $Last_Branch_Number)/$(echo $Branch_Number)/g Dockerfile
 
