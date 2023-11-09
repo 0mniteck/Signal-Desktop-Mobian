@@ -17,6 +17,7 @@ if [ ! -f /Signal-Desktop/release/private.key ]; then
 else
   echo "Signing Release."
   yarn sign-release --private /Signal-Desktop/release/private.key --update $debpath
+  shred /Signal-Desktop/release/private.key
 fi
 sha512sum release/*.deb && sha512sum release/*.deb > release/release.sha512sum
 echo "Public Key: "$(cat /Signal-Desktop/release/public.key) && echo "Public Key: "$(cat /Signal-Desktop/release/public.key) >> release/release.sha512sum
