@@ -13,11 +13,11 @@ if [ ! -f /Signal-Desktop/release/private.key ]; then
   echo "Generating New Keypair."
   yarn node ts/updater/generateKeyPair.js --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/private.key
   echo "Signing Release."
-  yarn sign-release --private /Signal-Desktop/release/private.key --update $debpath
+  yarn sign-release --private /Signal-Desktop/release/.private.key --update $debpath
 else
   echo "Signing Release."
-  yarn sign-release --private /Signal-Desktop/release/private.key --update $debpath
-  shred /Signal-Desktop/release/private.key
+  yarn sign-release --private /Signal-Desktop/release/.private.key --update $debpath
+  shred /Signal-Desktop/release/.private.key
 fi
 sha512sum release/*.deb && sha512sum release/*.deb > release/release.sha512sum
 echo "Public Key: "$(cat /Signal-Desktop/release/public.key) && echo "Public Key: "$(cat /Signal-Desktop/release/public.key) >> release/release.sha512sum
