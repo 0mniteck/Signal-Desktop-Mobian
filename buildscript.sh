@@ -2,13 +2,13 @@
 
 git remote remove origin && git remote add origin git@Signal:0mniteck/Signal-Desktop-Mobian.git
 
-sudo apt install snapd bc
+sudo apt install snapd bc screen
 
 echo "Starting Build "$(date -u '+on %D at %R UTC')
 echo
 
 ./increment.sh
-sudo ./re-run.sh
+sudo screen bash -c './re-run.sh'
 ls -la builds/release/
 
 sudo snap remove --purge docker
