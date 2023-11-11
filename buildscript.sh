@@ -2,7 +2,7 @@
 
 git remote remove origin && git remote add origin git@Signal:0mniteck/Signal-Desktop-Mobian.git
 
-sudo apt install snapd
+sudo apt install snapd bc
 
 echo "Starting Build "$(date -u '+on %D at %R UTC')
 echo
