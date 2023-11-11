@@ -19,6 +19,6 @@ RUN mkdir /Signal-Desktop/release/
 RUN cd /usr/include/aarch64-linux-gnu/ && wget https://github.com/node-ffi-napi/node-ffi-napi/raw/master/deps/libffi/config/linux/arm64/fficonfig.h && echo '56c9800d0388dd20a85ad917a75a0dc96aa0de95db560e586b540e657a7a10ec8ef9759f1d09d7cb2f0861c9b88650246a9ace97708a20d8757bcd0c559333a7  fficonfig.h' > fficonfig.sum && if [[ $(sha512sum -c fficonfig.sum) == 'fficonfig.h: OK' ]]; then sleep 0; else rm -f fficonfig.h 1; fi;
 
 # Copy Files
-COPY /etc/keys/private.key /Signal-Desktop/release/
+COPY /etc/keys/.private.key /Signal-Desktop/release/
 COPY builds/release/public.key /Signal-Desktop/release/
 COPY signal-buildscript.sh /
