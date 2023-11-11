@@ -11,7 +11,7 @@ yarn build:dev && yarn build:release --arm64 --linux deb
 debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
 if [ ! -f /Signal-Desktop/release/private.key ]; then
   echo "Generating New Keypair."
-  yarn node ts/updater/generateKeyPair.js --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/private.key
+  yarn node ts/updater/generateKeyPair.js --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
   echo "Signing Release."
   yarn sign-release --private /Signal-Desktop/release/.private.key --update $debpath
 else
