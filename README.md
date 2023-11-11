@@ -14,8 +14,8 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## Usage:
 
-1. Build with docker: `./buildscript.sh`, it takes about 1 hour.
-3. Copy the `.deb` to your device and `sudo apt install ./signal-desktop_6.xx.x_arm64.deb`.
+1. Clone the repo and build: `git clone git@Signal:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh`
+3. Copy the `.deb` to your device, verify sha512sum, then: `sudo apt install ./signal-desktop_6.xx.x_arm64.deb`.
 
 ## Current Status:
 
