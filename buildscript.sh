@@ -1,8 +1,9 @@
 #!/bin/bash
 
-git remote remove origin && git remote add origin git@Signal:0mniteck/Signal-Desktop-Mobian.git
+sudo apt install snapd bc screen git git-lfs
 
-sudo apt install snapd bc screen
+git remote remove origin && git remote add origin git@Signal:0mniteck/Signal-Desktop-Mobian.git
+git-lfs install
 
 echo "Starting Build "$(date -u '+on %D at %R UTC')
 echo
@@ -12,4 +13,4 @@ sudo screen bash -c './re-run.sh'
 ls -la builds/release/
 
 git status && git add -A && git status
-git commit -a -S -m "Successful Build of Signed Release 6.37.0" && git push
+git commit -a -S -m "Successful Build of Signed Release 6.37.0" && git push --set-upstream origin master
