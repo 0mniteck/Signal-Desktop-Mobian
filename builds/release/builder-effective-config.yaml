@@ -44,6 +44,8 @@ win:
     vendor:
       minOSVersion: 10.0.10240
   signDlls: true
+  signExts:
+    - .node
   target:
     - nsis
 nsis:
@@ -168,4 +170,4 @@ files:
       - sticker-creator/dist/**
 extraMetadata:
   environment: production
-electronVersion: 25.8.4
+electronVersion: 25.9.3

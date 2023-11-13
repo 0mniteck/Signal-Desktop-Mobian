@@ -13,4 +13,4 @@ sudo screen bash -c './re-run.sh'
 ls -la builds/release/
 
 git status && git add -A && git status
-git commit -a -S -m "Successful Build of Signed Release 6.37.0" && git push --set-upstream origin master
+git commit -a -S -m "Successful Build of Signed Release 6.38.0" && git push --set-upstream origin master
