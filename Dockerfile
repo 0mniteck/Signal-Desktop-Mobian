@@ -12,7 +12,7 @@ RUN wget https://github.com/nvm-sh/nvm/raw/v0.39.5/install.sh && echo "af9e3f59e
 
 # Clone Repo
 # Signal-Desktop Branch 6.38.x
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 6.38.x
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b v6.38.0
 RUN mkdir /Signal-Desktop/release/
 
 # Fetch fficonfig.h
