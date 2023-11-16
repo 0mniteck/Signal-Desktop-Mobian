@@ -11,7 +11,7 @@ sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g docs/README.md
 
 sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g README.md
 
-sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g buildscript.sh
+sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g git.sh
 
 sed -i s/$(echo $Last_Branch_Number)/$(echo $Branch_Number)/g Dockerfile
 
