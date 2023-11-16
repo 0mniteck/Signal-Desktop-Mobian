@@ -11,8 +11,8 @@ ENV NVM_DIR="$HOME/.nvm"
 RUN wget https://github.com/nvm-sh/nvm/raw/v0.39.5/install.sh && echo "af9e3f59e1b81c69b70563a010731a23f69b2e0b2260c511de63c07083285bd2c3c7794754bd0fe3b35081fa2b31e53021a1b50c4f670dca93f50aa8ef10df40  install.sh" > install.sum && bash -c 'if [[ $(sha512sum -c install.sum) == "install.sh: OK" ]]; then echo "install.sh: Checksum Matched!"; else remove -f install.sh; fi' && chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install 18.15.0 && nvm use 18.15.0 && npm install --location=global --force npm@latest && npm install --location=global --force yarn node-gyp npm-run-all
 
 # Clone Repo
-# Signal-Desktop Branch 6.39.x
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 6.39.x
+# Signal-Desktop Branch 6.38.x
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 6.38.x
 RUN mkdir /Signal-Desktop/release/
 
 # Fetch fficonfig.h
