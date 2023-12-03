@@ -35,6 +35,7 @@ win:
   certificateSha1: 8D5E3CD800736C5E1FE459A1F5AA48287D4F6EC6
   signingHashAlgorithms:
     - sha256
+  sign: ./ts/scripts/sign-windows.js
   publisherName: Signal Messenger, LLC
   icon: build/icons/win/icon.ico
   publish:

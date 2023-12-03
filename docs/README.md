@@ -2,9 +2,9 @@
 
 # Signal Desktop Builder For Mobian
 
-## signal-desktop_6.39.0_arm64.deb
+## signal-desktop_6.40.0_arm64.deb
 
-This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting release `6.39.0`.
+This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting release `6.40.0`.
 
 This is the signed release: `builds/release/signal-desktop_6.xx.x_arm64.deb`.
 
