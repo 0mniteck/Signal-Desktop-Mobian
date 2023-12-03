@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt install snapd bc screen git git-lfs
+sudo apt install snapd bc screen git git-lfs -y
 
 git remote remove origin && git remote add origin git@Signal:0mniteck/Signal-Desktop-Mobian.git
 git-lfs install
