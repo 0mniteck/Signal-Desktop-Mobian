@@ -16,7 +16,7 @@ mac:
   mergeASARs: true
   releaseInfo:
     vendor:
-      minOSVersion: 17.0.0
+      minOSVersion: 19.0.0
   singleArchFiles: node_modules/@signalapp/{libsignal-client/prebuilds/**,ringrtc/build/**}
   target:
     - target: zip
@@ -172,4 +172,4 @@ files:
       - sticker-creator/dist/**
 extraMetadata:
   environment: production
-electronVersion: 25.9.3
+electronVersion: 27.1.3
