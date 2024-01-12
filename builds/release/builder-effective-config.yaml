@@ -172,4 +172,4 @@ files:
       - sticker-creator/dist/**
 extraMetadata:
   environment: production
-electronVersion: 27.1.3
+electronVersion: 27.2.0

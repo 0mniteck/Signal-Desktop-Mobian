@@ -1,8 +1,8 @@
-version: 6.42.0
+version: 6.44.0
 files:
-  - url: signal-desktop_6.42.0_arm64.deb
-    sha512: TlSbKPyo2EEEX1Dlsw63imCmJKuyxxA5WfIlN1gyJPhGkanxOTkQEtCLaWu/hjabFmqdDtkldTzkWwF12JIkIQ==
-    size: 109822540
-path: signal-desktop_6.42.0_arm64.deb
-sha512: TlSbKPyo2EEEX1Dlsw63imCmJKuyxxA5WfIlN1gyJPhGkanxOTkQEtCLaWu/hjabFmqdDtkldTzkWwF12JIkIQ==
-releaseDate: '2023-12-17T04:13:23.442Z'
+  - url: signal-desktop_6.44.0_arm64.deb
+    sha512: 6d8guEo+J6+tFWrpSEXOsoki7QIpS7KOx5qq5rRMk+ViwomuuDIhFg4zC6rWkJNChblgW5FE8Jnuoe2XPWnEOA==
+    size: 110433412
+path: signal-desktop_6.44.0_arm64.deb
+sha512: 6d8guEo+J6+tFWrpSEXOsoki7QIpS7KOx5qq5rRMk+ViwomuuDIhFg4zC6rWkJNChblgW5FE8Jnuoe2XPWnEOA==
+releaseDate: '2024-01-12T03:02:47.830Z'
