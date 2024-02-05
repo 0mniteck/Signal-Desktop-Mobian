@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Last_Version_Number=6.44
+Last_Version_Number=6.46
 Version_Number=$(echo "$Last_Version_Number + .02" | bc -l)
 Last_Branch_Number=$Last_Version_Number.x
 Branch_Number=$Version_Number.x
