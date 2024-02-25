@@ -8,11 +8,11 @@ ENV USE_SYSTEM_FPM=true
 # Node via NVM-SH
 ENV HOME="/root"
 ENV NVM_DIR="$HOME/.nvm"
-RUN wget https://github.com/nvm-sh/nvm/raw/v0.39.5/install.sh && echo "af9e3f59e1b81c69b70563a010731a23f69b2e0b2260c511de63c07083285bd2c3c7794754bd0fe3b35081fa2b31e53021a1b50c4f670dca93f50aa8ef10df40  install.sh" > install.sum && bash -c 'if [[ $(sha512sum -c install.sum) == "install.sh: OK" ]]; then echo "install.sh: Checksum Matched!"; else remove -f install.sh; fi' && chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install 18.17.1 && nvm use 18.17.1 && npm install --location=global npm@latest && npm install --location=global yarn@1.22.10 node-gyp npm-run-all
+RUN wget https://github.com/nvm-sh/nvm/raw/v0.39.7/install.sh && echo "be675049552a27d529ef5565c73708e7b18018e9778b0ec184c98a296ea498d4d89fdf2ef10374bf115b23a95f3b37607c3a016919c04be130df99f92165fb02  install.sh" > install.sum && bash -c 'if [[ $(sha512sum -c install.sum) == "install.sh: OK" ]]; then echo "install.sh: Checksum Matched!"; else remove -f install.sh; fi' && chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install 18.18.2 && nvm use 18.18.2 && npm install --location=global npm@latest && npm install --location=global yarn node-gyp npm-run-all
 
 # Clone Repo
 # Signal-Desktop Branch 6.46.x
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b v6.46.0
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b v6.46.1
 RUN mkdir /Signal-Desktop/release/
 
 # Fetch fficonfig.h
