@@ -1,4 +1,4 @@
-![alt text](https://signal.org/assets/header/logo-f7ef605fe417d5520d38d546b3b774b4261c75220b9904da4d8b2ffc19a761ff.png)
+![alt text](https://signal.org/assets/images/header/logo.png)
 
 # Signal Desktop Builder For Mobian
 
