@@ -2,8 +2,6 @@
 
 Last_Version_Number=6.48
 Version_Number=7.3
-Last_Branch_Number=$Last_Version_Number.x
-Branch_Number=$Version_Number.x
 
 sed -i s/signal-desktop_$(echo $Last_Version_Number).1_arm64.deb/signal-desktop_$(echo $Version_Number).0_arm64.deb/g docs/_layouts/default.html
 
