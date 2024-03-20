@@ -3,7 +3,7 @@
 Last_Version_Number=6.48
 Version_Number=7.3
 
-sed -i s/signal-desktop_$(echo $Last_Version_Number).1_arm64.deb/signal-desktop_$(echo $Version_Number).0_arm64.deb/g docs/_layouts/default.html
+sed -i s/signal-desktop_$(echo $Last_Version_Number).0_arm64.deb/signal-desktop_$(echo $Version_Number).0_arm64.deb/g docs/_layouts/default.html
 
 sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g docs/README.md
 
