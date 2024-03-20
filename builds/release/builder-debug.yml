@@ -38,6 +38,7 @@ arm64:
     - '!js/register.js'
     - stylesheets/*.css
     - app/*
+    - '!app/*.ts'
     - preload.bundle.js
     - preload_utils.js
     - main.js
@@ -47,6 +48,8 @@ arm64:
     - build/icons
     - build/available-locales.json
     - build/locale-display-names.json
+    - build/country-display-names.json
+    - build/dns-fallback.json
     - node_modules/**
     - '!node_modules/underscore/**'
     - '!node_modules/emoji-datasource/emoji_pretty.json'
@@ -56,7 +59,7 @@ arm64:
     - '!node_modules/spellchecker/vendor/hunspell/**/*'
     - '!node_modules/@formatjs/intl-displaynames/**/*'
     - '!node_modules/@formatjs/intl-listformat/**/*'
-    - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts,.snyk-*.flag,benchmark}'
+    - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts,*d.ts.map,*.gypi,.snyk-*.flag,benchmark}'
     - '!**/node_modules/.bin'
     - '!**/node_modules/**/build/**'
     - node_modules/intl-tel-input/build/**
@@ -76,6 +79,8 @@ arm64:
     - node_modules/@signalapp/better-sqlite3/build/Release/better_sqlite3.node
     - node_modules/@signalapp/libsignal-client/prebuilds/linux-arm64/*.node
     - '!node_modules/@signalapp/ringrtc/scripts/*'
+    - '!node_modules/@nodert-win10-rs4/windows.data.xml.dom/*.cpp'
+    - '!node_modules/@nodert-win10-rs4/windows.ui.notifications/*.cpp'
     - node_modules/@signalapp/ringrtc/build/linux/*arm64*.node
     - node_modules/mac-screen-capture-permissions/build/Release/*.node
     - node_modules/fs-xattr/build/Release/*.node
@@ -132,6 +137,7 @@ arm64:
     - '!js/register.js'
     - stylesheets/*.css
     - app/*
+    - '!app/*.ts'
     - preload.bundle.js
     - preload_utils.js
     - main.js
@@ -141,6 +147,8 @@ arm64:
     - build/icons
     - build/available-locales.json
     - build/locale-display-names.json
+    - build/country-display-names.json
+    - build/dns-fallback.json
     - node_modules/**
     - '!node_modules/underscore/**'
     - '!node_modules/emoji-datasource/emoji_pretty.json'
@@ -150,7 +158,7 @@ arm64:
     - '!node_modules/spellchecker/vendor/hunspell/**/*'
     - '!node_modules/@formatjs/intl-displaynames/**/*'
     - '!node_modules/@formatjs/intl-listformat/**/*'
-    - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts,.snyk-*.flag,benchmark}'
+    - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts,*d.ts.map,*.gypi,.snyk-*.flag,benchmark}'
     - '!**/node_modules/.bin'
     - '!**/node_modules/**/build/**'
     - node_modules/intl-tel-input/build/**
@@ -170,6 +178,8 @@ arm64:
     - node_modules/@signalapp/better-sqlite3/build/Release/better_sqlite3.node
     - node_modules/@signalapp/libsignal-client/prebuilds/linux-arm64/*.node
     - '!node_modules/@signalapp/ringrtc/scripts/*'
+    - '!node_modules/@nodert-win10-rs4/windows.data.xml.dom/*.cpp'
+    - '!node_modules/@nodert-win10-rs4/windows.ui.notifications/*.cpp'
     - node_modules/@signalapp/ringrtc/build/linux/*arm64*.node
     - node_modules/mac-screen-capture-permissions/build/Release/*.node
     - node_modules/fs-xattr/build/Release/*.node
