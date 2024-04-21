@@ -3,19 +3,6 @@ arm64:
     - '!**/node_modules'
     - '!build{,/**/*}'
     - '!release{,/**/*}'
-    - package.json
-    - config/default.json
-    - config/production.json
-    - config/local-production.json
-    - bundles/**
-    - background.html
-    - about.html
-    - screenShare.html
-    - settings.html
-    - permissions_popup.html
-    - debug_log.html
-    - loading.html
-    - _locales/**
     - js/**
     - libtextsecure/**
     - ts/**/*.js
@@ -93,6 +80,18 @@ arm64:
     - node_modules/mp4box/dist/mp4box.all.js
     - '!node_modules/.cache'
     - sticker-creator/dist/**
+    - package.json
+    - config/default.json
+    - config/production.json
+    - config/local-production.json
+    - bundles/**
+    - background.html
+    - about.html
+    - screenShare.html
+    - settings.html
+    - permissions_popup.html
+    - debug_log.html
+    - loading.html
     - '!**/*.{iml,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,suo,xproj,cc,d.ts,mk,a,o,forge-meta,pdb}'
     - '!**/._*'
     - '!**/electron-builder.{yaml,yml,json,json5,toml,ts}'
@@ -102,19 +101,6 @@ arm64:
     - '!.yarnrc.yml'
   nodeModuleFilePatterns:
     - '**/*'
-    - package.json
-    - config/default.json
-    - config/production.json
-    - config/local-production.json
-    - bundles/**
-    - background.html
-    - about.html
-    - screenShare.html
-    - settings.html
-    - permissions_popup.html
-    - debug_log.html
-    - loading.html
-    - _locales/**
     - js/**
     - libtextsecure/**
     - ts/**/*.js
@@ -192,3 +178,15 @@ arm64:
     - node_modules/mp4box/dist/mp4box.all.js
     - '!node_modules/.cache'
     - sticker-creator/dist/**
+    - package.json
+    - config/default.json
+    - config/production.json
+    - config/local-production.json
+    - bundles/**
+    - background.html
+    - about.html
+    - screenShare.html
+    - settings.html
+    - permissions_popup.html
+    - debug_log.html
+    - loading.html

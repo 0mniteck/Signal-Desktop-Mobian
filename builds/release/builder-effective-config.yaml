@@ -17,6 +17,7 @@ mac:
   releaseInfo:
     vendor:
       minOSVersion: 19.0.0
+  sign: ./ts/scripts/sign-macos.js
   singleArchFiles: node_modules/@signalapp/{libsignal-client/prebuilds/**,ringrtc/build/**}
   target:
     - target: zip
@@ -86,19 +87,6 @@ asarUnpack:
   - '**/*.node'
 files:
   - filter:
-      - package.json
-      - config/default.json
-      - config/${env.SIGNAL_ENV}.json
-      - config/local-${env.SIGNAL_ENV}.json
-      - bundles/**
-      - background.html
-      - about.html
-      - screenShare.html
-      - settings.html
-      - permissions_popup.html
-      - debug_log.html
-      - loading.html
-      - _locales/**
       - js/**
       - libtextsecure/**
       - ts/**/*.js
@@ -176,6 +164,22 @@ files:
       - node_modules/mp4box/dist/mp4box.all.js
       - '!node_modules/.cache'
       - sticker-creator/dist/**
+      - package.json
+      - config/default.json
+      - config/${env.SIGNAL_ENV}.json
+      - config/local-${env.SIGNAL_ENV}.json
+      - bundles/**
+      - background.html
+      - about.html
+      - screenShare.html
+      - settings.html
+      - permissions_popup.html
+      - debug_log.html
+      - loading.html
+  - from: build/compact-locales
+    to: _locales
+    filter:
+      - '**/messages.json'
 extraMetadata:
   environment: production
-electronVersion: 29.1.0
+electronVersion: 29.1.5
