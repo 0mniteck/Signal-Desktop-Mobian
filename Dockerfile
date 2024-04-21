@@ -2,6 +2,7 @@
 FROM registry.salsa.debian.org/mobian-team/docker-images/mobian-builder-arm64:bookworm
 # FPM
 RUN apt update
+RUN apt upgrade -y
 RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs
 RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
