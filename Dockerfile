@@ -4,7 +4,7 @@ RUN rm /etc/apt/trusted.gpg.d/mobian* -f
 run curl -s https://repo.mobian.org/mobian.gpg | tee /etc/apt/trusted.gpg.d/mobian.gpg > /dev/null
 RUN apt update
 RUN apt upgrade -y
-RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs pkg-config
+RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs pkg-config libpixman-1-0 libpixman-1-dev
 
 # FPM
 RUN gem install fpm
