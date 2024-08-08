@@ -2,7 +2,7 @@
 
 rm -f -r /var/snap/docker/*
 umount -f /dev/mapper/Luks-Signal
-cryptsetup close /dev/mapper/Luks-Signal
+systemd-cryptsetup detach Luks-Signal
 rm -f -r /var/snap/docker
 snap remove docker --purge
 systemd-cryptsetup attach Luks-Signal /dev/mmcblk1 && mkdir /var/snap/docker && mount /dev/mapper/Luks-Signal /var/snap/docker && rm -f -r /var/snap/docker/* && chown root:root /var/snap/docker
@@ -12,7 +12,7 @@ snap disable docker
 rm -f -r /var/snap/docker/*
 sleep 10
 umount -f /dev/mapper/Luks-Signal
-systemd-cryptsetup detach /dev/mapper/Luks-Signal
+systemd-cryptsetup detach Luks-Signal
 rm -f -r /var/snap/docker
 sleep 10
 snap remove docker --purge
