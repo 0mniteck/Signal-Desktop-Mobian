@@ -1,7 +1,7 @@
 # Fetch arm64 Mobian Bookworm Image | Sync Public Keys | Update
 FROM registry.salsa.debian.org/mobian-team/docker-images/mobian-builder-arm64:bookworm
 RUN rm /etc/apt/trusted.gpg.d/mobian* -f
-run curl -s https://repo.mobian.org/mobian.gpg | tee /etc/apt/trusted.gpg.d/mobian.gpg > /dev/null
+RUN curl -s https://repo.mobian.org/mobian.gpg | tee /etc/apt/trusted.gpg.d/mobian.gpg > /dev/null
 RUN apt update
 RUN apt upgrade -y
 RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs pkg-config libpixman-1-0 libpixman-1-dev
