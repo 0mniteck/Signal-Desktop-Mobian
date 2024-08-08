@@ -1,6 +1,7 @@
 #!/bin/bash
 
 rm -f -r /var/snap/docker/*
+umount -f /dev/mapper/Luks-Signal
 systemd-cryptsetup detach Luks-Signal
 rm -f -r /var/snap/docker
 snap remove docker --purge
@@ -9,6 +10,7 @@ read -p "Secure Storage Mounted: Continue -->"
 snap install docker && ufw disable && sleep 10 && cp /etc/keys/.private.key .private.key && docker build -t pinephone . && shred .private.key && rm -f .private.key && docker run --cpus=$(nproc) --name pinephone -it pinephone bash -c /signal-buildscript.sh && rm -fr builds/release/ && mkdir -p builds/release && docker cp pinephone:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
 snap disable docker
 rm -f -r /var/snap/docker/*
+umount -f /dev/mapper/Luks-Signal
 sleep 10
 systemd-cryptsetup detach Luks-Signal
 rm -f -r /var/snap/docker
