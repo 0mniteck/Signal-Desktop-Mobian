@@ -5,9 +5,11 @@ run curl -s https://repo.mobian.org/mobian.gpg | tee /etc/apt/trusted.gpg.d/mobi
 RUN apt update
 RUN apt upgrade -y
 RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs pkg-config
+
 # FPM
 RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
+
 # Node via NVM-SH
 ENV HOME="/root"
 ENV NVM_DIR="$HOME/.nvm"
