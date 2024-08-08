@@ -1,9 +1,11 @@
-# Fetch arm64 Mobian Bookworm Image
+# Fetch arm64 Mobian Bookworm Image | Sync Public Keys | Update
 FROM registry.salsa.debian.org/mobian-team/docker-images/mobian-builder-arm64:bookworm
-# FPM
+RUN rm /etc/apt/trusted.gpg.d/mobian* -f
+run curl -s https://repo.mobian.org/mobian.gpg | tee /etc/apt/trusted.gpg.d/mobian.gpg > /dev/null
 RUN apt update
 RUN apt upgrade -y
-RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs
+RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs pkg-config
+# FPM
 RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
 # Node via NVM-SH
