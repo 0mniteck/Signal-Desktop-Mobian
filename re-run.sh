@@ -1,7 +1,6 @@
 #!/bin/bash
 
 rm -f -r /var/snap/docker/*
-umount -f /dev/mapper/Luks-Signal
 systemd-cryptsetup detach Luks-Signal
 rm -f -r /var/snap/docker
 snap remove docker --purge
@@ -11,7 +10,6 @@ snap install docker && ufw disable && sleep 10 && cp /etc/keys/.private.key .pri
 snap disable docker
 rm -f -r /var/snap/docker/*
 sleep 10
-umount -f /dev/mapper/Luks-Signal
 systemd-cryptsetup detach Luks-Signal
 rm -f -r /var/snap/docker
 sleep 10
