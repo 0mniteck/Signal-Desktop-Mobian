@@ -121,6 +121,8 @@ files:
       - build/locale-display-names.json
       - build/country-display-names.json
       - build/dns-fallback.json
+      - build/optional-resources.json
+      - build/jumbomoji.json
       - node_modules/**
       - '!node_modules/underscore/**'
       - '!node_modules/emoji-datasource/emoji_pretty.json'
@@ -174,6 +176,7 @@ files:
       - screenShare.html
       - settings.html
       - permissions_popup.html
+      - calling_tools.html
       - debug_log.html
       - loading.html
   - from: build/compact-locales
@@ -182,4 +185,4 @@ files:
       - '**/messages.json'
 extraMetadata:
   environment: production
-electronVersion: 29.1.5
+electronVersion: 31.3.1
