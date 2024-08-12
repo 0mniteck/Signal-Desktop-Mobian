@@ -1,7 +1,11 @@
-# Fetch arm64 Mobian Bookworm Image | Sync Public Keys | Update
+# Fetch arm64 Mobian Bookworm Image
+
+# Sync Public Keys
 FROM registry.salsa.debian.org/mobian-team/docker-images/mobian-builder-arm64:bookworm
 RUN rm /etc/apt/trusted.gpg.d/mobian* -f
 RUN cd  /etc/apt/trusted.gpg.d/ && wget https://repo.mobian.org/mobian.gpg && echo "efc2c98411f7a45e9019d9f9fd21f958c7df240e4dab931765abd6e038160cfd15af287862a559943ca1d89027d6afe2e9354a041ae355283b400fb3c44af1a5  mobian.gpg" > mobian.sum && bash -c 'if [[ $(sha512sum -c mobian.sum) == "mobian.gpg: OK" ]]; then echo "mobian.gpg: Checksum Matched!"; else rm -f mobian.gpg; fi;'
+
+# Update and Install Deps
 RUN apt update
 RUN apt upgrade -y
 RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs pkg-config libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
