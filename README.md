@@ -12,7 +12,7 @@ Signature: `builds/release/signal-desktop_7.xx.x_arm64.deb.sig`.
 
 Sha512Sum: `builds/release/release.sha512sum`.
 
-Public Key: `0558260a88ff08f8dddf791fe73b9457917.50506be3d8dbc1311e8d769c5ac777`
+Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 
 ## Usage:
 
