@@ -9,7 +9,7 @@ apt update && apt install -y wget
 if [ ! -f /usr/bin/sd-updater ]; then
     cp ./${0##*/} /usr/bin/sd-updater
     chmod +x /usr/bin/sd-updater
-    echo "Script copied to /usr/bin/sd-updater."
+    echo "Script ${0##*/} copied to /usr/bin/sd-updater."
 else
     echo "/usr/bin/sd-updater already exists."
 fi
