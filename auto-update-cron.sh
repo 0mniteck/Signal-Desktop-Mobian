@@ -2,16 +2,16 @@
 
 # Script to add a cron job to check for and download the most recent version from this git repo
 
-# Install dependency
-apt update && apt install -y wget
 
 # Copy the script to /usr/bin/sd-updater if it doesn't exist
 if [ ! -f /usr/bin/sd-updater ]; then
     cp ./${0##*/} /usr/bin/sd-updater
     chmod +x /usr/bin/sd-updater
     echo "Script ${0##*/} copied to /usr/bin/sd-updater."
+    # Install dependency
+    apt update && apt install -y wget
 else
-    echo "/usr/bin/sd-updater already exists."
+    echo "/usr/bin/sd-updater already exists, checking for update."
 fi
 
 # Function to check for internet connectivity
