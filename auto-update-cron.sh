@@ -7,7 +7,7 @@ apt update && apt install -y wget
 
 # Copy the script to /usr/bin/sd-updater if it doesn't exist
 if [ ! -f /usr/bin/sd-updater ]; then
-    cp ./auto-update-cron.sh /usr/bin/sd-updater
+    cp ./${0##*/} /usr/bin/sd-updater
     chmod +x /usr/bin/sd-updater
     echo "Script copied to /usr/bin/sd-updater."
 else
