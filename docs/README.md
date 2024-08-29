@@ -25,6 +25,7 @@ Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
 * [x] Built with mobian:bookworm https://salsa.debian.org/Mobian-team/docker-images/
 * [x] Signal Desktop builds
 * [x] Sign `.deb` with keypair
+* [ ] Auto-Updater script
 
 ## See also:
 
