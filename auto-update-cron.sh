@@ -48,7 +48,7 @@ stop_running_instance() {
 
 # Function to install the new version
 install_new_version() {
-    wget -q -O /tmp/signal-desktop.deb $(grep 'url:' /tmp/latest-linux-arm64.yml | awk '{print $2}')
+    wget -q -O /tmp/signal-desktop.deb https://github.com/0mniteck/Signal-Desktop-Mobian/raw/master/builds/release/$(grep 'url:' /tmp/latest-linux-arm64.yml | awk '{print $2}')
     sudo apt install /tmp/signal-desktop.deb
     rm /tmp/signal-desktop.deb
 }
