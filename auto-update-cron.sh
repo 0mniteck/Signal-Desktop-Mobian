@@ -23,7 +23,7 @@ check_internet() {
 # Function to get the current version installed
 get_current_version() {
     if [ -f /usr/bin/signal-desktop ]; then
-        current_version=$(apt info signal-desktop | awk '{print $2}')
+        current_version=$(apt info signal-desktop | grep Version | awk '{print $2}')
         echo "$current_version"
     else
         echo "not_installed"
