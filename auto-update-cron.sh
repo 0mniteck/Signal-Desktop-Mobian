@@ -84,6 +84,7 @@ if [ "$current_version" != "$latest_version" ]; then
     rm -f /tmp/latest-linux-arm64.yml
 else
     echo "Signal Desktop is already up to date (version $current_version)"
+    rm -f /tmp/latest-linux-arm64.yml
 fi
 
 # Check if the cron job already exists
