@@ -20,8 +20,8 @@ ENV NVM_DIR="$HOME/.nvm"
 RUN wget https://github.com/nvm-sh/nvm/raw/v0.40.0/install.sh && echo "d5f202cb58a5ab7e7c3d7311a1042c00dbd723af6b1d68b4913971832c0b59a106e56560b2d8f3a4f852105d13b845b10b02e1d9de3d9b7a5b5f5ec7e66f739d  install.sh" > install.sum && bash -c 'if [[ $(sha512sum -c install.sum) == "install.sh: OK" ]]; then echo "install.sh: Checksum Matched!"; else echo "install.sh: Checksum Mismatch!" & remove -f install.sh; fi;' && chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install 20.15.1 && nvm use 20.15.1 && npm install --location=global npm@latest && npm install --location=global canvas yarn node-gyp npm-run-all
 
 # Clone Repo
-# Signal-Desktop Branch 7.20.x
-RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 7.20.x
+# Signal-Desktop Branch 7.23.x
+RUN git clone https://github.com/signalapp/Signal-Desktop.git -b 7.23.x
 RUN mkdir /Signal-Desktop/release/
 
 # Fetch fficonfig.h

@@ -1,26 +1,29 @@
+Signing Release.
+[2K[1G[1myarn run v1.22.22[22m
+[2K[1G[2m$ node ts/updater/generateSignature.js --private /Signal-Desktop/release/.private.key --update /Signal-Desktop/release/signal-desktop_7.23.0_arm64.deb[22m
 Signing with...
-  version: 7.20.0
-  update file: /Signal-Desktop/release/signal-desktop_7.20.0_arm64.deb
+  version: 7.23.0
+  update file: /Signal-Desktop/release/signal-desktop_7.23.0_arm64.deb
   private key file: /Signal-Desktop/release/.private.key
-[2K[1GDone in 3.06s.
-428e378a34a1a2b5adb04a4e7b42d5d74dcf808a03fbf5f091aec2ed7ee321e9cddaece5c722f23623d865a587bec17cf405cf018f0eb38124198f96551750a2  release/signal-desktop_7.20.0_arm64.deb
+[2K[1GDone in 4.00s.
+741c3405d743738c08eb069d5cd367eb7c9d0e648aa8fe7f1c455c4ad2ec41d288989423e8bada9437179add34cd3aa24bd6e376f57c458430f48f3131546f61  release/signal-desktop_7.23.0_arm64.deb
 Public Key: 0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777
-Build Complete on 08/16/24 at 23:45 UTC
-total 113476
-drwxr-xr-x 1 root root      4096 Aug 16 23:45 .
-drwxr-xr-x 1 root root      4096 Aug 16 23:37 ..
--rw-r--r-- 1 root root      8325 Aug 16 23:45 builder-debug.yml
--rw-r--r-- 1 root root      6240 Aug 16 23:29 builder-effective-config.yaml
--rw-r--r-- 1 root root       360 Aug 16 23:45 latest-linux-arm64.yml
-drwxr-xr-x 4 root root      4096 Aug 16 23:37 linux-arm64-unpacked
--rw-r--r-- 1 root root        66 Aug 16 22:49 public.key
--rw-r--r-- 1 root root       289 Aug 16 23:45 release.sha512sum
--rw-r--r-- 1 root root 116140772 Aug 16 23:45 signal-desktop_7.20.0_arm64.deb
--rw-r--r-- 1 root root       128 Aug 16 23:45 signal-desktop_7.20.0_arm64.deb.sig
+Build Complete on 09/05/24 at 04:34 UTC
+total 113528
+drwxr-xr-x 1 root root      4096 Sep  5 04:34 .
+drwxr-xr-x 1 root root      4096 Sep  5 04:26 ..
+-rw-r--r-- 1 root root      8325 Sep  5 04:34 builder-debug.yml
+-rw-r--r-- 1 root root      6285 Sep  5 04:17 builder-effective-config.yaml
+-rw-r--r-- 1 root root       360 Sep  5 04:34 latest-linux-arm64.yml
+drwxr-xr-x 4 root root      4096 Sep  5 04:26 linux-arm64-unpacked
+-rw-r--r-- 1 root root        66 Sep  5 03:29 public.key
+-rw-r--r-- 1 root root       289 Sep  5 04:34 release.sha512sum
+-rw-r--r-- 1 root root 116189928 Sep  5 04:34 signal-desktop_7.23.0_arm64.deb
+-rw-r--r-- 1 root root       128 Sep  5 04:34 signal-desktop_7.23.0_arm64.deb.sig
 /
-[sPreparing to copy...[?25l[u[2KCopying from container - 0B[26G[0K9.54MB[26G[0K20.1MB[26G[0K26.2MB[26G[0K35.7MB[26G[0K44.8MB[26G[0K53.9MB[26G[0K62.1MB[26G[0K69.2MB[26G[0K76.4MB[26G[0K84.9MB[26G[0K92.7MB[26G[0K101MB[26G[0K110MB[26G[0K119MB[26G[0K129MB[26G[0K137MB[26G[0K147MB[26G[0K158MB[26G[0K168MB[26G[0K177MB[26G[0K188MB[26G[0K198MB[26G[0K208MB[26G[0K218MB[26G[0K229MB[26G[0K240MB[26G[0K251MB[26G[0K261MB[26G[0K268MB[26G[0K278MB[26G[0K288MB[26G[0K298MB[26G[0K306MB[26G[0K314MB[26G[0K325MB[26G[0K336MB[26G[0K346MB[26G[0K356MB[26G[0K366MB[26G[0K376MB[26G[0K376MB[26G[0K383MB[26G[0K392MB[26G[0K403MB[26G[0K414MB[26G[0K425MB[26G[0K437MB[26G[0K448MB[26G[0K459MB[26G[0K468MB[26G[0K476MB[26G[0K487MB[26G[0K499MB[26G[0K508MB[26G[0K519MB[26G[0K520MB[26G[0K528MB[26G[0K536MB[26G[0K547MB[26G[0K555MB[26G[0K566MB[26G[0K576MB[26G[0K586MB[?25h[u[2KSuccessfully copied 594MB to /home/shant/Signal-Desktop-Mobian/builds/
-Stop snap "docker" (2918) services                                                                                                           /Stop snap "docker" (2918) services                                                                                                           -Stop snap "docker" (2918) services                                                                                                           \Remove security profiles of snap "docker"                                                                                                    |[0m[?25h[Kdocker disabled
-[0m[?25h[Kdocker removed
+[sPreparing to copy...[?25l[u[2KCopying from container - 0B[26G[0K12.6MB[26G[0K23.7MB[26G[0K33.2MB[26G[0K43.1MB[26G[0K51.2MB[26G[0K59.7MB[26G[0K68.2MB[26G[0K73.5MB[26G[0K81.6MB[26G[0K89.2MB[26G[0K97.3MB[26G[0K106MB[26G[0K115MB[26G[0K127MB[26G[0K138MB[26G[0K149MB[26G[0K160MB[26G[0K170MB[26G[0K180MB[26G[0K192MB[26G[0K204MB[26G[0K215MB[26G[0K225MB[26G[0K235MB[26G[0K246MB[26G[0K252MB[26G[0K262MB[26G[0K273MB[26G[0K280MB[26G[0K291MB[26G[0K298MB[26G[0K307MB[26G[0K319MB[26G[0K331MB[26G[0K340MB[26G[0K347MB[26G[0K358MB[26G[0K370MB[26G[0K381MB[26G[0K389MB[26G[0K396MB[26G[0K406MB[26G[0K416MB[26G[0K426MB[26G[0K436MB[26G[0K448MB[26G[0K458MB[26G[0K468MB[26G[0K478MB[26G[0K488MB[26G[0K498MB[26G[0K510MB[26G[0K519MB[26G[0K528MB[26G[0K538MB[26G[0K549MB[26G[0K560MB[26G[0K569MB[26G[0K579MB[26G[0K592MB[?25h[u[2KSuccessfully copied 595MB to /home/shant/Signal-Desktop-Mobian/builds/
+Stop snap "docker" (2936) services                                                                                                           /Stop snap "docker" (2936) services                                                                                                           -Stop snap "docker" (2936) services                                                                                                           \Remove security profiles of snap "docker"                                                                                                    |[0m[?25h[Kdocker disabled
+Run remove hook of "docker" snap if present                                                                                                  /Remove data for snap "docker" (2936)                                                                                                         -[0m[?25h[Kdocker removed
 snap "docker" is not installed
 Firewall is active and enabled on system startup
 Close Screen Session: Continue to Signing-->

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Last_Version_Number=7.20
+Last_Version_Number=7.23
 Version_Number=$(echo "$Last_Version_Number + .03" | bc -l)
 
 sed -i s/signal-desktop_$(echo $Last_Version_Number).0_arm64.deb/signal-desktop_$(echo $Version_Number).0_arm64.deb/g docs/_layouts/default.html

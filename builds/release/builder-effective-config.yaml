@@ -50,6 +50,8 @@ win:
     - .node
   target:
     - nsis
+  asarUnpack:
+    - build/icons/win/icon.ico
 nsis:
   deleteAppDataOnUninstall: true
   differentialPackage: true
