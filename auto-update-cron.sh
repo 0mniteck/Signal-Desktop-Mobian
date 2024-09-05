@@ -88,7 +88,7 @@ fi
 
 # Check if the cron job already exists
 if [ ! -f /etc/cron.d/sd-updater ]; then
-    cat "0 2 * * * root /usr/bin/sd-updater" > /etc/cron.d/sd-updater
+    echo "0 2 * * * root /usr/bin/sd-updater" > /etc/cron.d/sd-updater
     echo "Cron job added."
 else
     echo "Cron job already exists."
