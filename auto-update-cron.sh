@@ -74,16 +74,16 @@ latest_version=$(get_latest_version)
 
 # Check if an update is needed
 if [ "$current_version" != "$latest_version" ]; then
-    echo "Updating Signal Desktop from version $current_version to $latest_version."
+    echo "Updating Signal Desktop from version $current_version to $latest_version"
     
     # Stop any running instances of signal-desktop
     stop_running_instance
     
     # Install the new version
     install_new_version
-    echo "Signal Desktop has been updated to version $latest_version."
+    echo "Signal Desktop has been updated to version $latest_version"
 else
-    echo "Signal Desktop is already up to date (version $current_version)."
+    echo "Signal Desktop is already up to date (version $current_version)"
 fi
 
 # Define the cron job command
