@@ -40,7 +40,6 @@ download_latest_version_info() {
 get_latest_version() {
     latest_version=$(grep 'version:' /tmp/latest-linux-arm64.yml | awk '{print $2}')
     echo "$latest_version"
-    rm -f /tmp/latest-linux-arm64.yml
 }
 
 # Function to stop any running instances of signal-desktop
