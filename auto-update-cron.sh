@@ -50,7 +50,7 @@ stop_running_instance() {
 # Function to install the new version
 install_new_version() {
     wget -q -O /tmp/signal-desktop.deb https://github.com/0mniteck/Signal-Desktop-Mobian/raw/master/builds/release/$(grep 'url:' /tmp/latest-linux-arm64.yml | awk '{print $3}')
-    sudo apt install /tmp/signal-desktop.deb
+    apt install /tmp/signal-desktop.deb
     rm -f /tmp/signal-desktop.deb
 }
 
@@ -86,11 +86,11 @@ else
 fi
 
 # Define the cron job command
-cron_job="0 2 * * * /usr/bin/sd-updater"
+cron_job="0 2 * * * root /usr/bin/sd-updater"
 
 # Check if the cron job already exists
-if ! crontab -l | grep -qF "$cron_job"; then
-    (crontab -l 2>/dev/null; echo "$cron_job") | crontab -
+if [ ! -f /etc/cron.d/sd-updater ]; then
+    $cron_job > /etc/cron.d/sd-updater
     echo "Cron job added: $cron_job"
 else
     echo "Cron job already exists."
