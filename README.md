@@ -4,7 +4,7 @@
 
 ## signal-desktop_7.23.0_arm64.deb
 
-This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.23.x`.
+This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.23.x`. Now with an optional updater client `auto-update-cron.sh`.
 
 This is the signed release: `builds/release/signal-desktop_7.xx.x_arm64.deb`
 
