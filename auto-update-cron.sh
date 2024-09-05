@@ -86,13 +86,10 @@ else
     echo "Signal Desktop is already up to date (version $current_version)"
 fi
 
-# Define the cron job command
-cron_job="0 2 * * * root /usr/bin/sd-updater"
-
 # Check if the cron job already exists
 if [ ! -f /etc/cron.d/sd-updater ]; then
-    cat $cron_job > /etc/cron.d/sd-updater
-    echo "Cron job added: $cron_job"
+    cat "0 2 * * * root /usr/bin/sd-updater" > /etc/cron.d/sd-updater
+    echo "Cron job added."
 else
     echo "Cron job already exists."
 fi
