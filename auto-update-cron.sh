@@ -33,6 +33,7 @@ get_current_version() {
 
 # Function to download the latest version info
 download_latest_version_info() {
+    rm -f /tmp/latest-linux-arm64.yml
     wget -q -O /tmp/latest-linux-arm64.yml https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/builds/release/latest-linux-arm64.yml
 }
 
@@ -49,9 +50,9 @@ stop_running_instance() {
 
 # Function to install the new version
 install_new_version() {
+    rm -f /tmp/signal-desktop.deb
     wget -q -O /tmp/signal-desktop.deb https://github.com/0mniteck/Signal-Desktop-Mobian/raw/master/builds/release/$(grep 'url:' /tmp/latest-linux-arm64.yml | awk '{print $3}')
     apt install /tmp/signal-desktop.deb
-    rm -f /tmp/signal-desktop.deb
 }
 
 # Check for internet
@@ -79,6 +80,8 @@ if [ "$current_version" != "$latest_version" ]; then
     # Install the new version
     install_new_version
     echo "Signal Desktop has been updated to version $latest_version"
+    rm -f /tmp/signal-desktop.deb
+    rm -f /tmp/latest-linux-arm64.yml
 else
     echo "Signal Desktop is already up to date (version $current_version)"
 fi
