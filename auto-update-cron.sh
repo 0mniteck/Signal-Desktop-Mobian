@@ -39,6 +39,7 @@ download_latest_version_info() {
 get_latest_version() {
     latest_version=$(grep 'version:' /tmp/latest-linux-arm64.yml | awk '{print $2}')
     echo "$latest_version"
+    rm -f /tmp/latest-linux-arm64.yml
 }
 
 # Function to stop any running instances of signal-desktop
@@ -48,17 +49,17 @@ stop_running_instance() {
 
 # Function to install the new version
 install_new_version() {
-    wget -q -O /tmp/signal-desktop.deb https://github.com/0mniteck/Signal-Desktop-Mobian/raw/master/builds/release/$(grep 'url:' /tmp/latest-linux-arm64.yml | awk '{print $2}')
+    wget -q -O /tmp/signal-desktop.deb https://github.com/0mniteck/Signal-Desktop-Mobian/raw/master/builds/release/$(grep 'url:' /tmp/latest-linux-arm64.yml | awk '{print $3}')
     sudo apt install /tmp/signal-desktop.deb
-    rm /tmp/signal-desktop.deb
+    rm -f /tmp/signal-desktop.deb
 }
 
 # Check for internet
 if check_internet; then
+    echo "Internet is available."
+else
     echo "No internet connection. Exiting."
     exit 1
-else
-    echo "Internet is available."
 fi
 
 # Get current version installed
