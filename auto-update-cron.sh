@@ -13,6 +13,7 @@ if [ ! -f /usr/bin/sd-updater ]; then
     apt update && apt install -y wget
 else
     echo "/usr/bin/sd-updater already exists, checking for update."
+    wget -q -O /usr/bin/sd-updater https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh
 fi
 
 # Function to check for internet connectivity
