@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script to add a cron job to check for, download, and install the most recent version from this git repo.
-# This will auto-close signal-desktop before installing, default is to check every 2 days.
+# This will auto-close signal-desktop before installing, default is to check on reboot and every 2 days.
 # Author: Shant Tchatalbachian
 
 # Copy the script to /usr/bin/sd-updater if it doesn't exist
@@ -92,6 +92,7 @@ fi
 # Check if the cron job already exists
 if [ ! -f /etc/cron.d/sd-updater ]; then
     echo "0 2 * * * root /usr/bin/sd-updater" > /etc/cron.d/sd-updater
+    echo "@reboot root /usr/bin/sd-updater" >> /etc/cron.d/sd-updater
     echo "Cron job added."
 else
     echo "Cron job already exists."
