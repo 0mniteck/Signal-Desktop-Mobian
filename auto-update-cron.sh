@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version 1.0
+# Version 1.1
 # Script to add a cron job to check for, download, and install the most recent version from this git repo.
 # This will auto-close signal-desktop before installing, default is to check on reboot and every 2 days.
 # Author: Shant Tchatalbachian
