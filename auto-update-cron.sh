@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Version 1.0
 # Script to add a cron job to check for, download, and install the most recent version from this git repo.
 # This will auto-close signal-desktop before installing, default is to check on reboot and every 2 days.
 # Author: Shant Tchatalbachian
@@ -13,8 +14,19 @@ if [ ! -f /usr/bin/sd-updater ]; then
     apt update && apt install -y wget
 else
     echo "/usr/bin/sd-updater already exists, checking for update."
-    # wget -q -O /usr/bin/sd-updater https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh
-    # chmod +x /usr/bin/sd-updater
+    wget -q -O /usr/bin/sd-updater-tmp https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh
+    new_sdu_version=$(sed -n '3p' /usr/bin/sd-updater-tmp)
+    sdu_version=$(sed -n '3p' /usr/bin/sd-updater)
+    if [ "$new_sdu_version" != "$sdu_version" ]; then
+        mv /usr/bin/sd-updater-tmp /usr/bin/sd-updater
+        chmod +x /usr/bin/sd-updater
+        echo "0 2 * * * root /usr/bin/sd-updater" > /etc/cron.d/sd-updater
+        echo "@reboot root /usr/bin/sd-updater" >> /etc/cron.d/sd-updater
+        sleep 5m
+    else
+        rm -f /usr/bin/sd-updater-tmp
+        sleep 5m
+    fi
 fi
 
 # Function to check for internet connectivity
