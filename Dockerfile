@@ -17,7 +17,7 @@ ENV USE_SYSTEM_FPM=true
 # Node via NVM-SH
 ENV HOME="/root"
 ENV NVM_DIR="$HOME/.nvm"
-RUN wget https://github.com/nvm-sh/nvm/raw/v0.40.0/install.sh && echo "d5f202cb58a5ab7e7c3d7311a1042c00dbd723af6b1d68b4913971832c0b59a106e56560b2d8f3a4f852105d13b845b10b02e1d9de3d9b7a5b5f5ec7e66f739d  install.sh" > install.sum && bash -c 'if [[ $(sha512sum -c install.sum) == "install.sh: OK" ]]; then echo "install.sh: Checksum Matched!"; else echo "install.sh: Checksum Mismatch!" & remove -f install.sh; fi;' && chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install 20.15.1 && nvm use 20.15.1 && npm install --location=global npm@latest && npm install --location=global canvas yarn node-gyp npm-run-all
+RUN wget https://github.com/nvm-sh/nvm/raw/v0.40.1/install.sh && echo "551831ea67476372c6fb13fc2cab474b38f6e369daa51652a1c22974b0c8a5ed9e36a1e586046e371ba90de8c9d7376ffb3a41c6f6f352c29a847203a56f1db9  install.sh" > install.sum && bash -c 'if [[ $(sha512sum -c install.sum) == "install.sh: OK" ]]; then echo "install.sh: Checksum Matched!"; else echo "install.sh: Checksum Mismatch!" & remove -f install.sh; fi;' && chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install 20.17.0 && nvm use 20.17.0 && npm install --location=global npm@latest && npm install --location=global canvas yarn node-gyp npm-run-all
 
 # Clone Repo
 # Signal-Desktop Branch 7.23.x
