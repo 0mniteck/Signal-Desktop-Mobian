@@ -13,6 +13,7 @@ if [ ! -f /usr/bin/sd-updater ]; then
     # Install dependency
     apt update && apt install -y wget
 else
+    sleep 5m
     echo "/usr/bin/sd-updater already exists, checking for update."
     wget -q -O /usr/bin/sd-updater-tmp https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh
     new_sdu_version=$(sed -n '3p' /usr/bin/sd-updater-tmp)
@@ -22,10 +23,8 @@ else
         chmod +x /usr/bin/sd-updater
         echo "0 2 * * * root /usr/bin/sd-updater" > /etc/cron.d/sd-updater
         echo "@reboot root /usr/bin/sd-updater" >> /etc/cron.d/sd-updater
-        sleep 5m
     else
         rm -f /usr/bin/sd-updater-tmp
-        sleep 5m
     fi
 fi
 
