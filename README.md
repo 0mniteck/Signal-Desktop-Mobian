@@ -1,7 +1,7 @@
 ![alt text](https://signal.org/assets/images/header/logo.png)
 
 # Signal Desktop Builder For Mobian
-
+### Bug currently affecting electron https://github.com/electron/electron/issues/43580 preventing build
 ## signal-desktop_7.23.0_arm64.deb
 
 This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.23.x`.
