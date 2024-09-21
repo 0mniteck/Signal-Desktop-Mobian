@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version 1.1
+# Version 1.2
 # Script to add a cron job to check for, download, and install the most recent version from this git repo.
 # This will auto-close signal-desktop before installing, default is to check on reboot and every 2 days.
 # Author: Shant Tchatalbachian
@@ -10,8 +10,7 @@ if [ ! -f /usr/bin/sd-updater ]; then
     cp ./${0##*/} /usr/bin/sd-updater
     chmod +x /usr/bin/sd-updater
     echo "Script ${0##*/} copied to /usr/bin/sd-updater."
-    # Install dependency
-    apt update && apt install -y wget
+    apt update && apt install -y wget cron
 else
     echo "/usr/bin/sd-updater already exists, checking for update."
     sleep 5m
@@ -23,8 +22,10 @@ else
         chmod +x /usr/bin/sd-updater
         echo "0 2 * * * root /usr/bin/sd-updater" > /etc/cron.d/sd-updater
         echo "@reboot root /usr/bin/sd-updater" >> /etc/cron.d/sd-updater
+        echo "/usr/bin/sd-updater updated to $new_sdu_version"
     else
         rm -f /usr/bin/sd-updater-tmp
+        echo "/usr/bin/sd-updater $sdu_version"
     fi
 fi
 
