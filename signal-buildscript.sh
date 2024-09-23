@@ -5,6 +5,7 @@
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
+rm -f .nvmrc
 nvm use 20.16.0
 yarn install --frozen-lockfile --network-timeout 600000
 yarn build:dev && yarn build:release --arm64 --linux deb
