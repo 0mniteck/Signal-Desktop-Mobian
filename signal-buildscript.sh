@@ -4,8 +4,6 @@
 # Build Signal-Desktop
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
-sed -i 's/"electron": "32.1.0"/"electron": "32.1.2"/' package.json
-sed -i 's/"electron": "32.1.0"/"electron": "32.1.2"/' package-lock.json
 git-lfs install
 nvm use
 yarn install --frozen-lockfile --network-timeout 600000
