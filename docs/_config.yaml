@@ -1,2 +1,4 @@
 theme: jekyll-theme-cayman
 show_downloads: true
+incremental: true
+lsi: true
