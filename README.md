@@ -12,7 +12,7 @@ This is the latest release: `builds/release/signal-desktop_7.xx.x_arm64.deb`
 
 Sha512Sum: `builds/release/release.sha512sum`
 
-Vigilant Mode is on for this repo so all remote pushes should be signed with a verified key or Github's key.
+<sub>Vigilant Mode is on for this repo so all remote pushes should be signed with a verified key or Github's key.</sub>
 
 Github's GPG Key ID: `B5690EEEBB952194`
 
