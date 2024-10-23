@@ -14,9 +14,9 @@ Sha512Sum: `builds/release/release.sha512sum`
 
 Vigilant Mode is on for this repo so all remote pushes should be signed with a trusted key or Github's key.
 
-Github's GPG Key ID: B5690EEEBB952194
+Github's GPG Key ID: `B5690EEEBB952194`
 
-0mniteck's Current GPG Key ID: 287EE837E6ED2DD3
+0mniteck's Current GPG Key ID: `287EE837E6ED2DD3`
 
 ## Usage:
 
