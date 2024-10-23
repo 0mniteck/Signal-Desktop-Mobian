@@ -4,7 +4,7 @@
 ### Bug currently affecting electron https://github.com/electron/electron/issues/43580 preventing build
 ## signal-desktop_7.23.0_arm64.deb
 
-This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.23.x`
+This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting branch `7.23.x`
 
 Now with an optional update client: `auto-update-cron.sh`
 
