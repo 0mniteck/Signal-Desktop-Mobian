@@ -17,7 +17,7 @@ Github's GPG Key ID: `B5690EEEBB952194`
 
 0mniteck's Current GPG Key ID: `287EE837E6ED2DD3`
 
-<sup>Vigilant Mode is on for this repo so all remote pushes should be signed with a verified key or Github's key.</sup>
+<sup><sup>*Vigilant Mode is on for this repo so all remote pushes should be signed with a verified key or Github's key.</sup></sup>
 
 ## Usage:
 
