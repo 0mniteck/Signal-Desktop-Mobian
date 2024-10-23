@@ -1,4 +1,4 @@
-![alt text](https://signal.org/assets/images/header/logo.png)
+![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)
 
 # Signal Desktop Builder For Mobian
 ### Bug currently affecting electron https://github.com/electron/electron/issues/43580 preventing build
