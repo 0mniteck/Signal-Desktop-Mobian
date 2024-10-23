@@ -4,7 +4,7 @@
 ### Bug currently affecting electron https://github.com/electron/electron/issues/43580 preventing build
 ## signal-desktop_7.23.0_arm64.deb
 
-This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.23.x`
+This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting branch `7.23.x`
 
 Now with an optional update client: `auto-update-cron.sh`
 
@@ -12,7 +12,7 @@ This is the latest release: `builds/release/signal-desktop_7.xx.x_arm64.deb`
 
 Sha512Sum: `builds/release/release.sha512sum`
 
-Vigilant Mode is on for this repo so all remote pushes should be signed with a trusted key or Github's key.
+Vigilant Mode is on for this repo so all remote pushes should be signed with a verified key or Github's key.
 
 Github's GPG Key ID: `B5690EEEBB952194`
 
