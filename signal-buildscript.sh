@@ -21,7 +21,7 @@ else
   rm -f /Signal-Desktop/release/.private.key
 fi
 sha512sum release/*.deb && sha512sum release/*.deb > release/release.sha512sum
-echo "Public Key: "$(cat /Signal-Desktop/release/public.key) && echo "Public Key: "$(cat /Signal-Desktop/release/public.key) >> release/release.sha512sum
+echo "0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> release/release.sha512sum
 echo "Build Complete "$(date -u '+on %D at %R UTC') && echo "Build Complete "$(date -u '+on %D at %R UTC') >> release/release.sha512sum
 ls -la release/
 popd
