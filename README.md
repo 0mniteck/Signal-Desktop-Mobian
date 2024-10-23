@@ -10,11 +10,13 @@ Now with an optional update client: `auto-update-cron.sh`
 
 This is the signed release: `builds/release/signal-desktop_7.xx.x_arm64.deb`
 
-Signature: `builds/release/signal-desktop_7.xx.x_arm64.deb.sig`
-
 Sha512Sum: `builds/release/release.sha512sum`
 
-Buildtime Public Key: `0558260a88ff08f8dddf791fe73b9457917830506be3d8dbc1311e8d769c5ac777`
+Vigilant Mode is on for this repo so all remote pushes should be signed with a trusted key or Github's key.
+
+Github's GPG Key ID: B5690EEEBB952194
+
+0mniteck's Current GPG Key ID: 287EE837E6ED2DD3
 
 ## Usage:
 
