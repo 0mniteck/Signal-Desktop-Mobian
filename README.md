@@ -12,11 +12,11 @@ This is the latest release: `builds/release/signal-desktop_7.xx.x_arm64.deb`
 
 Sha512Sum: `builds/release/release.sha512sum`
 
-<sub>Vigilant Mode is on for this repo so all remote pushes should be signed with a verified key or Github's key.</sub>
-
 Github's GPG Key ID: `B5690EEEBB952194`
 
 0mniteck's Current GPG Key ID: `287EE837E6ED2DD3`
+
+<sup>Vigilant Mode is on for this repo so all remote pushes should be signed with a verified key or Github's key.</sup>
 
 ## Usage:
 
