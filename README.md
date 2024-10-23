@@ -27,8 +27,7 @@ Github's GPG Key ID: `B5690EEEBB952194`
 ## Current Status:
 
 * [x] Built with mobian:bookworm https://salsa.debian.org/Mobian-team/docker-images/
-* [x] Signal Desktop builds
-* [x] Sign `.deb` with keypair
+* [ ] Signal Desktop builds
 * [x] Auto-Update script
 
 ## See also:
