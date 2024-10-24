@@ -36,7 +36,8 @@ else
   echo "Unknown build type ${BUILD_TYPE}"
   exit 1
 fi
-npm run run-s generate build:esbuild:prod
+npm run generate
+npm run build:esbuild:prod
 xvfb-run --auto-servernum npm run build:preload-cache
 npm run build:release -- --arm64 --publish=never --linux deb
 npm sbom --sbom-format="spdx" sbom-type="application"
