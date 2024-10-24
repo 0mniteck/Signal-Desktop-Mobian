@@ -2,7 +2,7 @@
 
 # Signal Desktop Builder For Mobian
 [![CI](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml/badge.svg)](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml)
-### [signal-desktop_7.23.0_arm64.deb](/builds/release/signal-desktop_7.23.0_arm64.deb)
+### [signal-desktop_7.23.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.23.0_arm64.deb)
 
 This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.23.x`
 
