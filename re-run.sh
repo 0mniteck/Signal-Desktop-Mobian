@@ -31,7 +31,7 @@ else
   fi
 fi
 
-docker run -rm --cpus=$(nproc) \
+docker run -it --cpus=$(nproc) \
   --name signal-desktop \
   --user "$(id -u):$(id -g)" \
   -e NPM_CONFIG_CACHE=/tmp/.npm-cache \
