@@ -50,4 +50,4 @@ COPY signal-buildscript.sh /
 
 ENTRYPOINT ["/signal-buildscript.sh"]
 
-CMD ["dev"]
+CMD ["public"]
