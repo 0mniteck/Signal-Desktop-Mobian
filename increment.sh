@@ -11,7 +11,7 @@ sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g README.md
 
 sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g git.sh
 
-sed -i s/$(echo $Last_Version_Number).x/$(echo $Version_Number).x/g Dockerfile
+sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g Dockerfile
 
 sed -i s/Last_Version_Number=$Last_Version_Number/Last_Version_Number=$Version_Number/g increment.sh
 
