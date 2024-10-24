@@ -9,7 +9,7 @@ echo "Starting Build "$(date -u '+on %D at %R UTC')
 echo
 
 ./increment.sh
-sudo screen -L -Logfile builds/release/builder.log bash -c './re-run.sh'
+sudo screen -L -Logfile builds/release/builder.log bash -c './re-run.sh public'
 ls -la builds/release/
 
 ./git.sh
