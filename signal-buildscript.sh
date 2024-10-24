@@ -7,9 +7,6 @@ pushd /Signal-Desktop
 git-lfs install
 nvm use
 npm ci
-# No more yarn
-# yarn install --frozen-lockfile --network-timeout 600000
-# yarn build:dev && yarn build:release --arm64 --linux deb
 npm run generate && npm run prepare-beta-build && npm run build:esbuild:prod
 xvfb-run --auto-servernum npm run build:preload-cache
 npm run build:release -- --arm64 --publish=never --linux deb
