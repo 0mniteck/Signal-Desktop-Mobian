@@ -4,13 +4,15 @@
 [![CI](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml/badge.svg)](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml)
 ### [signal-desktop_7.23.0_arm64.deb](/builds/release/signal-desktop_7.23.0_arm64.deb)
 
-This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting branch `7.23.x`
+This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.23.x`
 
-Now with an optional update client: `auto-update-cron.sh`
+Now with an optional update client: [`auto-update-cron.sh`](auto-update-cron.sh)
 
-This is the latest release: `builds/release/signal-desktop_7.xx.x_arm64.deb`
+This is the latest release: [`builds/release/signal-desktop_7.23.0_arm64.deb`](builds/release/signal-desktop_7.23.0_arm64.deb)
 
-Sha512Sum: `builds/release/release.sha512sum`
+Sha512Sum: [`builds/release/release.sha512sum`](builds/release/release.sha512sum)
+
+SBOM: [`builds/release/manifest.spdx.json`](builds/release/manifest.spdx.json)
 
 Github's GPG Key ID: `B5690EEEBB952194`
 
@@ -26,11 +28,11 @@ Github's GPG Key ID: `B5690EEEBB952194`
 
 ## Current Status:
 
-* [x] Built with mobian:bookworm https://salsa.debian.org/Mobian-team/docker-images/
+* [x] Built with [mobian:bookworm](https://salsa.debian.org/Mobian-team/docker-images/)
 * [x] Signal Desktop builds
 * [x] Auto-Update script
 * [x] Reproducible builds
-* [x] Generate SBOM at buildtime [manifest.spdx.json](builds/release/manifest.spdx.json)
+* [x] Generate SBOM at buildtime
 
 ## See also:
 
