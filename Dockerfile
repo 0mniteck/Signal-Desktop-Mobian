@@ -8,8 +8,10 @@ RUN cd /etc/apt/trusted.gpg.d/ && wget https://repo.mobian.org/mobian.gpg && ech
 # Install Deps
 RUN apt update
 RUN apt install ca-certificates
-COPY includes/sources.list /etc/apt/
-COPY includes/apt.conf /etc/apt/
+sed -i 's,http://deb.debian.org/debian-security,https://snapshot.debian.org/archive/debian-security/20241024T023334Z,g' /etc/apt/sources.list.d/debian.sources
+sed -i 's,http://deb.debian.org/debian,https://snapshot.debian.org/archive/debian/20241024T023111Z,g' /etc/apt/sources.list.d/debian.sources
+sed -i s/http/https/g /etc/apt/sources.list.d/mobian.list
+COPY includes/https_apt /etc/apt/apt.conf.d/
 RUN apt update
 RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs pkg-config libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev xvfb
 
