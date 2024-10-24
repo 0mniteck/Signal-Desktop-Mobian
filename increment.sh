@@ -1,7 +1,7 @@
 #!/bin/bash
 chmod +x ./auto-update-cron.sh
 Last_Version_Number=7.23
-Version_Number=$(echo "$Last_Version_Number + .08" | bc -l)
+Version_Number=$(echo "$Last_Version_Number + .07" | bc -l)
 
 sed -i s/signal-desktop_$(echo $Last_Version_Number).0_arm64.deb/signal-desktop_$(echo $Version_Number).0_arm64.deb/g docs/_layouts/default.html
 
