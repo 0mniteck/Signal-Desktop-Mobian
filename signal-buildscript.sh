@@ -40,6 +40,7 @@ npm run generate
 npm run build:esbuild:prod
 xvfb-run --auto-servernum npm run build:preload-cache
 npm run build:release -- --arm64 --publish=never --linux deb
+echo "Generating SBOM at /Signal-Desktop/release/manifest.spdx.json"
 npm sbom --sbom-format="spdx" --sbom-type="application" > /Signal-Desktop/release/manifest.spdx.json
 # TESTS
 # xvfb-run --auto-servernum npm run test-node
