@@ -10,7 +10,7 @@ echo
 
 ./increment.sh
 sudo screen -L -Logfile /tmp/builder.log bash -c './re-run.sh public'
-cp /tmp/builder.log builds/release/builder.log
+cp /tmp/builder.log builds/release/builder.log && rm -f /tmp/builder.log
 ls -la builds/release/
 
 ./git.sh
