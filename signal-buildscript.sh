@@ -1,13 +1,42 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-# Build Signal-Desktop
+trap '[[ $pid ]] && kill $pid; exit' EXIT
+
+if [ "$1" != "" ]; then
+  BUILD_TYPE="$1"
+fi
+echo "BUILD_TYPE: ${BUILD_TYPE}"
+echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
+
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
-nvm use
-npm ci
-npm run generate && npm run prepare-beta-build && npm run build:esbuild:prod
+nvm use && npm ci
+npm install && npm run clean-transpile
+cd sticker-creator
+npm install && npm run build
+cd ..
+npm run generate && \
+if [ "${BUILD_TYPE}" = "public" ]; then
+  npm run prepare-beta-build
+elif [ "${BUILD_TYPE}" = "alpha" ]; then
+  npm run prepare-alpha-version
+  npm run prepare-alpha-build
+elif [ "${BUILD_TYPE}" = "staging" ]; then
+  npm run prepare-alpha-version
+  npm run prepare-staging-build
+elif [ "${BUILD_TYPE}" = "test" ]; then
+  npm run prepare-alpha-version
+  npm run prepare-alpha-build
+elif [ "${BUILD_TYPE}" = "dev" ]; then
+  echo "dev build, using package.json as is"
+else
+  echo "Unknown build type ${BUILD_TYPE}"
+  exit 1
+fi
+npm run build:esbuild:prod
 xvfb-run --auto-servernum npm run build:preload-cache
 npm run build:release -- --arm64 --publish=never --linux deb
 # TESTS
@@ -17,7 +46,7 @@ npm run build:release -- --arm64 --publish=never --linux deb
 debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
 if [ ! -f /Signal-Desktop/release/.private.key ]; then
   echo "Generating New Keypair."
-  npm run node ts/updater/generateKeyPair.js --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
+  npm run ts/updater/generateKeyPair.js --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
   echo "Signing Release."
   npm run sign-release --private /Signal-Desktop/release/.private.key --update $debpath
 else
