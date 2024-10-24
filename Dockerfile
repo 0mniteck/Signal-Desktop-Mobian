@@ -7,6 +7,10 @@ RUN cd /etc/apt/trusted.gpg.d/ && wget https://repo.mobian.org/mobian.gpg && ech
 
 # Install Deps
 RUN apt update
+RUN apt install ca-certificates
+COPY docker/sources.list /etc/apt/
+COPY docker/apt.conf /etc/apt/
+RUN apt update
 RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs pkg-config libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev xvfb
 
 # Install FPM
