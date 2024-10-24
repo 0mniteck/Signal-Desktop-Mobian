@@ -6,17 +6,20 @@ echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
 nvm use
-yarn install --frozen-lockfile --network-timeout 600000
-yarn build:dev && yarn build:release --arm64 --linux deb
+# yarn install --frozen-lockfile --network-timeout 600000
+# yarn build:dev && yarn build:release --arm64 --linux deb
+npm run generate && npm run prepare-beta-build && npm run build:esbuild:prod
+xvfb-run --auto-servernum npm run build:preload-cache
+npm run build:release -- --arm64 --linux deb
 debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
 if [ ! -f /Signal-Desktop/release/.private.key ]; then
   echo "Generating New Keypair."
-  yarn node ts/updater/generateKeyPair.js --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
+  npm run node ts/updater/generateKeyPair.js --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
   echo "Signing Release."
-  yarn sign-release --private /Signal-Desktop/release/.private.key --update $debpath
+  npm run sign-release --private /Signal-Desktop/release/.private.key --update $debpath
 else
   echo "Signing Release."
-  yarn sign-release --private /Signal-Desktop/release/.private.key --update $debpath
+  npm run sign-release --private /Signal-Desktop/release/.private.key --update $debpath
   shred /Signal-Desktop/release/.private.key
   rm -f /Signal-Desktop/release/.private.key
 fi
