@@ -47,6 +47,6 @@ COPY .private.key /Signal-Desktop/release/
 COPY builds/release/public.key /Signal-Desktop/release/
 COPY signal-buildscript.sh /
 
-ENTRYPOINT ["signal-buildscript.sh"]
+ENTRYPOINT ["/signal-buildscript.sh"]
 
 CMD ["dev"]
