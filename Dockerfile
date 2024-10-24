@@ -8,7 +8,7 @@ RUN sed -i 's,http://deb.debian.org/debian-security,https://snapshot.debian.org/
 RUN sed -i 's,http://deb.debian.org/debian,https://snapshot.debian.org/archive/debian/20241024T023111Z,g' /etc/apt/sources.list.d/debian.sources
 RUN sed -i s/http/https/g /etc/apt/sources.list.d/mobian.list
 COPY includes/secure_apt /etc/apt/apt.conf.d/
-RUN apt update
+RUN apt update && apt upgrade -y
 RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs pkg-config libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev xvfb
 
 # Install FPM
