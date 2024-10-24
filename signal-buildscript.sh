@@ -40,7 +40,8 @@ npm run generate
 npm run build:esbuild:prod
 xvfb-run --auto-servernum npm run build:preload-cache
 npm run build:release -- --arm64 --publish=never --linux deb
-npm sbom --sbom-format="spdx" sbom-type="application"
+npm sbom --sbom-format="spdx" --sbom-type="application"
+ls -la
 # TESTS
 # xvfb-run --auto-servernum npm run test-node
 # xvfb-run --auto-servernum npm run test-electron
