@@ -36,7 +36,7 @@ else
   echo "Unknown build type ${BUILD_TYPE}"
   exit 1
 fi
-npm run build:esbuild:prod
+run-s generate build:esbuild:prod
 xvfb-run --auto-servernum npm run build:preload-cache
 npm run build:release -- --arm64 --publish=never --linux deb
 # TESTS
