@@ -36,7 +36,7 @@ else
   echo "Unknown build type ${BUILD_TYPE}"
   exit 1
 fi
-run-s generate build:esbuild:prod
+npm run run-s generate build:esbuild:prod
 xvfb-run --auto-servernum npm run build:preload-cache
 npm run build:release -- --arm64 --publish=never --linux deb
 # TESTS
@@ -46,12 +46,12 @@ npm run build:release -- --arm64 --publish=never --linux deb
 debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
 if [ ! -f /Signal-Desktop/release/.private.key ]; then
   echo "Generating New Keypair."
-  npm run ts/updater/generateKeyPair.js --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
+  npm run ts/updater/generateKeyPair.js -- --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
   echo "Signing Release."
-  npm run sign-release --private /Signal-Desktop/release/.private.key --update $debpath
+  npm run sign-release -- --private /Signal-Desktop/release/.private.key --update $debpath
 else
   echo "Signing Release."
-  npm run sign-release --private /Signal-Desktop/release/.private.key --update $debpath
+  npm run sign-release -- --private /Signal-Desktop/release/.private.key --update $debpath
   shred /Signal-Desktop/release/.private.key
   rm -f /Signal-Desktop/release/.private.key
 fi
