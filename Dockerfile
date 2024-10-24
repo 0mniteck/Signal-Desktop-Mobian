@@ -28,7 +28,6 @@ RUN wget https://github.com/nvm-sh/nvm/raw/v0.40.1/install.sh && echo "551831ea6
 # Signal-Desktop Checkout Tag 7.23.0
 RUN git clone https://github.com/signalapp/Signal-Desktop.git
 RUN git checkout tags/v7.23.0
-RUN git config --global --add safe.directory /project
 RUN mkdir /Signal-Desktop/release/
 RUN mkdir /Signal-Desktop/artifacts/
 RUN mkdir /Signal-Desktop/artifacts/linux
