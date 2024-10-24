@@ -29,8 +29,8 @@ Github's GPG Key ID: `B5690EEEBB952194`
 * [x] Built with mobian:bookworm https://salsa.debian.org/Mobian-team/docker-images/
 * [x] Signal Desktop builds
 * [x] Auto-Update script
-* [ ] Reproducible builds
-* [ ] Generate SBOM at buildtime
+* [x] Reproducible builds
+* [x] Generate SBOM at buildtime [manifest.spdx.json](builds/release/manifest.spdx.json)
 
 ## See also:
 
