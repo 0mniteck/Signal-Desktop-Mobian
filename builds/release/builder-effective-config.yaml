@@ -93,6 +93,7 @@ files:
       - libtextsecure/**
       - ts/**/*.js
       - ts/*.js
+      - '!ts/scripts/**'
       - '!build'
       - '!ts/{storybook,test-node,test-mock,test-both,test-electron}'
       - '!**/{tsconfig,bower,component}.json'
@@ -109,10 +110,13 @@ files:
       - '!**/*.{bak,bnf,flow,patch,markdown,bnf,mli,ts,map}'
       - '!node_modules/intl-tel-input/composer.json'
       - '!js/register.js'
+      - '!fixtures'
       - stylesheets/*.css
       - app/*
       - '!app/*.ts'
       - preload.bundle.js
+      - preload.wrapper.js
+      - preload.bundle.cache
       - preload_utils.js
       - main.js
       - images/**
@@ -134,7 +138,7 @@ files:
       - '!node_modules/spellchecker/vendor/hunspell/**/*'
       - '!node_modules/@formatjs/intl-displaynames/**/*'
       - '!node_modules/@formatjs/intl-listformat/**/*'
-      - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts,*d.ts.map,*.gypi,.snyk-*.flag,benchmark}'
+      - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts,*d.ts.map,*.js.map,*.gypi,.snyk-*.flag,benchmark}'
       - '!**/node_modules/.bin'
       - '!**/node_modules/**/build/**'
       - node_modules/intl-tel-input/build/**
@@ -154,14 +158,24 @@ files:
       - node_modules/@signalapp/better-sqlite3/build/Release/better_sqlite3.node
       - node_modules/@signalapp/libsignal-client/prebuilds/${platform}-${arch}/*.node
       - '!node_modules/@signalapp/ringrtc/scripts/*'
-      - '!node_modules/@nodert-win10-rs4/windows.data.xml.dom/*.cpp'
-      - '!node_modules/@nodert-win10-rs4/windows.ui.notifications/*.cpp'
       - node_modules/@signalapp/ringrtc/build/${platform}/*${arch}*.node
       - node_modules/mac-screen-capture-permissions/build/Release/*.node
+      - node_modules/@indutny/simple-windows-notifications/build/Release/*.node
+      - node_modules/@indutny/mac-screen-share/build/Release/*.node
       - node_modules/fs-xattr/build/Release/*.node
-      - node_modules/@nodert-win10-rs4/windows.data.xml.dom/build/Release/*.node
-      - node_modules/@nodert-win10-rs4/windows.ui.notifications/build/Release/*.node
-      - node_modules/@signalapp/windows-dummy-keystroke/build/Release/*.node
+      - '!node_modules/@indutny/simple-windows-notifications/*.cpp'
+      - '!node_modules/@indutny/mac-screen-share/*.{mm,h}'
+      - '!node_modules/libheif-js/libheif'
+      - '!node_modules/libheif-js/libheif-wasm/libheif-bundle.mjs'
+      - '!node_modules/libheif-js/libheif-wasm/*.wasm'
+      - '!node_modules/@react-aria/**'
+      - '!node_modules/react-aria-components/**'
+      - '!node_modules/react-virtualized/**'
+      - '!node_modules/@react-stately/**'
+      - '!node_modules/@popperjs/**'
+      - '!node_modules/@internationalized/**'
+      - '!node_modules/protobufjs/dist/**'
+      - node_modules/protobufjs/dist/minimal/**
       - '!**/node_modules/react-dom/*/*.development.js'
       - '!node_modules/mp4box/**'
       - node_modules/mp4box/package.json
@@ -187,4 +201,4 @@ files:
       - '**/messages.json'
 extraMetadata:
   environment: production
-electronVersion: 31.3.1
+electronVersion: 32.1.2
