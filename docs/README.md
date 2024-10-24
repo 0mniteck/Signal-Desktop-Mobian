@@ -1,9 +1,7 @@
 ![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)
 
 # Signal Desktop Builder For Mobian
-> [!NOTE]
-> Bug currently affecting electron https://github.com/electron/electron/issues/43580 preventing build
-
+[![CI](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml/badge.svg)](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml)
 ### [signal-desktop_7.23.0_arm64.deb](/builds/release/signal-desktop_7.23.0_arm64.deb)
 
 This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting branch `7.23.x`
@@ -29,13 +27,14 @@ Github's GPG Key ID: `B5690EEEBB952194`
 ## Current Status:
 
 * [x] Built with mobian:bookworm https://salsa.debian.org/Mobian-team/docker-images/
-* [ ] Signal Desktop builds
+* [x] Signal Desktop builds
 * [x] Auto-Update script
+* [ ] Reproducible builds
 * [ ] Generate SBOM at buildtime
 
 ## See also:
 
 * https://wiki.debian.org/Mobian
-* https://salsa.debian.org/mobian-team/docker-images/container_registry/
+* https://github.com/signalapp/Signal-Desktop/blob/main/reproducible-builds/README.md
 * https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md
-* https://gitlab.com/ohfp/pinebookpro-things/-/blob/master/signal-desktop/PKGBUILD
+* https://salsa.debian.org/mobian-team/docker-images/container_registry/
