@@ -6,13 +6,13 @@
 
 This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.23.x`
 
-Now with an optional update client: [`auto-update-cron.sh`](auto-update-cron.sh)
+Now with an optional update client: [`auto-update-cron.sh`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/auto-update-cron.sh)
 
-This is the latest release: [`builds/release/signal-desktop_7.23.0_arm64.deb`](builds/release/signal-desktop_7.23.0_arm64.deb)
+This is the latest release: [`builds/release/signal-desktop_7.23.0_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.23.0_arm64.deb)
 
-Sha512Sum: [`builds/release/release.sha512sum`](builds/release/release.sha512sum)
+Sha512Sum: [`builds/release/release.sha512sum`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/release.sha512sum)
 
-SBOM: [`builds/release/manifest.spdx.json`](builds/release/manifest.spdx.json)
+SBOM: [`builds/release/manifest.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/manifest.spdx.json)
 
 Github's GPG Key ID: `B5690EEEBB952194`
 
