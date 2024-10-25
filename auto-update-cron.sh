@@ -1,8 +1,13 @@
 #!/bin/bash
 
-# Version 1.4
+# Version 1.5
+#
 # Script to add a cron job to check for, download, and install the most recent version from this git repo.
-# This will auto-close signal-desktop before installing, default is to check on reboot and every 2 days.
+# This will auto-close signal-desktop before installing, default is to check after 5 min on reboot and every 2 days.
+#
+# NOTE: This client is assuming you have DNSSEC on and validating querys on your local domain/device; or that
+# you are inherently trusting https://github.com and https://githubusercontent.com.
+#
 # Author: Shant Tchatalbachian
 
 # Copy the script to /usr/bin/sd-updater if it doesn't exist
