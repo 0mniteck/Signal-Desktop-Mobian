@@ -6,7 +6,7 @@ systemd-cryptsetup detach Luks-Signal
 rm -f -r /var/snap/docker
 snap remove docker --purge
 systemd-cryptsetup attach Luks-Signal /dev/mmcblk1 && mkdir /var/snap/docker && mount /dev/mapper/Luks-Signal /var/snap/docker && rm -f -r /var/snap/docker/* && chown root:root /var/snap/docker
-snap install docker && ufw disable && sleep 10
+snap install docker --revision=2932 && ufw disable && sleep 10
 cp /etc/keys/.private.key .private.key
 docker build -t signal-desktop \
   --build-arg SOURCE_DATE_EPOCH=1 \
