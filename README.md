@@ -1,7 +1,6 @@
 ![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)
 
 # Signal Desktop Builder For Mobian
-[![CI](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml/badge.svg)](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml)
 ### [signal-desktop_7.30.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.30.0_arm64.deb)
 
 This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.30.x`
@@ -28,6 +27,7 @@ Github's GPG Key ID: `B5690EEEBB952194`
 
 ## Current Status:
 
+signalapp/Signal-Desktop [![C I](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml/badge.svg)](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml)
 * [x] Built with [mobian:bookworm](https://salsa.debian.org/Mobian-team/docker-images/)
 * [x] Signal Desktop builds
 * [x] Auto-Update script
