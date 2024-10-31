@@ -61,5 +61,6 @@ fi
 sha512sum release/*.deb && sha512sum release/*.deb > release/release.sha512sum
 echo "0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> release/release.sha512sum
 echo "Build Complete "$(date -u '+on %D at %R UTC') && echo "Build Complete "$(date -u '+on %D at %R UTC') >> release/release.sha512sum
+echo "Current Build System: echo $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> release/release.sha512sum
 ls -la release/
 popd
