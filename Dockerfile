@@ -21,7 +21,7 @@ RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
 
 # Reproducibility
-ENV SOURCE_DATE_EPOCH=1
+ARG SOURCE_DATE_EPOCH
 RUN mkdir /.cache && chmod -R 777 /.cache
 
 # Node via NVM-SH
