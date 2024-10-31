@@ -10,7 +10,7 @@ snap install docker --revision=2932 && ufw disable && sleep 10
 cp /etc/keys/.private.key .private.key
 docker build -t signal-desktop \
   --build-arg SOURCE_DATE_EPOCH=1 \
-  --build-arg NODE_VERSION=20.17.0 \
+  --build-arg NODE_VERSION=20.18.0 \
   --build-arg NVM_VERSION=0.40.1 \
   --build-arg NPM_VERSION=10.2.5 .
 shred .private.key && rm -f .private.key
