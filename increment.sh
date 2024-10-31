@@ -1,5 +1,4 @@
 #!/bin/bash
-chmod +x ./auto-update-cron.sh
 Last_Version_Number=7.30
 Version_Number=$(echo "$Last_Version_Number + .01" | bc -l)
 
