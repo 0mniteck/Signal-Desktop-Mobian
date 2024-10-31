@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)
+[![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)](https://signal.org)
 
 # Signal Desktop Builder For Mobian
 ### [signal-desktop_7.30.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.30.0_arm64.deb)
@@ -19,15 +19,27 @@ Github's GPG Key ID: `B5690EEEBB952194`
 
 <sup><sup>*Vigilant Mode is on for this repo so all remote pushes should be signed with a verified key or Github's key.</sup></sup>
 
-## Usage:
+## Build Instructions/Usage:
 
-1. (optional) Clone the repo and run `buildscript.sh {increment}`:
+### Build:
 
-```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh .01```
+A. (optional) To build later releases clone the repo and run - 
+
+`buildscript.sh {version +increment} {time: source_date_epoch} {yes/no: mount /dev/mmcblk1}`:
+
+ex. ```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh .01 1723852093 no```
+
+B. or to build the current release for reproducibility:
+
+```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh```
+
+### Usage:
 
 2. Copy the `.deb` to your device, verify the sha512sum, then:
 
-```sudo apt install ./signal-desktop_7.xx.x_arm64.deb```
+https://github.com/0mniteck/Signal-Desktop-Mobian/blob/6cbea4d65f44cb522d00726854f09958f5e4ff89/builds/release/release.sha512sum#L1
+
+```sudo apt install ./signal-desktop_7.30.0_arm64.deb```
 
 3. (optional) Install updater `auto-update-cron.sh` by running:
 
