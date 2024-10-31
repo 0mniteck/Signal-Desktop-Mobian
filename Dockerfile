@@ -22,6 +22,7 @@ ENV USE_SYSTEM_FPM=true
 
 # Reproducibility
 ARG SOURCE_DATE_EPOCH
+ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
 RUN mkdir /.cache && chmod -R 777 /.cache
 
 # Node via NVM-SH
