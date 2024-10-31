@@ -1,35 +1,47 @@
 #!/bin/bash
 
 rm -f -r /var/snap/docker/*
-umount -f /dev/mapper/Luks-Signal
-systemd-cryptsetup detach Luks-Signal
+if [ "$3" = "yes" ]; then
+  umount -f /dev/mapper/Luks-Signal
+  systemd-cryptsetup detach Luks-Signal
+fi
 rm -f -r /var/snap/docker
 snap remove docker --purge
-systemd-cryptsetup attach Luks-Signal /dev/mmcblk1 && mkdir /var/snap/docker && mount /dev/mapper/Luks-Signal /var/snap/docker && rm -f -r /var/snap/docker/* && chown root:root /var/snap/docker
-snap install docker --revision=2936 && ufw disable && sleep 10
-cp /etc/keys/.private.key .private.key
-docker build -t signal-desktop \
-  --build-arg SOURCE_DATE_EPOCH=1 \
-  --build-arg NODE_VERSION=20.18.0 \
-  --build-arg NVM_VERSION=0.40.1 \
-  --build-arg NPM_VERSION=10.2.5 .
-shred .private.key && rm -f .private.key
+if [ "$3" = "yes" ]; then
+  systemd-cryptsetup attach Luks-Signal /dev/mmcblk1
+fi
+mkdir /var/snap/docker
+if [ "$3" = "yes" ]; then
+  mount /dev/mapper/Luks-Signal /var/snap/docker
+  rm -f -r /var/snap/docker/*
+fi
+chown root:root /var/snap/docker && snap install docker --revision=2936 && ufw disable && sleep 10
+if [ -f /etc/keys/.private.key ]; then
+  echo "Loading buildtool private keys..."
+  cp /etc/keys/.private.key .private.key
+fi
 
 source_date_epoch=1
 if [ "$2" != "" ]; then
   echo "Using override timestamp for SOURCE_DATE_EPOCH."
   source_date_epoch=$(($2))
 else
-  git_timestamp=$(git log -1 --pretty=%ct)
+  git_timestamp=$(git log -1 7.20.0 --pretty=%ct)
   if [ "${git_timestamp}" != "" ]; then
-    echo "At commit: $(git log -1 --oneline)"
-    echo "Setting SOURCE_DATE_EPOCH to latest commit's timestamp."
+    echo "Setting SOURCE_DATE_EPOCH from commit: $(git log -1 7.20.0 --oneline)"
     source_date_epoch=$((git_timestamp))
   else
     echo "Can't get latest commit timestamp. Defaulting to 1."
     source_date_epoch=1
   fi
 fi
+
+docker build -t signal-desktop \
+  --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
+  --build-arg NODE_VERSION=20.18.0 \
+  --build-arg NVM_VERSION=0.40.1 \
+  --build-arg NPM_VERSION=10.2.5 .
+shred .private.key && rm -f .private.key
 
 docker run -it --cpus=$(nproc) \
   --name signal-desktop \
@@ -41,9 +53,11 @@ docker run -it --cpus=$(nproc) \
 rm -fr builds/release/ && mkdir -p builds/release && docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
 snap disable docker
 rm -f -r /var/snap/docker/*
-umount -f /dev/mapper/Luks-Signal
-sleep 10
-systemd-cryptsetup detach Luks-Signal
+if [ "$3" = "yes" ]; then
+  umount -f /dev/mapper/Luks-Signal
+  sleep 10
+  systemd-cryptsetup detach Luks-Signal
+fi
 rm -f -r /var/snap/docker
 sleep 10
 snap remove docker --purge
