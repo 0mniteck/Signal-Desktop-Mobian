@@ -3,9 +3,9 @@
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
   "name": "signal-desktop@7.31.0",
-  "documentNamespace": "http://spdx.org/spdxdocs/signal-desktop-7.31.0-40b52dfb-9fc9-4cfa-ae7d-c5bc4e8d4d21",
+  "documentNamespace": "http://spdx.org/spdxdocs/signal-desktop-7.31.0-3405d956-66b8-4fc2-a56b-1afe06f217d8",
   "creationInfo": {
-    "created": "2024-11-01T01:43:42.989Z",
+    "created": "2024-11-01T04:04:51.505Z",
     "creators": [
       "Tool: npm/cli-10.2.5"
     ]
