@@ -23,7 +23,7 @@ Github's GPG Key ID: `B5690EEEBB952194`
 
 ### Build:
 
-A. (optional) To build later releases clone the repo and run - 
+A. To build later releases clone the repo and run - 
 
 `buildscript.sh {version +increment} {time: source_date_epoch} {yes/no: mount /dev/mmcblk1}`:
 
@@ -35,13 +35,17 @@ B. or to build the current release for reproducibility:
 
 ### Usage:
 
-2. Copy the `.deb` to your device, verify the sha512sum, then:
+Copy the `.deb` to your device, verify the sha512sum, then:
 
-https://github.com/0mniteck/Signal-Desktop-Mobian/blob/6cbea4d65f44cb522d00726854f09958f5e4ff89/builds/release/release.sha512sum#L1
+https://github.com/0mniteck/Signal-Desktop-Mobian/blob/a63f8d6bea7ccc362a05b130873c64f798ae9abb/builds/release/release.sha512sum#L1
+
+```sha512sum signal-desktop_7.31.0_arm64.deb```
 
 ```sudo apt install ./signal-desktop_7.31.0_arm64.deb```
 
-3. (optional) Install updater `auto-update-cron.sh` by running:
+### Updater:
+
+(optional) Install updater `auto-update-cron.sh` by running:
 
 ```sudo su && curl -o- https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh | bash```
 
