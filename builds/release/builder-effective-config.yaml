@@ -16,7 +16,7 @@ mac:
   mergeASARs: true
   releaseInfo:
     vendor:
-      minOSVersion: 19.0.0
+      minOSVersion: 20.0.0
   sign: ./ts/scripts/sign-macos.js
   singleArchFiles: node_modules/@signalapp/{libsignal-client/prebuilds/**,ringrtc/build/**}
   target:
@@ -201,4 +201,4 @@ files:
       - '**/messages.json'
 extraMetadata:
   environment: production
-electronVersion: 32.1.2
+electronVersion: 33.0.1

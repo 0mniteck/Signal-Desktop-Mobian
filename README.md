@@ -1,13 +1,13 @@
 [![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)](https://signal.org)
 
 # Signal Desktop Builder For Mobian
-### [signal-desktop_7.30.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.30.0_arm64.deb)
+### [signal-desktop_7.31.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.31.0_arm64.deb)
 
-This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.30.x`
+This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.31.x`
 
 Now with an optional update client: [`auto-update-cron.sh`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/auto-update-cron.sh)
 
-This is the latest release: [`builds/release/signal-desktop_7.30.0_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.30.0_arm64.deb)
+This is the latest release: [`builds/release/signal-desktop_7.31.0_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.31.0_arm64.deb)
 
 Sha512Sum: [`builds/release/release.sha512sum`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/release.sha512sum)
 
@@ -39,7 +39,7 @@ B. or to build the current release for reproducibility:
 
 https://github.com/0mniteck/Signal-Desktop-Mobian/blob/6cbea4d65f44cb522d00726854f09958f5e4ff89/builds/release/release.sha512sum#L1
 
-```sudo apt install ./signal-desktop_7.30.0_arm64.deb```
+```sudo apt install ./signal-desktop_7.31.0_arm64.deb```
 
 3. (optional) Install updater `auto-update-cron.sh` by running:
 
