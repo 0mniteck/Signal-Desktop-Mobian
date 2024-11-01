@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)
+[![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)](https://signal.org)
 
 # Signal Desktop Builder For Mobian
 ### [signal-desktop_7.31.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.31.0_arm64.deb)
@@ -19,17 +19,33 @@ Github's GPG Key ID: `B5690EEEBB952194`
 
 <sup><sup>*Vigilant Mode is on for this repo so all remote pushes should be signed with a verified key or Github's key.</sup></sup>
 
-## Usage:
+## Build Instructions/Usage:
 
-1. (optional) Clone the repo and run `buildscript.sh {increment}`:
+### Build:
 
-```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh .01```
+A. To build later releases clone the repo and run - 
 
-2. Copy the `.deb` to your device, verify the sha512sum, then:
+`buildscript.sh {version +increment} {time: source_date_epoch} {yes/no: mount /dev/mmcblk1}`:
 
-```sudo apt install ./signal-desktop_7.xx.x_arm64.deb```
+ex. ```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh .01 1723852093 no```
 
-3. (optional) Install updater `auto-update-cron.sh` by running:
+B. or to build the current release for reproducibility:
+
+```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh```
+
+### Usage:
+
+Copy the `.deb` to your device, verify the sha512sum, then:
+
+https://github.com/0mniteck/Signal-Desktop-Mobian/blob/a63f8d6bea7ccc362a05b130873c64f798ae9abb/builds/release/release.sha512sum#L1
+
+```sha512sum signal-desktop_7.31.0_arm64.deb```
+
+```sudo apt install ./signal-desktop_7.31.0_arm64.deb```
+
+### Updater:
+
+(optional) Install updater `auto-update-cron.sh` by running:
 
 ```sudo su && curl -o- https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh | bash```
 
