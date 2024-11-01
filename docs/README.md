@@ -23,19 +23,19 @@ Github's GPG Key ID: `B5690EEEBB952194`
 
 ### Build:
 
-A. To build later releases clone the repo and run - 
-
 `buildscript.sh {version: +increment} {time: source_date_epoch} {yes/no: mount /dev/mmcblk1}`:
 
-ex. ```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh .01 1723852093 no```
+A. To build later releases clone the repo and run:
 
-B. or to build the current release for reproducibility:
+```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh .01 1723852093 no```
+
+B. Or to build the current release for reproducibility:
 
 ```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh```
 
 ### Usage:
 
-Copy the `.deb` to your device, verify the sha512sum, then install:
+[Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/raw/master/builds/release/signal-desktop_7.31.0_arm64.deb) to your device, verify the sha512sum, then install:
 
 [[Current Sha512sum]](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/release.sha512sum#L1)
 (https://github.com/0mniteck/Signal-Desktop-Mobian/blob/a63f8d6bea7ccc362a05b130873c64f798ae9abb/builds/release/release.sha512sum#L1)
