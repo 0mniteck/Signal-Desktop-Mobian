@@ -25,7 +25,7 @@ Github's GPG Key ID: `B5690EEEBB952194`
 
 A. To build later releases clone the repo and run - 
 
-`buildscript.sh {version +increment} {time: source_date_epoch} {yes/no: mount /dev/mmcblk1}`:
+`buildscript.sh {version: +increment} {time: source_date_epoch} {yes/no: mount /dev/mmcblk1}`:
 
 ex. ```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh .01 1723852093 no```
 
