@@ -44,7 +44,7 @@ Copy the `.deb` to your device, verify the sha512sum, then install:
 
 ```sudo apt install ./signal-desktop_7.31.0_arm64.deb```
 
-### Updater:
+### Optional Updater:
 
 (optional) Install updater `auto-update-cron.sh` by running:
 
