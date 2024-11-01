@@ -22,7 +22,7 @@ if [ -f /etc/keys/.private.key ]; then
 fi
 
 source_date_epoch=1
-if [ "$2" != "" ]; then
+if [ "$2" != 0 ]; then
   echo "Using override timestamp for SOURCE_DATE_EPOCH."
   source_date_epoch=$(($2))
 else
