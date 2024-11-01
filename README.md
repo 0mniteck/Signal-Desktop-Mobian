@@ -46,7 +46,7 @@ Copy the `.deb` to your device, verify the sha512sum, then install:
 
 ### Optional Updater:
 
-(optional) Install updater `auto-update-cron.sh` by running:
+Install updater `auto-update-cron.sh` by running:
 
 ```sudo su && curl -o- https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh | bash```
 
