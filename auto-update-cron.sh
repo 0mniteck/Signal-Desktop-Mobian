@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version 1.5
+# Version 1.6
 #
 # Script to add a cron job to check for, download, and install the most recent version from this git repo.
 # This will auto-close signal-desktop before installing, default is to check after 5 min on reboot and every 2 days.
@@ -35,7 +35,7 @@ fi
 
 # Function to check for internet connectivity
 check_internet() {
-    wget -q --spider http://google.com
+    wget -q --spider https://google.com
     return $?
 }
 
