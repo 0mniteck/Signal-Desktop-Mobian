@@ -3,7 +3,7 @@
 # Signal Desktop Builder For Mobian
 ### [signal-desktop_7.31.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.31.0_arm64.deb)
 
-This project builds Signal Desktop for Mobian Bookworm on Arm64, currently targeting tag `7.31.x`
+This project reproducibly builds Signal Desktop for Debian Bookworm on ARM64, currently targeting tag `7.31.x`
 
 Now with an optional update client: [`auto-update-cron.sh`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/auto-update-cron.sh)
 
@@ -23,13 +23,13 @@ Github's GPG Key ID: `B5690EEEBB952194`
 
 ### Build:
 
-`buildscript.sh {version: +increment} {time: source_date_epoch} {yes/no: mount /dev/mmcblk1}`:
+`buildscript.sh {version: .increment} {time: source_date_epoch} {yes/no: mount /dev/mmcblk1?}`:
 
 A. To build later releases clone the repo and run:
 
 ```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh .01 1723852093 no```
 
-B. Or to build the current release for reproducibility:
+B. To build the current release for reproducibility:
 
 ```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh```
 
@@ -61,6 +61,7 @@ Install updater `auto-update-cron.sh` by running:
 ## See also:
 
 * https://wiki.debian.org/Mobian
+* https://snapshot.debian.org
+* https://hub.docker.com/_/debian/tags
 * https://github.com/signalapp/Signal-Desktop/blob/main/reproducible-builds/README.md
 * https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md
-* https://salsa.debian.org/mobian-team/docker-images/container_registry/
