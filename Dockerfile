@@ -1,20 +1,19 @@
-# Fetch arm64 Mobian Bookworm Image
-FROM registry.salsa.debian.org/mobian-team/docker-images/mobian-builder-arm64:bookworm@sha256:9bf7bac6e0ba50d8601cd450e91c066e31cbed9d419c4510bafb323ef044c41f
+# Fetch Arm64 Debian Bookworm Slim Image
+FROM debian:bookworm-20241016-slim@sha256:36e591f228bb9b99348f584e83f16e012c33ba5cad44ef5981a1d7c0a93eca22
 
-# Sync Repo Info
-# RUN cd /etc/apt/trusted.gpg.d/ && wget https://repo.mobian.org/mobian.gpg && echo "efc2c98411f7a45e9019d9f9fd21f958c7df240e4dab931765abd6e038160cfd15af287862a559943ca1d89027d6afe2e9354a041ae355283b400fb3c44af1a5  mobian.gpg" > mobian.sum && bash -c 'if [[ $(sha512sum -c mobian.sum) == "mobian.gpg: OK" ]]; then echo "mobian.gpg: Checksum Matched!"; else echo "mobian.gpg: Checksum Mismatch!" & rm -f mobian.gpg; fi;'
-# RUN sed -i s/http/https/g /etc/apt/sources.list.d/mobian.list
-RUN rm -f /etc/apt/trusted.gpg.d/mobian*
-RUN rm -f /etc/apt/sources.list.d/mobian*
-RUN sed -i 's,http://deb.debian.org/debian-security,https://snapshot.debian.org/archive/debian-security/20241024T023334Z,g' /etc/apt/sources.list.d/debian.sources
-RUN sed -i 's,http://deb.debian.org/debian,https://snapshot.debian.org/archive/debian/20241024T023111Z,g' /etc/apt/sources.list.d/debian.sources
+# Sync Repo Info and Install build tools
+RUN sed -i 's,http://deb.debian.org/debian-security,http://snapshot.debian.org/archive/debian-security/20241024T023334Z,g' /etc/apt/sources.list.d/debian.sources
+RUN sed -i 's,http://deb.debian.org/debian,http://snapshot.debian.org/archive/debian/20241024T023111Z,g' /etc/apt/sources.list.d/debian.sources
 RUN echo 'Acquire::Check-Valid-Until "false";' >> /etc/apt/apt.conf.d/secure_apt
 RUN echo 'Acquire::Languages "none";' >> /etc/apt/apt.conf.d/secure_apt
 RUN echo 'Binary::apt-get::Acquire::AllowInsecureRepositories "false";' >> /etc/apt/apt.conf.d/secure_apt
 RUN echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/secure_apt
 RUN echo 'APT::Immediate-Configure "false";' >> /etc/apt/apt.conf.d/secure_apt
+RUN apt update && apt install -y apt-transport-https ca-certificates
+RUN sed -i 's,http://snapshot.debian.org/archive/debian-security/20241024T023334Z,https://snapshot.debian.org/archive/debian-security/20241024T023334Z,g' /etc/apt/sources.list.d/debian.sources
+RUN sed -i 's,http://snapshot.debian.org/archive/debian/20241024T023111Z,https://snapshot.debian.org/archive/debian/20241024T023111Z,g' /etc/apt/sources.list.d/debian.sources
 RUN apt update && apt upgrade -y
-RUN apt install -y build-essential generate-ninja ninja-build rubygems git-lfs pkg-config libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev xvfb
+RUN apt install -y build-essential rubygems git-lfs pkg-config libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev lsb-release xvfb wget
 
 # Install FPM
 RUN gem install fpm
