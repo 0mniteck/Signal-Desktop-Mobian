@@ -52,7 +52,7 @@ Install updater `auto-update-cron.sh` by running:
 
 ## Current Status:‎‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‎‏‏‎ ‎[![C I](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml/badge.svg)](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml)<sub><sup> signalapp/Signal-Desktop</sup></sub>
 
-* [x] Built with [mobian:bookworm](https://salsa.debian.org/Mobian-team/docker-images/)
+* [x] Built with [debian:bookworm](https://hub.docker.com/layers/library/debian/bookworm-20241016-slim/images/sha256-936ea04e67a02e5e83056bfa8c7331e1c9ae89d4a324bbc1654d9497b815ae56?context=explore)
 * [x] Signal Desktop builds
 * [x] Auto-Update script
 * [x] Reproducible builds
