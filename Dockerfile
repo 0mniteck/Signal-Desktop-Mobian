@@ -1,6 +1,7 @@
 # Fetch Arm64 Debian Bookworm Slim Image
 FROM debian:bookworm-20241016-slim@sha256:936ea04e67a02e5e83056bfa8c7331e1c9ae89d4a324bbc1654d9497b815ae56
 LABEL org.opencontainers.image.authors="shant@omniteck.com"
+LABEL org.opencontainers.image.description="Signal Desktop Builder for Debian/Mobian Bookworm ARM64"
 # Sync Repo Info and Install build tools
 RUN sed -i 's,http://deb.debian.org/debian-security,http://snapshot.debian.org/archive/debian-security/20241024T023334Z,g' /etc/apt/sources.list.d/debian.sources
 RUN sed -i 's,http://deb.debian.org/debian,http://snapshot.debian.org/archive/debian/20241024T023111Z,g' /etc/apt/sources.list.d/debian.sources
