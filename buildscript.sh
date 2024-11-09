@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt install bc git git-lfs screen snapd systemd-cryptsetup -y
+sudo apt install bc git-lfs screen snapd systemd-cryptsetup -y
 
 git remote remove origin && git remote add origin git@Signal:0mniteck/Signal-Desktop-Mobian.git
 git-lfs install
