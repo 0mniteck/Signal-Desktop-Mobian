@@ -1,4 +1,4 @@
-FROM 0mniteck/debian-slim:11-9-2024
+FROM 0mniteck/debian-slim:11-9-2024@sha256:d2fffe847f42c69a4d029573e9de89903a3080ccdf0a5e1bce8030e91fe600ec
 RUN apt install -y rubygems git-lfs pkg-config libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev xvfb
 
 RUN gem install fpm
