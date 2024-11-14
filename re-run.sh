@@ -15,7 +15,8 @@ if [ "$3" = "yes" ]; then
   mount /dev/mapper/Luks-Signal /var/snap/docker
   rm -f -r /var/snap/docker/*
 fi
-chown root:root /var/snap/docker && snap install docker --revision=2936 && ufw disable && sleep 5
+chown root:root /var/snap/docker
+snap install docker --revision=2936 && ufw disable && sleep 5
 if [ -f /etc/keys/.private.key ]; then
   echo "Loading buildtool private keys..."
   cp /etc/keys/.private.key .private.key
@@ -41,6 +42,7 @@ docker build -t signal-desktop \
   --build-arg NODE_VERSION=20.18.0 \
   --build-arg NVM_VERSION=0.40.1 \
   --build-arg NPM_VERSION=10.2.5 .
+
 shred .private.key && rm -f .private.key
 
 docker run -it --cpus=$(nproc) \
@@ -65,6 +67,5 @@ sleep 5
 snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
-snap remove syft --purge
 snap remove grype --purge
 read -p "Close Screen Session: Continue to Signing-->"
