@@ -15,11 +15,9 @@ SBOM: [`builds/release/manifest.spdx.json`](https://github.com/0mniteck/Signal-D
 
 Vuln Scan: [`builds/release/manifest.grype.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/manifest.grype.json)
 
-Github's GPG Key ID: `B5690EEEBB952194`
-
 0mniteck's Current GPG Key ID: `287EE837E6ED2DD3`
 
-<sup><sup>*Vigilant Mode is on for this repo so all remote pushes should be signed with a verified key or Github's key.</sup></sup>
+<sup><sup>*Vigilant Mode is on for this repo so all remote pushes/tags should be signed with a verified key.</sup></sup>
 
 ## Build Instructions/Usage:
 
@@ -54,7 +52,7 @@ Install updater `auto-update-cron.sh` by running:
 
 ## Current Status:‎‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎‎‏‏‎ ‎[![C I](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml/badge.svg)](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml)<sub><sup> signalapp/Signal-Desktop</sup></sub>
 
-* [x] Built with [debian:bookworm](https://hub.docker.com/layers/library/debian/bookworm-20241016-slim/images/sha256-936ea04e67a02e5e83056bfa8c7331e1c9ae89d4a324bbc1654d9497b815ae56?context=explore)
+* [x] Built with [0mniteck/debian:2024-11-11](https://hub.docker.com/r/0mniteck/tags)
 * [x] Signal Desktop builds
 * [x] Auto-Update script
 * [x] Reproducible builds
