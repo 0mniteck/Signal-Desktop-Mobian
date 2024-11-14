@@ -13,6 +13,8 @@ Sha512Sum: [`builds/release/release.sha512sum`](https://github.com/0mniteck/Sign
 
 SBOM: [`builds/release/manifest.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/manifest.spdx.json)
 
+Vuln Scan: [`builds/release/manifest.grype.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/manifest.grype.json)
+
 Github's GPG Key ID: `B5690EEEBB952194`
 
 0mniteck's Current GPG Key ID: `287EE837E6ED2DD3`
