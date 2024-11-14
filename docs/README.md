@@ -13,6 +13,8 @@ Sha512Sum: [`builds/release/release.sha512sum`](https://github.com/0mniteck/Sign
 
 SBOM: [`builds/release/manifest.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/manifest.spdx.json)
 
+Vuln Scan: [`builds/release/manifest.grype.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/manifest.grype.json)
+
 Github's GPG Key ID: `B5690EEEBB952194`
 
 0mniteck's Current GPG Key ID: `287EE837E6ED2DD3`
@@ -56,12 +58,12 @@ Install updater `auto-update-cron.sh` by running:
 * [x] Signal Desktop builds
 * [x] Auto-Update script
 * [x] Reproducible builds
-* [x] Generate SBOM at buildtime
+* [x] Generate/Scan SBOM at buildtime
 
 ## See also:
 
-* https://wiki.debian.org/Mobian
 * https://snapshot.debian.org
 * https://hub.docker.com/_/debian/tags
+* https://hub.docker.com/r/0mniteck/tags
 * https://github.com/signalapp/Signal-Desktop/blob/main/reproducible-builds/README.md
 * https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md
