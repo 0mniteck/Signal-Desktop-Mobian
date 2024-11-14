@@ -52,7 +52,7 @@ docker run -it --cpus=$(nproc) \
   signal-desktop $1
 
 rm -fr builds/release/ && mkdir -p builds/release && docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
-grype sbom:manifest.spdx.json -o json > manifest.grype.json
+grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json
 
 snap disable docker
 rm -f -r /var/snap/docker/*
