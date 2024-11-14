@@ -7,6 +7,7 @@ if [ "$3" = "yes" ]; then
 fi
 rm -f -r /var/snap/docker
 snap remove docker --purge
+snap install grype --classic
 if [ "$3" = "yes" ]; then
   systemd-cryptsetup attach Luks-Signal /dev/mmcblk1
 fi
@@ -15,7 +16,7 @@ if [ "$3" = "yes" ]; then
   mount /dev/mapper/Luks-Signal /var/snap/docker
   rm -f -r /var/snap/docker/*
 fi
-chown root:root /var/snap/docker && snap install docker --revision=2936 && ufw disable && sleep 10
+chown root:root /var/snap/docker && snap install docker --revision=2936 && ufw disable && sleep 5
 if [ -f /etc/keys/.private.key ]; then
   echo "Loading buildtool private keys..."
   cp /etc/keys/.private.key .private.key
@@ -51,6 +52,8 @@ docker run -it --cpus=$(nproc) \
   signal-desktop $1
 
 rm -fr builds/release/ && mkdir -p builds/release && docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
+grype sbom:manifest.spdx.json -o json > manifest.grype.json
+
 snap disable docker
 rm -f -r /var/snap/docker/*
 if [ "$3" = "yes" ]; then
@@ -59,8 +62,10 @@ if [ "$3" = "yes" ]; then
   systemd-cryptsetup detach Luks-Signal
 fi
 rm -f -r /var/snap/docker
-sleep 10
+sleep 5
 snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
+snap remove syft --purge
+snap remove grype --purge
 read -p "Close Screen Session: Continue to Signing-->"
