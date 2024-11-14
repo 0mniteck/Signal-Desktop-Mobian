@@ -58,12 +58,12 @@ Install updater `auto-update-cron.sh` by running:
 * [x] Signal Desktop builds
 * [x] Auto-Update script
 * [x] Reproducible builds
-* [x] Generate SBOM at buildtime
+* [x] Generate/Scan SBOM at buildtime
 
 ## See also:
 
-* https://wiki.debian.org/Mobian
 * https://snapshot.debian.org
 * https://hub.docker.com/_/debian/tags
+* https://hub.docker.com/r/0mniteck/tags
 * https://github.com/signalapp/Signal-Desktop/blob/main/reproducible-builds/README.md
 * https://github.com/signalapp/Signal-Desktop/blob/development/CONTRIBUTING.md
