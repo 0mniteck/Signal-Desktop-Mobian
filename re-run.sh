@@ -7,7 +7,6 @@ if [ "$3" = "yes" ]; then
 fi
 rm -f -r /var/snap/docker
 snap remove docker --purge
-snap install grype --classic
 if [ "$3" = "yes" ]; then
   systemd-cryptsetup attach Luks-Signal /dev/mmcblk1
 fi
