@@ -1,6 +1,7 @@
 #!/bin/bash
 
 sudo apt install bc git-lfs screen snapd systemd-cryptsetup -y
+snap install grype --classic
 
 git remote remove origin && git remote add origin git@Signal:0mniteck/Signal-Desktop-Mobian.git
 git-lfs install
