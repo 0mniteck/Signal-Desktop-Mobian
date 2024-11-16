@@ -6,7 +6,6 @@ ENV USE_SYSTEM_FPM=true
 
 ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
-RUN mkdir /.cache && chmod -R 777 /.cache
 
 ENV HOME="/root"
 ENV NVM_DIR="$HOME/.nvm"
