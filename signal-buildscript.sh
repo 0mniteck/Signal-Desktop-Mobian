@@ -2,14 +2,8 @@
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 trap '[[ $pid ]] && kill $pid; exit' EXIT
-if [ "$1" != "" ]; then
-  BUILD_TYPE="$1"
-fi
-if [ "$2" != "" ]; then
-  TEST="$2"
-else
-  TEST=no
-fi
+BUILD_TYPE="$1"
+TEST="$2"
 
 echo "Starting Build "$(date -u '+on %D at %R UTC') && echo "# Starting Build "$(date -u '+on %D at %R UTC') > release/release.sha512sum
 echo "BUILD_TYPE: ${BUILD_TYPE}"
