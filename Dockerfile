@@ -15,7 +15,7 @@ ARG NPM_VERSION
 RUN wget https://github.com/nvm-sh/nvm/raw/v$NVM_VERSION/install.sh && echo "551831ea67476372c6fb13fc2cab474b38f6e369daa51652a1c22974b0c8a5ed9e36a1e586046e371ba90de8c9d7376ffb3a41c6f6f352c29a847203a56f1db9  install.sh" > install.sum && bash -c 'if [[ $(sha512sum -c install.sum) == "install.sh: OK" ]]; then echo "install.sh: Checksum Matched!"; else echo "install.sh: Checksum Mismatch!" & remove -f install.sh; fi;' && chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm alias $NODE_VERSION && nvm use $NODE_VERSION && npm install --location=global npm@$NPM_VERSION
 
 RUN git clone https://github.com/signalapp/Signal-Desktop.git
-RUN cd /Signal-Desktop/ && git checkout tags/v7.33.0
+RUN cd /Signal-Desktop/ && git checkout tags/v7.31.0
 RUN mkdir /Signal-Desktop/release/
 RUN mkdir /Signal-Desktop/artifacts/
 RUN mkdir /Signal-Desktop/artifacts/linux

@@ -31,7 +31,7 @@ mac:
         - universal
   bundleVersion: '1'
 win:
-  artifactName: ${name}-win-${arch}-${version}.${ext}
+  artifactName: ${name}-win-${version}.${ext}
   certificateSubjectName: Signal Messenger, LLC
   certificateSha1: 8D5E3CD800736C5E1FE459A1F5AA48287D4F6EC6
   signingHashAlgorithms:
@@ -69,7 +69,6 @@ deb:
     - libxtst6
     - libnss3
     - libasound2
-    - libpulse0
     - libxss1
     - libc6 (>= 2.31)
     - libgtk-3-0
