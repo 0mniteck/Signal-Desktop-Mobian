@@ -1,13 +1,13 @@
 [![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)](https://signal.org)
 
 # Signal Desktop Builder For Mobian
-### [signal-desktop_7.31.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.31.0_arm64.deb)
+### [signal-desktop_7.33.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.33.0_arm64.deb)
 
-This project reproducibly builds Signal Desktop for Debian Bookworm on ARM64, currently targeting tag `7.31.x`
+This project reproducibly builds Signal Desktop for Debian Bookworm on ARM64, currently targeting tag `7.33.x`
 
 Now with an optional update client: [`auto-update-cron.sh`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/auto-update-cron.sh)
 
-This is the latest release: [`builds/release/signal-desktop_7.31.0_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.31.0_arm64.deb)
+This is the latest release: [`builds/release/signal-desktop_7.33.0_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/signal-desktop_7.33.0_arm64.deb)
 
 Sha512Sum: [`builds/release/release.sha512sum`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/release.sha512sum)
 
@@ -35,14 +35,14 @@ B. To build the current release for reproducibility:
 
 ### Usage:
 
-[Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/raw/master/builds/release/signal-desktop_7.31.0_arm64.deb) to your device, verify the sha512sum, then install:
+[Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/raw/master/builds/release/signal-desktop_7.33.0_arm64.deb) to your device, verify the sha512sum, then install:
 
 [[Current Sha512sum]](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/builds/release/release.sha512sum#L1)
 (https://github.com/0mniteck/Signal-Desktop-Mobian/blob/a63f8d6bea7ccc362a05b130873c64f798ae9abb/builds/release/release.sha512sum#L1)
 
-```sha512sum signal-desktop_7.31.0_arm64.deb```
+```sha512sum signal-desktop_7.33.0_arm64.deb```
 
-```sudo apt install ./signal-desktop_7.31.0_arm64.deb```
+```sudo apt install ./signal-desktop_7.33.0_arm64.deb```
 
 ### Optional Updater:
 
