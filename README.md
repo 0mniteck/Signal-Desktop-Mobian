@@ -33,11 +33,21 @@ buildscript.sh:
 ```
 A. To build later releases run:
 
-```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh -i .01 -d 1723852093 -m no -p canary -r 7.32.0```
+```
+sudo su && \
+git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && \
+cd Signal-Desktop-Mobian && \
+./buildscript.sh -i .01 -d 1723852093 -m no -p canary -r 7.32.0
+```
 
 B. To build the current release for reproducibility:
 
-```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git -b 7.31 && cd Signal-Desktop-Mobian && ./buildscript.sh```
+```
+sudo su && \
+git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git -b 7.31 && \
+cd Signal-Desktop-Mobian && \
+./buildscript.sh
+```
 
 ### Usage:
 
