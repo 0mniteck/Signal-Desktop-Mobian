@@ -16,5 +16,5 @@ echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds
 awk '{a[i++]=$0}END{for(j=0;j<i-2;j++)print a[j];print a[i-1];print a[i-2]}' builds/release/release.sha512sum > tmp && mv tmp builds/release/release.sha512sum
 ls -la builds/release/
 
-./git.sh
+./git.sh $4 $5
 cd ..
