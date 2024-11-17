@@ -23,11 +23,17 @@ Vuln Scan: [`builds/release/manifest.grype.json`](https://github.com/0mniteck/Si
 
 ### Build:
 
-`buildscript.sh {version: .increment} {time: source_date_epoch} {yes/no: mount /dev/mmcblk1?} {push-branch: debug} {release-tag: tagname}`:
-
+```
+buildscript.sh:
+  -i {increment: .version}
+  -d {date: source_date_epoch}
+  -m {mount /dev/mmcblk1: yes/no}
+  -p {push-branch: debug}
+  -r {release-tag: tagname}
+```
 A. To build later releases run:
 
-```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh .01 1723852093 no canary 7.32.0```
+```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh -i .01 -d 1723852093 -m no -p canary -r 7.32.0```
 
 B. To build the current release for reproducibility:
 
