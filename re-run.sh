@@ -1,11 +1,14 @@
 #!/bin/bash
 
+snap disable docker
 rm -f -r /var/snap/docker/*
 if [ "$3" = "yes" ]; then
   umount -f /dev/mapper/Luks-Signal
+  sleep 5
   systemd-cryptsetup detach Luks-Signal
 fi
 rm -f -r /var/snap/docker
+sleep 5
 snap remove docker --purge
 if [ "$3" = "yes" ]; then
   systemd-cryptsetup attach Luks-Signal /dev/mmcblk1
@@ -53,14 +56,15 @@ docker run -it --cpus=$(nproc) \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   signal-desktop $1 $4
 
-rm -fr builds/release/ && mkdir -p builds/release && docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
+rm -fr builds/release/ && mkdir -p builds/release && docker cp sign  systemd-cryptsetup detach Luks-Signal
+al-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
 grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json
 
 snap disable docker
 rm -f -r /var/snap/docker/*
 if [ "$3" = "yes" ]; then
   umount -f /dev/mapper/Luks-Signal
-  sleep 10
+  sleep 5
   systemd-cryptsetup detach Luks-Signal
 fi
 rm -f -r /var/snap/docker
