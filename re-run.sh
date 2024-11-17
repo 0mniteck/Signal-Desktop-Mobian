@@ -67,5 +67,5 @@ sleep 5
 snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
-snap remove grype --purge && rm -f -r $HOME/.cache/grype/
+snap remove grype --purge
 read -p "Close Screen Session: Continue to Signing-->"
