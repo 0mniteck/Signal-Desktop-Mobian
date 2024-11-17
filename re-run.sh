@@ -10,6 +10,7 @@ snap remove docker --purge
 if [ "$3" = "yes" ]; then
   systemd-cryptsetup attach Luks-Signal /dev/mmcblk1
 fi
+snap install grype --classic
 mkdir /var/snap/docker
 if [ "$3" = "yes" ]; then
   mount /dev/mapper/Luks-Signal /var/snap/docker
