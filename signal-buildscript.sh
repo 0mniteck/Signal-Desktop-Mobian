@@ -5,10 +5,16 @@ trap '[[ $pid ]] && kill $pid; exit' EXIT
 if [ "$1" != "" ]; then
   BUILD_TYPE="$1"
 fi
+if [ "$2" != "" ]; then
+  TEST="$2"
+else
+  TEST=no
+fi
 
 echo "Starting Build "$(date -u '+on %D at %R UTC') && echo "# Starting Build "$(date -u '+on %D at %R UTC') > release/release.sha512sum
 echo "BUILD_TYPE: ${BUILD_TYPE}"
 echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
+echo "TESTS: ${TEST}"
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
@@ -46,9 +52,11 @@ xvfb-run --auto-servernum npm run build:preload-cache
 npm run build:release -- --arm64 --publish=never --linux deb
 echo "Generating SBOM at /Signal-Desktop/release/manifest.spdx.json"
 npm sbom --sbom-format="spdx" --sbom-type="application" > /Signal-Desktop/release/manifest.spdx.json
-xvfb-run --auto-servernum npm run test-node
-xvfb-run --auto-servernum npm run test-electron
-xvfb-run --auto-servernum npm run test-release
+if [ "$TEST" = "yes" ]; then
+  xvfb-run --auto-servernum npm run test-node
+  xvfb-run --auto-servernum npm run test-electron
+  xvfb-run --auto-servernum npm run test-release
+fi
 debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
 if [ ! -f /Signal-Desktop/release/.private.key ]; then
   echo "Generating New Keypair."
