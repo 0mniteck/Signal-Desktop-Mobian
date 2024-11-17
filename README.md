@@ -23,7 +23,7 @@ Vuln Scan: [`builds/release/manifest.grype.json`](https://github.com/0mniteck/Si
 
 ### Build:
 
-`buildscript.sh {version: .increment} {time: source_date_epoch} {yes/no: mount /dev/mmcblk1?} {branch: debug} {release tag: tagname}`:
+`buildscript.sh {version: .increment} {time: source_date_epoch} {yes/no: mount /dev/mmcblk1?} {push-branch: debug} {release-tag: tagname}`:
 
 A. To build later releases run:
 
