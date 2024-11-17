@@ -17,8 +17,8 @@ nvm use && npm ci
 npm install
 npm run clean-transpile
 cd sticker-creator
-npm install
-npm run build
+  npm install
+  npm run build
 cd ..
 
 npm run generate && \
