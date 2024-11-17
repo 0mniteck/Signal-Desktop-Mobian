@@ -51,7 +51,7 @@ docker run -it --cpus=$(nproc) \
   --user "$(id -u):$(id -g)" \
   -e NPM_CONFIG_CACHE=/tmp/.npm-cache \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
-  signal-desktop $1
+  signal-desktop $1 $4
 
 rm -fr builds/release/ && mkdir -p builds/release && docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
 grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json
