@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
 trap '[[ $pid ]] && kill $pid; exit' EXIT
-
 if [ "$1" != "" ]; then
   BUILD_TYPE="$1"
 fi
@@ -11,7 +9,6 @@ fi
 echo "Starting Build "$(date -u '+on %D at %R UTC') && echo "# Starting Build "$(date -u '+on %D at %R UTC') > release/release.sha512sum
 echo "BUILD_TYPE: ${BUILD_TYPE}"
 echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
-
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
@@ -42,13 +39,13 @@ else
   echo "Unknown build type ${BUILD_TYPE}"
   exit 1
 fi
+
 npm run generate
 npm run build:esbuild:prod
 xvfb-run --auto-servernum npm run build:preload-cache
 npm run build:release -- --arm64 --publish=never --linux deb
 echo "Generating SBOM at /Signal-Desktop/release/manifest.spdx.json"
 npm sbom --sbom-format="spdx" --sbom-type="application" > /Signal-Desktop/release/manifest.spdx.json
-# TESTS
 xvfb-run --auto-servernum npm run test-node
 xvfb-run --auto-servernum npm run test-electron
 xvfb-run --auto-servernum npm run test-release
