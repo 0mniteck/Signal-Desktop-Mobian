@@ -13,11 +13,15 @@ echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 git-lfs install
+
 nvm use && npm ci
-npm install && npm run clean-transpile
+npm install
+npm run clean-transpile
 cd sticker-creator
-npm install && npm run build
+npm install
+npm run build
 cd ..
+
 npm run generate && \
 if [ "${BUILD_TYPE}" = "public" ]; then
   npm run prepare-beta-build
@@ -43,9 +47,9 @@ npm run build:release -- --arm64 --publish=never --linux deb
 echo "Generating SBOM at /Signal-Desktop/release/manifest.spdx.json"
 npm sbom --sbom-format="spdx" --sbom-type="application" > /Signal-Desktop/release/manifest.spdx.json
 # TESTS
-# xvfb-run --auto-servernum npm run test-node
-# xvfb-run --auto-servernum npm run test-electron
-# xvfb-run --auto-servernum npm run test-release
+xvfb-run --auto-servernum npm run test-node
+xvfb-run --auto-servernum npm run test-electron
+xvfb-run --auto-servernum npm run test-release
 debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
 if [ ! -f /Signal-Desktop/release/.private.key ]; then
   echo "Generating New Keypair."
