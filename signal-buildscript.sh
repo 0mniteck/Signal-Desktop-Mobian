@@ -7,6 +7,8 @@ trap '[[ $pid ]] && kill $pid; exit' EXIT
 if [ "$1" != "" ]; then
   BUILD_TYPE="$1"
 fi
+
+echo "Starting Build "$(date -u '+on %D at %R UTC') && echo "# Starting Build "$(date -u '+on %D at %R UTC') > release/release.sha512sum
 echo "BUILD_TYPE: ${BUILD_TYPE}"
 echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
 
@@ -62,7 +64,7 @@ else
   shred /Signal-Desktop/release/.private.key
   rm -f /Signal-Desktop/release/.private.key
 fi
-sha512sum release/*.deb && sha512sum release/*.deb > release/release.sha512sum
+sha512sum release/*.deb && sha512sum release/*.deb >> release/release.sha512sum
 echo "# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> release/release.sha512sum
 echo "# Source Date Epoch: ${SOURCE_DATE_EPOCH}" >> release/release.sha512sum
 echo "Build Complete: "$(date -u '+on %D at %R UTC') && echo "# Build Complete: "$(date -u '+on %D at %R UTC') >> release/release.sha512sum
