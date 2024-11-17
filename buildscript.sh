@@ -9,28 +9,16 @@ while getopts ":i:d:m:p:r:t:" opt; do
             EPOCH="$OPTARG"
             ;;
         m)
-            if [ "$OPTARG" = "" ]; then
-                MOUNT="no"
-            else
-                MOUNT="$OPTARG"
-            fi
+            MOUNT="$OPTARG"
             ;;
         p)
-            if [ "$OPTARG" = "" ]; then
-                BRANCH="debug"
-            else
-                BRANCH="$OPTARG"
-            fi
+            BRANCH="$OPTARG"
             ;;
         r)
             TAG="$OPTARG"
             ;;
         t)
-            if [ "$OPTARG" = "" ]; then
-                TEST="no"
-            else
-                TEST="$OPTARG"
-            fi
+            TEST="$OPTARG"
             ;;
         \?)
             echo "Invalid option: -$opt" >&2
@@ -40,6 +28,16 @@ while getopts ":i:d:m:p:r:t:" opt; do
             ;;
     esac
 done
+
+if [ "$MOUNT" = "" ]; then
+    MOUNT="no"
+fi
+if [ "$BRANCH" = "" ]; then
+    BRANCH="debug"
+fi
+if [ "$TEST" = "" ]; then
+    TEST="no"
+fi
 
 echo "Increment: $INC"
 echo "Override Source Epoch: $EPOCH"
