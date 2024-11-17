@@ -14,10 +14,10 @@ echo "TESTS: ${TEST}"
 
 git-lfs install
 nvm use && npm ci
-# npm install
+npm install
 npm run clean-transpile
 cd sticker-creator
-  # npm install
+  npm install
   npm run build
 cd ..
 
