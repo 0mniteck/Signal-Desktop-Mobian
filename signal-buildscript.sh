@@ -5,14 +5,14 @@ trap '[[ $pid ]] && kill $pid; exit' EXIT
 BUILD_TYPE="$1"
 TEST="$2"
 
+echo "Entering /Signal-Desktop"
+pushd /Signal-Desktop
 echo "Starting Build "$(date -u '+on %D at %R UTC') && echo "# Starting Build "$(date -u '+on %D at %R UTC') > release/release.sha512sum
 echo "BUILD_TYPE: ${BUILD_TYPE}"
 echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
 echo "TESTS: ${TEST}"
-echo "Entering /Signal-Desktop"
-pushd /Signal-Desktop
-git-lfs install
 
+git-lfs install
 nvm use && npm ci
 npm install
 npm run clean-transpile
