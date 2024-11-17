@@ -1,5 +1,5 @@
 FROM 0mniteck/debian-slim:11-11-2024@sha256:e1637a59b4ec77b6e338a9509d4116f56213eb21ba048dad14d36f1026bc314b
-RUN apt install -y rubygems git-lfs pkg-config libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev xvfb
+RUN apt install -y rubygems git-lfs pkg-config libpixman-1-dev libcairo2-dev libpango1.0-dev libpulse0 libjpeg-dev libgif-dev librsvg2-dev xvfb
 
 RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
