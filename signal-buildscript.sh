@@ -21,7 +21,7 @@ cd sticker-creator
   npm run build
 cd ..
 
-# npm run generate
+npm run generate
 if [ "${BUILD_TYPE}" = "public" ]; then
   npm run prepare-beta-build
 elif [ "${BUILD_TYPE}" = "alpha" ]; then
@@ -40,7 +40,7 @@ else
   exit 1
 fi
 
-npm run generate
+# npm run generate
 npm run build:esbuild:prod
 xvfb-run --auto-servernum npm run build:preload-cache
 npm run build:release -- --arm64 --publish=never --linux deb
