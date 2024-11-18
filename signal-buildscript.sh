@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-alias rustup="echo unknown-linux; printf hidden"
+alias rustup="echo unknown-linux; printf ''"
 trap '[[ $pid ]] && kill $pid; exit' EXIT
 BUILD_TYPE="$1"
 TEST="$2"
