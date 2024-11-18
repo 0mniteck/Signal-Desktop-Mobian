@@ -1,5 +1,5 @@
 FROM 0mniteck/debian-slim:11-11-2024@sha256:e1637a59b4ec77b6e338a9509d4116f56213eb21ba048dad14d36f1026bc314b
-RUN apt install -y cargo curl rubygems git git-lfs pkg-config libcairo2-dev libgif-dev libjpeg-dev libpango1.0-dev libpixman-1-dev libpulse0 librust-libpulse-sys-dev librsvg2-dev protobuf-c-compiler rustc xauth xvfb
+RUN apt install -y cargo cmake curl rubygems git git-lfs pkg-config libcairo2-dev libgif-dev libjpeg-dev libpango1.0-dev libpixman-1-dev libpulse0 librust-libpulse-sys-dev librsvg2-dev protobuf-c-compiler rustc xauth xvfb
 
 RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
