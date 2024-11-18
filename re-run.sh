@@ -13,7 +13,6 @@ snap remove docker --purge
 if [ "$3" = "yes" ]; then
   systemd-cryptsetup attach Luks-Signal /dev/mmcblk1
 fi
-snap install grype --classic
 mkdir /var/snap/docker
 if [ "$3" = "yes" ]; then
   mount /dev/mapper/Luks-Signal /var/snap/docker
@@ -57,7 +56,6 @@ docker run -it --cpus=$(nproc) \
   signal-desktop $1 $4
 
 rm -fr builds/release/ && mkdir -p builds/release && docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
-grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json
 
 snap disable docker
 rm -f -r /var/snap/docker/*
@@ -71,5 +69,6 @@ sleep 5
 snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
+snap install grype --classic && grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json
 snap remove grype --purge && rm -f -r $HOME/.cache/grype/
 read -p "Close Screen Session: Continue to Signing-->"
