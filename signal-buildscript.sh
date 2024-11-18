@@ -8,9 +8,9 @@ TEST="$2"
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
 echo "Starting Build "$(date -u '+on %D at %R UTC') && echo "# Starting Build "$(date -u '+on %D at %R UTC') > release/release.sha512sum
+echo "TESTS: ${TEST}"
 echo "BUILD_TYPE: ${BUILD_TYPE}"
 echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
-echo "TESTS: ${TEST}"
 
 git-lfs install
 nvm use && npm ci
