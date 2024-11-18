@@ -40,7 +40,6 @@ else
   exit 1
 fi
 
-# npm run generate
 npm run build:esbuild:prod
 xvfb-run --auto-servernum npm run build:preload-cache
 npm run build:release -- --arm64 --publish=never --linux deb
