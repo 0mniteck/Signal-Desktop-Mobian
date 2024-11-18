@@ -64,6 +64,7 @@ if [ "$3" = "yes" ]; then
   sleep 5
   systemd-cryptsetup detach Luks-Signal
 fi
+
 rm -f -r /var/snap/docker
 sleep 5
 snap remove docker --purge
