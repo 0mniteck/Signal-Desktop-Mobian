@@ -1,5 +1,5 @@
 FROM 0mniteck/debian-slim:11-11-2024@sha256:e1637a59b4ec77b6e338a9509d4116f56213eb21ba048dad14d36f1026bc314b
-RUN apt install -y rubygems git-lfs pkg-config libpixman-1-dev libcairo2-dev libpango1.0-dev libpulse0 libjpeg-dev libgif-dev librsvg2-dev xauth xvfb
+RUN apt install -y cargo curl rubygems git git-lfs pkg-config libcairo2-dev libgif-dev libjpeg-dev libpango1.0-dev libpixman-1-dev libpulse0 librust-libpulse-sys-dev librsvg2-dev protobuf-c-compiler rustc xauth xvfb
 
 RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
@@ -22,6 +22,9 @@ RUN mkdir /Signal-Desktop/artifacts/linux
 ENV ARTIFACTS_DIR=/Signal-Desktop/artifacts/linux
 
 RUN cd /usr/include/aarch64-linux-gnu/ && wget https://github.com/node-ffi-napi/node-ffi-napi/raw/master/deps/libffi/config/linux/arm64/fficonfig.h && echo "56c9800d0388dd20a85ad917a75a0dc96aa0de95db560e586b540e657a7a10ec8ef9759f1d09d7cb2f0861c9b88650246a9ace97708a20d8757bcd0c559333a7  fficonfig.h" > fficonfig.sum && bash -c 'if [[ $(sha512sum -c fficonfig.sum) == "fficonfig.h: OK" ]]; then echo "fficonfig.h: Checksum Matched!"; else echo "fficonfig.h: Checksum Mismatch!" & rm -f fficonfig.h; fi;'
+
+RUN cd /Signal-Desktop/ && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+ENV PATH=/Signal-Desktop/depot_tools:$PATH
 
 ENV SIGNAL_ENV=production
 ENV NODE_PATH=$NVM_DIR/v$NODE_VERSION/lib/node_modules
