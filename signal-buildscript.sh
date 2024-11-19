@@ -81,7 +81,7 @@ pushd /Signal-Desktop
   debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
   if [ ! -f /Signal-Desktop/release/.private.key ]; then
     echo "Generating New Keypair."
-    npm run ts/updater/generateKeyPair.js -- --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
+    npm run ts/updater/generateKeyPair.ts -- --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
     echo "Signing Release."
     npm run sign-release -- --private /Signal-Desktop/release/.private.key --update $debpath
   else
