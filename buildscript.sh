@@ -28,7 +28,6 @@ while getopts ":i:d:m:p:r:t:" opt; do
             ;;
     esac
 done
-
 if [ "$MOUNT" = "" ]; then
     MOUNT="no"
 fi
@@ -38,14 +37,13 @@ fi
 if [ "$TEST" = "" ]; then
     TEST="no"
 fi
-
 echo "Increment: $INC"
 echo "Override Source Epoch: $EPOCH"
 echo "Mount /dev/mmcblk1: $MOUNT"
 echo "Push to Branch: $BRANCH"
 echo "Tag Release: $TAG"
 echo "Run Tests: $TEST"
-
+sleep 5
 sudo apt install bc git-lfs screen snapd systemd-cryptsetup -y
 git remote remove origin && git remote add origin git@Signal:0mniteck/Signal-Desktop-Mobian.git && git-lfs install
 ./increment.sh $INC
