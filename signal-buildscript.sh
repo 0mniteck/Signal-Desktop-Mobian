@@ -1,13 +1,37 @@
 #!/usr/bin/env bash
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-alias rustup="echo unknown-linux; printf ''"
 trap '[[ $pid ]] && kill $pid; exit' EXIT
 BUILD_TYPE="$1"
 TEST="$2"
 
+cat <<EOF > tmp.patch
+diff --git a/ts/services/calling.ts b/ts/services/calling.ts
+index 0448247c0..008073009 100644
+--- a/ts/services/calling.ts
++++ b/ts/services/calling.ts
+@@ -7,6 +7,7 @@ import type {
+   CallId,
+   DeviceId,
+   GroupCallObserver,
++  SpeechEvent,
+   PeekInfo,
+   UserId,
+   VideoFrameSource,
+@@ -1478,6 +1479,9 @@ export class CallingClass {
+           endedReason,
+         });
+       },
++      onSpeechEvent: (_groupCall: GroupCall, event: SpeechEvent) => {
++        log.info('GroupCall#onSpeechEvent', event);
++      },
+     };
+   }
+EOF
+
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
+  patch ts/services/calling.ts < ../tmp.patch && echo "Patched ringrtc bug"
   echo "Starting Build "$(date -u '+on %D at %R UTC') && echo "# Starting Build "$(date -u '+on %D at %R UTC') > release/release.sha512sum
   echo "RUN_TESTS: ${TEST}"
   echo "BUILD_TYPE: ${BUILD_TYPE}"
