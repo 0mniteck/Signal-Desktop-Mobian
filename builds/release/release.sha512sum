@@ -1,5 +1,7 @@
-74e7313756b57e0704853cccc603d084bfe0d896a440b33939cc62d8566aeae56523b6b7907a0a46105a5bc2954bac0f8c8afd5d0cd2ab5d22bb90c7885a4cb9  release/signal-desktop_7.31.0_arm64.deb
+# Starting Build on 11/19/24 at 08:43 UTC
+6fd27a2417fb8247a3e9013252f97efe56788d9981f13ea859c026dfd07a98da981e48f66dad0f49f6d81f3a04e07380c6cf3f565c4b18fb9682e00134c23694  signal-desktop_7.33.0_arm64.deb
 # 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3
-# Build Complete: on 11/01/24 at 04:05 UTC
+# Source Date Epoch: 1723852093
+# Build Complete: on 11/19/24 at 09:22 UTC
 # Base Build System: GNU/Linux 6.11.0-9-generic aarch64 Ubuntu 24.10 oracular #9-Ubuntu SMP PREEMPT_DYNAMIC Mon Oct 14 13:46:10 UTC 2024
-# Container Build System: GNU/Linux unknown Debian GNU/Linux 12 (bookworm) bookworm #9-Ubuntu SMP PREEMPT_DYNAMIC Mon Oct 14 13:46:10 UTC 2024
+# Container Build System: GNU/Linux 6.11.0-9-generic aarch64 Debian GNU/Linux 12 (bookworm) #9-Ubuntu SMP PREEMPT_DYNAMIC Mon Oct 14 13:46:10 UTC 2024
