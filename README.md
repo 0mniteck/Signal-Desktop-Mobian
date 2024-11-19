@@ -5,7 +5,7 @@
 
 This project reproducibly builds Signal Desktop for Debian Bookworm on ARM64, currently targeting tag `7.33.x`
 
-Now with an optional update client: [`auto-update-cron.sh`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.33.x/auto-update-cron.sh)
+Now with an optional update client: [`auto-update-cron.sh`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/auto-update-cron.sh)
 
 This is the latest release: [`builds/release/signal-desktop_7.33.0_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.33.x/builds/release/signal-desktop_7.33.0_arm64.deb)
 
