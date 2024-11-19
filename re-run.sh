@@ -30,7 +30,7 @@ if [ "$2" != 0 ]; then
   echo "Using override timestamp for SOURCE_DATE_EPOCH."
   source_date_epoch=$(($2))
 else
-  git_timestamp=$(git log -1 7.20.0 --pretty=%ct)
+  git_timestamp=$(git log -1 7.31.0 --pretty=%ct)
   if [ "${git_timestamp}" != "" ]; then
     echo "Setting SOURCE_DATE_EPOCH from commit: $(git log -1 7.20.0 --oneline)"
     source_date_epoch=$((git_timestamp))
