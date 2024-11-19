@@ -31,7 +31,13 @@ EOF
 
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
-  patch ts/services/calling.ts < ../tmp.patch && echo "Patched ringrtc bug"
+  patch ts/services/calling.ts < ../tmp.patch
+  sed -i 's,"@signalapp/ringrtc": "2.48.6","@signalapp/ringrtc": "2.48.7",' package.json
+  sed -i 's,"@signalapp/ringrtc": "2.48.6","@signalapp/ringrtc": "2.48.7",' package-lock.json
+  sed -i 's,"version": "2.48.6","version": "2.48.7",' package-lock.json
+  sed -i 's,ringrtc-2.48.6.tgz,ringrtc-2.48.7.tgz,' package-lock.json
+  sed -i 's,"integrity": "sha512-iEjg8mBvv/2C/IDD2sV3yLx0ouHzN6YI3tWG75E9V08IUXp1QSRy8JjZwgo9tNbxSV/tk3UI93lE3uGp8aroYg==","integrity": "sha512-gfu8vb7Adtlh4zJ9cbLRBbmfvmIJ/SKwdQWZW3P8te8SOgTp6cK9aiuUDYqkJQfb3o30kQFDSA9e4a/rhDNeBQ==",' package-lock.json
+  echo "Patched ringrtc"
   echo "Starting Build "$(date -u '+on %D at %R UTC') && echo "# Starting Build "$(date -u '+on %D at %R UTC') > release/release.sha512sum
   echo "RUN_TESTS: ${TEST}"
   echo "BUILD_TYPE: ${BUILD_TYPE}"
