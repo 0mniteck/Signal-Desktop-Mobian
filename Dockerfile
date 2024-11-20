@@ -19,7 +19,7 @@ RUN cd /Signal-Desktop/ && git checkout --progress --force -B 7.33.x refs/remote
 RUN mkdir /Signal-Desktop/release/
 RUN mkdir /Signal-Desktop/artifacts/
 RUN mkdir /Signal-Desktop/artifacts/linux
-ENV ARTIFACTS_DIR=/Signal-Desktop/artifacts/linux
+ENV ARTIFACTS_DIR=artifacts/linux
 
 RUN cd /usr/include/aarch64-linux-gnu/ && wget https://github.com/node-ffi-napi/node-ffi-napi/raw/master/deps/libffi/config/linux/arm64/fficonfig.h && echo "56c9800d0388dd20a85ad917a75a0dc96aa0de95db560e586b540e657a7a10ec8ef9759f1d09d7cb2f0861c9b88650246a9ace97708a20d8757bcd0c559333a7  fficonfig.h" > fficonfig.sum && bash -c 'if [[ $(sha512sum -c fficonfig.sum) == "fficonfig.h: OK" ]]; then echo "fficonfig.h: Checksum Matched!"; else echo "fficonfig.h: Checksum Mismatch!" & rm -f fficonfig.h; fi;'
 
