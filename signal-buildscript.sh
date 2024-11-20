@@ -5,39 +5,8 @@ trap '[[ $pid ]] && kill $pid; exit' EXIT
 BUILD_TYPE="$1"
 TEST="$2"
 
-cat <<EOF > tmp.patch
-diff --git a/ts/services/calling.ts b/ts/services/calling.ts
-index 0448247c0..008073009 100644
---- a/ts/services/calling.ts
-+++ b/ts/services/calling.ts
-@@ -7,6 +7,7 @@ import type {
-   CallId,
-   DeviceId,
-   GroupCallObserver,
-+  SpeechEvent,
-   PeekInfo,
-   UserId,
-   VideoFrameSource,
-@@ -1478,6 +1479,9 @@ export class CallingClass {
-           endedReason,
-         });
-       },
-+      onSpeechEvent: (_groupCall: GroupCall, event: SpeechEvent) => {
-+        log.info('GroupCall#onSpeechEvent', event);
-+      },
-     };
-   }
-EOF
-
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
-  patch ts/services/calling.ts < ../tmp.patch
-  sed -i 's,"@signalapp/ringrtc": "2.48.6","@signalapp/ringrtc": "2.48.7",' package.json
-  sed -i 's,"@signalapp/ringrtc": "2.48.6","@signalapp/ringrtc": "2.48.7",' package-lock.json
-  sed -i 's,"version": "2.48.6","version": "2.48.7",' package-lock.json
-  sed -i 's,ringrtc-2.48.6.tgz,ringrtc-2.48.7.tgz,' package-lock.json
-  sed -i 's,"integrity": "sha512-iEjg8mBvv/2C/IDD2sV3yLx0ouHzN6YI3tWG75E9V08IUXp1QSRy8JjZwgo9tNbxSV/tk3UI93lE3uGp8aroYg==","integrity": "sha512-gfu8vb7Adtlh4zJ9cbLRBbmfvmIJ/SKwdQWZW3P8te8SOgTp6cK9aiuUDYqkJQfb3o30kQFDSA9e4a/rhDNeBQ==",' package-lock.json
-  echo "Patched ringrtc"
   echo "Starting Build "$(date -u '+on %D at %R UTC') && echo "# Starting Build "$(date -u '+on %D at %R UTC') > release/release.sha512sum
   echo "RUN_TESTS: ${TEST}"
   echo "BUILD_TYPE: ${BUILD_TYPE}"
@@ -81,7 +50,7 @@ pushd /Signal-Desktop
   debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
   if [ ! -f /Signal-Desktop/release/.private.key ]; then
     echo "Generating New Keypair."
-    npm run ts/updater/generateKeyPair.ts -- --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
+    npm run ts/updater/generateKeyPair.js -- --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
     echo "Signing Release."
     npm run sign-release -- --private /Signal-Desktop/release/.private.key --update $debpath
   else
