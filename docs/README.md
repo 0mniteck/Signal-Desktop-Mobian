@@ -38,7 +38,7 @@ A. To build later releases run:
 sudo su && \
 git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && \
 cd Signal-Desktop-Mobian && \
-./buildscript.sh -i .01 -p 7.34.x -r 7.34.0 -t yes
+./buildscript.sh -i .01 -p 7.33.x -r 7.33.0 -t yes
 ```
 
 B. To build the current release for reproducibility:
