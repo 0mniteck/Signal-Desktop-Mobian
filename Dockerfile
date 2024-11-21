@@ -17,7 +17,7 @@ RUN echo "551831ea67476372c6fb13fc2cab474b38f6e369daa51652a1c22974b0c8a5ed9e36a1
 RUN chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm alias $NODE_VERSION && nvm use $NODE_VERSION && npm install --location=global npm@$NPM_VERSION
 
 RUN git clone https://github.com/signalapp/Signal-Desktop.git
-RUN cd /Signal-Desktop/ && git checkout --progress --force -B 7.33.x refs/remotes/origin/7.33.x
+RUN cd /Signal-Desktop/ && git checkout --progress --force -B 7.34.x refs/remotes/origin/7.34.x
 RUN mkdir /Signal-Desktop/release/
 RUN mkdir /Signal-Desktop/artifacts/
 RUN mkdir /Signal-Desktop/artifacts/linux

@@ -202,4 +202,4 @@ files:
       - '**/messages.json'
 extraMetadata:
   environment: production
-electronVersion: 33.0.1
+electronVersion: 33.1.0
