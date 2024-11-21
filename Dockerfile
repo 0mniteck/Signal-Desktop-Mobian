@@ -21,7 +21,7 @@ RUN mv fficonfig.h /usr/include/aarch64-linux-gnu/fficonfig.h
 
 RUN git clone https://github.com/signalapp/Signal-Desktop.git
 RUN cd /Signal-Desktop/ && git checkout --progress --force -B 7.33.x refs/remotes/origin/7.33.x
-RUN mkdir /Signal-Desktop/artifacts/linux/logs
+RUN mkdir -p /Signal-Desktop/artifacts/linux/logs
 ENV ARTIFACTS_DIR=artifacts/linux
 
 ENV SIGNAL_ENV=production
