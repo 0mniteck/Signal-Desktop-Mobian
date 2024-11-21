@@ -78,6 +78,12 @@ curl -o- https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master
 * [x] Reproducible builds
 * [x] Generate/Scan SBOM at buildtime
 
+## Release Cycle:
+
+Currently building upstream releases twice to improve reproducability/reliability:
+
+`build/release to branch 7.xx.x` --> `test on hardware, document` --> `build/release to master branch`
+
 ## See also:
 
 * https://snapshot.debian.org
