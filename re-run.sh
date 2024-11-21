@@ -71,5 +71,5 @@ snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
 snap install grype --classic && grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json
-snap remove grype --purge && rm -f -r $HOME/.cache/grype/
+snap remove grype --purge && rm -f -r $HOME/.cache/grype/ && rm -f -r /tmp/grype-scratch*
 read -p "Close Screen Session: Continue to Signing-->"
