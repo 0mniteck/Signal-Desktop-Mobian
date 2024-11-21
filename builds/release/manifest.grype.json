@@ -306,6 +306,7 @@
       "https://github.com/moxystudio/node-cross-spawn/commit/5ff3a07d9add449021d806e45c4168203aa833ff",
       "https://github.com/moxystudio/node-cross-spawn/commit/640d391fde65388548601d95abedccc12943374f",
       "https://github.com/moxystudio/node-cross-spawn/pull/160",
+      "https://security.snyk.io/vuln/SNYK-JAVA-ORGWEBJARSNPM-8366349",
       "https://security.snyk.io/vuln/SNYK-JS-CROSSSPAWN-8303230"
      ],
      "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
@@ -401,6 +402,7 @@
       "https://github.com/moxystudio/node-cross-spawn/commit/5ff3a07d9add449021d806e45c4168203aa833ff",
       "https://github.com/moxystudio/node-cross-spawn/commit/640d391fde65388548601d95abedccc12943374f",
       "https://github.com/moxystudio/node-cross-spawn/pull/160",
+      "https://security.snyk.io/vuln/SNYK-JAVA-ORGWEBJARSNPM-8366349",
       "https://security.snyk.io/vuln/SNYK-JS-CROSSSPAWN-8303230"
      ],
      "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
@@ -2151,12 +2153,12 @@
    "match-upstream-kernel-headers": false
   },
   "db": {
-   "built": "2024-11-19T01:31:45Z",
+   "built": "2024-11-21T01:31:24Z",
    "schemaVersion": 5,
    "location": "/root/.cache/grype/db/5",
-   "checksum": "sha256:f9b32af7973051627cf65472f03d85a559cc8d4e0c3d4e751724e9ad38919429",
+   "checksum": "sha256:37c3e332058acc86fd3cbc8d735daeaad070daa064d720e4e1f7b869b99095e6",
    "error": null
   },
-  "timestamp": "2024-11-20T01:24:24.084260844Z"
+  "timestamp": "2024-11-21T07:57:45.025143354Z"
  }
 }
