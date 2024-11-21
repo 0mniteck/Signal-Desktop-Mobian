@@ -80,7 +80,7 @@ curl -o- https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master
 
 ## Release Cycle:
 
-Currently building upstream releases twice to improve reproducability/reliability:
+Currently building upstream releases twice to improve reproducibility/reliability:
 
 `build/release to branch 7.xx.x` --> `test on hardware, document` --> `build/release to master branch`
 
