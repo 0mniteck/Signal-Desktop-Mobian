@@ -18,9 +18,7 @@ RUN chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install $NOD
 
 RUN git clone https://github.com/signalapp/Signal-Desktop.git
 RUN cd /Signal-Desktop/ && git checkout --progress --force -B 7.33.x refs/remotes/origin/7.33.x
-RUN mkdir /Signal-Desktop/release/
-RUN mkdir /Signal-Desktop/artifacts/
-RUN mkdir /Signal-Desktop/artifacts/linux
+RUN mkdir /Signal-Desktop/artifacts/linux/logs
 ENV ARTIFACTS_DIR=artifacts/linux
 
 ADD https://github.com/node-ffi-napi/node-ffi-napi/raw/master/deps/libffi/config/linux/arm64/fficonfig.h /
