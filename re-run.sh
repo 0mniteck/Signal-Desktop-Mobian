@@ -19,7 +19,7 @@ if [ "$3" = "yes" ]; then
   rm -f -r /var/snap/docker/*
 fi
 chown root:root /var/snap/docker
-snap install docker --revision=2936 && ufw disable && sleep 5
+snap install docker --revision=2964 && ufw disable && sleep 5
 if [ -f /etc/keys/.private.key ]; then
   echo "Loading buildtool private keys..."
   cp /etc/keys/.private.key .private.key
