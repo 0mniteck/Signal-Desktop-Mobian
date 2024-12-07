@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version 1.6
+# Version 1.7
 #
 # Script to add a cron job to check for, download, and install the most recent version from this git repo.
 # This will auto-close signal-desktop before installing, default is to check after 5 min on reboot and every 2 days.
@@ -12,10 +12,10 @@
 
 # Copy the script to /usr/bin/sd-updater if it doesn't exist
 if [ ! -f /usr/bin/sd-updater ]; then
-    cp ./${0##*/} /usr/bin/sd-updater
-    chmod +x /usr/bin/sd-updater
     apt update && apt install -y wget cron
-    echo "Script ${0##*/} installed to /usr/bin/sd-updater."
+    wget -q -O /usr/bin/sd-updater https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh
+    chmod +x /usr/bin/sd-updater
+    echo "Signal-Desktop-Updater installed to /usr/bin/sd-updater."
 else
     sleep 5m && echo "/usr/bin/sd-updater already exists, checking for update."
     wget -q -O /usr/bin/sd-updater-tmp https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh
@@ -86,7 +86,12 @@ download_latest_version_info
 latest_version=$(get_latest_version)
 
 # Check if an update is needed
-if [ "$current_version" != "$latest_version" ]; then
+if [ "$current_version" = "not_installed" ]; then
+    echo "Signal Desktop is not installed. Installing..."
+    install_new_version
+    rm -f /tmp/signal-desktop.deb
+    rm -f /tmp/latest-linux-arm64.yml
+elif [ "$current_version" != "$latest_version" ]; then
     echo "Updating Signal Desktop from version $current_version to $latest_version"
     stop_running_instance
     install_new_version
