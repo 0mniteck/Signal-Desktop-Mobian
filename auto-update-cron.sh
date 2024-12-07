@@ -12,10 +12,10 @@
 
 # Copy the script to /usr/bin/sd-updater if it doesn't exist
 if [ ! -f /usr/bin/sd-updater ]; then
-    cp ./${0##*/} /usr/bin/sd-updater
-    chmod +x /usr/bin/sd-updater
     apt update && apt install -y wget cron
-    echo "Script ${0##*/} installed to /usr/bin/sd-updater."
+    wget -q -O /usr/bin/sd-updater https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh
+    chmod +x /usr/bin/sd-updater
+    echo "Signal-Desktop-Updater installed to /usr/bin/sd-updater."
 else
     sleep 5m && echo "/usr/bin/sd-updater already exists, checking for update."
     wget -q -O /usr/bin/sd-updater-tmp https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh
