@@ -1,13 +1,13 @@
 [![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)](https://signal.org)
 
 # Signal Desktop Builder For Mobian
-### [signal-desktop_7.35.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.35.x/builds/release/signal-desktop_7.35.0_arm64.deb)
+### [signal-desktop_7.35.1_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.35.x/builds/release/signal-desktop_7.35.1_arm64.deb)
 
 This project reproducibly builds Signal Desktop for Debian Bookworm on ARM64, currently targeting tag `7.35.x`
 
 Now with an optional update client: [`auto-update-cron.sh`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/auto-update-cron.sh)
 
-This is the latest release: [`builds/release/signal-desktop_7.35.0_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.35.x/builds/release/signal-desktop_7.35.0_arm64.deb)
+This is the latest release: [`builds/release/signal-desktop_7.35.1_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.35.x/builds/release/signal-desktop_7.35.1_arm64.deb)
 
 Sha512Sum: [`builds/release/release.sha512sum`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.35.x/builds/release/release.sha512sum)
 
@@ -38,7 +38,7 @@ A. To build later releases run:
 sudo su && \
 git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && \
 cd Signal-Desktop-Mobian && \
-./buildscript.sh -i .01 -p 7.35.x -r 7.35.0 -t yes
+./buildscript.sh -i .01 -p master -r 7.35.1
 ```
 
 B. To build the current release for reproducibility:
@@ -52,14 +52,14 @@ cd Signal-Desktop-Mobian && \
 
 ### Usage:
 
-[Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/raw/7.35.x/builds/release/signal-desktop_7.35.0_arm64.deb) to your device, verify the sha512sum, then install:
+[Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/raw/7.35.x/builds/release/signal-desktop_7.35.1_arm64.deb) to your device, verify the sha512sum, then install:
 
 [[Current Sha512sum]](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.35.x/builds/release/release.sha512sum#L2)
-(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/b597429c295eaff67d7252f64c0e4e0693f91f05/builds/release/release.sha512sum#L2)
+(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/d0af5626a5bb7d381ea987d1d132831523560318/builds/release/release.sha512sum#L2)
 
-```sha512sum signal-desktop_7.35.0_arm64.deb```
+```sha512sum signal-desktop_7.35.1_arm64.deb```
 
-```sudo apt install ./signal-desktop_7.35.0_arm64.deb```
+```sudo apt install ./signal-desktop_7.35.1_arm64.deb```
 
 ### Optional Updater:
 
