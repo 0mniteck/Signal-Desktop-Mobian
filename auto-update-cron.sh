@@ -86,7 +86,12 @@ download_latest_version_info
 latest_version=$(get_latest_version)
 
 # Check if an update is needed
-if [ "$current_version" != "$latest_version" ]; then
+if [ "$current_version" = "not_installed" ]; then
+    echo "Signal Desktop is not installed. Installing..."
+    install_new_version
+    rm -f /tmp/signal-desktop.deb
+    rm -f /tmp/latest-linux-arm64.yml
+elif [ "$current_version" != "$latest_version" ]; then
     echo "Updating Signal Desktop from version $current_version to $latest_version"
     stop_running_instance
     install_new_version
