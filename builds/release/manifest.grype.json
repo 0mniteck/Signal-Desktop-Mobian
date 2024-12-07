@@ -2,97 +2,6 @@
  "matches": [
   {
    "vulnerability": {
-    "id": "GHSA-8hc4-vh64-cxmj",
-    "dataSource": "https://github.com/advisories/GHSA-8hc4-vh64-cxmj",
-    "namespace": "github:language:javascript",
-    "severity": "High",
-    "urls": [
-     "https://github.com/advisories/GHSA-8hc4-vh64-cxmj"
-    ],
-    "description": "Server-Side Request Forgery in axios",
-    "cvss": [],
-    "fix": {
-     "versions": [
-      "1.7.4"
-     ],
-     "state": "fixed"
-    },
-    "advisories": []
-   },
-   "relatedVulnerabilities": [
-    {
-     "id": "CVE-2024-39338",
-     "dataSource": "https://nvd.nist.gov/vuln/detail/CVE-2024-39338",
-     "namespace": "nvd:cpe",
-     "severity": "High",
-     "urls": [
-      "https://github.com/axios/axios/releases",
-      "https://jeffhacks.com/advisories/2024/06/24/CVE-2024-39338.html"
-     ],
-     "description": "axios 1.7.2 allows SSRF via unexpected behavior where requests for path relative URLs get processed as protocol relative URLs.",
-     "cvss": [
-      {
-       "source": "nvd@nist.gov",
-       "type": "Primary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
-       "metrics": {
-        "baseScore": 7.5,
-        "exploitabilityScore": 3.9,
-        "impactScore": 3.6
-       },
-       "vendorMetadata": {}
-      },
-      {
-       "source": "134c704f-9b21-4f2e-91b3-4a467353bcc0",
-       "type": "Secondary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:L/I:N/A:N",
-       "metrics": {
-        "baseScore": 4,
-        "exploitabilityScore": 2.2,
-        "impactScore": 1.4
-       },
-       "vendorMetadata": {}
-      }
-     ]
-    }
-   ],
-   "matchDetails": [
-    {
-     "type": "exact-direct-match",
-     "matcher": "javascript-matcher",
-     "searchedBy": {
-      "language": "javascript",
-      "namespace": "github:language:javascript",
-      "package": {
-       "name": "axios",
-       "version": "1.7.2"
-      }
-     },
-     "found": {
-      "versionConstraint": ">=1.3.2,<=1.7.3 (unknown)",
-      "vulnerabilityID": "GHSA-8hc4-vh64-cxmj"
-     }
-    }
-   ],
-   "artifact": {
-    "id": "9404a67d0c5ebf9c",
-    "name": "axios",
-    "version": "1.7.2",
-    "type": "npm",
-    "locations": [],
-    "language": "javascript",
-    "licenses": [
-     "MIT"
-    ],
-    "cpes": [],
-    "purl": "pkg:npm/axios@1.7.2",
-    "upstreams": []
-   }
-  },
-  {
-   "vulnerability": {
     "id": "GHSA-qwcr-r2fm-qrc7",
     "dataSource": "https://github.com/advisories/GHSA-qwcr-r2fm-qrc7",
     "namespace": "github:language:javascript",
@@ -669,207 +578,6 @@
   },
   {
    "vulnerability": {
-    "id": "GHSA-4wx3-54gh-9fr9",
-    "dataSource": "https://github.com/advisories/GHSA-4wx3-54gh-9fr9",
-    "namespace": "github:language:javascript",
-    "severity": "Medium",
-    "urls": [
-     "https://github.com/advisories/GHSA-4wx3-54gh-9fr9"
-    ],
-    "description": "Cross site scripting in markdown-to-jsx",
-    "cvss": [
-     {
-      "version": "3.1",
-      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-      "metrics": {
-       "baseScore": 6.1,
-       "exploitabilityScore": 2.8,
-       "impactScore": 2.7
-      },
-      "vendorMetadata": {
-       "base_severity": "Medium",
-       "status": "N/A"
-      }
-     }
-    ],
-    "fix": {
-     "versions": [
-      "7.4.0"
-     ],
-     "state": "fixed"
-    },
-    "advisories": []
-   },
-   "relatedVulnerabilities": [
-    {
-     "id": "CVE-2024-21535",
-     "dataSource": "https://nvd.nist.gov/vuln/detail/CVE-2024-21535",
-     "namespace": "nvd:cpe",
-     "severity": "Medium",
-     "urls": [
-      "https://github.com/quantizor/markdown-to-jsx/commit/8eb74da825c0d8d2e9508d73c672bcae36ba555a",
-      "https://security.snyk.io/vuln/SNYK-JS-MARKDOWNTOJSX-6258886"
-     ],
-     "description": "Versions of the package markdown-to-jsx before 7.4.0 are vulnerable to Cross-site Scripting (XSS) via the src property due to improper input sanitization. An attacker can execute arbitrary code by injecting a malicious iframe element in the markdown.",
-     "cvss": [
-      {
-       "source": "nvd@nist.gov",
-       "type": "Primary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-       "metrics": {
-        "baseScore": 6.1,
-        "exploitabilityScore": 2.8,
-        "impactScore": 2.7
-       },
-       "vendorMetadata": {}
-      },
-      {
-       "source": "report@snyk.io",
-       "type": "Secondary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-       "metrics": {
-        "baseScore": 6.1,
-        "exploitabilityScore": 2.8,
-        "impactScore": 2.7
-       },
-       "vendorMetadata": {}
-      }
-     ]
-    }
-   ],
-   "matchDetails": [
-    {
-     "type": "exact-direct-match",
-     "matcher": "javascript-matcher",
-     "searchedBy": {
-      "language": "javascript",
-      "namespace": "github:language:javascript",
-      "package": {
-       "name": "markdown-to-jsx",
-       "version": "7.3.2"
-      }
-     },
-     "found": {
-      "versionConstraint": "<7.4.0 (unknown)",
-      "vulnerabilityID": "GHSA-4wx3-54gh-9fr9"
-     }
-    }
-   ],
-   "artifact": {
-    "id": "7968694ac9fe155c",
-    "name": "markdown-to-jsx",
-    "version": "7.3.2",
-    "type": "npm",
-    "locations": [],
-    "language": "javascript",
-    "licenses": [
-     "MIT"
-    ],
-    "cpes": [],
-    "purl": "pkg:npm/markdown-to-jsx@7.3.2",
-    "upstreams": []
-   }
-  },
-  {
-   "vulnerability": {
-    "id": "GHSA-952p-6rrq-rcjv",
-    "dataSource": "https://github.com/advisories/GHSA-952p-6rrq-rcjv",
-    "namespace": "github:language:javascript",
-    "severity": "Medium",
-    "urls": [
-     "https://github.com/advisories/GHSA-952p-6rrq-rcjv"
-    ],
-    "description": "Regular Expression Denial of Service (ReDoS) in micromatch",
-    "cvss": [
-     {
-      "version": "3.1",
-      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-      "metrics": {
-       "baseScore": 5.3,
-       "exploitabilityScore": 3.9,
-       "impactScore": 1.4
-      },
-      "vendorMetadata": {
-       "base_severity": "Medium",
-       "status": "N/A"
-      }
-     }
-    ],
-    "fix": {
-     "versions": [
-      "4.0.8"
-     ],
-     "state": "fixed"
-    },
-    "advisories": []
-   },
-   "relatedVulnerabilities": [
-    {
-     "id": "CVE-2024-4067",
-     "dataSource": "https://nvd.nist.gov/vuln/detail/CVE-2024-4067",
-     "namespace": "nvd:cpe",
-     "severity": "Medium",
-     "urls": [
-      "https://advisory.checkmarx.net/advisory/CVE-2024-4067/",
-      "https://devhub.checkmarx.com/cve-details/CVE-2024-4067/",
-      "https://github.com/micromatch/micromatch/commit/03aa8052171e878897eee5d7bb2ae0ae83ec2ade",
-      "https://github.com/micromatch/micromatch/pull/266",
-      "https://github.com/micromatch/micromatch/releases/tag/4.0.8"
-     ],
-     "description": "The NPM package `micromatch` prior to 4.0.8 is vulnerable to Regular Expression Denial of Service (ReDoS). The vulnerability occurs in `micromatch.braces()` in `index.js` because the pattern `.*` will greedily match anything. By passing a malicious payload, the pattern matching will keep backtracking to the input while it doesn't find the closing bracket. As the input size increases, the consumption time will also increase until it causes the application to hang or slow down. There was a merged fix but further testing shows the issue persists. This issue should be mitigated by using a safe pattern that won't start backtracking the regular expression due to greedy matching. This issue was fixed in version 4.0.8.",
-     "cvss": [
-      {
-       "source": "596c5446-0ce5-4ba2-aa66-48b3b757a647",
-       "type": "Secondary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-       "metrics": {
-        "baseScore": 5.3,
-        "exploitabilityScore": 3.9,
-        "impactScore": 1.4
-       },
-       "vendorMetadata": {}
-      }
-     ]
-    }
-   ],
-   "matchDetails": [
-    {
-     "type": "exact-direct-match",
-     "matcher": "javascript-matcher",
-     "searchedBy": {
-      "language": "javascript",
-      "namespace": "github:language:javascript",
-      "package": {
-       "name": "micromatch",
-       "version": "4.0.4"
-      }
-     },
-     "found": {
-      "versionConstraint": "<4.0.8 (unknown)",
-      "vulnerabilityID": "GHSA-952p-6rrq-rcjv"
-     }
-    }
-   ],
-   "artifact": {
-    "id": "cb708a20bfd5758d",
-    "name": "micromatch",
-    "version": "4.0.4",
-    "type": "npm",
-    "locations": [],
-    "language": "javascript",
-    "licenses": [
-     "MIT"
-    ],
-    "cpes": [],
-    "purl": "pkg:npm/micromatch@4.0.4",
-    "upstreams": []
-   }
-  },
-  {
-   "vulnerability": {
     "id": "GHSA-9wv6-86v2-598j",
     "dataSource": "https://github.com/advisories/GHSA-9wv6-86v2-598j",
     "namespace": "github:language:javascript",
@@ -944,6 +652,72 @@
      "found": {
       "versionConstraint": "<0.1.10 (unknown)",
       "vulnerabilityID": "GHSA-9wv6-86v2-598j"
+     }
+    }
+   ],
+   "artifact": {
+    "id": "c55eef952e7c499a",
+    "name": "path-to-regexp",
+    "version": "0.1.7",
+    "type": "npm",
+    "locations": [],
+    "language": "javascript",
+    "licenses": [
+     "MIT"
+    ],
+    "cpes": [],
+    "purl": "pkg:npm/path-to-regexp@0.1.7",
+    "upstreams": []
+   }
+  },
+  {
+   "vulnerability": {
+    "id": "GHSA-rhx6-c78j-4q9w",
+    "dataSource": "https://github.com/advisories/GHSA-rhx6-c78j-4q9w",
+    "namespace": "github:language:javascript",
+    "severity": "Medium",
+    "urls": [
+     "https://github.com/advisories/GHSA-rhx6-c78j-4q9w"
+    ],
+    "description": "Unpatched `path-to-regexp` ReDoS in 0.1.x",
+    "cvss": [],
+    "fix": {
+     "versions": [
+      "0.1.12"
+     ],
+     "state": "fixed"
+    },
+    "advisories": []
+   },
+   "relatedVulnerabilities": [
+    {
+     "id": "CVE-2024-52798",
+     "dataSource": "https://nvd.nist.gov/vuln/detail/CVE-2024-52798",
+     "namespace": "nvd:cpe",
+     "severity": "Unknown",
+     "urls": [
+      "https://github.com/pillarjs/path-to-regexp/commit/f01c26a013b1889f0c217c643964513acf17f6a4",
+      "https://github.com/pillarjs/path-to-regexp/security/advisories/GHSA-rhx6-c78j-4q9w"
+     ],
+     "description": "path-to-regexp turns path strings into a regular expressions. In certain cases, path-to-regexp will output a regular expression that can be exploited to cause poor performance. The regular expression that is vulnerable to backtracking can be generated in the 0.1.x release of path-to-regexp. Upgrade to 0.1.12. This vulnerability exists because of an incomplete fix for CVE-2024-45296.",
+     "cvss": []
+    }
+   ],
+   "matchDetails": [
+    {
+     "type": "exact-direct-match",
+     "matcher": "javascript-matcher",
+     "searchedBy": {
+      "language": "javascript",
+      "namespace": "github:language:javascript",
+      "package": {
+       "name": "path-to-regexp",
+       "version": "0.1.7"
+      }
+     },
+     "found": {
+      "versionConstraint": "<0.1.12 (unknown)",
+      "vulnerabilityID": "GHSA-rhx6-c78j-4q9w"
      }
     }
    ],
@@ -1058,527 +832,6 @@
   },
   {
    "vulnerability": {
-    "id": "GHSA-7fh5-64p2-3v2j",
-    "dataSource": "https://github.com/advisories/GHSA-7fh5-64p2-3v2j",
-    "namespace": "github:language:javascript",
-    "severity": "Medium",
-    "urls": [
-     "https://github.com/advisories/GHSA-7fh5-64p2-3v2j"
-    ],
-    "description": "PostCSS line return parsing error",
-    "cvss": [
-     {
-      "version": "3.1",
-      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-      "metrics": {
-       "baseScore": 5.3,
-       "exploitabilityScore": 3.9,
-       "impactScore": 1.4
-      },
-      "vendorMetadata": {
-       "base_severity": "Medium",
-       "status": "N/A"
-      }
-     }
-    ],
-    "fix": {
-     "versions": [
-      "8.4.31"
-     ],
-     "state": "fixed"
-    },
-    "advisories": []
-   },
-   "relatedVulnerabilities": [
-    {
-     "id": "CVE-2023-44270",
-     "dataSource": "https://nvd.nist.gov/vuln/detail/CVE-2023-44270",
-     "namespace": "nvd:cpe",
-     "severity": "Medium",
-     "urls": [
-      "https://github.com/github/advisory-database/issues/2820",
-      "https://github.com/postcss/postcss/blob/main/lib/tokenize.js#L25",
-      "https://github.com/postcss/postcss/commit/58cc860b4c1707510c9cd1bc1fa30b423a9ad6c5",
-      "https://github.com/postcss/postcss/releases/tag/8.4.31"
-     ],
-     "description": "An issue was discovered in PostCSS before 8.4.31. The vulnerability affects linters using PostCSS to parse external untrusted CSS. An attacker can prepare CSS in such a way that it will contains parts parsed by PostCSS as a CSS comment. After processing by PostCSS, it will be included in the PostCSS output in CSS nodes (rules, properties) despite being included in a comment.",
-     "cvss": [
-      {
-       "source": "nvd@nist.gov",
-       "type": "Primary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-       "metrics": {
-        "baseScore": 5.3,
-        "exploitabilityScore": 3.9,
-        "impactScore": 1.4
-       },
-       "vendorMetadata": {}
-      }
-     ]
-    }
-   ],
-   "matchDetails": [
-    {
-     "type": "exact-direct-match",
-     "matcher": "javascript-matcher",
-     "searchedBy": {
-      "language": "javascript",
-      "namespace": "github:language:javascript",
-      "package": {
-       "name": "postcss",
-       "version": "6.0.1"
-      }
-     },
-     "found": {
-      "versionConstraint": "<8.4.31 (unknown)",
-      "vulnerabilityID": "GHSA-7fh5-64p2-3v2j"
-     }
-    }
-   ],
-   "artifact": {
-    "id": "1099c74166b92d66",
-    "name": "postcss",
-    "version": "6.0.1",
-    "type": "npm",
-    "locations": [],
-    "language": "javascript",
-    "licenses": [
-     "MIT"
-    ],
-    "cpes": [],
-    "purl": "pkg:npm/postcss@6.0.1",
-    "upstreams": []
-   }
-  },
-  {
-   "vulnerability": {
-    "id": "GHSA-566m-qj78-rww5",
-    "dataSource": "https://github.com/advisories/GHSA-566m-qj78-rww5",
-    "namespace": "github:language:javascript",
-    "severity": "Medium",
-    "urls": [
-     "https://github.com/advisories/GHSA-566m-qj78-rww5"
-    ],
-    "description": "Regular Expression Denial of Service in postcss",
-    "cvss": [
-     {
-      "version": "3.1",
-      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-      "metrics": {
-       "baseScore": 5.3,
-       "exploitabilityScore": 3.9,
-       "impactScore": 1.4
-      },
-      "vendorMetadata": {
-       "base_severity": "Medium",
-       "status": "N/A"
-      }
-     }
-    ],
-    "fix": {
-     "versions": [
-      "7.0.36"
-     ],
-     "state": "fixed"
-    },
-    "advisories": []
-   },
-   "relatedVulnerabilities": [
-    {
-     "id": "CVE-2021-23382",
-     "dataSource": "https://nvd.nist.gov/vuln/detail/CVE-2021-23382",
-     "namespace": "nvd:cpe",
-     "severity": "High",
-     "urls": [
-      "https://github.com/postcss/postcss/commit/2b1d04c867995e55124e0a165b7c6622c1735956",
-      "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSNPM-1255641",
-      "https://snyk.io/vuln/SNYK-JS-POSTCSS-1255640"
-     ],
-     "description": "The package postcss before 8.2.13 are vulnerable to Regular Expression Denial of Service (ReDoS) via getAnnotationURL() and loadAnnotation() in lib/previous-map.js. The vulnerable regexes are caused mainly by the sub-pattern \\/\\*\\s* sourceMappingURL=(.*).",
-     "cvss": [
-      {
-       "source": "nvd@nist.gov",
-       "type": "Primary",
-       "version": "2.0",
-       "vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
-       "metrics": {
-        "baseScore": 5,
-        "exploitabilityScore": 10,
-        "impactScore": 2.9
-       },
-       "vendorMetadata": {}
-      },
-      {
-       "source": "nvd@nist.gov",
-       "type": "Primary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-       "metrics": {
-        "baseScore": 7.5,
-        "exploitabilityScore": 3.9,
-        "impactScore": 3.6
-       },
-       "vendorMetadata": {}
-      },
-      {
-       "source": "report@snyk.io",
-       "type": "Secondary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-       "metrics": {
-        "baseScore": 5.3,
-        "exploitabilityScore": 3.9,
-        "impactScore": 1.4
-       },
-       "vendorMetadata": {}
-      }
-     ]
-    }
-   ],
-   "matchDetails": [
-    {
-     "type": "exact-direct-match",
-     "matcher": "javascript-matcher",
-     "searchedBy": {
-      "language": "javascript",
-      "namespace": "github:language:javascript",
-      "package": {
-       "name": "postcss",
-       "version": "6.0.1"
-      }
-     },
-     "found": {
-      "versionConstraint": "<7.0.36 (unknown)",
-      "vulnerabilityID": "GHSA-566m-qj78-rww5"
-     }
-    }
-   ],
-   "artifact": {
-    "id": "1099c74166b92d66",
-    "name": "postcss",
-    "version": "6.0.1",
-    "type": "npm",
-    "locations": [],
-    "language": "javascript",
-    "licenses": [
-     "MIT"
-    ],
-    "cpes": [],
-    "purl": "pkg:npm/postcss@6.0.1",
-    "upstreams": []
-   }
-  },
-  {
-   "vulnerability": {
-    "id": "GHSA-7fh5-64p2-3v2j",
-    "dataSource": "https://github.com/advisories/GHSA-7fh5-64p2-3v2j",
-    "namespace": "github:language:javascript",
-    "severity": "Medium",
-    "urls": [
-     "https://github.com/advisories/GHSA-7fh5-64p2-3v2j"
-    ],
-    "description": "PostCSS line return parsing error",
-    "cvss": [
-     {
-      "version": "3.1",
-      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-      "metrics": {
-       "baseScore": 5.3,
-       "exploitabilityScore": 3.9,
-       "impactScore": 1.4
-      },
-      "vendorMetadata": {
-       "base_severity": "Medium",
-       "status": "N/A"
-      }
-     }
-    ],
-    "fix": {
-     "versions": [
-      "8.4.31"
-     ],
-     "state": "fixed"
-    },
-    "advisories": []
-   },
-   "relatedVulnerabilities": [
-    {
-     "id": "CVE-2023-44270",
-     "dataSource": "https://nvd.nist.gov/vuln/detail/CVE-2023-44270",
-     "namespace": "nvd:cpe",
-     "severity": "Medium",
-     "urls": [
-      "https://github.com/github/advisory-database/issues/2820",
-      "https://github.com/postcss/postcss/blob/main/lib/tokenize.js#L25",
-      "https://github.com/postcss/postcss/commit/58cc860b4c1707510c9cd1bc1fa30b423a9ad6c5",
-      "https://github.com/postcss/postcss/releases/tag/8.4.31"
-     ],
-     "description": "An issue was discovered in PostCSS before 8.4.31. The vulnerability affects linters using PostCSS to parse external untrusted CSS. An attacker can prepare CSS in such a way that it will contains parts parsed by PostCSS as a CSS comment. After processing by PostCSS, it will be included in the PostCSS output in CSS nodes (rules, properties) despite being included in a comment.",
-     "cvss": [
-      {
-       "source": "nvd@nist.gov",
-       "type": "Primary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-       "metrics": {
-        "baseScore": 5.3,
-        "exploitabilityScore": 3.9,
-        "impactScore": 1.4
-       },
-       "vendorMetadata": {}
-      }
-     ]
-    }
-   ],
-   "matchDetails": [
-    {
-     "type": "exact-direct-match",
-     "matcher": "javascript-matcher",
-     "searchedBy": {
-      "language": "javascript",
-      "namespace": "github:language:javascript",
-      "package": {
-       "name": "postcss",
-       "version": "6.0.21"
-      }
-     },
-     "found": {
-      "versionConstraint": "<8.4.31 (unknown)",
-      "vulnerabilityID": "GHSA-7fh5-64p2-3v2j"
-     }
-    }
-   ],
-   "artifact": {
-    "id": "0fddc9eacc9eb623",
-    "name": "postcss",
-    "version": "6.0.21",
-    "type": "npm",
-    "locations": [],
-    "language": "javascript",
-    "licenses": [
-     "MIT"
-    ],
-    "cpes": [],
-    "purl": "pkg:npm/postcss@6.0.21",
-    "upstreams": []
-   }
-  },
-  {
-   "vulnerability": {
-    "id": "GHSA-566m-qj78-rww5",
-    "dataSource": "https://github.com/advisories/GHSA-566m-qj78-rww5",
-    "namespace": "github:language:javascript",
-    "severity": "Medium",
-    "urls": [
-     "https://github.com/advisories/GHSA-566m-qj78-rww5"
-    ],
-    "description": "Regular Expression Denial of Service in postcss",
-    "cvss": [
-     {
-      "version": "3.1",
-      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-      "metrics": {
-       "baseScore": 5.3,
-       "exploitabilityScore": 3.9,
-       "impactScore": 1.4
-      },
-      "vendorMetadata": {
-       "base_severity": "Medium",
-       "status": "N/A"
-      }
-     }
-    ],
-    "fix": {
-     "versions": [
-      "7.0.36"
-     ],
-     "state": "fixed"
-    },
-    "advisories": []
-   },
-   "relatedVulnerabilities": [
-    {
-     "id": "CVE-2021-23382",
-     "dataSource": "https://nvd.nist.gov/vuln/detail/CVE-2021-23382",
-     "namespace": "nvd:cpe",
-     "severity": "High",
-     "urls": [
-      "https://github.com/postcss/postcss/commit/2b1d04c867995e55124e0a165b7c6622c1735956",
-      "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSNPM-1255641",
-      "https://snyk.io/vuln/SNYK-JS-POSTCSS-1255640"
-     ],
-     "description": "The package postcss before 8.2.13 are vulnerable to Regular Expression Denial of Service (ReDoS) via getAnnotationURL() and loadAnnotation() in lib/previous-map.js. The vulnerable regexes are caused mainly by the sub-pattern \\/\\*\\s* sourceMappingURL=(.*).",
-     "cvss": [
-      {
-       "source": "nvd@nist.gov",
-       "type": "Primary",
-       "version": "2.0",
-       "vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
-       "metrics": {
-        "baseScore": 5,
-        "exploitabilityScore": 10,
-        "impactScore": 2.9
-       },
-       "vendorMetadata": {}
-      },
-      {
-       "source": "nvd@nist.gov",
-       "type": "Primary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-       "metrics": {
-        "baseScore": 7.5,
-        "exploitabilityScore": 3.9,
-        "impactScore": 3.6
-       },
-       "vendorMetadata": {}
-      },
-      {
-       "source": "report@snyk.io",
-       "type": "Secondary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-       "metrics": {
-        "baseScore": 5.3,
-        "exploitabilityScore": 3.9,
-        "impactScore": 1.4
-       },
-       "vendorMetadata": {}
-      }
-     ]
-    }
-   ],
-   "matchDetails": [
-    {
-     "type": "exact-direct-match",
-     "matcher": "javascript-matcher",
-     "searchedBy": {
-      "language": "javascript",
-      "namespace": "github:language:javascript",
-      "package": {
-       "name": "postcss",
-       "version": "6.0.21"
-      }
-     },
-     "found": {
-      "versionConstraint": "<7.0.36 (unknown)",
-      "vulnerabilityID": "GHSA-566m-qj78-rww5"
-     }
-    }
-   ],
-   "artifact": {
-    "id": "0fddc9eacc9eb623",
-    "name": "postcss",
-    "version": "6.0.21",
-    "type": "npm",
-    "locations": [],
-    "language": "javascript",
-    "licenses": [
-     "MIT"
-    ],
-    "cpes": [],
-    "purl": "pkg:npm/postcss@6.0.21",
-    "upstreams": []
-   }
-  },
-  {
-   "vulnerability": {
-    "id": "GHSA-7fh5-64p2-3v2j",
-    "dataSource": "https://github.com/advisories/GHSA-7fh5-64p2-3v2j",
-    "namespace": "github:language:javascript",
-    "severity": "Medium",
-    "urls": [
-     "https://github.com/advisories/GHSA-7fh5-64p2-3v2j"
-    ],
-    "description": "PostCSS line return parsing error",
-    "cvss": [
-     {
-      "version": "3.1",
-      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-      "metrics": {
-       "baseScore": 5.3,
-       "exploitabilityScore": 3.9,
-       "impactScore": 1.4
-      },
-      "vendorMetadata": {
-       "base_severity": "Medium",
-       "status": "N/A"
-      }
-     }
-    ],
-    "fix": {
-     "versions": [
-      "8.4.31"
-     ],
-     "state": "fixed"
-    },
-    "advisories": []
-   },
-   "relatedVulnerabilities": [
-    {
-     "id": "CVE-2023-44270",
-     "dataSource": "https://nvd.nist.gov/vuln/detail/CVE-2023-44270",
-     "namespace": "nvd:cpe",
-     "severity": "Medium",
-     "urls": [
-      "https://github.com/github/advisory-database/issues/2820",
-      "https://github.com/postcss/postcss/blob/main/lib/tokenize.js#L25",
-      "https://github.com/postcss/postcss/commit/58cc860b4c1707510c9cd1bc1fa30b423a9ad6c5",
-      "https://github.com/postcss/postcss/releases/tag/8.4.31"
-     ],
-     "description": "An issue was discovered in PostCSS before 8.4.31. The vulnerability affects linters using PostCSS to parse external untrusted CSS. An attacker can prepare CSS in such a way that it will contains parts parsed by PostCSS as a CSS comment. After processing by PostCSS, it will be included in the PostCSS output in CSS nodes (rules, properties) despite being included in a comment.",
-     "cvss": [
-      {
-       "source": "nvd@nist.gov",
-       "type": "Primary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-       "metrics": {
-        "baseScore": 5.3,
-        "exploitabilityScore": 3.9,
-        "impactScore": 1.4
-       },
-       "vendorMetadata": {}
-      }
-     ]
-    }
-   ],
-   "matchDetails": [
-    {
-     "type": "exact-direct-match",
-     "matcher": "javascript-matcher",
-     "searchedBy": {
-      "language": "javascript",
-      "namespace": "github:language:javascript",
-      "package": {
-       "name": "postcss",
-       "version": "7.0.39"
-      }
-     },
-     "found": {
-      "versionConstraint": "<8.4.31 (unknown)",
-      "vulnerabilityID": "GHSA-7fh5-64p2-3v2j"
-     }
-    }
-   ],
-   "artifact": {
-    "id": "86769dd91dca3214",
-    "name": "postcss",
-    "version": "7.0.39",
-    "type": "npm",
-    "locations": [],
-    "language": "javascript",
-    "licenses": [
-     "MIT"
-    ],
-    "cpes": [],
-    "purl": "pkg:npm/postcss@7.0.39",
-    "upstreams": []
-   }
-  },
-  {
-   "vulnerability": {
     "id": "GHSA-4943-9vgg-gr5r",
     "dataSource": "https://github.com/advisories/GHSA-4943-9vgg-gr5r",
     "namespace": "github:language:javascript",
@@ -1615,6 +868,10 @@
      "namespace": "nvd:cpe",
      "severity": "Medium",
      "urls": [
+      "https://burninatorsec.blogspot.com/2021/04/cve-2021-3163-xss-slab-quill-js.html",
+      "https://github.com/quilljs/quill/issues/3273",
+      "https://github.com/quilljs/quill/issues/3364",
+      "https://quilljs.com",
       "https://burninatorsec.blogspot.com/2021/04/cve-2021-3163-xss-slab-quill-js.html",
       "https://github.com/quilljs/quill/issues/3273",
       "https://github.com/quilljs/quill/issues/3364",
@@ -1892,114 +1149,6 @@
     "purl": "pkg:npm/serve-static@1.15.0",
     "upstreams": []
    }
-  },
-  {
-   "vulnerability": {
-    "id": "GHSA-4vvj-4cpr-p986",
-    "dataSource": "https://github.com/advisories/GHSA-4vvj-4cpr-p986",
-    "namespace": "github:language:javascript",
-    "severity": "Medium",
-    "urls": [
-     "https://github.com/advisories/GHSA-4vvj-4cpr-p986"
-    ],
-    "description": "Webpack's AutoPublicPathRuntimeModule has a DOM Clobbering Gadget that leads to XSS",
-    "cvss": [
-     {
-      "version": "3.1",
-      "vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:H",
-      "metrics": {
-       "baseScore": 6.4,
-       "exploitabilityScore": 1.6,
-       "impactScore": 4.7
-      },
-      "vendorMetadata": {
-       "base_severity": "Medium",
-       "status": "N/A"
-      }
-     }
-    ],
-    "fix": {
-     "versions": [
-      "5.94.0"
-     ],
-     "state": "fixed"
-    },
-    "advisories": []
-   },
-   "relatedVulnerabilities": [
-    {
-     "id": "CVE-2024-43788",
-     "dataSource": "https://nvd.nist.gov/vuln/detail/CVE-2024-43788",
-     "namespace": "nvd:cpe",
-     "severity": "Medium",
-     "urls": [
-      "https://github.com/webpack/webpack/commit/955e057abc6cc83cbc3fa1e1ef67a49758bf5a61",
-      "https://github.com/webpack/webpack/issues/18718#issuecomment-2326296270",
-      "https://github.com/webpack/webpack/security/advisories/GHSA-4vvj-4cpr-p986",
-      "https://research.securitum.com/xss-in-amp4email-dom-clobbering",
-      "https://scnps.co/papers/sp23_domclob.pdf"
-     ],
-     "description": "Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset. The webpack developers have discovered a DOM Clobbering vulnerability in Webpack’s `AutoPublicPathRuntimeModule`. The DOM Clobbering gadget in the module can lead to cross-site scripting (XSS) in web pages where scriptless attacker-controlled HTML elements (e.g., an `img` tag with an unsanitized `name` attribute) are present. Real-world exploitation of this gadget has been observed in the Canvas LMS which allows a XSS attack to happen through a javascript code compiled by Webpack (the vulnerable part is from Webpack). DOM Clobbering is a type of code-reuse attack where the attacker first embeds a piece of non-script, seemingly benign HTML markups in the webpage (e.g. through a post or comment) and leverages the gadgets (pieces of js code) living in the existing javascript code to transform it into executable code. This vulnerability can lead to cross-site scripting (XSS) on websites that include Webpack-generated files and allow users to inject certain scriptless HTML tags with improperly sanitized name or id attributes. This issue has been addressed in release version 5.94.0. All users are advised to upgrade. There are no known workarounds for this issue.",
-     "cvss": [
-      {
-       "source": "nvd@nist.gov",
-       "type": "Primary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-       "metrics": {
-        "baseScore": 6.1,
-        "exploitabilityScore": 2.8,
-        "impactScore": 2.7
-       },
-       "vendorMetadata": {}
-      },
-      {
-       "source": "security-advisories@github.com",
-       "type": "Secondary",
-       "version": "3.1",
-       "vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:H",
-       "metrics": {
-        "baseScore": 6.4,
-        "exploitabilityScore": 1.6,
-        "impactScore": 4.7
-       },
-       "vendorMetadata": {}
-      }
-     ]
-    }
-   ],
-   "matchDetails": [
-    {
-     "type": "exact-direct-match",
-     "matcher": "javascript-matcher",
-     "searchedBy": {
-      "language": "javascript",
-      "namespace": "github:language:javascript",
-      "package": {
-       "name": "webpack",
-       "version": "5.88.2"
-      }
-     },
-     "found": {
-      "versionConstraint": ">=5.0.0-alpha.0,<5.94.0 (unknown)",
-      "vulnerabilityID": "GHSA-4vvj-4cpr-p986"
-     }
-    }
-   ],
-   "artifact": {
-    "id": "65a6f9f9e2b25200",
-    "name": "webpack",
-    "version": "5.88.2",
-    "type": "npm",
-    "locations": [],
-    "language": "javascript",
-    "licenses": [
-     "MIT"
-    ],
-    "cpes": [],
-    "purl": "pkg:npm/webpack@5.88.2",
-    "upstreams": []
-   }
   }
  ],
  "source": {
@@ -2013,7 +1162,7 @@
  },
  "descriptor": {
   "name": "grype",
-  "version": "0.84.0",
+  "version": "0.85.0",
   "configuration": {
    "output": [
     "json"
@@ -2153,12 +1302,12 @@
    "match-upstream-kernel-headers": false
   },
   "db": {
-   "built": "2024-11-21T01:31:24Z",
+   "built": "2024-12-06T01:32:37Z",
    "schemaVersion": 5,
    "location": "/root/.cache/grype/db/5",
-   "checksum": "sha256:37c3e332058acc86fd3cbc8d735daeaad070daa064d720e4e1f7b869b99095e6",
+   "checksum": "sha256:11d349995d2483199f968a166aea3fae240a150048fa4a41c010f50eb9967e74",
    "error": null
   },
-  "timestamp": "2024-11-21T07:57:45.025143354Z"
+  "timestamp": "2024-12-07T00:52:54.032388791Z"
  }
 }

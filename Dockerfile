@@ -20,7 +20,7 @@ RUN echo "56c9800d0388dd20a85ad917a75a0dc96aa0de95db560e586b540e657a7a10ec8ef975
 RUN mv fficonfig.h /usr/include/aarch64-linux-gnu/fficonfig.h
 
 RUN git clone https://github.com/signalapp/Signal-Desktop.git
-RUN cd /Signal-Desktop/ && git checkout --progress --force -B 7.34.x refs/remotes/origin/7.34.x
+RUN cd /Signal-Desktop/ && git checkout --progress --force -B 7.35.x refs/remotes/origin/7.35.x
 RUN mkdir -p /Signal-Desktop/artifacts/linux/logs
 ENV ARTIFACTS_DIR=artifacts/linux
 
