@@ -38,7 +38,7 @@ A. To build later releases run:
 sudo su && \
 git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && \
 cd Signal-Desktop-Mobian && \
-./buildscript.sh -i .01 -p master -r 7.36.1
+./buildscript.sh -i .01 -p master -r 7.36.0
 ```
 
 B. To build the current release for reproducibility:
@@ -57,11 +57,11 @@ cd Signal-Desktop-Mobian && \
 [[Current Sha512sum]](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.36.x/builds/release/release.sha512sum#L2)
 (https://github.com/0mniteck/Signal-Desktop-Mobian/blob/c24eaa40b200586bd595dd4d940f2ce228288e1d/builds/release/release.sha512sum#L2)
 
-```sha512sum signal-desktop_7.36.1_arm64.deb```
+```sha512sum signal-desktop_7.36.0_arm64.deb```
 
-```sudo apt install ./signal-desktop_7.36.1_arm64.deb```
+```sudo apt install ./signal-desktop_7.36.0_arm64.deb```
 
-### Optional Updater:
+### Optional Installer/Updater:
 
 Install updater `auto-update-cron.sh` by running:
 
