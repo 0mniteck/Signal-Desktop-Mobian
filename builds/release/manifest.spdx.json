@@ -2,22 +2,22 @@
   "spdxVersion": "SPDX-2.3",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "name": "signal-desktop@7.35.1",
-  "documentNamespace": "http://spdx.org/spdxdocs/signal-desktop-7.35.1-17554218-75f6-413e-ae5b-1f1d04d29fe0",
+  "name": "signal-desktop@7.36.0",
+  "documentNamespace": "http://spdx.org/spdxdocs/signal-desktop-7.36.0-b7c03a73-d1a6-4860-a082-5f0b82b0d819",
   "creationInfo": {
-    "created": "2024-12-07T00:48:31.374Z",
+    "created": "2024-12-14T20:55:17.202Z",
     "creators": [
       "Tool: npm/cli-10.2.5"
     ]
   },
   "documentDescribes": [
-    "SPDXRef-Package-signal-desktop-7.35.1"
+    "SPDXRef-Package-signal-desktop-7.36.0"
   ],
   "packages": [
     {
       "name": "signal-desktop",
-      "SPDXID": "SPDXRef-Package-signal-desktop-7.35.1",
-      "versionInfo": "7.35.1",
+      "SPDXID": "SPDXRef-Package-signal-desktop-7.36.0",
+      "versionInfo": "7.36.0",
       "packageFileName": "",
       "description": "Private messaging from your desktop",
       "primaryPackagePurpose": "APPLICATION",
@@ -29,7 +29,7 @@
         {
           "referenceCategory": "PACKAGE-MANAGER",
           "referenceType": "purl",
-          "referenceLocator": "pkg:npm/signal-desktop@7.35.1"
+          "referenceLocator": "pkg:npm/signal-desktop@7.36.0"
         }
       ]
     },
@@ -28302,11 +28302,11 @@
     },
     {
       "name": "focus-trap",
-      "SPDXID": "SPDXRef-Package-focus-trap-6.9.4",
-      "versionInfo": "6.9.4",
+      "SPDXID": "SPDXRef-Package-focus-trap-7.6.2",
+      "versionInfo": "7.6.2",
       "packageFileName": "node_modules/focus-trap",
       "description": "Trap focus within a DOM node.",
-      "downloadLocation": "https://registry.npmjs.org/focus-trap/-/focus-trap-6.9.4.tgz",
+      "downloadLocation": "https://registry.npmjs.org/focus-trap/-/focus-trap-7.6.2.tgz",
       "filesAnalyzed": false,
       "homepage": "https://github.com/focus-trap/focus-trap#readme",
       "licenseDeclared": "MIT",
@@ -28314,23 +28314,23 @@
         {
           "referenceCategory": "PACKAGE-MANAGER",
           "referenceType": "purl",
-          "referenceLocator": "pkg:npm/focus-trap@6.9.4"
+          "referenceLocator": "pkg:npm/focus-trap@7.6.2"
         }
       ],
       "checksums": [
         {
           "algorithm": "SHA512",
-          "checksumValue": "bf6353b197b6145e7d63eb03ca4298f978ea67470f7e1abf86291654bf3c06a2e2be736211f7c0b1a73aacfe87e397dff701bd2cbe53a220eaacb10ff465fd9b"
+          "checksumValue": "f45854c4ad61563bb6f808902032790ddffff51da7d9101f274a9f845e081c61e07281144cca5b4de1bfcdb12ec1a8985dfb801fa5c4d3f682cb10dd44cf96e7"
         }
       ]
     },
     {
       "name": "focus-trap-react",
-      "SPDXID": "SPDXRef-Package-focus-trap-react-9.0.2",
-      "versionInfo": "9.0.2",
+      "SPDXID": "SPDXRef-Package-focus-trap-react-10.3.1",
+      "versionInfo": "10.3.1",
       "packageFileName": "node_modules/focus-trap-react",
       "description": "A React component that traps focus.",
-      "downloadLocation": "https://registry.npmjs.org/focus-trap-react/-/focus-trap-react-9.0.2.tgz",
+      "downloadLocation": "https://registry.npmjs.org/focus-trap-react/-/focus-trap-react-10.3.1.tgz",
       "filesAnalyzed": false,
       "homepage": "https://github.com/focus-trap/focus-trap-react#readme",
       "licenseDeclared": "MIT",
@@ -28338,13 +28338,13 @@
         {
           "referenceCategory": "PACKAGE-MANAGER",
           "referenceType": "purl",
-          "referenceLocator": "pkg:npm/focus-trap-react@9.0.2"
+          "referenceLocator": "pkg:npm/focus-trap-react@10.3.1"
         }
       ],
       "checksums": [
         {
           "algorithm": "SHA512",
-          "checksumValue": "67084ee5bcba286e6bdddcb8f0b934d00d7fd33358c356774594cde8eea48003ec5857304c5b3339c43574b49f33ca48c694bfb6d73bc13b6d268c23553de3a6"
+          "checksumValue": "3cde186bdc5ff67ca3fcd77d57104d32e0fb22b9516e6686e8f38043c54baa0b5ce8863f2e7d6d61a928c3e508ab87e285861814cef4ff6a3289d13a6db88f83"
         }
       ]
     },
@@ -51496,11 +51496,11 @@
     },
     {
       "name": "tabbable",
-      "SPDXID": "SPDXRef-Package-tabbable-5.3.3",
-      "versionInfo": "5.3.3",
+      "SPDXID": "SPDXRef-Package-tabbable-6.2.0",
+      "versionInfo": "6.2.0",
       "packageFileName": "node_modules/tabbable",
       "description": "Returns an array of all tabbable DOM nodes within a containing node.",
-      "downloadLocation": "https://registry.npmjs.org/tabbable/-/tabbable-5.3.3.tgz",
+      "downloadLocation": "https://registry.npmjs.org/tabbable/-/tabbable-6.2.0.tgz",
       "filesAnalyzed": false,
       "homepage": "https://github.com/focus-trap/tabbable#readme",
       "licenseDeclared": "MIT",
@@ -51508,13 +51508,13 @@
         {
           "referenceCategory": "PACKAGE-MANAGER",
           "referenceType": "purl",
-          "referenceLocator": "pkg:npm/tabbable@5.3.3"
+          "referenceLocator": "pkg:npm/tabbable@6.2.0"
         }
       ],
       "checksums": [
         {
           "algorithm": "SHA512",
-          "checksumValue": "403f6a298dd2b5f6d9a9638f2e9d3efa93ab0156ff1db522e7109cf1c528e178cfd7df34f2868c883ce7d257816399827aca4804cd0221978fcd98e0cd1f3790"
+          "checksumValue": "09ab7ade6c6c54997362f379d499955c880da14a24ac8693db32dc9425e345df1ba19d34d38538282b3fb13a09ef90bab1d941c96c696276f906889fd554857b"
         }
       ]
     },
@@ -56437,1177 +56437,1177 @@
   "relationships": [
     {
       "spdxElementId": "SPDXRef-DOCUMENT",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DESCRIBES"
     },
     {
       "spdxElementId": "SPDXRef-Package-formatjs.fast-memoize-2.2.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-formatjs.icu-messageformat-parser-2.9.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-formatjs.intl-localematcher-0.2.32",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-indutny.dicer-0.3.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-indutny.mac-screen-share-1.0.13",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-indutny.range-finder-1.3.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-indutny.simple-windows-notifications-2.0.7",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-indutny.sneequals-4.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-popperjs.core-2.11.8",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-aria.utils-3.25.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-spring.web-9.7.5",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-signalapp.better-sqlite3-9.0.8",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-signalapp.libsignal-client-0.62.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-signalapp.ringrtc-2.48.7",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.fabric-4.5.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-backbone-1.6.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-blob-util-2.0.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-blueimp-load-image-5.16.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-blurhash-2.0.5",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-buffer-6.0.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-changedpi-1.0.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-cirbuf-1.0.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-classnames-2.5.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-config-3.3.12",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-copy-text-to-clipboard-2.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-dashdash-2.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-direction-1.0.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-emoji-datasource-15.1.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-emoji-datasource-apple-15.1.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-emoji-regex-10.4.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-encoding-0.1.13",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-fabric-4.6.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-fast-glob-3.3.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-filesize-9.0.11",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-firstline-2.0.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
-      "spdxElementId": "SPDXRef-Package-focus-trap-react-9.0.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "spdxElementId": "SPDXRef-Package-focus-trap-react-10.3.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-form-data-4.0.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-fs-extra-11.2.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-fuse.js-6.5.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-google-libphonenumber-3.2.39",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-got-11.8.5",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-heic-convert-2.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-humanize-duration-3.27.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-intl-tel-input-24.7.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-js-yaml-4.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-linkify-it-5.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-lodash-4.17.21",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-long-5.2.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-lru-cache-11.0.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-mac-screen-capture-permissions-2.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-memoizee-0.4.17",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-moment-2.30.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-mp4box-0.5.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-node-fetch-2.6.7",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-nop-1.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-normalize-path-3.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-p-map-2.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-p-queue-6.6.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-p-timeout-4.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-parchment-1.1.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-pify-3.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-pino-9.5.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-protobufjs-7.3.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-proxy-agent-6.4.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-qrcode-generator-1.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-quill-1.3.7",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-quill-delta-4.0.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-17.0.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-aria-3.35.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-aria-components-1.4.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-blurhash-0.3.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-contextmenu-2.14.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-dom-17.0.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-hot-loader-4.13.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-intl-6.8.7",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-popper-2.3.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-quill-2.0.0-beta.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-redux-8.1.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-router-dom-5.0.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-textarea-autosize-8.5.5",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-react-virtualized-9.22.5",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-read-last-lines-1.8.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-redux-5.0.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-redux-logger-3.0.6",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-redux-promise-middleware-6.2.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-redux-thunk-3.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-reselect-5.1.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-sanitize.css-13.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-semver-7.6.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-split2-4.2.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-type-fest-4.26.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-urlpattern-polyfill-10.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-uuid-11.0.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-websocket-1.0.34",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-write-file-atomic-6.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-zod-3.23.8",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-fs-xattr-0.3.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "OPTIONAL_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-babel.core-7.26.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-babel.plugin-proposal-class-properties-7.18.6",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-babel.plugin-proposal-nullish-coalescing-operator-7.18.6",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-babel.plugin-proposal-optional-chaining-7.21.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-babel.plugin-transform-runtime-7.25.9",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-babel.plugin-transform-typescript-7.25.9",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-babel.preset-react-7.25.9",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-babel.preset-typescript-7.26.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-electron.asar-3.2.17",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-electron.fuses-1.5.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-electron.notarize-2.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-formatjs.intl-2.10.14",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-indutny.parallel-prettier-3.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-indutny.rezip-electron-2.0.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-indutny.symbolicate-mac-2.3.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-napi-rs.canvas-0.1.61",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-signalapp.mock-server-10.0.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.addon-a11y-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.addon-actions-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.addon-controls-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.addon-interactions-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.addon-jest-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.addon-measure-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.addon-toolbars-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.addon-viewport-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.addon-webpack5-compiler-swc-1.0.5",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.preview-api-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.react-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.react-webpack5-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.test-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook.test-runner-0.19.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.backbone-1.4.22",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.blueimp-load-image-5.16.6",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.chai-4.3.16",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.chai-as-promised-7.1.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.config-3.3.5",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.dashdash-1.14.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.debug-4.1.12",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.direction-1.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.fs-extra-11.0.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.google-libphonenumber-7.4.30",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.humanize-duration-3.18.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.intl-tel-input-18.1.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.js-yaml-4.0.9",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.json-to-ast-2.1.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.linkify-it-5.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.lodash-4.14.106",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.memoizee-0.4.11",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.mocha-10.0.9",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.node-20.17.6",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.node-fetch-2.6.12",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.normalize-path-3.0.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.pify-5.0.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.pixelmatch-5.2.6",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.pngjs-6.0.5",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.quill-1.3.10",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.react-17.0.45",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.react-dom-17.0.17",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.react-redux-7.1.34",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.react-router-dom-4.3.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.react-virtualized-9.21.30",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.redux-logger-3.0.13",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.semver-7.5.8",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.sinon-17.0.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.split2-4.2.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.unzipper-0.10.10",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.uuid-10.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.websocket-1.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.write-file-atomic-4.0.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-types.yargs-17.0.33",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-typescript-eslint.eslint-plugin-6.18.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-typescript-eslint.parser-6.18.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-axe-core-4.10.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-babel-core-7.0.0-bridge.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-babel-loader-9.2.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-babel-plugin-lodash-3.3.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-casual-1.6.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-chai-4.4.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-chai-as-promised-7.1.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-chalk-4.1.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-chokidar-cli-3.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-cross-env-7.0.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-css-loader-7.1.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-csv-parse-5.5.6",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-danger-12.3.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-debug-4.3.7",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-electron-33.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-electron-builder-24.13.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-electron-mocha-13.0.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-endanger-7.0.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-enquirer-2.4.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-esbuild-0.24.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-eslint-8.56.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-eslint-config-airbnb-typescript-prettier-5.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-eslint-config-prettier-8.5.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-eslint-plugin-import-2.26.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-eslint-plugin-local-rules-1.3.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-eslint-plugin-mocha-10.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-eslint-plugin-more-1.0.5",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-eslint-plugin-react-7.31.10",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-execa-5.1.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-html-webpack-plugin-5.6.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-http-server-14.1.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-json-to-ast-2.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-log-symbols-4.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-mini-css-extract-plugin-2.9.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-mocha-10.8.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-node-gyp-10.2.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-node-gyp-build-4.8.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-npm-run-all-4.1.5",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-p-limit-3.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-patch-package-8.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-pixelmatch-5.3.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-playwright-1.45.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-pngjs-7.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-prettier-3.3.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-protobufjs-cli-1.1.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-resedit-2.0.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-resolve-url-loader-5.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-sass-1.80.7",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-sass-loader-16.0.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-sinon-19.0.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-storybook-8.4.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-style-loader-4.0.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-stylelint-16.10.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-stylelint-config-css-modules-4.4.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-stylelint-config-recommended-scss-14.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-stylelint-use-logical-spec-5.0.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-svgo-3.3.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-terser-webpack-plugin-5.3.10",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-ts-node-10.9.2",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-typescript-5.6.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-unzipper-0.12.3",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-wait-on-8.0.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-webpack-5.96.1",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-webpack-cli-5.1.4",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
       "spdxElementId": "SPDXRef-Package-webpack-dev-server-5.1.0",
-      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.35.1",
+      "relatedSpdxElement": "SPDXRef-Package-signal-desktop-7.36.0",
       "relationshipType": "DEV_DEPENDENCY_OF"
     },
     {
@@ -70516,18 +70516,18 @@
       "relationshipType": "DEPENDENCY_OF"
     },
     {
-      "spdxElementId": "SPDXRef-Package-tabbable-5.3.3",
-      "relatedSpdxElement": "SPDXRef-Package-focus-trap-6.9.4",
+      "spdxElementId": "SPDXRef-Package-tabbable-6.2.0",
+      "relatedSpdxElement": "SPDXRef-Package-focus-trap-7.6.2",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
-      "spdxElementId": "SPDXRef-Package-focus-trap-6.9.4",
-      "relatedSpdxElement": "SPDXRef-Package-focus-trap-react-9.0.2",
+      "spdxElementId": "SPDXRef-Package-focus-trap-7.6.2",
+      "relatedSpdxElement": "SPDXRef-Package-focus-trap-react-10.3.1",
       "relationshipType": "DEPENDENCY_OF"
     },
     {
-      "spdxElementId": "SPDXRef-Package-tabbable-5.3.3",
-      "relatedSpdxElement": "SPDXRef-Package-focus-trap-react-9.0.2",
+      "spdxElementId": "SPDXRef-Package-tabbable-6.2.0",
+      "relatedSpdxElement": "SPDXRef-Package-focus-trap-react-10.3.1",
       "relationshipType": "DEPENDENCY_OF"
     },
     {

@@ -578,6 +578,100 @@
   },
   {
    "vulnerability": {
+    "id": "GHSA-mwcw-c2x4-8c55",
+    "dataSource": "https://github.com/advisories/GHSA-mwcw-c2x4-8c55",
+    "namespace": "github:language:javascript",
+    "severity": "Medium",
+    "urls": [
+     "https://github.com/advisories/GHSA-mwcw-c2x4-8c55"
+    ],
+    "description": "Predictable results in nanoid generation when given non-integer values",
+    "cvss": [
+     {
+      "version": "3.1",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
+      "metrics": {
+       "baseScore": 4.3,
+       "exploitabilityScore": 2.8,
+       "impactScore": 1.4
+      },
+      "vendorMetadata": {
+       "base_severity": "Medium",
+       "status": "N/A"
+      }
+     }
+    ],
+    "fix": {
+     "versions": [
+      "3.3.8"
+     ],
+     "state": "fixed"
+    },
+    "advisories": []
+   },
+   "relatedVulnerabilities": [
+    {
+     "id": "CVE-2024-55565",
+     "dataSource": "https://nvd.nist.gov/vuln/detail/CVE-2024-55565",
+     "namespace": "nvd:cpe",
+     "severity": "Medium",
+     "urls": [
+      "https://github.com/ai/nanoid/compare/3.3.7...3.3.8",
+      "https://github.com/ai/nanoid/pull/510",
+      "https://github.com/ai/nanoid/releases/tag/5.0.9"
+     ],
+     "description": "nanoid (aka Nano ID) before 5.0.9 mishandles non-integer values. 3.3.8 is also a fixed version.",
+     "cvss": [
+      {
+       "source": "134c704f-9b21-4f2e-91b3-4a467353bcc0",
+       "type": "Secondary",
+       "version": "3.1",
+       "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
+       "metrics": {
+        "baseScore": 4.3,
+        "exploitabilityScore": 2.8,
+        "impactScore": 1.4
+       },
+       "vendorMetadata": {}
+      }
+     ]
+    }
+   ],
+   "matchDetails": [
+    {
+     "type": "exact-direct-match",
+     "matcher": "javascript-matcher",
+     "searchedBy": {
+      "language": "javascript",
+      "namespace": "github:language:javascript",
+      "package": {
+       "name": "nanoid",
+       "version": "3.3.7"
+      }
+     },
+     "found": {
+      "versionConstraint": "<3.3.8 (unknown)",
+      "vulnerabilityID": "GHSA-mwcw-c2x4-8c55"
+     }
+    }
+   ],
+   "artifact": {
+    "id": "ecb9f6f4455fbefe",
+    "name": "nanoid",
+    "version": "3.3.7",
+    "type": "npm",
+    "locations": [],
+    "language": "javascript",
+    "licenses": [
+     "MIT"
+    ],
+    "cpes": [],
+    "purl": "pkg:npm/nanoid@3.3.7",
+    "upstreams": []
+   }
+  },
+  {
+   "vulnerability": {
     "id": "GHSA-9wv6-86v2-598j",
     "dataSource": "https://github.com/advisories/GHSA-9wv6-86v2-598j",
     "namespace": "github:language:javascript",
@@ -1162,7 +1256,7 @@
  },
  "descriptor": {
   "name": "grype",
-  "version": "0.85.0",
+  "version": "0.86.0",
   "configuration": {
    "output": [
     "json"
@@ -1205,7 +1299,7 @@
      "namespace": "",
      "fix-state": "",
      "package": {
-      "name": "linux-headers-.*",
+      "name": "linux-.*-headers-.*",
       "version": "",
       "language": "",
       "type": "deb",
@@ -1299,15 +1393,18 @@
    "default-image-pull-source": "",
    "vex-documents": [],
    "vex-add": [],
-   "match-upstream-kernel-headers": false
+   "match-upstream-kernel-headers": false,
+   "exp": {
+    "dbv6": false
+   }
   },
   "db": {
-   "built": "2024-12-06T01:32:37Z",
+   "built": "2024-12-14T01:31:37Z",
    "schemaVersion": 5,
    "location": "/root/.cache/grype/db/5",
-   "checksum": "sha256:11d349995d2483199f968a166aea3fae240a150048fa4a41c010f50eb9967e74",
+   "checksum": "sha256:c1527d9bcaf567eb8997b10e2f02ee40890fbc62a4d3f366eee27185b940d2d4",
    "error": null
   },
-  "timestamp": "2024-12-07T00:52:54.032388791Z"
+  "timestamp": "2024-12-14T20:59:37.786088352Z"
  }
 }
