@@ -1,13 +1,13 @@
 [![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)](https://signal.org)
 
 # Signal Desktop Builder For Mobian
-### [signal-desktop_7.36.1_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.36.x/builds/release/signal-desktop_7.36.1_arm64.deb)
+### [signal-desktop_7.36.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.36.x/builds/release/signal-desktop_7.36.0_arm64.deb)
 
 This project reproducibly builds Signal Desktop for Debian Bookworm on ARM64, currently targeting tag `7.36.x`
 
 Now with an optional update client: [`auto-update-cron.sh`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/auto-update-cron.sh)
 
-This is the latest release: [`builds/release/signal-desktop_7.36.1_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.36.x/builds/release/signal-desktop_7.36.1_arm64.deb)
+This is the latest release: [`builds/release/signal-desktop_7.36.0_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.36.x/builds/release/signal-desktop_7.36.0_arm64.deb)
 
 Sha512Sum: [`builds/release/release.sha512sum`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.36.x/builds/release/release.sha512sum)
 
@@ -52,10 +52,10 @@ cd Signal-Desktop-Mobian && \
 
 ### Usage:
 
-[Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/raw/7.36.x/builds/release/signal-desktop_7.36.1_arm64.deb) to your device, verify the sha512sum, then install:
+[Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/raw/7.36.x/builds/release/signal-desktop_7.36.0_arm64.deb) to your device, verify the sha512sum, then install:
 
 [[Current Sha512sum]](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.36.x/builds/release/release.sha512sum#L2)
-(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/d0af5626a5bb7d381ea987d1d132831523560318/builds/release/release.sha512sum#L2)
+(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/c24eaa40b200586bd595dd4d940f2ce228288e1d/builds/release/release.sha512sum#L2)
 
 ```sha512sum signal-desktop_7.36.1_arm64.deb```
 
@@ -72,7 +72,7 @@ curl -sSL https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/maste
 
 ## Current Status:‎‎‏‏‎‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎[![C I](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml/badge.svg)](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml)<sub><sup> signalapp/Signal-Desktop</sup></sub>
 
-* [x] Built with [0mniteck/debian:2024-11-11](https://hub.docker.com/r/0mniteck/tags)
+* [x] Built with [0mniteck/debian:2024-12-2](https://hub.docker.com/r/0mniteck/tags)
 * [x] Signal Desktop builds
 * [x] Auto-Update script
 * [x] Reproducible builds
