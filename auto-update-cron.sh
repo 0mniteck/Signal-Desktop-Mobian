@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version 1.7
+# Version 1.8
 #
 # Script to add a cron job to check for, download, and install the most recent version from this git repo.
 # This will auto-close signal-desktop before installing, default is to check after 5 min on reboot and every 2 days.
@@ -10,14 +10,35 @@
 #
 # Author: Shant Tchatalbachian
 
+# Function to check for internet connectivity
+check_internet() {
+    wget -q --spider https://google.com
+    return $?
+}
+
 # Copy the script to /usr/bin/sd-updater if it doesn't exist
 if [ ! -f /usr/bin/sd-updater ]; then
+    # Check for internet
+    if check_internet; then
+        echo "Internet is available."
+    else
+        echo "No internet connection. Exiting."
+        exit 1
+    fi
     apt update && apt install -y wget cron
     wget -q -O /usr/bin/sd-updater https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh
     chmod +x /usr/bin/sd-updater
     echo "Signal-Desktop-Updater installed to /usr/bin/sd-updater."
 else
-    sleep 5m && echo "/usr/bin/sd-updater already exists, checking for update."
+    sleep 5m
+    # Check for internet
+    if check_internet; then
+        echo "Internet is available."
+    else
+        echo "No internet connection. Exiting."
+        exit 1
+    fi
+    echo "/usr/bin/sd-updater already exists, checking for update."
     wget -q -O /usr/bin/sd-updater-tmp https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/master/auto-update-cron.sh
     new_sdu_version=$(sed -n '3p' /usr/bin/sd-updater-tmp)
     sdu_version=$(sed -n '3p' /usr/bin/sd-updater)
@@ -32,12 +53,6 @@ else
         echo "/usr/bin/sd-updater $sdu_version"
     fi
 fi
-
-# Function to check for internet connectivity
-check_internet() {
-    wget -q --spider https://google.com
-    return $?
-}
 
 # Function to get the current version installed
 get_current_version() {
@@ -72,14 +87,6 @@ install_new_version() {
     wget -q -O /tmp/signal-desktop.deb https://github.com/0mniteck/Signal-Desktop-Mobian/raw/refs/heads/master/builds/release/$(grep 'url:' /tmp/latest-linux-arm64.yml | awk '{print $3}')
     apt install /tmp/signal-desktop.deb
 }
-
-# Check for internet
-if check_internet; then
-    echo "Internet is available."
-else
-    echo "No internet connection. Exiting."
-    exit 1
-fi
 
 current_version=$(get_current_version)
 download_latest_version_info
