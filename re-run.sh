@@ -19,7 +19,7 @@ if [ "$3" = "yes" ]; then
   rm -f -r /var/snap/docker/*
 fi
 chown root:root /var/snap/docker
-snap install docker --revision=2964 && ufw disable && sleep 5
+snap install docker --revision=2964 && snap disable ufw && sleep 5
 if [ -f /etc/keys/.private.key ]; then
   echo "Loading buildtool private keys..."
   cp /etc/keys/.private.key .private.key
@@ -69,7 +69,7 @@ rm -f -r /var/snap/docker
 sleep 5
 snap remove docker --purge
 snap remove docker --purge
-ufw -f enable
+snap enable ufw
 snap install grype --classic && grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json
 snap remove grype --purge && rm -f -r $HOME/.cache/grype/ && rm -f -r /tmp/grype-scratch*
 read -p "Close Screen Session: Continue to Signing-->"
