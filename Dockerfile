@@ -1,4 +1,5 @@
-FROM 0mniteck/debian-slim:12-2-2024@sha256:32aa64b18438252f47d3c0ef1e6a9f9272b65ee73df39642cd487d27f5e57922
+ARG SOURCE=0mniteck/debian-slim
+FROM $SOURCE
 RUN apt install -y git-lfs libcairo2-dev libgif-dev libjpeg-dev libpango1.0-dev libpixman-1-dev librsvg2-dev libpulse0 pkg-config rubygems xauth xvfb
 
 RUN gem install fpm
