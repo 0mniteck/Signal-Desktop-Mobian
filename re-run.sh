@@ -42,7 +42,8 @@ fi
 
 docker build -t signal-desktop \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg NODE_VERSION=20.18.0 \
+  --build-arg SOURCE=0mniteck/debian-slim:01-13-2025@sha256:b53d42a4317eb73f549c416e359b503289967c9b9eec16aeb5f63283f2a7d57f \
+  --build-arg NODE_VERSION=20.18.1 \
   --build-arg NVM_VERSION=0.40.1 \
   --build-arg NPM_VERSION=10.2.5 .
 
