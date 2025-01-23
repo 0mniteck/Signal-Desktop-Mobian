@@ -12,8 +12,9 @@ pushd /Signal-Desktop
   echo "BUILD_TYPE: ${BUILD_TYPE}"
   echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
   git-lfs install
-  nvm use && npm ci --foreground-scripts
-  npm install --foreground-scripts
+  npm config set foreground-scripts true
+  nvm use && npm ci
+  npm install
   npm run clean-transpile
   cd sticker-creator
     npm install
