@@ -16,7 +16,7 @@ pushd /Signal-Desktop
   npm install --verbose
   npm run clean-transpile
   cd sticker-creator
-    npm install
+    npm install --verbose
     npm run build
   cd ..
   npm run generate
