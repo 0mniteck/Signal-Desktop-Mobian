@@ -13,7 +13,7 @@ pushd /Signal-Desktop
   echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
   git-lfs install
   nvm use
-  npm install
+  npm install --verbose
   npm run clean-transpile
   cd sticker-creator
     npm install
