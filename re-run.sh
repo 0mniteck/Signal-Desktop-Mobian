@@ -44,7 +44,7 @@ docker buildx create --name signal-builder --driver-opt "network=host" --bootstr
 docker buildx build --tag signal-desktop --load \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg SOURCE=0mniteck/debian-slim:02-24-2025@sha256:3d52cfe96cfdf9d3bdbc499d2fdb08df703f03ce99b238c40e000c24c88785bc \
-  --build-arg NODE_VERSION=20.18.1 \
+  --build-arg NODE_VERSION=20.18.2 \
   --build-arg NVM_VERSION=0.40.1 \
   --build-arg NPM_VERSION=10.2.5 .
 
