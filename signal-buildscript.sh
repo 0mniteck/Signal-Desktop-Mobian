@@ -13,39 +13,39 @@ pushd /Signal-Desktop
   echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
   git-lfs install
   nvm use
-  npm install --verbose
-  npm run clean-transpile
+  pnpm install --frozen-lockfile
+  pnpm run clean-transpile
   cd sticker-creator
-    npm install --verbose
-    npm run build
+    pnpm install --frozen-lockfile
+    pnpm run build
   cd ..
-  npm run generate
+  pnpm run generate
   if [ "${BUILD_TYPE}" = "public" ]; then
-    npm run prepare-beta-build
+    pnpm run prepare-beta-build
   elif [ "${BUILD_TYPE}" = "alpha" ]; then
-    npm run prepare-alpha-version
-    npm run prepare-alpha-build
+    pnpm run prepare-alpha-version
+    pnpm run prepare-alpha-build
   elif [ "${BUILD_TYPE}" = "staging" ]; then
-    npm run prepare-alpha-version
-    npm run prepare-staging-build
+    pnpm run prepare-alpha-version
+    pnpm run prepare-staging-build
   elif [ "${BUILD_TYPE}" = "test" ]; then
-    npm run prepare-alpha-version
-    npm run prepare-alpha-build
+    pnpm run prepare-alpha-version
+    pnpm run prepare-alpha-build
   elif [ "${BUILD_TYPE}" = "dev" ]; then
     echo "dev build, using package.json as is"
   else
     echo "Unknown build type ${BUILD_TYPE}"
     exit 1
   fi
-  npm run build:esbuild:prod
-  xvfb-run --auto-servernum npm run build:preload-cache
-  npm run build:release -- --arm64 --publish=never --linux deb
+  pnpm run build:esbuild:prod
+  xvfb-run --auto-servernum pnpm run build:preload-cache
+  pnpm run build:release -- --arm64 --publish=never --linux deb
   echo "Generating SBOM at /Signal-Desktop/release/manifest.spdx.json"
   npm sbom --sbom-format="spdx" --sbom-type="application" > /Signal-Desktop/release/manifest.spdx.json
   if [ "$TEST" = "yes" ]; then
-    xvfb-run --auto-servernum npm run test-node
-    xvfb-run --auto-servernum npm run test-electron
-    xvfb-run --auto-servernum npm run test-release
+    xvfb-run --auto-servernum pnpm run test-node
+    xvfb-run --auto-servernum pnpm run test-electron
+    xvfb-run --auto-servernum pnpm run test-release
   fi
   debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
   if [ ! -f /Signal-Desktop/release/.private.key ]; then
