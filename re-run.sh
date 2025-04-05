@@ -45,8 +45,7 @@ docker buildx build --tag signal-desktop --load \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg SOURCE=0mniteck/debian-slim:03-17-2025@sha256:81999bb4392c46ce50b4649dc45cdfe75435e15a89d381aefa871eb285ddf454 \
   --build-arg NODE_VERSION=22.14.0 \
-  --build-arg NVM_VERSION=0.40.2 \
-  --build-arg NPM_VERSION=10.2.5 .
+  --build-arg NVM_VERSION=0.40.2 .
 
 shred .private.key && rm -f .private.key
 
