@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+sysctl -w net.ipv6.conf.all.disable_ipv6=1
+
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 trap '[[ $pid ]] && kill $pid; exit' EXIT
 BUILD_TYPE="$1"
