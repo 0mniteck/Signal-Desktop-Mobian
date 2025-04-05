@@ -13,7 +13,7 @@ ARG NODE_VERSION
 ARG NVM_VERSION
 ARG NPM_VERSION
 ADD https://github.com/nvm-sh/nvm/raw/v$NVM_VERSION/install.sh /
-RUN echo "551831ea67476372c6fb13fc2cab474b38f6e369daa51652a1c22974b0c8a5ed9e36a1e586046e371ba90de8c9d7376ffb3a41c6f6f352c29a847203a56f1db9  install.sh" | sha512sum --status -c - && echo "install.sh Checksum Matched!" || exit 1
+RUN echo "b9a65b47aa2239554a2cea972817719c056d14f6064901f16acc0443abf5b2a02ecb3e18f578ccfcaf0ca5d4b028055ea104ec9799ce9ad423b37e0b5362c225  install.sh" | sha512sum --status -c - && echo "install.sh Checksum Matched!" || exit 1
 RUN chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm alias $NODE_VERSION && nvm use $NODE_VERSION && npm install --location=global npm@$NPM_VERSION && npm install --location=global pnpm@10.3.0
 
 ADD https://github.com/node-ffi-napi/node-ffi-napi/raw/master/deps/libffi/config/linux/arm64/fficonfig.h /
