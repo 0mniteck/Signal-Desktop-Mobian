@@ -11,11 +11,10 @@ ENV HOME="/root"
 ENV NVM_DIR="$HOME/.nvm"
 ARG NODE_VERSION
 ARG NVM_VERSION
-ARG NPM_VERSION
+ARG PNPM_VERSION
 ADD https://github.com/nvm-sh/nvm/raw/v$NVM_VERSION/install.sh /
 RUN echo "b9a65b47aa2239554a2cea972817719c056d14f6064901f16acc0443abf5b2a02ecb3e18f578ccfcaf0ca5d4b028055ea104ec9799ce9ad423b37e0b5362c225  install.sh" | sha512sum --status -c - && echo "install.sh Checksum Matched!" || exit 1
-RUN chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm alias $NODE_VERSION && nvm use $NODE_VERSION && npm install --location=global pnpm@10.3.0
-
+RUN chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm alias $NODE_VERSION && nvm use $NODE_VERSION && npm install --location=global pnpm@$PNPM_VERSION
 ADD https://github.com/node-ffi-napi/node-ffi-napi/raw/master/deps/libffi/config/linux/arm64/fficonfig.h /
 RUN echo "56c9800d0388dd20a85ad917a75a0dc96aa0de95db560e586b540e657a7a10ec8ef9759f1d09d7cb2f0861c9b88650246a9ace97708a20d8757bcd0c559333a7  fficonfig.h" | sha512sum --status -c - && echo "fficonfig.h Checksum Matched!" || exit 1
 RUN mv fficonfig.h /usr/include/aarch64-linux-gnu/fficonfig.h
