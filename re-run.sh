@@ -43,7 +43,7 @@ snap install docker --revision=3065
 docker buildx create --name signal-builder --driver-opt "network=host" --bootstrap --use
 docker buildx build --tag signal-desktop --load \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg SOURCE=0mniteck/debian-slim:03-17-2025@sha256:81999bb4392c46ce50b4649dc45cdfe75435e15a89d381aefa871eb285ddf454 \
+  --build-arg SOURCE=0mniteck/debian-slim:04-24-2025@sha256:f273dc30a87113cd0d65abdee4bf53c78d5334f9c0f31d0c7ade56dbededf1a5 \
   --build-arg NODE_VERSION=22.14.0 \
   --build-arg NVM_VERSION=0.40.2 \
   --build-arg PNPM_VERSION=10.6.4 .
