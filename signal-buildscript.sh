@@ -16,6 +16,10 @@ pushd /Signal-Desktop
   echo "RUN_TESTS: ${TEST}"
   echo "BUILD_TYPE: ${BUILD_TYPE}"
   echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
+  npm config set fetch-retry-mintimeout 20000
+  npm config set fetch-retry-maxtimeout 120000
+  npm config rm proxy
+  npm config rm https-proxy
   git-lfs install
   pnpm install --frozen-lockfile
   pnpm run clean-transpile
