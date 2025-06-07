@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
 trap '[[ $pid ]] && kill $pid; exit' EXIT
+
+set -x
+set -e
+
 BUILD_TYPE="$1"
 TEST="$2"
 
@@ -39,7 +44,7 @@ pushd /Signal-Desktop
   fi
   pnpm run build:esbuild:prod
   xvfb-run --auto-servernum pnpm run build:preload-cache
-  pnpm run build:release -- --arm64 --publish=never --linux deb
+  pnpm run build:release --arm64 --publish=never --linux deb
   echo "Generating SBOM at /Signal-Desktop/release/manifest.spdx.json"
   npm sbom --sbom-format="spdx" --sbom-type="application" > /Signal-Desktop/release/manifest.spdx.json
   if [ "$TEST" = "yes" ]; then
