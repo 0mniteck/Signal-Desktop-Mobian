@@ -37,6 +37,6 @@ RUN git config --global --add safe.directory /project
 COPY .private.key /Signal-Desktop/release/
 COPY builds/release/public.key /Signal-Desktop/release/
 COPY signal-buildscript.sh /usr/local/bin/
-RUN mkdir /.cache && chmod -R 777 /.cache
+RUN mkdir -f /.cache && chmod -R 777 /.cache
 ENTRYPOINT ["signal-buildscript.sh"]
 CMD ["public"]
