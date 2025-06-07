@@ -4,7 +4,6 @@
 
 trap '[[ $pid ]] && kill $pid; exit' EXIT
 
-set -x
 set -e
 
 BUILD_TYPE="$1"
