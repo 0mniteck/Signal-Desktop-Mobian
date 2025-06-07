@@ -43,9 +43,9 @@ snap install docker --revision=3065
 docker buildx create --name signal-builder --driver-opt "network=host" --bootstrap --use
 docker buildx build --tag signal-desktop --load \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg SOURCE=0mniteck/debian-slim:04-24-2025@sha256:f273dc30a87113cd0d65abdee4bf53c78d5334f9c0f31d0c7ade56dbededf1a5 \
-  --build-arg NODE_VERSION=22.14.0 \
-  --build-arg NVM_VERSION=0.40.2 \
+  --build-arg SOURCE=0mniteck/debian-slim:05-20-2025@sha256:da7aa4f50de8c010c1822d0287f24ffbd1147cb37874a1c7e4cd896ece00ebb7 \
+  --build-arg NODE_VERSION=22.15.0 \
+  --build-arg NVM_VERSION=0.40.3 \
   --build-arg PNPM_VERSION=10.6.4 .
 
 shred .private.key && rm -f .private.key
@@ -53,6 +53,7 @@ shred .private.key && rm -f .private.key
 docker run -it --cpus=$(nproc) \
   --name signal-desktop \
   --user "$(id -u):$(id -g)" \
+  -e PNPM_HOME=/tmp/.pnpm-home \
   -e NPM_CONFIG_CACHE=/tmp/.npm-cache \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   signal-desktop $1 $4
