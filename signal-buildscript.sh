@@ -16,6 +16,7 @@ pushd /Signal-Desktop
   echo "RUN_TESTS: ${TEST}"
   echo "BUILD_TYPE: ${BUILD_TYPE}"
   echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
+  npm config set fetch-retries 5
   npm config set fetch-retry-mintimeout 20000
   npm config set fetch-retry-maxtimeout 120000
   npm config rm proxy
