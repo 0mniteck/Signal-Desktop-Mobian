@@ -1,7 +1,7 @@
 ARG SOURCE=0mniteck/debian-slim
 FROM $SOURCE
 
-RUN apt install -y git-lfs libcairo2-dev libgif-dev libjpeg-dev libpango1.0-dev libpixman-1-dev librsvg2-dev libpulse0 pkg-config rubygems xauth xvfb
+RUN apt install -y git-lfs libcairo2-dev libgif-dev libjpeg-dev libpango1.0-dev libpixman-1-dev librsvg2-dev libpulse0 pkg-config rubygems xauth xvfb inetutils-ping
 RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
 ARG SOURCE_DATE_EPOCH
