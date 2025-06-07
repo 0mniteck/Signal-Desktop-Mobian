@@ -17,7 +17,6 @@ pushd /Signal-Desktop
   echo "BUILD_TYPE: ${BUILD_TYPE}"
   echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
   git-lfs install
-  nvm use
   pnpm install --frozen-lockfile
   pnpm run clean-transpile
   cd sticker-creator
