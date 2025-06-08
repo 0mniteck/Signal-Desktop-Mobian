@@ -1,3 +1,5 @@
+#!/bin/bash
+
 snap install docker --revision=3065
 docker buildx create --name signal-builder --driver-opt "network=host" --bootstrap --use
 docker buildx build --tag signal-desktop --load \
