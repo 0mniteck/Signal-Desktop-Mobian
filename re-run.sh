@@ -51,6 +51,7 @@ docker buildx build --tag signal-desktop --load \
 shred .private.key && rm -f .private.key
 
 docker run -it --cpus=$(nproc) \
+  --network=name=host,\"driver-opt=network=host\" \
   --name signal-desktop \
   --user "$(id -u):$(id -g)" \
   -e PNPM_HOME=/tmp/.pnpm-home \
