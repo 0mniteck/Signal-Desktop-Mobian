@@ -7,4 +7,5 @@ docker buildx build --tag signal-desktop --load \
 
 docker run -it --cpus=$(nproc) \
   --name signal-desktop \
+  --network=driver-opt="network=host"
   --user "$(id -u):$(id -g)" signal-desktop
