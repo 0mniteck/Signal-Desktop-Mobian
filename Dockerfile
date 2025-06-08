@@ -1,7 +1,7 @@
 ARG SOURCE=0mniteck/debian-slim
 FROM $SOURCE
 
-RUN apt install -y git-lfs libgtk-3-dev libnss3-dev libpulse-dev rubygems xauth xvfb 
+RUN apt install -y git-lfs libgtk-3-dev libnss3-dev libpulse-dev rubygems xauth xvfb
 RUN gem install fpm
 ENV USE_SYSTEM_FPM=true
 ARG SOURCE_DATE_EPOCH
