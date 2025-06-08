@@ -59,11 +59,12 @@ docker run -it --cpus=$(nproc) \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   signal-desktop $1 $4
 
+rm -fr builds/release/ && mkdir -p builds/release && docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
+
 snap install syft --classic
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft dir:/ --select-catalogers debian -o spdx-json=builds/release/debian.spdx.json && rm -f -r "$HOME/syft"
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft / --select-catalogers debian -o spdx-json=builds/release/debian.spdx.json && rm -f -r "$HOME/syft"
 snap remove syft --purge && rm -f -r $HOME/.cache/syft
 
-rm -fr builds/release/ && mkdir -p builds/release && docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
 snap disable docker
 rm -f -r /var/snap/docker/*
 if [ "$3" = "yes" ]; then
