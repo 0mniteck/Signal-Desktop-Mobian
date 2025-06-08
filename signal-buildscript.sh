@@ -43,8 +43,8 @@ pushd /Signal-Desktop
   pnpm run build:esbuild:prod
   xvfb-run --auto-servernum pnpm run build:preload-cache
   pnpm run build:release --arm64 --publish=never --linux deb
-  echo "Generating SBOM at /Signal-Desktop/release/manifest.spdx.json"
-  npm sbom --sbom-format="spdx" --sbom-type="application" > /Signal-Desktop/release/manifest.spdx.json
+  # echo "Generating SBOM at /Signal-Desktop/release/manifest.spdx.json"
+  # npm sbom --sbom-format="spdx" --sbom-type="application" > /Signal-Desktop/release/manifest.spdx.json
   if [ "$TEST" = "yes" ]; then
     xvfb-run --auto-servernum pnpm run test-node
     xvfb-run --auto-servernum pnpm run test-electron
@@ -53,12 +53,12 @@ pushd /Signal-Desktop
   debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
   if [ ! -f /Signal-Desktop/release/.private.key ]; then
     echo "Generating New Keypair."
-    npm run ts/updater/generateKeyPair.js -- --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
+    pnpm run ts/updater/generateKeyPair.js -- --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
     echo "Signing Release."
-    npm run sign-release -- --private /Signal-Desktop/release/.private.key --update $debpath
+    pnpm run sign-release -- --private /Signal-Desktop/release/.private.key --update $debpath
   else
     echo "Signing Release."
-    npm run sign-release -- --private /Signal-Desktop/release/.private.key --update $debpath
+    pnpm run sign-release -- --private /Signal-Desktop/release/.private.key --update $debpath
     shred /Signal-Desktop/release/.private.key
     rm -f /Signal-Desktop/release/.private.key
   fi
