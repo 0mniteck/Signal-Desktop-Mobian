@@ -39,7 +39,7 @@ else
   fi
 fi
 
-snap install docker --revision=3065
+snap install docker --revision=3065 && systemctl disable snap.docker.nvidia-container-toolkit
 docker buildx create --name signal-builder --driver-opt "network=host" --bootstrap --use
 docker buildx build --tag signal-desktop --load \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
