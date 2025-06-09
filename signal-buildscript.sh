@@ -15,7 +15,6 @@ pushd /Signal-Desktop
   echo "RUN_TESTS: ${TEST}"
   echo "BUILD_TYPE: ${BUILD_TYPE}"
   echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
-  git-lfs install
   pnpm install --frozen-lockfile
   pnpm run clean-transpile
   cd sticker-creator
