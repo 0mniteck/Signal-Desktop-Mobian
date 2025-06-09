@@ -18,6 +18,7 @@ if [ "$3" = "yes" ]; then
   mount /dev/mapper/Luks-Signal /var/snap/docker
   rm -f -r /var/snap/docker/*
 fi
+rm -f -r /var/lib/snapd/cache/*
 chown root:root /var/snap/docker
 if [ -f /etc/keys/.private.key ]; then
   echo "Loading buildtool private keys..."
@@ -75,11 +76,12 @@ rm -f -r /var/snap/docker
 sleep 5
 snap remove docker --purge
 snap remove docker --purge
-rm -f -r /var/lib/snapd/cache/*
 networkctl delete docker0
+rm -f -r /var/lib/snapd/cache/*
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft / --select-catalogers "debian" --exclude /etc -o spdx-json=builds/release/ubuntu.25.04.spdx.json && rm -f -r "$HOME/syft"
 snap remove syft --purge && rm -f -r $HOME/.cache/syft
 snap install grype --classic && grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json && grype sbom:builds/release/ubuntu.25.04.spdx.json -o json > builds/release/ubuntu.25.04.grype.json
 snap remove grype --purge
 rm /root/getter* -f -r && rm /root/grype-scratch* -f -r && rm /root/6 -f -r && rm -f -r $HOME/.cache/grype && rm -f -r /tmp/grype-scratch* && rm -f -r /tmp/getter*
+rm -f -r /var/lib/snapd/cache/*
 read -p "Close Screen Session: Continue to Signing-->"
