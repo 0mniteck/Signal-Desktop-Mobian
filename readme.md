@@ -1,13 +1,13 @@
 [![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)](https://signal.org)
 
 # Signal Desktop Builder For Mobian
-### [signal-desktop_7.56.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/signal-desktop_7.56.0_arm64.deb)
+### [signal-desktop_7.56.1_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/signal-desktop_7.56.1_arm64.deb)
 
 This project reproducibly builds Signal Desktop for Debian Bookworm on ARM64, currently targeting tag `7.56.x`
 
 Now with an optional update client: [`auto-update-cron.sh`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/auto-update-cron.sh)
 
-This is the latest release: [`builds/release/signal-desktop_7.56.0_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/signal-desktop_7.56.0_arm64.deb)
+This is the latest release: [`builds/release/signal-desktop_7.56.1_arm64.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/signal-desktop_7.56.1_arm64.deb)
 
 Sha512Sum: [`builds/release/release.sha512sum`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/release.sha512sum)
 
