@@ -76,7 +76,7 @@ sleep 5
 snap remove docker --purge
 snap remove docker --purge
 networkctl delete docker0
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft / --select-catalogers debian -o spdx-json=builds/release/ubuntu.25.04.spdx.json && rm -f -r "$HOME/syft"
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft / --select-catalogers debian --exclude /etc -o spdx-json=builds/release/ubuntu.25.04.spdx.json && rm -f -r "$HOME/syft"
 snap remove syft --purge && rm -f -r $HOME/.cache/syft
 snap install grype --classic && grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json && grype sbom:builds/release/ubuntu.25.04.spdx.json -o json > builds/release/ubuntu.25.04.grype.json
 snap remove grype --purge
