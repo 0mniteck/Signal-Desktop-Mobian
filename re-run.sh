@@ -63,9 +63,7 @@ docker run -it --cpus=$(nproc) \
 rm -fr builds/release && mkdir -p builds/release && docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
 
 snap install syft --classic
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft / --select-catalogers debian -o spdx-json=builds/release/ubuntu.25.04.spdx.json && TMPDIR="$HOME/syft" syft docker:signal-desktop -o spdx-json=builds/release/manifest.spdx.json && rm -f -r "$HOME/syft"
-snap remove syft --purge && rm -f -r $HOME/.cache/syft
-
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft docker:signal-desktop -o spdx-json=builds/release/manifest.spdx.json && rm -f -r "$HOME/syft"
 snap disable docker
 rm -f -r /var/snap/docker/*
 if [ "$3" = "yes" ]; then
@@ -73,12 +71,13 @@ if [ "$3" = "yes" ]; then
   sleep 5
   systemd-cryptsetup detach Luks-Signal
 fi
-
 rm -f -r /var/snap/docker
 sleep 5
 snap remove docker --purge
 snap remove docker --purge
 networkctl delete docker0
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft / --select-catalogers debian -o spdx-json=builds/release/ubuntu.25.04.spdx.json && rm -f -r "$HOME/syft"
+snap remove syft --purge && rm -f -r $HOME/.cache/syft
 snap install grype --classic && grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json && grype sbom:builds/release/ubuntu.25.04.spdx.json -o json > builds/release/ubuntu.25.04.grype.json
 snap remove grype --purge
 rm /root/getter* -f -r && rm /root/grype-scratch* -f -r && rm /root/6 -f -r && rm -f -r $HOME/.cache/grype && rm -f -r /tmp/grype-scratch* && rm -f -r /tmp/getter*
