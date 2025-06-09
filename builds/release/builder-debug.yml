@@ -1,6 +1,5 @@
 arm64:
   firstOrDefaultFilePatterns:
-    - '!**/node_modules'
     - '!build{,/**/*}'
     - '!release{,/**/*}'
     - js/**
@@ -43,12 +42,14 @@ arm64:
     - build/dns-fallback.json
     - build/optional-resources.json
     - build/jumbomoji.json
+    - '!**/node_modules/**'
     - node_modules/**
     - '!node_modules/underscore/**'
     - '!node_modules/emoji-datasource/emoji_pretty.json'
-    - '!node_modules/emoji-datasource/**/*.png'
-    - '!node_modules/emoji-datasource-apple/emoji_pretty.json'
-    - '!node_modules/emoji-datasource-apple/img/apple/sheets*'
+    - '!node_modules/emoji-datasource/img/**/*.png'
+    - node_modules/emoji-datasource/categories.json
+    - node_modules/emoji-datasource/emoji.json
+    - '!node_modules/emoji-datasource-apple/**'
     - '!node_modules/spellchecker/vendor/hunspell/**/*'
     - '!node_modules/@formatjs/intl-displaynames/**/*'
     - '!node_modules/@formatjs/intl-listformat/**/*'
@@ -67,14 +68,11 @@ arm64:
     - node_modules/socks/build/common/*.js
     - node_modules/socks/build/client/*.js
     - node_modules/smart-buffer/build/*.js
-    - '!node_modules/@signalapp/better-sqlite3/deps/*'
-    - '!node_modules/@signalapp/better-sqlite3/src/*'
-    - node_modules/@signalapp/better-sqlite3/build/Release/better_sqlite3.node
+    - node_modules/@signalapp/sqlcipher/prebuilds/linux-arm64/*.node
     - node_modules/@signalapp/libsignal-client/prebuilds/linux-arm64/*.node
     - '!node_modules/@signalapp/ringrtc/scripts/*'
     - node_modules/@signalapp/ringrtc/build/linux/*arm64*.node
-    - node_modules/mac-screen-capture-permissions/build/Release/*.node
-    - node_modules/@indutny/simple-windows-notifications/build/Release/*.node
+    - node_modules/@indutny/simple-windows-notifications/prebuilds/linux-arm64/*.node
     - node_modules/@indutny/mac-screen-share/build/Release/*.node
     - node_modules/fs-xattr/build/Release/*.node
     - '!node_modules/@indutny/simple-windows-notifications/*.cpp'
@@ -94,6 +92,16 @@ arm64:
     - '!node_modules/mp4box/**'
     - node_modules/mp4box/package.json
     - node_modules/mp4box/dist/mp4box.all.js
+    - '!node_modules/@signalapp/quill-cjs/**'
+    - node_modules/@signalapp/quill-cjs/dist/*.css
+    - '!node_modules/node_modules/fabric/src/**'
+    - '!node_modules/react-blurhash/docs/**'
+    - '!node_modules/framer-motion/**'
+    - '!node_modules/intl-tel-input/**'
+    - '!node_modules/@motionone/**'
+    - '!node_modules/@swc/**'
+    - '!node_modules/@react-spring/**'
+    - '!node_modules/@babel/**'
     - '!node_modules/.cache'
     - sticker-creator/dist/**
     - package.json
@@ -109,10 +117,10 @@ arm64:
     - calling_tools.html
     - debug_log.html
     - loading.html
-    - '!**/*.{iml,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,suo,xproj,cc,d.ts,mk,a,o,forge-meta,pdb}'
+    - '!**/*.{iml,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,suo,xproj,cc,d.ts,mk,a,o,obj,forge-meta,pdb}'
     - '!**/._*'
     - '!**/electron-builder.{yaml,yml,json,json5,toml,ts}'
-    - '!**/{.git,.hg,.svn,CVS,RCS,SCCS,__pycache__,.DS_Store,thumbs.db,.gitignore,.gitkeep,.gitattributes,.npmignore,.idea,.vs,.flowconfig,.jshintrc,.eslintrc,.circleci,.yarn-integrity,.yarn-metadata.json,yarn-error.log,yarn.lock,package-lock.json,npm-debug.log,appveyor.yml,.travis.yml,circle.yml,.nyc_output,.husky,.github,electron-builder.env}'
+    - '!**/{.git,.hg,.svn,CVS,RCS,SCCS,__pycache__,.DS_Store,thumbs.db,.gitignore,.gitkeep,.gitattributes,.npmignore,.idea,.vs,.flowconfig,.jshintrc,.eslintrc,.circleci,.yarn-integrity,.yarn-metadata.json,yarn-error.log,yarn.lock,package-lock.json,npm-debug.log,pnpm-lock.yaml,appveyor.yml,.travis.yml,circle.yml,.nyc_output,.husky,.github,electron-builder.env}'
     - '!.yarn{,/**/*}'
     - '!.editorconfig'
     - '!.yarnrc.yml'
@@ -161,9 +169,10 @@ arm64:
     - node_modules/**
     - '!node_modules/underscore/**'
     - '!node_modules/emoji-datasource/emoji_pretty.json'
-    - '!node_modules/emoji-datasource/**/*.png'
-    - '!node_modules/emoji-datasource-apple/emoji_pretty.json'
-    - '!node_modules/emoji-datasource-apple/img/apple/sheets*'
+    - '!node_modules/emoji-datasource/img/**/*.png'
+    - node_modules/emoji-datasource/categories.json
+    - node_modules/emoji-datasource/emoji.json
+    - '!node_modules/emoji-datasource-apple/**'
     - '!node_modules/spellchecker/vendor/hunspell/**/*'
     - '!node_modules/@formatjs/intl-displaynames/**/*'
     - '!node_modules/@formatjs/intl-listformat/**/*'
@@ -182,14 +191,11 @@ arm64:
     - node_modules/socks/build/common/*.js
     - node_modules/socks/build/client/*.js
     - node_modules/smart-buffer/build/*.js
-    - '!node_modules/@signalapp/better-sqlite3/deps/*'
-    - '!node_modules/@signalapp/better-sqlite3/src/*'
-    - node_modules/@signalapp/better-sqlite3/build/Release/better_sqlite3.node
+    - node_modules/@signalapp/sqlcipher/prebuilds/linux-arm64/*.node
     - node_modules/@signalapp/libsignal-client/prebuilds/linux-arm64/*.node
     - '!node_modules/@signalapp/ringrtc/scripts/*'
     - node_modules/@signalapp/ringrtc/build/linux/*arm64*.node
-    - node_modules/mac-screen-capture-permissions/build/Release/*.node
-    - node_modules/@indutny/simple-windows-notifications/build/Release/*.node
+    - node_modules/@indutny/simple-windows-notifications/prebuilds/linux-arm64/*.node
     - node_modules/@indutny/mac-screen-share/build/Release/*.node
     - node_modules/fs-xattr/build/Release/*.node
     - '!node_modules/@indutny/simple-windows-notifications/*.cpp'
@@ -209,6 +215,16 @@ arm64:
     - '!node_modules/mp4box/**'
     - node_modules/mp4box/package.json
     - node_modules/mp4box/dist/mp4box.all.js
+    - '!node_modules/@signalapp/quill-cjs/**'
+    - node_modules/@signalapp/quill-cjs/dist/*.css
+    - '!node_modules/node_modules/fabric/src/**'
+    - '!node_modules/react-blurhash/docs/**'
+    - '!node_modules/framer-motion/**'
+    - '!node_modules/intl-tel-input/**'
+    - '!node_modules/@motionone/**'
+    - '!node_modules/@swc/**'
+    - '!node_modules/@react-spring/**'
+    - '!node_modules/@babel/**'
     - '!node_modules/.cache'
     - sticker-creator/dist/**
     - package.json
