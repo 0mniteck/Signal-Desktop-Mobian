@@ -35,10 +35,10 @@ Docker SBOM: [`builds/release/manifest.spdx.json`](https://github.com/0mniteck/S
 buildscript.sh:
   -i {Increment: .version}
   -d {Date: source_date_epoch}
-  -m {Mount /dev/mmcblk1: yes/no}
+  -m {Mount /dev/mmcblk1: yes/No}
   -p {Push-branch: debug}
   -r {Release-tag: tagname}
-  -t {run-Tests: yes/no}
+  -t {run-Tests: yes/No}
 ```
 A. To build later releases run:
 
