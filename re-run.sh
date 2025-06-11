@@ -30,10 +30,10 @@ if [ "$2" != 0 ]; then
   echo "Using override timestamp for SOURCE_DATE_EPOCH."
   source_date_epoch=$(($2))
 else
-  git_timestamp=$(git log -1 7.36.0 --pretty=%ct)
-  if [ "${git_timestamp}" != "" ]; then
-    echo "Setting SOURCE_DATE_EPOCH from commit: $(git log -1 7.36.0 --oneline)"
-    source_date_epoch=$((git_timestamp))
+  timestamp=$(cat builds/release/release.sha512sum | grep Epoch | cut -d ' ' -f5)
+  if [ "${timestamp}" != "" ]; then
+    echo "Setting SOURCE_DATE_EPOCH from release.sha512sum: $(cat builds/release/release.sha512sum | grep Epoch | cut -d ' ' -f5)"
+    source_date_epoch=$((timestamp))
   else
     echo "Can't get latest commit timestamp. Defaulting to 1."
     source_date_epoch=1
