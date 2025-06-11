@@ -11,9 +11,17 @@ This is the latest release: [`builds/release/signal-desktop_7.56.1_arm64.deb`](h
 
 Sha512Sum: [`builds/release/release.sha512sum`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/release.sha512sum)
 
-SBOM: [`builds/release/manifest.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/manifest.spdx.json)
+### Full chain Software Bill of Materials
 
-Grype Scan: [`builds/release/manifest.grype.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/manifest.grype.json)
+Firmware SBOM's: [`U-Boot:/Results`](https://github.com/0mniteck/U-Boot/tree/v2025.04%2Bv2.12.1%2Bv4.5.0/Results)
+
+System SBOM: [`builds/release/ubuntu.25.04.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/ubuntu.25.04.spdx.json)
+
+ - [x] Grype Scan: [`builds/release/ubuntu.25.04.grype.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/ubuntu.25.04.grype.json)
+
+Docker SBOM: [`builds/release/manifest.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/manifest.spdx.json)
+
+ - [x] Grype Scan: [`builds/release/manifest.grype.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.56.x/builds/release/manifest.grype.json)
 
 0mniteck's Current GPG Key ID: `287EE837E6ED2DD3`
 
