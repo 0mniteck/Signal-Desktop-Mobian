@@ -1,7 +1,7 @@
-# Starting Build on 06/09/25 at 20:09 UTC
-46d601582209a7e220b0749db243c1832a8201b0bf26a21dfcddb4801be49a5cf663b60db8daebbd0fc0c5b7f67cdcc0e68732208055f7634b68957a5769fbfc  signal-desktop_7.56.1_arm64.deb
+# Starting Build on 06/13/25 at 08:32 UTC
+d7675ef4313091a1becc2dc96cfa9681e2eb6a73fc4dc7275c1744487e2fd1aa29aea7b9650884e05514db21fd321eb77ae3af7bd3464fce3e0ee7dc7a4f3332  signal-desktop_7.57.0_arm64.deb
 # 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3
-# Source Date Epoch: 1749279600
-# Build Complete: on 06/09/25 at 20:27 UTC
+# Source Date Epoch: 1749798000
+# Build Complete: on 06/13/25 at 08:50 UTC
 # Base Build System: GNU/Linux 6.14.0-15-generic aarch64 Ubuntu 25.04 plucky #15-Ubuntu SMP PREEMPT_DYNAMIC Sun Apr  6 14:37:51 UTC 2025
 # Container Build System: GNU/Linux 6.14.0-15-generic aarch64 Debian GNU/Linux 12 (bookworm) #15-Ubuntu SMP PREEMPT_DYNAMIC Sun Apr  6 14:37:51 UTC 2025
