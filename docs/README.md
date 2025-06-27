@@ -46,7 +46,7 @@ A. To build later releases run:
 sudo su && \
 git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && \
 cd Signal-Desktop-Mobian && \
-./buildscript.sh -i .01 -p master -r 7.59.0 -d 1749279600
+./buildscript.sh -i .01 -p master -r 7.59.0 -d 1751014800
 ```
 
 B. To build the current release for reproducibility:
