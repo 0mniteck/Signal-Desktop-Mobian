@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version 1.8
+# Version 1.9
 #
 # Script to add a cron job to check for, download, and install the most recent version from this git repo.
 # This will auto-close signal-desktop before installing, default is to check after 5 min on reboot and every 2 days.
@@ -85,7 +85,7 @@ stop_running_instance() {
 install_new_version() {
     rm -f /tmp/signal-desktop.deb
     wget -q -O /tmp/signal-desktop.deb https://github.com/0mniteck/Signal-Desktop-Mobian/raw/refs/heads/master/builds/release/$(grep 'url:' /tmp/latest-linux-arm64.yml | awk '{print $3}')
-    apt install /tmp/signal-desktop.deb
+    apt install -y /tmp/signal-desktop.deb
 }
 
 current_version=$(get_current_version)
