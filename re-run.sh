@@ -40,12 +40,12 @@ else
   fi
 fi
 
-snap install docker --revision=3065 && systemctl stop snap.docker.nvidia-container-toolkit
+snap install docker --revision=3267 && systemctl stop snap.docker.nvidia-container-toolkit
 systemctl disable snap.docker.nvidia-container-toolkit
 docker buildx create --name signal-builder --driver-opt "network=host" --bootstrap --use
 docker buildx build --tag signal-desktop --load \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg SOURCE=0mniteck/debian-slim:05-20-2025@sha256:da7aa4f50de8c010c1822d0287f24ffbd1147cb37874a1c7e4cd896ece00ebb7 \
+  --build-arg SOURCE=0mniteck/debian-slim:07-04-2025@sha256:eaf336fc7c53de1c453b16b4dbd0db6697f042fafce6dd254ae6513a11ca5b28 \
   --build-arg NODE_VERSION=22.15.0 \
   --build-arg NVM_VERSION=0.40.3 \
   --build-arg PNPM_VERSION=10.6.4 .
@@ -80,7 +80,9 @@ networkctl delete docker0
 rm -f -r /var/lib/snapd/cache/*
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft / --select-catalogers "debian" -o spdx-json=builds/release/ubuntu.25.04.spdx.json && rm -f -r "$HOME/syft"
 snap remove syft --purge && rm -f -r $HOME/.cache/syft
-snap install grype --classic && grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json && grype sbom:builds/release/ubuntu.25.04.spdx.json -o json > builds/release/ubuntu.25.04.grype.json
+snap install grype --classic
+grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json | tee builds/release/manifest.grype.status
+grype sbom:builds/release/ubuntu.25.04.spdx.json -o json > builds/release/ubuntu.25.04.grype.json | tee builds/release/ubuntu.25.04.grype.status
 snap remove grype --purge
 rm /root/getter* -f -r && rm /root/grype-scratch* -f -r && rm /root/6 -f -r && rm -f -r $HOME/.cache/grype && rm -f -r /tmp/grype-scratch* && rm -f -r /tmp/getter*
 rm -f -r /var/lib/snapd/cache/*
