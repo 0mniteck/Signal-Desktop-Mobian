@@ -81,8 +81,14 @@ rm -f -r /var/lib/snapd/cache/*
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft / --select-catalogers "debian" -o spdx-json=builds/release/ubuntu.25.04.spdx.json && rm -f -r "$HOME/syft"
 snap remove syft --purge && rm -f -r $HOME/.cache/syft
 snap install grype --classic
-grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json | tee builds/release/manifest.grype.status
-grype sbom:builds/release/ubuntu.25.04.spdx.json -o json > builds/release/ubuntu.25.04.grype.json | tee builds/release/ubuntu.25.04.grype.status
+script -q -c "grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json" builds/release/manifest.grype.tmp
+ansifilter < builds/release/manifest.grype.tmp > builds/release/manifest.grype.tmp2
+grep "✔ Scanned for vulnerabilities" manifest.grype.tmp2 | tail -n 1 > manifest.grype.status; grep "├── by severity:" manifest.grype.tmp2 | tail -n 1 >> manifest.grype.status; grep "└── by status:" manifest.grype.tmp2 | tail -n 1 >> manifest.grype.status
+rm -f builds/release/manifest.grype.tmp*
+script -q -c "grype sbom:builds/release/ubuntu.25.04.spdx.json -o json > builds/release/ubuntu.25.04.grype.json" builds/release/ubuntu.25.04.grype.tmp
+ansifilter < builds/release/ubuntu.25.04.grype.tmp > builds/release/ubuntu.25.04.grype.tmp2
+grep "✔ Scanned for vulnerabilities" ubuntu.25.04.grype.tmp2 | tail -n 1 > ubuntu.25.04.grype.status; grep "├── by severity:" ubuntu.25.04.grype.tmp2 | tail -n 1 >> ubuntu.25.04.grype.status; grep "└── by status:" ubuntu.25.04.grype.tmp2 | tail -n 1 >> ubuntu.25.04.grype.status
+rm -f builds/release/ubuntu.25.04.grype.tmp*
 snap remove grype --purge
 rm /root/getter* -f -r && rm /root/grype-scratch* -f -r && rm /root/6 -f -r && rm -f -r $HOME/.cache/grype && rm -f -r /tmp/grype-scratch* && rm -f -r /tmp/getter*
 rm -f -r /var/lib/snapd/cache/*
