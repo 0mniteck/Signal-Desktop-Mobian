@@ -34,6 +34,8 @@ else
   if [ "${timestamp}" != "" ]; then
     echo "Setting SOURCE_DATE_EPOCH from release.sha512sum: $(cat builds/release/release.sha512sum | grep Epoch | cut -d ' ' -f5)"
     source_date_epoch=$((timestamp))
+    check_file=1
+    cp builds/release/release.sha512sum /tmp/release.last.sha512sum
   else
     echo "Can't get latest commit timestamp. Defaulting to 1."
     source_date_epoch=1
@@ -92,4 +94,11 @@ rm -f builds/release/ubuntu.25.04.grype.tmp*
 snap remove grype --purge
 rm /root/getter* -f -r && rm /root/grype-scratch* -f -r && rm /root/6 -f -r && rm -f -r $HOME/.cache/grype && rm -f -r /tmp/grype-scratch* && rm -f -r /tmp/getter*
 rm -f -r /var/lib/snapd/cache/*
+if [ "$check_file" = "1" ]; then
+  pushd builds/release/
+    cp /tmp/release.last.sha512sum release.last.sha512sum
+    sha512sum -c release.last.sha512sum
+    rm -f /tmp/release.last.sha512sum && rm -f release.last.sha512sum
+  popd
+fi
 read -p "Close Screen Session: Continue to Signing-->"
