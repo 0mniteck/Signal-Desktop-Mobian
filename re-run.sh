@@ -66,7 +66,7 @@ docker run -it --cpus=$(nproc) \
 rm -fr builds/release && mkdir -p builds/release && docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
 
 snap install syft --classic
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft docker:signal-desktop -o spdx-json=builds/release/manifest.spdx.json && rm -f -r "$HOME/syft"
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft docker:signal-desktop -o spdx-json=builds/release/signal.spdx.json && rm -f -r "$HOME/syft"
 snap disable docker
 rm -f -r /var/snap/docker/*
 if [ "$3" = "yes" ]; then
@@ -83,10 +83,10 @@ rm -f -r /var/lib/snapd/cache/*
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft / --select-catalogers "debian" -o spdx-json=builds/release/ubuntu.25.04.spdx.json && rm -f -r "$HOME/syft"
 snap remove syft --purge && rm -f -r $HOME/.cache/syft
 snap install grype --classic
-script -q -c "grype sbom:builds/release/manifest.spdx.json -o json > builds/release/manifest.grype.json" builds/release/manifest.grype.tmp
-ansifilter < builds/release/manifest.grype.tmp > builds/release/manifest.grype.tmp2
-grep "✔ Scanned for vulnerabilities" builds/release/manifest.grype.tmp2 | tail -n 1 > builds/release/manifest.grype.status; grep "├── by severity:" builds/release/manifest.grype.tmp2 | tail -n 1 >> builds/release/manifest.grype.status; grep "└── by status:" builds/release/manifest.grype.tmp2 | tail -n 1 >> builds/release/manifest.grype.status
-rm -f builds/release/manifest.grype.tmp*
+script -q -c "grype sbom:builds/release/signal.spdx.json -o json > builds/release/signal.grype.json" builds/release/signal.grype.tmp
+ansifilter < builds/release/signal.grype.tmp > builds/release/signal.grype.tmp2
+grep "✔ Scanned for vulnerabilities" builds/release/signal.grype.tmp2 | tail -n 1 > builds/release/signal.grype.status; grep "├── by severity:" builds/release/signal.grype.tmp2 | tail -n 1 >> builds/release/signal.grype.status; grep "└── by status:" builds/release/signal.grype.tmp2 | tail -n 1 >> builds/release/signal.grype.status
+rm -f builds/release/signal.grype.tmp*
 script -q -c "grype sbom:builds/release/ubuntu.25.04.spdx.json -o json > builds/release/ubuntu.25.04.grype.json" builds/release/ubuntu.25.04.grype.tmp
 ansifilter < builds/release/ubuntu.25.04.grype.tmp > builds/release/ubuntu.25.04.grype.tmp2
 grep "✔ Scanned for vulnerabilities" builds/release/ubuntu.25.04.grype.tmp2 | tail -n 1 > builds/release/ubuntu.25.04.grype.status; grep "├── by severity:" builds/release/ubuntu.25.04.grype.tmp2 | tail -n 1 >> builds/release/ubuntu.25.04.grype.status; grep "└── by status:" builds/release/ubuntu.25.04.grype.tmp2 | tail -n 1 >> builds/release/ubuntu.25.04.grype.status
