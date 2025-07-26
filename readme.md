@@ -17,11 +17,11 @@ Firmware SBOM's: [`U-Boot:/Results`](https://github.com/0mniteck/U-Boot/tree/v20
 
 System SBOM: [`builds/release/ubuntu.25.04.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/ubuntu.25.04.spdx.json)
 
- - [x] Grype Scan: [`builds/release/ubuntu.25.04.grype.status`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/ubuntu.25.04.grype.status)
+ - [x] Grype Scan: [`builds/release/ubuntu.25.04.grype.status`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/ubuntu.25.04.grype.status)(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/018cf2ba17441e0268de5aef146c36018f7d145e/builds/release/ubuntu.25.04.grype.status#L1-L3)
 
 Docker SBOM: [`builds/release/signal.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/signal.spdx.json)
 
- - [x] Grype Scan: [`builds/release/signal.grype.status`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/signal.grype.status)
+ - [x] Grype Scan: [`builds/release/signal.grype.status`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/signal.grype.status)(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/018cf2ba17441e0268de5aef146c36018f7d145e/builds/release/signal.grype.status#L1-L3)
 
 0mniteck's Current GPG Key ID: `287EE837E6ED2DD3`
 
