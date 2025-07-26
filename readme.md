@@ -63,7 +63,7 @@ cd Signal-Desktop-Mobian && \
 [Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/raw/7.62.x/builds/release/signal-desktop_7.62.0_arm64.deb) to your device, verify the sha512sum, then install:
 
 [[Current Sha512sum]](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/release.sha512sum#L2)
-(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/35316bcfa8b900405ef2c063cf98a55a4072f37c/builds/release/release.sha512sum#L2)
+(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/07d0b2b432f59e0f86e588f854f167c796cdff32/builds/release/release.sha512sum#L2)
 
 ```sha512sum signal-desktop_7.62.0_arm64.deb```
 
