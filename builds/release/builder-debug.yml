@@ -8,7 +8,7 @@ arm64:
     - ts/*.js
     - '!ts/scripts/**'
     - '!build'
-    - '!ts/{storybook,test-node,test-mock,test-both,test-electron}'
+    - '!ts/{storybook,test-helpers,test-node,test-mock,test-electron}'
     - '!**/{tsconfig,bower,component}.json'
     - '!**/.{github,husky,grenrc,npmrc,nycrc,taprc,bithoundrc}'
     - '!**/.testem.json'
@@ -133,7 +133,7 @@ arm64:
     - ts/*.js
     - '!ts/scripts/**'
     - '!build'
-    - '!ts/{storybook,test-node,test-mock,test-both,test-electron}'
+    - '!ts/{storybook,test-helpers,test-node,test-mock,test-electron}'
     - '!**/{tsconfig,bower,component}.json'
     - '!**/.{github,husky,grenrc,npmrc,nycrc,taprc,bithoundrc}'
     - '!**/.testem.json'

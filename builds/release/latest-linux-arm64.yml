@@ -1,8 +1,8 @@
-version: 7.60.0
+version: 7.62.0
 files:
-  - url: signal-desktop_7.60.0_arm64.deb
-    sha512: m2aQxrFtJI8+FKwExumep0auS2fzimfIVmK/F7vNZmBDCj5LhuvKGQOqQ88h6iEE4/eTkGBGebJ8Euy4jdxnqw==
-    size: 112977992
-path: signal-desktop_7.60.0_arm64.deb
-sha512: m2aQxrFtJI8+FKwExumep0auS2fzimfIVmK/F7vNZmBDCj5LhuvKGQOqQ88h6iEE4/eTkGBGebJ8Euy4jdxnqw==
-releaseDate: '2025-07-05T11:12:39.377Z'
+  - url: signal-desktop_7.62.0_arm64.deb
+    sha512: CIuN+/hFMTgNgenvmmf666w6MoNovRT8fZMrK5scXdvyJiKCLXTvwHMkH6g0qxTk+u3kXr4jr65WvuMGWh4a7Q==
+    size: 113182488
+path: signal-desktop_7.62.0_arm64.deb
+sha512: CIuN+/hFMTgNgenvmmf666w6MoNovRT8fZMrK5scXdvyJiKCLXTvwHMkH6g0qxTk+u3kXr4jr65WvuMGWh4a7Q==
+releaseDate: '2025-07-26T07:57:22.846Z'
