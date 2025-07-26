@@ -19,9 +19,9 @@ System SBOM: [`builds/release/ubuntu.25.04.spdx.json`](https://github.com/0mnite
 
  - [x] Grype Scan: [`builds/release/ubuntu.25.04.grype.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/ubuntu.25.04.grype.json)
 
-Docker SBOM: [`builds/release/manifest.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/manifest.spdx.json)
+Docker SBOM: [`builds/release/signal.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/signal.spdx.json)
 
- - [x] Grype Scan: [`builds/release/manifest.grype.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/manifest.grype.json)
+ - [x] Grype Scan: [`builds/release/signal.grype.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/signal.grype.json)
 
 0mniteck's Current GPG Key ID: `287EE837E6ED2DD3`
 
