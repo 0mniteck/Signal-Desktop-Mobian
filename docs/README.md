@@ -3,7 +3,7 @@
 # Signal Desktop Builder For Mobian
 ### [signal-desktop_7.62.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.62.x/builds/release/signal-desktop_7.62.0_arm64.deb)
 
-This project reproducibly builds Signal Desktop for Debian Bookworm on ARM64, currently targeting tag `7.62.x`
+This project reproducibly builds Signal Desktop for Debian Trixie on ARM64, currently targeting tag `7.62.x`
 
 Now with an optional update client: [`auto-update-cron.sh`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/master/auto-update-cron.sh)
 
