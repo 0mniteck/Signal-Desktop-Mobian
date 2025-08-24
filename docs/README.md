@@ -17,11 +17,11 @@ Firmware SBOM's: [`U-Boot:/Results`](https://github.com/0mniteck/U-Boot/tree/v20
 
 System SBOM: [`builds/release/ubuntu.25.04.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.67.x/builds/release/ubuntu.25.04.spdx.json)
 
- - [x] Grype Scan: [`builds/release/ubuntu.25.04.grype.status`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.67.x/builds/release/ubuntu.25.04.grype.status)(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/f45bb4f7d11cba060d19c1f0c4f95757fa6c8a7d/builds/release/ubuntu.25.04.grype.status#L1-L3)
+ - [x] Grype Scan: [`builds/release/ubuntu.25.04.grype.status`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.67.x/builds/release/ubuntu.25.04.grype.status)(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/47f2504b8ede078b2bbaad879fb9c6ba1dde2a6c/builds/release/ubuntu.25.04.grype.status#L1-L3)
 
 Docker SBOM: [`builds/release/signal.spdx.json`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.67.x/builds/release/signal.spdx.json)
 
- - [x] Grype Scan: [`builds/release/signal.grype.status`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.67.x/builds/release/signal.grype.status)(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/f45bb4f7d11cba060d19c1f0c4f95757fa6c8a7d/builds/release/signal.grype.status#L1-L3)
+ - [x] Grype Scan: [`builds/release/signal.grype.status`](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.67.x/builds/release/signal.grype.status)(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/47f2504b8ede078b2bbaad879fb9c6ba1dde2a6c/builds/release/signal.grype.status#L1-L3)
 
 0mniteck's Current GPG Key ID: `287EE837E6ED2DD3`
 
@@ -63,7 +63,7 @@ cd Signal-Desktop-Mobian && \
 [Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/raw/7.67.x/builds/release/signal-desktop_7.67.0_arm64.deb) to your device, verify the sha512sum, then install:
 
 [[Current Sha512sum]](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.67.x/builds/release/release.sha512sum#L2)
-(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/f45bb4f7d11cba060d19c1f0c4f95757fa6c8a7d/builds/release/release.sha512sum#L2)
+(https://github.com/0mniteck/Signal-Desktop-Mobian/blob/47f2504b8ede078b2bbaad879fb9c6ba1dde2a6c/builds/release/release.sha512sum#L2)
 
 ```sha512sum signal-desktop_7.67.0_arm64.deb```
 
