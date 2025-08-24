@@ -80,7 +80,7 @@ curl -sSL https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Mobian/maste
 
 ## Current Status:‎‎‏‏‎‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎[![C I](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml/badge.svg)](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml)<sub><sup> signalapp/Signal-Desktop</sup></sub>
 
-* [x] Built with [0mniteck/debian-slim:07-04-2025](https://hub.docker.com/r/0mniteck)
+* [x] Built with [0mniteck/debian-slim:latest](https://hub.docker.com/r/0mniteck)
 * [x] Signal Desktop builds
 * [x] Auto-Update script
 * [x] Reproducible builds
