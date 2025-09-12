@@ -42,6 +42,30 @@ else
   fi
 fi
 
+scan_using_grype() { # $1 = Name
+  pushd Results/
+    script -q -c "grype -c $HOME/.grype.yaml sbom:$1.spdx.json -o json > $1.grype.json" $1.grype.tmp
+    grep "✔ Scanned for vulnerabilities" $1.grype.tmp | tail -n 1 > $1.grype.status.1
+    tr -d '\000-\037\177' < $1.grype.status.1 | sed '/^$/d' > $1.grype.status.1.tmp
+    line1=$(cat $1.grype.status.1.tmp)
+    left1=${line1%%" [K"*}
+    grep "├── by severity:" $1.grype.tmp | tail -n 1 > $1.grype.status.2
+    tr -d '\000-\037\177' < $1.grype.status.2 | sed '/^$/d' > $1.grype.status.2.tmp
+    line2=$(cat $1.grype.status.2.tmp)
+    left2=${line2%%" [K"*}
+    grep "└── by status:" $1.grype.tmp | tail -n 1 > $1.grype.status.3
+    tr -d '\000-\037\177' < $1.grype.status.3 | sed '/^$/d' > $1.grype.status.3.tmp
+    line3=$(cat $1.grype.status.3.tmp)
+    left3=${line3%%" [K"*}
+    echo $left1 > $1.grype.status
+    echo $left2 >> $1.grype.status
+    echo $left3 >> $1.grype.status
+    rm -f $1.grype.tmp
+    rm -f $1.grype.status.*
+    cat grype.status
+  popd
+}
+
 snap install docker --revision=3267 && systemctl stop snap.docker.nvidia-container-toolkit
 systemctl disable snap.docker.nvidia-container-toolkit
 docker buildx create --name signal-builder --driver-opt "network=host" --bootstrap --use
@@ -83,16 +107,10 @@ rm -f -r /var/lib/snapd/cache/*
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft / --select-catalogers "debian" -o spdx-json=builds/release/ubuntu.25.04.spdx.json && rm -f -r "$HOME/syft"
 snap remove syft --purge && rm -f -r $HOME/.cache/syft
 snap install grype --classic
-script -q -c "grype sbom:builds/release/signal.spdx.json -o json > builds/release/signal.grype.json" builds/release/signal.grype.tmp
-ansifilter < builds/release/signal.grype.tmp > builds/release/signal.grype.tmp2
-grep "✔ Scanned for vulnerabilities" builds/release/signal.grype.tmp2 | tail -n 1 > builds/release/signal.grype.status; grep "├── by severity:" builds/release/signal.grype.tmp2 | tail -n 1 >> builds/release/signal.grype.status; grep "└── by status:" builds/release/signal.grype.tmp2 | tail -n 1 >> builds/release/signal.grype.status
-rm -f builds/release/signal.grype.tmp*
-script -q -c "grype sbom:builds/release/ubuntu.25.04.spdx.json -o json > builds/release/ubuntu.25.04.grype.json" builds/release/ubuntu.25.04.grype.tmp
-ansifilter < builds/release/ubuntu.25.04.grype.tmp > builds/release/ubuntu.25.04.grype.tmp2
-grep "✔ Scanned for vulnerabilities" builds/release/ubuntu.25.04.grype.tmp2 | tail -n 1 > builds/release/ubuntu.25.04.grype.status; grep "├── by severity:" builds/release/ubuntu.25.04.grype.tmp2 | tail -n 1 >> builds/release/ubuntu.25.04.grype.status; grep "└── by status:" builds/release/ubuntu.25.04.grype.tmp2 | tail -n 1 >> builds/release/ubuntu.25.04.grype.status
-rm -f builds/release/ubuntu.25.04.grype.tmp*
+scan_using_grype builds/release/signal
+scan_using_grype builds/release/ubuntu.25.04
 snap remove grype --purge
-rm /root/getter* -f -r && rm /root/grype-scratch* -f -r && rm /root/6 -f -r && rm -f -r $HOME/.cache/grype && rm -f -r /tmp/grype-scratch* && rm -f -r /tmp/getter*
+rm /root/getter* -f -r && rm /root/grype-scratch* -f -r && rm /root/Library -f -r && rm -f -r $HOME/.cache/grype && rm -f -r /tmp/grype-scratch* && rm -f -r /tmp/getter*
 rm -f -r /var/lib/snapd/cache/*
 if [ "$check_file" = "1" ]; then
   pushd builds/release/
