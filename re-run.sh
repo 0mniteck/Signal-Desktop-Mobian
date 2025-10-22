@@ -93,7 +93,7 @@ shred .private.key && rm -f .private.key
 
 docker run -it --cpus=$(nproc) \
   --network=name=host,\"driver-opt=network=host\" \
-  --name signal-desktop \
+  --name signal-desktop $CROSS \
   --user "$(id -u):$(id -g)" \
   -e PNPM_HOME=/tmp/.pnpm-home \
   -e NPM_CONFIG_CACHE=/tmp/.npm-cache \
