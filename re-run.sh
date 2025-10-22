@@ -30,7 +30,16 @@ if [ -f /etc/keys/.private.key ]; then
 fi
 
 source_date_epoch=1
-if [ "$2" != 0 ]; then
+if [ "$2" = "today" ]; then
+  timestamp=$(date -d $(date +%D) +%s);
+  if [ "${timestamp}" != "" ]; then
+    echo "Setting SOURCE_DATE_EPOCH from today's date: $(date +%D) = @$timestamp";
+    source_date_epoch=$((timestamp));
+  else
+    echo "Can't get timestamp. Defaulting to 1.";
+    source_date_epoch=1;
+  fi
+elif [ "$2" != 0 ]; then
   echo "Using override timestamp for SOURCE_DATE_EPOCH."
   source_date_epoch=$(($2))
 else
