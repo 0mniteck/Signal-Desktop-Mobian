@@ -1,7 +1,6 @@
 #!/bin/bash
 
 if [ "$5" = "yes" ]; then
-  echo "CROSS_COMPILE: $5"
   export CROSS="--platform linux/arm64"
 fi
 
