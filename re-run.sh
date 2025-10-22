@@ -1,8 +1,13 @@
 #!/bin/bash
 
+if [ "$5" = "yes" ]; then
+  echo "CROSS_COMPILE: $5"
+  export CROSS="--platform linux/arm64"
+fi
+
 snap disable docker
 rm -f -r /var/snap/docker/*
-if [ "$3" = "yes" ]; then
+if [ "$3" != "" ]; then
   umount -f /dev/mapper/Luks-Signal
   sleep 5
   systemd-cryptsetup detach Luks-Signal
@@ -10,11 +15,11 @@ fi
 rm -f -r /var/snap/docker
 sleep 5
 snap remove docker --purge
-if [ "$3" = "yes" ]; then
-  systemd-cryptsetup attach Luks-Signal /dev/mmcblk1
+if [ "$3" != "" ]; then
+  systemd-cryptsetup attach Luks-Signal /dev/$3
 fi
 mkdir /var/snap/docker
-if [ "$3" = "yes" ]; then
+if [ "$3" != "" ]; then
   mount /dev/mapper/Luks-Signal /var/snap/docker
   rm -f -r /var/snap/docker/*
 fi
@@ -66,10 +71,18 @@ scan_using_grype() { # $1 = Name
   popd
 }
 
-snap install docker --revision=3267 && systemctl stop snap.docker.nvidia-container-toolkit
-systemctl disable snap.docker.nvidia-container-toolkit
+if [ "$5" = "yes" ]; then
+  snap install docker --revision=3265
+else
+  snap install docker --revision=3267 && systemctl stop snap.docker.nvidia-container-toolkit
+  systemctl disable snap.docker.nvidia-container-toolkit
+fi
+
 docker buildx create --name signal-builder --driver-opt "network=host" --bootstrap --use
-docker buildx build --tag signal-desktop --load \
+if [ "$5" = "yes" ]; then
+  docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-56 --install all
+fi
+docker buildx build --tag signal-desktop --load $CROSS \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg SOURCE=0mniteck/debian-slim:10-16-2025@sha256:c1b2685a46ae20a3702ae41e21fc27553c7e645814978d1392e80b0397e7252d \
   --build-arg NODE_VERSION=22.18.0 \
@@ -93,7 +106,7 @@ snap install syft --classic
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft docker:signal-desktop -o spdx-json=builds/release/signal.spdx.json && rm -f -r "$HOME/syft"
 snap disable docker
 rm -f -r /var/snap/docker/*
-if [ "$3" = "yes" ]; then
+if [ "$3" != "" ]; then
   umount -f /dev/mapper/Luks-Signal
   sleep 5
   systemd-cryptsetup detach Luks-Signal
