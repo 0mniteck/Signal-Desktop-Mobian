@@ -59,6 +59,15 @@ cd Signal-Desktop-Mobian && \
 ./buildscript.sh
 ```
 
+C. To cross compile the current release for reproducibility:
+
+```
+sudo su && \
+git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git -b 7.xx.x && \
+cd Signal-Desktop-Mobian && \
+./buildscript.sh -c yes
+```
+
 ### Usage:
 
 [Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Mobian/raw/7.68.x/builds/release/signal-desktop_7.68.0_arm64.deb) to your device, verify the sha512sum, then install:
