@@ -33,9 +33,10 @@ Docker SBOM: [`builds/release/signal.spdx.json`](https://github.com/0mniteck/Sig
 
 ```
 buildscript.sh:
-  -i {Increment: .version}
+  -c {Cross Compile: yes/No]
   -d {Date: source_date_epoch}
-  -m {Mount /dev/mmcblk1: yes/No}
+  -i {Increment: .version}
+  -m {Mount Luks partition: mmcblk1p1}
   -p {Push-branch: debug}
   -r {Release-tag: tagname}
   -t {run-Tests: yes/No}
