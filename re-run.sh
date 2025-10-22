@@ -71,10 +71,10 @@ systemctl disable snap.docker.nvidia-container-toolkit
 docker buildx create --name signal-builder --driver-opt "network=host" --bootstrap --use
 docker buildx build --tag signal-desktop --load \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg SOURCE=0mniteck/debian-slim:08-23-2025@sha256:28c71d89a9e83e8a000427cc81f4f0aef0a644fe57adeb97ab69734d93213d2d \
+  --build-arg SOURCE=0mniteck/debian-slim:10-16-2025@sha256:c1b2685a46ae20a3702ae41e21fc27553c7e645814978d1392e80b0397e7252d \
   --build-arg NODE_VERSION=22.18.0 \
   --build-arg NVM_VERSION=0.40.3 \
-  --build-arg PNPM_VERSION=10.6.4 .
+  --build-arg PNPM_VERSION=10.18.1 .
 
 shred .private.key && rm -f .private.key
 
