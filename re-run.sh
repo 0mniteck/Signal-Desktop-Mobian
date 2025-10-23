@@ -131,7 +131,7 @@ snap install grype --classic
 scan_using_grype builds/release/signal
 scan_using_grype builds/release/ubuntu.25.04
 snap remove grype --purge
-rm /root/getter* -f -r && rm /root/grype-scratch* -f -r && rm /root/Library -f -r && rm -f -r $HOME/.cache/grype && rm -f -r /tmp/grype-scratch* && rm -f -r /tmp/getter*
+rm /root/getter* -f -r && rm /root/grype-scratch* -f -r && rm /root/syft -f -r && rm /root/6 -f -r && rm /root/Library -f -r && rm -f -r $HOME/.cache/grype && rm -f -r $HOME/.cache/syft && rm -f -r /tmp/grype-scratch* && rm -f -r /tmp/getter*
 rm -f -r /var/lib/snapd/cache/*
 if [ "$check_file" = "1" ]; then
   pushd builds/release/
