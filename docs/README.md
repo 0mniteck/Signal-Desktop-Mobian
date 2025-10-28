@@ -103,7 +103,7 @@ Currently building upstream releases twice to improve reproducibility/reliabilit
 `build/release to branch 7.xx.x` --> `test on hardware, document, pull request` --> `build/release to master branch`
 
 ## See also:
-
+* [The Sovereignty Ephemerality Reproducibility (SER) framework](https://omniteck.com/?p=1104)
 * https://snapshot.debian.org
 * https://hub.docker.com/_/debian/tags
 * https://hub.docker.com/r/0mniteck/tags
