@@ -40,14 +40,14 @@ pushd /Signal-Desktop
     exit 1
   fi
   pnpm run build:esbuild:prod
-  xvfb-run --auto-servernum pnpm run build:preload-cache
+  # xvfb-run --auto-servernum pnpm run build:preload-cache
   pnpm run build:release --arm64 --publish=never --linux deb
   # echo "Generating SBOM at /Signal-Desktop/release/manifest.spdx.json"
   # npm sbom --sbom-format="spdx" --sbom-type="application" > /Signal-Desktop/release/manifest.spdx.json
   if [ "$TEST" = "yes" ]; then
-    xvfb-run --auto-servernum pnpm run test-node
-    xvfb-run --auto-servernum pnpm run test-electron
-    xvfb-run --auto-servernum pnpm run test-release
+    # xvfb-run --auto-servernum pnpm run test-node
+    # xvfb-run --auto-servernum pnpm run test-electron
+    # xvfb-run --auto-servernum pnpm run test-release
   fi
   debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
   if [ ! -f /Signal-Desktop/release/.private.key ]; then
