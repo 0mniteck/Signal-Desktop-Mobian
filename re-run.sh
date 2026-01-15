@@ -94,7 +94,7 @@ fi
 docker buildx build --tag signal-desktop --load $CROSS \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg SOURCE=0mniteck/debian-slim:10-16-2025@sha256:c1b2685a46ae20a3702ae41e21fc27553c7e645814978d1392e80b0397e7252d \
-  --build-arg NODE_VERSION=22.18.0 \
+  --build-arg NODE_VERSION=22.21.1 \
   --build-arg NVM_VERSION=0.40.3 \
   --build-arg PNPM_VERSION=10.18.1 .
 
