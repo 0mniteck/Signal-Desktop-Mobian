@@ -81,9 +81,9 @@ scan_using_grype() { # $1 = Name
 }
 
 if [ "$5" = "yes" ]; then
-  snap install docker --revision=3265
+  snap install docker --revision=3377
 else
-  snap install docker --revision=3267 && systemctl stop snap.docker.nvidia-container-toolkit
+  snap install docker --revision=3380 && systemctl stop snap.docker.nvidia-container-toolkit
   systemctl disable snap.docker.nvidia-container-toolkit
 fi
 
@@ -93,7 +93,7 @@ if [ "$5" = "yes" ]; then
 fi
 docker buildx build --tag signal-desktop --load $CROSS \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg SOURCE=0mniteck/debian-slim:10-16-2025@sha256:c1b2685a46ae20a3702ae41e21fc27553c7e645814978d1392e80b0397e7252d \
+  --build-arg SOURCE=0mniteck/debian-slim:1-15-2026@.. \ #WIP
   --build-arg NODE_VERSION=22.21.1 \
   --build-arg NVM_VERSION=0.40.3 \
   --build-arg PNPM_VERSION=10.18.1 .
