@@ -48,7 +48,7 @@ echo "Push to Branch: $BRANCH"
 echo "Tag Release: $TAG"
 echo "Run Tests: $TEST"
 sleep 5
-sudo apt install ansifilter bc git-lfs screen snapd systemd-cryptsetup -y
+sudo apt install bc git-lfs screen snapd systemd-cryptsetup -y
 git remote remove origin && git remote add origin git@Signal:0mniteck/Signal-Desktop-Mobian.git && git-lfs install
 ./increment.sh $INC
 sudo screen -L -Logfile builder.log bash -c './re-run.sh public '$(($EPOCH))' '$MOUNT' '$TEST' '$CROSS && mv builder.log builds/release/builder.log
