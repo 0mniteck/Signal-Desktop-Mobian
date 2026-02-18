@@ -93,9 +93,9 @@ if [ "$5" = "yes" ]; then
 fi
 docker buildx build --tag signal-desktop --load $CROSS \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg SOURCE=0mniteck/debian-slim:1-15-2026@.. \ #WIP
-  --build-arg NODE_VERSION=22.21.1 \
-  --build-arg NVM_VERSION=0.40.3 \
+  --build-arg SOURCE=0mniteck/debian-slim:02-18-2026@sha256:13b15f452474e3f662cb3c2c76d2b480f90c2e6318f3905ae9b4711fd6c7b10b \
+  --build-arg NODE_VERSION=24.11.1 \
+  --build-arg NVM_VERSION=0.40.4 \
   --build-arg PNPM_VERSION=10.18.1 .
 
 shred .private.key && rm -f .private.key
