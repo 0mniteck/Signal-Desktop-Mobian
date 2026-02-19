@@ -172,7 +172,7 @@ if [ "$MOUNT" != "" ]; then
     unmount
 fi
 
-snap remove docker --purge 2>/dev/null && wait || echo "Failed to remove Docker"
+snap remove docker --purge 2> $nulled && wait || echo "Failed to remove Docker"
 quiet networkctl delete docker0
 
 if [[ "$(uname -m)" == "aarch64" ]]; then
@@ -208,8 +208,8 @@ usermod -aG docker $run_as && wait
 mkdir -p /home/root && sed -i "s|:/root:|:/home/root:|" /etc/passwd
 
 mkdir -p /$plugins_path && wait
-ln -f -s /$snap_path/$plugins_path/docker-buildx /$plugins_path/docker-buildx > /dev/null || exit 1
-ln -f -s /$snap_path/$plugins_path/docker-compose /$plugins_path/docker-compose > /dev/null || exit 1
+ln -f -s /$snap_path/$plugins_path/docker-buildx /$plugins_path/docker-buildx > $nulled || exit 1
+ln -f -s /$snap_path/$plugins_path/docker-compose /$plugins_path/docker-compose > $nulled || exit 1
 
 machinectl shell $run_as@ /bin/bash -c "
 $debug
@@ -391,7 +391,7 @@ Host \$PROJECT
   IdentitiesOnly yes\" >> $home/.ssh/config
 fi
 eval \"\$(ssh-agent -s)\" && wait
-ssh -T git@github.com 2> /dev/null
+ssh -T git@github.com 2> $nulled
 ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l
 
 if [[ \"\$(gpg-card list - openpgp)\" == *\$SIGNING_KEY* ]]; then
