@@ -159,7 +159,7 @@ snap install grype --classic && wait
 unmount() {
     quiet snap disable docker
     sync
-    quiet umount /dev/mapper/Luks-Signal
+    quiet umount $docker_data
     sleep 5
     quiet systemd-cryptsetup detach Luks-Signal
     sleep 5
