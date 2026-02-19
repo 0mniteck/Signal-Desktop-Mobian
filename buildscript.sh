@@ -160,7 +160,8 @@ unmount() {
     quiet umount -f /dev/mapper/Luks-Signal
     sleep 5
     quiet systemd-cryptsetup detach Luks-Signal
-    dmsetup remove -f /dev/mapper/Luks-Signal
+    sleep 5
+    quiet dmsetup remove -f /dev/mapper/Luks-Signal
     rm -r -f $docker_data/
     sleep 5
     quiet snap enable docker
@@ -372,8 +373,7 @@ docker() {
 exec $docker \"\$@\"
 }
 
-quiet \"\docker info | grep rootless > $rootless_path/rootless.status\"
-cat $rootless_path/rootless.status
+quiet \"\$docker info | grep rootless > $rootless_path/rootless.status\"
 if [[ \"\$(grep root $rootless_path/rootless.status)\" != *rootless* ]]; then
   echo \"Rootless Docker Failed\" && echo
   exit 1
