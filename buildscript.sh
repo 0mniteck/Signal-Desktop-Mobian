@@ -131,8 +131,7 @@ clean_most() {
   rm -r -f $run_dir/containerd/
   rm -r -f $run_dir/docker*
   rm -r -f $run_dir/runc/
-  rm -r -f $docker_data/*
-  rm -r -f $docker_data/ 
+  rm -r -f $docker_data*
 }
 
 clean_all() {
@@ -168,10 +167,6 @@ quiet snap enable docker
 snap remove docker --purge 2>/dev/null && wait || echo "Failed to remove Docker"
 quiet networkctl delete docker0
 
-if [ "$MOUNT" != "" ]; then
-  systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
-fi
-
 if [[ "$(uname -m)" == "aarch64" ]]; then
   snap install docker --revision=$docker_snap_arm64_ver && wait || echo "Failed to install Docker"
   quiet systemctl mask snap.docker.nvidia-container-toolkit --runtime --now
@@ -192,6 +187,7 @@ systemctl daemon-reload
 
 mkdir -p $docker_data
 if [ "$MOUNT" != "" ]; then
+  systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
   mount /dev/mapper/Luks-Signal $docker_data
   rm -f -r $docker_data/*
 fi
