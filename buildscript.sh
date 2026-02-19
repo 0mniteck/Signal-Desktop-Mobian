@@ -1,6 +1,5 @@
 #!/bin/bash
-#WIP
-read -p WIP
+
 while getopts ":c:i:d:m:p:r:t:" opt; do
     case $opt in
         c) # Cross Compile: yes/No
