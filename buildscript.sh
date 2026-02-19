@@ -155,21 +155,21 @@ apt-get -qq install -y bc cosign git-lfs gnupg2 gpg-agent \
 snap install syft --classic && wait
 snap install grype --classic && wait
 
-snap disable docker
+quiet snap disable docker
 if [ "$MOUNT" != "" ]; then
-  umount -f /dev/mapper/Luks-Signal
+  quiet umount -f /dev/mapper/Luks-Signal
   sleep 5
-  systemd-cryptsetup detach Luks-Signal
+  quiet systemd-cryptsetup detach Luks-Signal
 fi
 rm -r -f $docker_data/
 sleep 5
-snap enable docker
+quiet snap enable docker
 
 snap remove docker --purge 2>/dev/null && wait || echo "Failed to remove Docker"
 quiet networkctl delete docker0
 
 if [ "$MOUNT" != "" ]; then
-  systemd-cryptsetup attach Luks-Signal /dev/$3
+  systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
 fi
 
 if [[ "$(uname -m)" == "aarch64" ]]; then
@@ -453,10 +453,11 @@ quiet systemctl unmask snap.docker.dockerd --runtime
 quiet systemctl unmask snap.docker.nvidia-container-toolkit --runtime
 
 snap disable docker
+rm -f -r $docker_data/*
 if [ "$MOUNT" != "" ]; then
-  umount -f /dev/mapper/Luks-Signal
+  quiet umount -f /dev/mapper/Luks-Signal
   sleep 5
-  systemd-cryptsetup detach Luks-Signal
+  quiet systemd-cryptsetup detach Luks-Signal
 fi
 rm -f -r $docker_data/
 sleep 5
