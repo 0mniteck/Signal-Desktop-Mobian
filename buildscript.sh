@@ -155,7 +155,6 @@ snap install syft --classic && wait
 snap install grype --classic && wait
 
 unmount() {
-  if [ "$MOUNT" != "" ]; then
     quiet snap disable docker
     sync
     quiet umount -f /dev/mapper/Luks-Signal
@@ -164,10 +163,11 @@ unmount() {
     rm -r -f $docker_data/
     sleep 5
     quiet snap enable docker
-  fi
 }
 
-unmount
+if [ "$MOUNT" != "" ]; then
+    unmount
+fi
 
 snap remove docker --purge 2>/dev/null && wait || echo "Failed to remove Docker"
 quiet networkctl delete docker0
@@ -456,7 +456,9 @@ sys_ctl_common"
 quiet systemctl unmask snap.docker.dockerd --runtime
 quiet systemctl unmask snap.docker.nvidia-container-toolkit --runtime
 
-unmount
+if [ "$MOUNT" != "" ]; then
+    unmount
+fi
 
 snap remove docker --purge || echo "Failed to remove Docker"
 quiet networkctl delete docker0
