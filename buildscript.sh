@@ -36,8 +36,10 @@ if [ "$BRANCH" = "" ]; then
 fi
 if [ "$TEST" = "" ]; then
     TEST="no"
+    nulled=/dev/null
 else
     TEST="yes"
+    nulled=/tmp/nulled.log
     debug="set -x"
 fi
 if [ "$CROSS" = "" ]; then
@@ -116,7 +118,7 @@ _EOF__
 
 quiet() {
   echt="$@"
-  script -q -c "$echt" /dev/null > /dev/null
+  script -q -c "$echt" $nulled > $nulled
 }
 
 clean_most() {
@@ -157,11 +159,11 @@ snap install grype --classic && wait
 unmount() {
     quiet snap disable docker
     sync
-    quiet umount -f /dev/mapper/Luks-Signal
+    quiet umount /dev/mapper/Luks-Signal
     sleep 5
     quiet systemd-cryptsetup detach Luks-Signal
     sleep 5
-    quiet dmsetup remove -f /dev/mapper/Luks-Signal
+    quiet dmsetup remove /dev/mapper/Luks-Signal
     sleep 5 && rm -r -f $docker_data/
     quiet snap enable docker
 }
@@ -359,7 +361,7 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or /Path --select-cataloger
 
 quiet() {
   echt=\"\$@\"
-  script -q -c \"\$echt\" /dev/null > /dev/null
+  script -q -c \"\$echt\" $nulled > $nulled
 }
 
 sys_ctl_common
@@ -455,6 +457,8 @@ sys_ctl_common"
 
 quiet systemctl unmask snap.docker.dockerd --runtime
 quiet systemctl unmask snap.docker.nvidia-container-toolkit --runtime
+
+read -p test
 
 if [ "$MOUNT" != "" ]; then
     unmount
