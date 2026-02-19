@@ -154,15 +154,20 @@ apt-get -qq install -y bc cosign git-lfs gnupg2 gpg-agent \
 snap install syft --classic && wait
 snap install grype --classic && wait
 
-quiet snap disable docker
-if [ "$MOUNT" != "" ]; then
-  quiet umount -f /dev/mapper/Luks-Signal
-  sleep 5
-  quiet systemd-cryptsetup detach Luks-Signal
-fi
-rm -r -f $docker_data/
-sleep 5
-quiet snap enable docker
+unmount() {
+  if [ "$MOUNT" != "" ]; then
+    quiet snap disable docker
+    sync
+    quiet umount -f /dev/mapper/Luks-Signal
+    sleep 5
+    quiet systemd-cryptsetup detach Luks-Signal
+    rm -r -f $docker_data/
+    sleep 5
+    quiet snap enable docker
+  fi
+}
+
+unmount
 
 snap remove docker --purge 2>/dev/null && wait || echo "Failed to remove Docker"
 quiet networkctl delete docker0
@@ -187,12 +192,12 @@ systemctl daemon-reload
 
 clean_most
 
-echo && mkdir -p $docker_data && chown $run_as:$run_as $docker_data
 if [ "$MOUNT" != "" ]; then
+  echo && mkdir -p $docker_data && chown $run_as:$run_as $docker_data
   systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
   sleep 5 && echo
   mount /dev/mapper/Luks-Signal $docker_data
-  rm -f -r $docker_data/* && chown $run_as:$run_as $docker_data
+  sleep 5 && rm -f -r $docker_data/* && chown $run_as:$run_as $docker_data
 fi
 
 groupadd -f docker && wait
@@ -200,8 +205,8 @@ usermod -aG docker $run_as && wait
 mkdir -p /home/root && sed -i "s|:/root:|:/home/root:|" /etc/passwd
 
 mkdir -p /$plugins_path && wait
-ln -s /$snap_path/$plugins_path/docker-buildx /$plugins_path/docker-buildx > /dev/null || exit 1
-ln -s /$snap_path/$plugins_path/docker-compose /$plugins_path/docker-compose > /dev/null || exit 1
+ln -f -s /$snap_path/$plugins_path/docker-buildx /$plugins_path/docker-buildx > /dev/null || exit 1
+ln -f -s /$snap_path/$plugins_path/docker-compose /$plugins_path/docker-compose > /dev/null || exit 1
 
 machinectl shell $run_as@ /bin/bash -c "
 $debug
@@ -263,7 +268,7 @@ sys_ctl_common() {
 
 echo && read -p 'Press enter to start docker login'
 clean_some && docker login && mkdir -p $docker_data/.docker && wait && \
-ln -s $home/$snap_path/.docker/config.json $docker_data/.docker/config.json || exit 1
+ln -f -s $home/$snap_path/.docker/config.json $docker_data/.docker/config.json || exit 1
 echo && syft login registry-1.docker.io -u \$USERNAME && echo 'Logged in to syft' && echo
 
 mkdir -p $rootless_path/tmp && wait
@@ -449,18 +454,11 @@ sys_ctl_common"
 quiet systemctl unmask snap.docker.dockerd --runtime
 quiet systemctl unmask snap.docker.nvidia-container-toolkit --runtime
 
-snap disable docker
-rm -f -r $docker_data/*
-if [ "$MOUNT" != "" ]; then
-  quiet umount -f /dev/mapper/Luks-Signal
-  sleep 5
-  quiet systemd-cryptsetup detach Luks-Signal
-fi
-rm -f -r $docker_data/
-sleep 5
+unmount
 
 snap remove docker --purge || echo "Failed to remove Docker"
 quiet networkctl delete docker0
+
 snap remove grype --purge
 snap remove syft --purge
 
