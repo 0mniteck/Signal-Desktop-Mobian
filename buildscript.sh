@@ -63,7 +63,7 @@ if [[ "$run_id" == "" ]]; then
   else
     echo && echo "Pkexec is required for installation steps"
     echo "Using: ~\$ 'pkexec --keep-cwd ./buildscript.sh'" && echo
-    runm="pkexec --keep-cwd '$0' '$1' '$2' '$3' '$4' '$5' '$6' '$7' '$8' '$9' '$10' '$11' '$12' '$13' '$14' "
+    runm="pkexec --keep-cwd '$0' '$1' '$2' '$3' '$4' '$5' '$6' '$7' "
     if [[ "$(which asciinema)" == "/usr/bin/asciinema" ]]; then
       repo=$(cat .identity | grep REPO= | cut -d'=' -f2)
       project=$(cat .identity | grep PROJECT= | cut -d'=' -f2)
