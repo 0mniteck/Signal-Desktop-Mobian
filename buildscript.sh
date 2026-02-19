@@ -46,7 +46,7 @@ fi
 echo "Cross Compile: $CROSS"
 echo "Increment: $INC"
 echo "Override Source Epoch: $EPOCH"
-echo "Mount /dev/mmcblk1: $MOUNT"
+echo "Mount /dev/: $MOUNT"
 echo "Push to Branch: $BRANCH"
 echo "Tag Release: $TAG"
 echo "Run Tests: $TEST"
@@ -67,7 +67,8 @@ if [[ "$run_id" == "" ]]; then
       repo=$(cat .identity | grep REPO= | cut -d'=' -f2)
       project=$(cat .identity | grep PROJECT= | cut -d'=' -f2)
       rel_date=$(date -d "$(date)" +%m-%d-%Y)
-      exec asciinema rec -t "$repo/$project:$rel_date" -c "pkexec --keep-cwd \"$0\" \"$@\" "
+      runm="pkexec --keep-cwd \"$0\" \"$@\" "
+      exec asciinema rec -t "$repo/$project:$rel_date" -c "$runm"
     else
       exec pkexec --keep-cwd "$0" "$@"
     fi
