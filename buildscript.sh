@@ -69,7 +69,7 @@ if [[ "$run_id" == "" ]]; then
       rel_date=$(date -d "$(date)" +%m-%d-%Y)
       mkdir -p $HOME/.casts/$repo
       runm="pkexec --keep-cwd '$0' '$@' "
-      exec asciinema rec -t "$repo/$project:$rel_date" $HOME/.casts/$repo/$project:$rel_date.cast -c "$runm"
+      exec asciinema rec --overwrite -t "$repo/$project:$rel_date" $HOME/.casts/$repo/$project:$rel_date.cast -c "$runm"
     else
       exec pkexec --keep-cwd "$0" "$@"
     fi
