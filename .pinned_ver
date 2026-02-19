@@ -1,71 +1,9 @@
-export -- REPO=0mniteck
-export -- MODULE=signal-desktop
-export -- PROJECT=Signal-Desktop-Reproducible
-export -- USERNAME=0mniteck42
-export -- IDENTITY_FILE=.ssh/Signal-Desktop
-export -- SIGSTORE_USR=tiger-varsity-alto@duck.com
-export -- SIGNING_KEY=42E2DDF1E31B370F8BFFEE03287EE837E6ED2DD3
-git config --global user.email 10482171+0mniteck@users.noreply.github.com
-git config --global user.name 'Shant Patrick Tchatalbachian'
-git config --global user.signingkey $SIGNING_KEY
-echo '-----BEGIN PGP PUBLIC KEY BLOCK-----
-
-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
-=fLyV
------END PGP PUBLIC KEY BLOCK-----' | gpg --import
-
-cat > $HOME/$IDENTITY_FILE << EOF_
------BEGIN OPENSSH PRIVATE KEY-----
-b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBZKZAwWW
-NK9UpbTwp88TosAAAAEAAAAAEAAAB/AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3Bl
-bnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBEiJX2WvxTA7Gp495GWRltxXF/eUPRTa2n9/og
-CivBY7GvmCgTVVduoJViFr9asthMicIx75OY/NgCRP3T4UvrYAAAAEc3NoOgAAAOC5tfXi
-6Rb49iZ5Kuu828MqvLWC9ZYr3dFBzFtJroNpUiwSqSZCn1sU09hLVxx49rGZvlRFaOtYw0
-wqs8Gki0nKjth433JRaAaZawVw+9Y/NX5IQjc/4OAsALI/+uhU9F2YGHqMJlMGPHixuzRE
-dCF4V8Sjz4OvXvaE3/akBWnr1fyFP9ogBmiLd02NI9l+poLkHXR2Y+/cC7I6BVgImOfbze
-1KXzTswic/TZJs+Hclxre3Yy+uOzoWlNjGXsb4+3VE9uc5sjyIp+SUJAGJiK994VOBqVN0
-pPM4VR//Ys/BzA==
------END OPENSSH PRIVATE KEY-----
-EOF_
-
-cat > $HOME/$IDENTITY_FILE.pub << EOF__
-sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBEiJX2WvxTA7Gp495GWRltxXF/eUPRTa2n9/ogCivBY7GvmCgTVVduoJViFr9asthMicIx75OY/NgCRP3T4UvrYAAAAEc3NoOg== root@rock1
-EOF__
+export -- docker_snap_arm64_ver=3380
+export -- docker_snap_amd64_ver=3377
+export -- source_tag=02-18-2026
+export -- source_img=0mniteck/debian-slim:$source_tag
+export -- source_loc=docker.io/$source_img
+export -- source=$source_img@sha256:13b15f452474e3f662cb3c2c76d2b480f90c2e6318f3905ae9b4711fd6c7b10b
+export -- node_ver=24.11.1
+export -- nvm_ver=0.40.4
+export -- pnpm_ver=10.18.1
