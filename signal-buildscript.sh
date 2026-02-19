@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+trap '[[ $pid ]] && kill $pid; exit' EXIT
+
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 set -e
@@ -17,17 +19,24 @@ pushd /Signal-Desktop
   echo "SIGNAL_ENV: ${SIGNAL_ENV}"
   echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
 
-  NPM_CONFIG_LOGLEVEL="verbose" pnpm install
+#  NPM_CONFIG_LOGLEVEL="verbose" pnpm install
+#  pnpm run generate
+#  pnpm run lint
+#  pnpm run lint-deps
+#  pnpm run lint-license-comments
+#  REQUIRE_SIGNAL_LIB_FILES=1 pnpm run build:acknowledgments
+
+  NPM_CONFIG_LOGLEVEL="verbose" pnpm install --frozen-lockfile
+  pnpm run clean-transpile
+  pushd sticker-creator
+    NPM_CONFIG_LOGLEVEL="verbose" pnpm install --frozen-lockfile
+    pnpm run build
+  popd
   pnpm run generate
-  pnpm run lint
-  pnpm run lint-deps
-  pnpm run lint-license-comments
-  REQUIRE_SIGNAL_LIB_FILES=1 pnpm run build:acknowledgments
-  
-  NPM_CONFIG_LOGLEVEL="verbose" pnpm install
-  pnpm run generate
+
   if [ "${BUILD_TYPE}" = "public" ]; then
     pnpm run prepare-beta-build
+    pnpm run prepare-linux-build deb
   elif [ "${BUILD_TYPE}" = "alpha" ]; then
     pnpm run prepare-alpha-version
     pnpm run prepare-alpha-build
@@ -43,9 +52,10 @@ pushd /Signal-Desktop
     echo "Unknown build type ${BUILD_TYPE}"
     exit 1
   fi
-  pnpm run build:esbuild:prod
-  ARTIFACTS_DIR="artifacts/linux" xvfb-run --auto-servernum pnpm run build:preload-cache
-  DISABLE_INSPECT_FUSE="on" pnpm run build:release --arm64 --publish=never --linux deb
+  if [ "$TEST" = "yes" ]; then
+    ARTIFACTS_DIR="artifacts/linux" xvfb-run --auto-servernum pnpm run build:preload-cache
+  fi
+  DISABLE_INSPECT_FUSE="on" pnpm run build-linux
   if [ "$TEST" = "yes" ]; then
     xvfb-run --auto-servernum pnpm run test-node
     ARTIFACTS_DIR="artifacts/linux" xvfb-run --auto-servernum pnpm run test-electron
