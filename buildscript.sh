@@ -1,5 +1,6 @@
 #!/bin/bash
-
+#WIP
+read -p WIP
 while getopts ":c:i:d:m:p:r:t:" opt; do
     case $opt in
         c) # Cross Compile: yes/No
@@ -154,7 +155,7 @@ snap install syft --classic && wait
 snap install grype --classic && wait
 
 snap disable docker
-if [ "$3" != "" ]; then
+if [ "$MOUNT" != "" ]; then
   umount -f /dev/mapper/Luks-Signal
   sleep 5
   systemd-cryptsetup detach Luks-Signal
@@ -166,7 +167,7 @@ snap enable docker
 snap remove docker --purge 2>/dev/null && wait || echo "Failed to remove Docker"
 quiet networkctl delete docker0
 
-if [ "$3" != "" ]; then
+if [ "$MOUNT" != "" ]; then
   systemd-cryptsetup attach Luks-Signal /dev/$3
 fi
 
@@ -189,7 +190,7 @@ quiet networkctl delete docker0
 systemctl daemon-reload
 
 mkdir -p $docker_data
-if [ "$3" != "" ]; then
+if [ "$MOUNT" != "" ]; then
   mount /dev/mapper/Luks-Signal $docker_data
   rm -f -r $docker_data/*
 fi
@@ -208,6 +209,7 @@ machinectl shell $run_as@ /bin/bash -c "
 $debug
 cd $(echo $PWD)
 HOME=$home
+EPOCH=$EPOCH
 
 mkdir -p $home/.ssh && chmod 0700 $home/.ssh && \
 touch $home/.ssh/config && chmod 0644 $home/.ssh/config
@@ -444,6 +446,14 @@ quiet systemctl unmask snap.docker.dockerd --runtime
 quiet systemctl unmask snap.docker.nvidia-container-toolkit --runtime
 
 snap disable docker
+if [ "$3" != "" ]; then
+  umount -f /dev/mapper/Luks-Signal
+  sleep 5
+  systemd-cryptsetup detach Luks-Signal
+fi
+rm -f -r $docker_data/
+sleep 5
+
 snap remove docker --purge || echo "Failed to remove Docker"
 quiet networkctl delete docker0
 snap remove grype --purge
