@@ -1,93 +1,22 @@
+#WIP
+read -p WIP
+sudo screen -L -Logfile builder.log bash -c './re-run.sh public '$(($EPOCH))' '$MOUNT' '$TEST' '$CROSS && mv builder.log builds/release/builder.log
+
+
 #!/bin/bash
 
-if [ "$5" = "yes" ]; then
-  export CROSS="--platform linux/arm64"
+if [ "$INC" != "" ]; then
+Last_Version_Number=7.68
+Version_Number=$(echo "$Last_Version_Number + $1" | bc -l)
+sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g docs/_layouts/default.html
+sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g docs/README.md
+sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g readme.md
+sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g Dockerfile
+sed -i s/Last_Version_Number=$Last_Version_Number/Last_Version_Number=$Version_Number/g increment.sh
+echo Version Incremented From v$Last_Version_Number To v$Version_Number
 fi
 
-snap disable docker
-rm -f -r /var/snap/docker/*
-if [ "$3" != "" ]; then
-  umount -f /dev/mapper/Luks-Signal
-  sleep 5
-  systemd-cryptsetup detach Luks-Signal
-fi
-rm -f -r /var/snap/docker
-sleep 5
-snap enable docker
-snap remove docker --purge
-if [ "$3" != "" ]; then
-  systemd-cryptsetup attach Luks-Signal /dev/$3
-fi
-mkdir /var/snap/docker
-if [ "$3" != "" ]; then
-  mount /dev/mapper/Luks-Signal /var/snap/docker
-  rm -f -r /var/snap/docker/*
-fi
-rm -f -r /var/lib/snapd/cache/*
-chown root:root /var/snap/docker
-if [ -f /etc/keys/.private.key ]; then
-  echo "Loading buildtool private keys..."
-  cp /etc/keys/.private.key .private.key
-fi
-
-source_date_epoch=1
-if [ "$2" = "today" ]; then
-  timestamp=$(date -d $(date +%D) +%s);
-  if [ "${timestamp}" != "" ]; then
-    echo "Setting SOURCE_DATE_EPOCH from today's date: $(date +%D) = @$timestamp";
-    source_date_epoch=$((timestamp));
-  else
-    echo "Can't get timestamp. Defaulting to 1.";
-    source_date_epoch=1;
-  fi
-elif [ "$2" != 0 ]; then
-  echo "Using override timestamp for SOURCE_DATE_EPOCH."
-  source_date_epoch=$(($2))
-else
-  timestamp=$(cat builds/release/release.sha512sum | grep Epoch | cut -d ' ' -f5)
-  if [ "${timestamp}" != "" ]; then
-    echo "Setting SOURCE_DATE_EPOCH from release.sha512sum: $(cat builds/release/release.sha512sum | grep Epoch | cut -d ' ' -f5)"
-    source_date_epoch=$((timestamp))
-    check_file=1
-    cp builds/release/release.sha512sum /tmp/release.last.sha512sum
-  else
-    echo "Can't get latest commit timestamp. Defaulting to 1."
-    source_date_epoch=1
-  fi
-fi
-
-scan_using_grype() { # $1 = Name
-  pushd Results/
-    script -q -c "grype -c $HOME/.grype.yaml sbom:$1.spdx.json -o json > $1.grype.json" $1.grype.tmp
-    grep "✔ Scanned for vulnerabilities" $1.grype.tmp | tail -n 1 > $1.grype.status.1
-    tr -d '\000-\037\177' < $1.grype.status.1 | sed '/^$/d' > $1.grype.status.1.tmp
-    line1=$(cat $1.grype.status.1.tmp)
-    left1=${line1%%" [K"*}
-    grep "├── by severity:" $1.grype.tmp | tail -n 1 > $1.grype.status.2
-    tr -d '\000-\037\177' < $1.grype.status.2 | sed '/^$/d' > $1.grype.status.2.tmp
-    line2=$(cat $1.grype.status.2.tmp)
-    left2=${line2%%" [K"*}
-    grep "└── by status:" $1.grype.tmp | tail -n 1 > $1.grype.status.3
-    tr -d '\000-\037\177' < $1.grype.status.3 | sed '/^$/d' > $1.grype.status.3.tmp
-    line3=$(cat $1.grype.status.3.tmp)
-    left3=${line3%%" [K"*}
-    echo $left1 > $1.grype.status
-    echo $left2 >> $1.grype.status
-    echo $left3 >> $1.grype.status
-    rm -f $1.grype.tmp
-    rm -f $1.grype.status.*
-    cat $1.grype.status
-  popd
-}
-
-if [ "$5" = "yes" ]; then
-  snap install docker --revision=3377
-else
-  snap install docker --revision=3380 && systemctl stop snap.docker.nvidia-container-toolkit
-  systemctl disable snap.docker.nvidia-container-toolkit
-fi
-
-docker buildx create --name signal-builder --driver-opt "network=host" --bootstrap --use
+$ docker buildx create --name signal-builder --driver-opt "network=host" --bootstrap --use
 if [ "$5" = "yes" ]; then
   docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-56 --install all
 fi
@@ -115,12 +44,7 @@ snap install syft --classic
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft docker:signal-desktop -o spdx-json=builds/release/signal.spdx.json && rm -f -r "$HOME/syft"
 snap disable docker
 rm -f -r /var/snap/docker/*
-if [ "$3" != "" ]; then
-  umount -f /dev/mapper/Luks-Signal
-  sleep 5
-  systemd-cryptsetup detach Luks-Signal
-fi
-rm -f -r /var/snap/docker
+
 sleep 5
 snap remove docker --purge
 snap remove docker --purge
@@ -141,4 +65,15 @@ if [ "$check_file" = "1" ]; then
     rm -f /tmp/release.last.sha512sum && rm -f release.last.sha512sum
   popd
 fi
-read -p "Close Screen Session: Continue to Signing-->"
+
+echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> builds/release/release.sha512sum
+awk '{a[i++]=$0}END{for(j=0;j<i-2;j++)print a[j];print a[i-1];print a[i-2]}' builds/release/release.sha512sum > tmp && mv tmp builds/release/release.sha512sum
+ls -la builds/release/
+
+./git.sh $BRANCH $TAG
+
+git status && git add -A && git status
+git commit -a -S -m "Successful Build of Reproducible Release 7.68.0" && git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD):$1
+if [ "$2" != "" ]; then
+  git tag -a "$2" -s -m "Tagged Release $2" && sleep 5 && git push origin "$2"
+fi
