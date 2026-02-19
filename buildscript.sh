@@ -188,6 +188,7 @@ systemctl daemon-reload
 mkdir -p $docker_data
 if [ "$MOUNT" != "" ]; then
   systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
+  sleep 5
   mount /dev/mapper/Luks-Signal $docker_data
   rm -f -r $docker_data/*
 fi
@@ -221,7 +222,7 @@ chmod 0600 $home/\$IDENTITY_FILE && chmod 0644 $home/\$IDENTITY_FILE.pub
 
 echo
 source_date_epoch=1
-if [ \"$EPOCH\" = *today* ]; then
+if [ \"\$EPOCH\" = *today* ]; then
   timestamp=\$(date -d \$(date +%D) +%s);
   if [ \"\$timestamp\" != \"\" ]; then
     echo \"Setting SOURCE_DATE_EPOCH from today's date: \$(date +%D) = @\$timestamp\";
