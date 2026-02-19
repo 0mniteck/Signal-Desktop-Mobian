@@ -208,8 +208,8 @@ ln -s /$snap_path/$plugins_path/docker-compose /$plugins_path/docker-compose > /
 machinectl shell $run_as@ /bin/bash -c "
 $debug
 cd $(echo $PWD)
-HOME=$home
-EPOCH=$EPOCH
+HOME=$home; CROSS=$CROSS; EPOCH=$EPOCH; INC=$INC
+MOUNT=$MOUNT; BRANCH=$BRANCH; TAG=$TAG; TEST=$TEST
 
 mkdir -p $home/.ssh && chmod 0700 $home/.ssh && \
 touch $home/.ssh/config && chmod 0644 $home/.ssh/config
@@ -435,8 +435,10 @@ mkdir -p Results && pushd Results
 popd
 
 git status && git add -A && git status && read -p 'Press enter to launch pinentry'
-git commit -a -S -m \"Successful Build of Release \$date_rel\" && git push --set-upstream origin builder
-git tag -a \$date_rel -s -m \"Tagged Release \$date_rel\" && git push origin \$date_rel
+git commit -a -S -m \"Successful Build of Release \$date_rel\" && git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD):\$BRANCH
+if [ \"\$TAG\" != \"\" ]; then
+  git tag -a \"\$TAG\" -s -m \"Tagged Release \$TAG\" && sleep 5 && git push origin \"\$TAG\"
+fi
 
 ssh-add -D && eval \"\$(ssh-agent -k)\"
 clean_some
@@ -446,7 +448,7 @@ quiet systemctl unmask snap.docker.dockerd --runtime
 quiet systemctl unmask snap.docker.nvidia-container-toolkit --runtime
 
 snap disable docker
-if [ "$3" != "" ]; then
+if [ "$MOUNT" != "" ]; then
   umount -f /dev/mapper/Luks-Signal
   sleep 5
   systemd-cryptsetup detach Luks-Signal
