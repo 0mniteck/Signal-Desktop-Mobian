@@ -356,10 +356,6 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or /Path --select-cataloger
   echo '\`\`\`' >> readme.md
 }
 
-docker() {
-exec $docker \"\$@\"
-}
-
 quiet() {
   echt=\"\$@\"
   script -q -c \"\$echt\" /dev/null > /dev/null
@@ -370,7 +366,13 @@ systemctl --user start docker.dockerd && sleep 10
 systemctl --user status docker.dockerd --all --no-pager -n 150 > $rootless_path/rootless.ctl.log
 
 source $rootless_path/env-rootless.exp
+
+docker() {
+exec $docker \"\$@\"
+}
+
 quiet \"\docker info | grep rootless > $rootless_path/rootless.status\"
+cat $rootless_path/rootless.status
 if [[ \"\$(grep root $rootless_path/rootless.status)\" != *rootless* ]]; then
   echo \"Rootless Docker Failed\" && echo
   exit 1
