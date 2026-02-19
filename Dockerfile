@@ -13,7 +13,7 @@ ARG NVM_VERSION
 ARG PNPM_VERSION
 
 ADD https://github.com/nvm-sh/nvm/raw/v$NVM_VERSION/install.sh /
-RUN echo "774f51ef51821b2896739108f51a91a81abb79f5adbb8dab8629a095ad71443c617cc35350b2a41b86a9179527a43de69e975c6ebec7e8d507a97b21fb4ceb73  install.sh" | sha512sum --status -c - && echo "install.sh Checksum Matched!" || exit 1
+RUN echo "a8e082d8d1a9b61a09e5d3e1902d2930e5b1b84a86f9777c7d2eb50ea204c0141f6a97c54a860bc3282e7b000f1c669c755f5e0db7bd6d492072744c302c0a21  install.sh" | sha512sum --status -c - && echo "install.sh Checksum Matched!" || exit 1
 RUN chmod +x install.sh && ./install.sh && . $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm alias $NODE_VERSION && nvm use $NODE_VERSION
 
 ADD https://github.com/node-ffi-napi/node-ffi-napi/raw/master/deps/libffi/config/linux/arm64/fficonfig.h /
