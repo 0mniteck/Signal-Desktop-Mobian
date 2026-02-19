@@ -68,15 +68,15 @@ docker run -it --cpus=$(nproc) \
 
 rm -r -f builds/release && mkdir -p builds/release
 docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -r -f builds/release/linux-*
-mv builds/release/release.sha512sum Results/release.sha512sum
 
+pushd builds/release/
 if [ "$check_file" = "1" ]; then
-  pushd builds/release/
-    cp /tmp/release.last.sha512sum release.last.sha512sum
-    sha512sum -c release.last.sha512sum
-    rm -f /tmp/release.last.sha512sum && rm -f release.last.sha512sum
-  popd
+  cp /tmp/release.last.sha512sum release.last.sha512sum
+  sha512sum -c release.last.sha512sum
+  rm -f /tmp/release.last.sha512sum && rm -f release.last.sha512sum
 fi
+mv release.sha512sum Results/release.sha512sum
+popd
 
 echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Results/release.sha512sum
 awk '{a[i++]=$0}END{for(j=0;j<i-2;j++)print a[j];print a[i-1];print a[i-2]}' builds/release/release.sha512sum > tmp && mv tmp Results/release.sha512sum
