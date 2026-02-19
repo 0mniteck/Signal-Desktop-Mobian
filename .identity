@@ -1,1 +1,6 @@
-tmp
+export -- docker_snap_arm64_ver=3380
+export -- docker_snap_amd64_ver=3377
+export -- source_tag=02-18-2026
+export -- source_img=0mniteck/debian-slim:$source_tag
+export -- source_loc=docker.io/$source_img
+export -- source=$source_img@sha256:13b15f452474e3f662cb3c2c76d2b480f90c2e6318f3905ae9b4711fd6c7b10b
