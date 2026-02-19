@@ -1,6 +1,6 @@
 [![image](https://github.com/user-attachments/assets/202613c2-97b8-4b54-b72c-6f8e110f0ff4)](https://signal.org)
 
-# Signal Desktop Builder For Mobian
+# Signal Desktop Builder For Debian:arm64
 ### [signal-desktop_7.68.0_arm64.deb](https://github.com/0mniteck/Signal-Desktop-Mobian/blob/7.68.x/builds/release/signal-desktop_7.68.0_arm64.deb)
 
 This project reproducibly builds Signal Desktop for Debian Trixie on ARM64, currently targeting tag `7.68.x`
