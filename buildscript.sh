@@ -187,12 +187,12 @@ systemctl daemon-reload
 
 clean_most
 
-echo && mkdir -p $docker_data
+echo && mkdir -p $docker_data && chown $run_as:$run_as $docker_data
 if [ "$MOUNT" != "" ]; then
   systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
   sleep 5 && echo
   mount /dev/mapper/Luks-Signal $docker_data
-  rm -f -r $docker_data/*
+  rm -f -r $docker_data/* && chown $run_as:$run_as $docker_data
 fi
 
 groupadd -f docker && wait
