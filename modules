@@ -1,9 +1,7 @@
+#!/bin/bash
+
 #WIP
 read -p WIP
-sudo screen -L -Logfile builder.log bash -c './re-run.sh public '$(($EPOCH))' '$MOUNT' '$TEST' '$CROSS && mv builder.log builds/release/builder.log
-
-
-#!/bin/bash
 
 if [ "$INC" != "" ]; then
 Last_Version_Number=7.68
@@ -16,48 +14,44 @@ sed -i s/Last_Version_Number=$Last_Version_Number/Last_Version_Number=$Version_N
 echo Version Incremented From v$Last_Version_Number To v$Version_Number
 fi
 
-$ docker buildx create --name signal-builder --driver-opt "network=host" --bootstrap --use
-if [ "$5" = "yes" ]; then
-  docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-56 --install all
-fi
-docker buildx build --tag signal-desktop --load $CROSS \
+$docker buildx create \
+  --name $MODULE-builder --buildkitd-flags "--oci-worker-rootless=true" \
+  --driver docker-container --driver-opt "network=host,default-load=true" --bootstrap --use
+
+mkdir -p Results && pushd Results
+  rm -f $MODULE.* readme.md
+  cosign_run=$(echo "script -q -c 'cosign verify-attestation $source_loc \
+    --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
+    --type spdxjson > base.image.sig' /dev/null > base.image.attested")
+  echo $cosign_run | bash || echo $cosign_run | bash || exit 1
+popd
+
+$docker buildx build --tag $MODULE $CROSS \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg SOURCE=0mniteck/debian-slim:02-18-2026@sha256:13b15f452474e3f662cb3c2c76d2b480f90c2e6318f3905ae9b4711fd6c7b10b \
-  --build-arg NODE_VERSION=24.11.1 \
-  --build-arg NVM_VERSION=0.40.4 \
-  --build-arg PNPM_VERSION=10.18.1 .
+  --build-arg SOURCE=$source \
+  --build-arg NODE_VERSION=$node_ver \
+  --build-arg NVM_VERSION=$nvm_ver \
+  --build-arg PNPM_VERSION=$pnpm_ver .
 
-shred .private.key && rm -f .private.key
+pushd Results
+  cosign_run=$(echo "script -q -c 'cosign verify-attestation docker.io/$REPO/$MODULE:$rel_date \
+    --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
+    --type spdxjson > $MODULE.image.sig' /dev/null > $MODULE.image.attested")
+  echo $cosign_run | bash || echo $cosign_run | bash || exit 1
+popd
 
-docker run -it --cpus=$(nproc) \
+$docker run -it --cpus=$(nproc) \
   --network=name=host,\"driver-opt=network=host\" \
-  --name signal-desktop $CROSS \
-  --user "$(id -u):$(id -g)" \
+  --name $MODULE $CROSS \
   -e PNPM_HOME=/tmp/.pnpm-home \
   -e NPM_CONFIG_CACHE=/tmp/.npm-cache \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
-  signal-desktop $1 $4
+  $MODULE $TEST $SIGNING_KEY
 
-rm -fr builds/release && mkdir -p builds/release && docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -fr builds/release/linux-*
+rm -r -f builds/release && mkdir -p builds/release
+$docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -r -f builds/release/linux-*
+mv builds/release/release.sha512sum Results/release.sha512sum
 
-snap install syft --classic
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft docker:signal-desktop -o spdx-json=builds/release/signal.spdx.json && rm -f -r "$HOME/syft"
-snap disable docker
-rm -f -r /var/snap/docker/*
-
-sleep 5
-snap remove docker --purge
-snap remove docker --purge
-networkctl delete docker0
-rm -f -r /var/lib/snapd/cache/*
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft / --select-catalogers "debian" -o spdx-json=builds/release/ubuntu.25.04.spdx.json && rm -f -r "$HOME/syft"
-snap remove syft --purge && rm -f -r $HOME/.cache/syft
-snap install grype --classic
-scan_using_grype builds/release/signal
-scan_using_grype builds/release/ubuntu.25.04
-snap remove grype --purge
-rm /root/getter* -f -r && rm /root/grype-scratch* -f -r && rm /root/syft -f -r && rm /root/6 -f -r && rm /root/Library -f -r && rm -f -r $HOME/.cache/grype && rm -f -r $HOME/.cache/syft && rm -f -r /tmp/grype-scratch* && rm -f -r /tmp/getter*
-rm -f -r /var/lib/snapd/cache/*
 if [ "$check_file" = "1" ]; then
   pushd builds/release/
     cp /tmp/release.last.sha512sum release.last.sha512sum
@@ -69,11 +63,3 @@ fi
 echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> builds/release/release.sha512sum
 awk '{a[i++]=$0}END{for(j=0;j<i-2;j++)print a[j];print a[i-1];print a[i-2]}' builds/release/release.sha512sum > tmp && mv tmp builds/release/release.sha512sum
 ls -la builds/release/
-
-./git.sh $BRANCH $TAG
-
-git status && git add -A && git status
-git commit -a -S -m "Successful Build of Reproducible Release 7.68.0" && git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD):$1
-if [ "$2" != "" ]; then
-  git tag -a "$2" -s -m "Tagged Release $2" && sleep 5 && git push origin "$2"
-fi
