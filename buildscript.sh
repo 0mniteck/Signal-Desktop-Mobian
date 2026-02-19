@@ -158,13 +158,15 @@ snap install grype --classic && wait
 
 unmount() {
     quiet snap disable docker
+    kill $(lsof -F p $docker_data | cut -d'p' -f2)
+    rm -r -f $docker_data/*
     sync
     quiet umount $docker_data
-    sleep 5
+    sleep 1
     quiet systemd-cryptsetup detach Luks-Signal
-    sleep 5
+    sleep 1
     quiet dmsetup remove /dev/mapper/Luks-Signal
-    sleep 5 && rm -r -f $docker_data/
+    sleep 1 && rm -r -f $docker_data/
     quiet snap enable docker
 }
 
@@ -196,11 +198,11 @@ systemctl daemon-reload
 clean_most
 
 if [ "$MOUNT" != "" ]; then
-  echo && mkdir -p $docker_data && chown $run_as:$run_as $docker_data
+  echo && rm -f -r $docker_data/ && mkdir -p $docker_data && chown $run_as:$run_as $docker_data
   systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
-  sleep 5 && echo
+  sleep 1 && echo
   mount /dev/mapper/Luks-Signal $docker_data
-  sleep 5 && rm -f -r $docker_data/* && chown $run_as:$run_as $docker_data
+  sleep 1 && rm -f -r $docker_data/* && chown $run_as:$run_as $docker_data
 fi
 
 groupadd -f docker && wait
