@@ -27,20 +27,23 @@ mkdir -p Results && pushd Results
   echo $cosign_run | bash || echo $cosign_run | bash || exit 1
 popd
 
-$docker buildx build $CROSS \
-  --push --tag $REPO/$MODULE:$rel_date \
-  --metadata-file Results/$MODULE.meta.json \
-  --attest "type=provenance,mode=max" \
-  --label org.opencontainers.image.vendor=$REPO \
-  --label org.opencontainers.image.licenses=GPL-3.0 \
-  --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg SOURCE=$source \
-  --build-arg NODE_VERSION=$node_ver \
-  --build-arg NVM_VERSION=$nvm_ver \
-  --build-arg PNPM_VERSION=$pnpm_ver .
-$docker buildx stop $MODULE-builder && wait
-$docker buildx rm -f --all-inactive && wait
-$docker buildx prune -f -a && wait && echo
+if [[ "$last_rel_date" != "$rel_date" ]]; then
+  sed -i 's/last_rel_date=$last_rel_date/last_rel_date=$rel_date/' .pinned_ver
+  $docker buildx build $CROSS \
+    --push --tag $REPO/$MODULE:$rel_date \
+    --metadata-file Results/$MODULE.meta.json \
+    --attest "type=provenance,mode=max" \
+    --label org.opencontainers.image.vendor=$REPO \
+    --label org.opencontainers.image.licenses=GPL-3.0 \
+    --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
+    --build-arg SOURCE=$source \
+    --build-arg NODE_VERSION=$node_ver \
+    --build-arg NVM_VERSION=$nvm_ver \
+    --build-arg PNPM_VERSION=$pnpm_ver .
+  $docker buildx stop $MODULE-builder && wait
+  $docker buildx rm -f --all-inactive && wait
+  $docker buildx prune -f -a && wait && echo
+fi
 
 pushd Results
   scan_using_grype $MODULE $REPO/$MODULE:$rel_date $rel_date
