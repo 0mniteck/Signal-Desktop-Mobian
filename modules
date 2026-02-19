@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#WIP
-read -p WIP
-
 if [ "$CROSS" = "yes" ]; then
   export -- CROSS="--platform linux/arm64,linux/amd64"
 fi
