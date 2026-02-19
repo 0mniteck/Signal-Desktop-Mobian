@@ -220,22 +220,31 @@ source .identity
 source .pinned_ver
 chmod 0600 $home/\$IDENTITY_FILE && chmod 0644 $home/\$IDENTITY_FILE.pub
 
-if [[ \"\$EPOCH\" == \"\" ]]; then
-  EPOCH=\"today\"
-fi
+echo
 source_date_epoch=1
-if [[ \"\$EPOCH\" == *today* ]]; then
+if [ \"$EPOCH\" = *today* ]; then
   timestamp=\$(date -d \$(date +%D) +%s);
-  if [[ \"\$timestamp\" != \"\" ]]; then
-    echo && echo \"Setting SOURCE_DATE_EPOCH from today's date: \$(date +%D) = @\$timestamp\";
+  if [ \"\$timestamp\" != \"\" ]; then
+    echo \"Setting SOURCE_DATE_EPOCH from today's date: \$(date +%D) = @\$timestamp\";
     source_date_epoch=\$((timestamp));
   else
     echo \"Can't get timestamp. Defaulting to 1.\";
     source_date_epoch=1;
   fi
-elif [[ \"\$EPOCH\" != 0 ]]; then
-  echo && echo \"Using override timestamp \$EPOCH for SOURCE_DATE_EPOCH.\"
+elif [ \"\$EPOCH\" != 0 ]; then
+  echo \"Using override timestamp \$EPOCH for SOURCE_DATE_EPOCH.\"
   source_date_epoch=\$((\$EPOCH))
+else
+  timestamp=\$(cat builds/release/release.sha512sum | grep Epoch | cut -d ' ' -f5)
+  if [ \"\$timestamp\" != \"\" ]; then
+    echo \"Setting SOURCE_DATE_EPOCH from release.sha512sum: \$(cat builds/release/release.sha512sum | grep Epoch | cut -d ' ' -f5)\"
+    source_date_epoch=\$((timestamp))
+    check_file=1
+    cp builds/release/release.sha512sum /tmp/release.last.sha512sum
+  else
+    echo \"Can't get latest commit timestamp. Defaulting to 1.\"
+    source_date_epoch=1
+  fi
 fi
 SOURCE_DATE_EPOCH=\$source_date_epoch
 
