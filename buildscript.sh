@@ -187,10 +187,10 @@ systemctl daemon-reload
 
 clean_most
 
-mkdir -p $docker_data
+echo && mkdir -p $docker_data
 if [ "$MOUNT" != "" ]; then
   systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
-  sleep 5
+  sleep 5 && echo
   mount /dev/mapper/Luks-Signal $docker_data
   rm -f -r $docker_data/*
 fi
