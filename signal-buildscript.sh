@@ -14,12 +14,15 @@ pushd /Signal-Desktop
   echo "RUN_TESTS: ${TEST}"
   echo "BUILD_TYPE: ${BUILD_TYPE}"
   echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
-  pnpm install --frozen-lockfile
-  pnpm run clean-transpile
-  cd sticker-creator
-    pnpm install --frozen-lockfile
-    pnpm run build
-  cd ..
+  
+  NPM_CONFIG_LOGLEVEL="verbose" pnpm install
+  pnpm run generate
+  pnpm run lint
+  pnpm run lint-deps
+  pnpm run lint-license-comments
+  REQUIRE_SIGNAL_LIB_FILES=1 pnpm run build:acknowledgments
+  
+  NPM_CONFIG_LOGLEVEL="verbose" pnpm install
   pnpm run generate
   if [ "${BUILD_TYPE}" = "public" ]; then
     pnpm run prepare-beta-build
@@ -39,14 +42,12 @@ pushd /Signal-Desktop
     exit 1
   fi
   pnpm run build:esbuild:prod
-  xvfb-run --auto-servernum pnpm run build:preload-cache
-  pnpm run build:release --arm64 --publish=never --linux deb
-  # echo "Generating SBOM at /Signal-Desktop/release/manifest.spdx.json"
-  # npm sbom --sbom-format="spdx" --sbom-type="application" > /Signal-Desktop/release/manifest.spdx.json
+  ARTIFACTS_DIR="artifacts/linux" xvfb-run --auto-servernum pnpm run build:preload-cache
+  DISABLE_INSPECT_FUSE="on" pnpm run build:release --arm64 --publish=never --linux deb
   if [ "$TEST" = "yes" ]; then
-    # xvfb-run --auto-servernum pnpm run test-node
-    # xvfb-run --auto-servernum pnpm run test-electron
-    # xvfb-run --auto-servernum pnpm run test-release
+    xvfb-run --auto-servernum pnpm run test-node
+    ARTIFACTS_DIR="artifacts/linux" xvfb-run --auto-servernum pnpm run test-electron
+    NODE_ENV="production" xvfb-run --auto-servernum pnpm run test-release
   fi
   pushd release/
     sha512sum *.deb && sha512sum *.deb >> release.sha512sum
