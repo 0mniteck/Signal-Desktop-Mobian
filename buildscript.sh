@@ -185,6 +185,8 @@ quiet systemctl mask snap.docker.dockerd --runtime --now
 quiet networkctl delete docker0
 systemctl daemon-reload
 
+clean_most
+
 mkdir -p $docker_data
 if [ "$MOUNT" != "" ]; then
   systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
@@ -192,8 +194,6 @@ if [ "$MOUNT" != "" ]; then
   mount /dev/mapper/Luks-Signal $docker_data
   rm -f -r $docker_data/*
 fi
-
-clean_most
 
 groupadd -f docker && wait
 usermod -aG docker $run_as && wait
@@ -222,22 +222,22 @@ chmod 0600 $home/\$IDENTITY_FILE && chmod 0644 $home/\$IDENTITY_FILE.pub
 
 echo
 source_date_epoch=1
-if [ \"\$EPOCH\" = *today* ]; then
+if [[ \"\$EPOCH\" = *today* ]]; then
   timestamp=\$(date -d \$(date +%D) +%s);
-  if [ \"\$timestamp\" != \"\" ]; then
+  if [[ \"\$timestamp\" != \"\" ]]; then
     echo \"Setting SOURCE_DATE_EPOCH from today's date: \$(date +%D) = @\$timestamp\";
     source_date_epoch=\$((timestamp));
   else
     echo \"Can't get timestamp. Defaulting to 1.\";
     source_date_epoch=1;
   fi
-elif [ \"\$EPOCH\" != 0 ]; then
+elif [[ \"\$EPOCH\" != 0 ]]; then
   echo \"Using override timestamp \$EPOCH for SOURCE_DATE_EPOCH.\"
   source_date_epoch=\$((\$EPOCH))
 else
-  timestamp=\$(cat builds/release/release.sha512sum | grep Epoch | cut -d ' ' -f5)
-  if [ \"\$timestamp\" != \"\" ]; then
-    echo \"Setting SOURCE_DATE_EPOCH from release.sha512sum: \$(cat builds/release/release.sha512sum | grep Epoch | cut -d ' ' -f5)\"
+  timestamp=\$(cat Results/release.sha512sum | grep Epoch | cut -d ' ' -f5)
+  if [[ \"\$timestamp\" != \"\" ]]; then
+    echo \"Setting SOURCE_DATE_EPOCH from release.sha512sum: \$(cat Results/release.sha512sum | grep Epoch | cut -d ' ' -f5)\"
     source_date_epoch=\$((timestamp))
     check_file=1
     cp builds/release/release.sha512sum /tmp/release.last.sha512sum
@@ -437,7 +437,7 @@ mkdir -p Results && pushd Results
 popd
 
 git status && git add -A && git status && read -p 'Press enter to launch pinentry'
-git commit -a -S -m \"Successful Build of Release \$date_rel\" && git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD):\$BRANCH
+git commit -a -S -m \"Successful Build of Release \$date_rel\" && git push --set-upstream origin \$(git rev-parse --abbrev-ref HEAD):\$BRANCH
 if [ \"\$TAG\" != \"\" ]; then
   git tag -a \"\$TAG\" -s -m \"Tagged Release \$TAG\" && sleep 5 && git push origin \"\$TAG\"
 fi
