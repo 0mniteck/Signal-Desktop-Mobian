@@ -160,6 +160,7 @@ unmount() {
     quiet umount -f /dev/mapper/Luks-Signal
     sleep 5
     quiet systemd-cryptsetup detach Luks-Signal
+    dmsetup remove -f /dev/mapper/Luks-Signal
     rm -r -f $docker_data/
     sleep 5
     quiet snap enable docker
