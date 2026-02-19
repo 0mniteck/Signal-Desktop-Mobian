@@ -63,15 +63,15 @@ if [[ "$run_id" == "" ]]; then
   else
     echo && echo "Pkexec is required for installation steps"
     echo "Using: ~\$ 'pkexec --keep-cwd ./buildscript.sh'" && echo
+    runm="pkexec --keep-cwd '$0' '$1' '$2' '$3' '$4' '$5' '$6' '$7' "
     if [[ "$(which asciinema)" == "/usr/bin/asciinema" ]]; then
       repo=$(cat .identity | grep REPO= | cut -d'=' -f2)
       project=$(cat .identity | grep PROJECT= | cut -d'=' -f2)
       rel_date=$(date -d "$(date)" +%m-%d-%Y)
       mkdir -p $HOME/.casts/$repo
-      runm="pkexec --keep-cwd '$0' '$@' "
       exec asciinema rec --overwrite -t "$repo/$project:$rel_date" $HOME/.casts/$repo/$project:$rel_date.cast -c "$runm"
     else
-      exec pkexec --keep-cwd "$0" "$@"
+      exec $runm
     fi
     exit 0
   fi
