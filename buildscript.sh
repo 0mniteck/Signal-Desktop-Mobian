@@ -67,8 +67,9 @@ if [[ "$run_id" == "" ]]; then
       repo=$(cat .identity | grep REPO= | cut -d'=' -f2)
       project=$(cat .identity | grep PROJECT= | cut -d'=' -f2)
       rel_date=$(date -d "$(date)" +%m-%d-%Y)
+      mkdir -p $HOME/.casts
       runm="pkexec --keep-cwd \"$0\" \"$@\" "
-      exec asciinema rec -t "$repo/$project:$rel_date" -c "$runm"
+      exec asciinema rec -t "$repo/$project:$rel_date" $HOME/.casts/$repo/$project:$rel_date.cast -c "$runm"
     else
       exec pkexec --keep-cwd "$0" "$@"
     fi
