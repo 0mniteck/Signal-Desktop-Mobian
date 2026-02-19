@@ -3,6 +3,10 @@
 #WIP
 read -p WIP
 
+if [ "$CROSS" = "yes" ]; then
+  export -- CROSS="--platform linux/arm64,linux/amd64"
+fi
+
 if [ "$INC" != "" ]; then
 Last_Version_Number=7.68
 Version_Number=$(echo "$Last_Version_Number + $1" | bc -l)
@@ -26,27 +30,41 @@ mkdir -p Results && pushd Results
   echo $cosign_run | bash || echo $cosign_run | bash || exit 1
 popd
 
-$docker buildx build --tag $MODULE $CROSS \
+$docker buildx build $CROSS \
+  --push --tag $REPO/$MODULE:$rel_date \
+  --metadata-file Results/$MODULE.meta.json \
+  --attest "type=provenance,mode=max" \
+  --label org.opencontainers.image.vendor=$REPO \
+  --label org.opencontainers.image.licenses=GPL-3.0 \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg SOURCE=$source \
   --build-arg NODE_VERSION=$node_ver \
   --build-arg NVM_VERSION=$nvm_ver \
   --build-arg PNPM_VERSION=$pnpm_ver .
+$docker buildx stop $MODULE-builder && wait
+$docker buildx rm -f --all-inactive && wait
+$docker buildx prune -f -a && wait && echo
 
 pushd Results
+  scan_using_grype $MODULE $REPO/$MODULE:$rel_date $rel_date
+  echo '# '$REPO/$MODULE:$rel_date > $MODULE.image.digest
+  cat $MODULE.meta.json | jq .[] | tail -n 2 | grep sha256 | sed 's/\"//g' >> $MODULE.image.digest
+  cat $MODULE.image.digest >> readme.md && cat readme.md
+
   cosign_run=$(echo "script -q -c 'cosign verify-attestation docker.io/$REPO/$MODULE:$rel_date \
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
     --type spdxjson > $MODULE.image.sig' /dev/null > $MODULE.image.attested")
   echo $cosign_run | bash || echo $cosign_run | bash || exit 1
+  cat $MODULE.image.attested && cat base.image.attested && echo
 popd
 
 $docker run -it --cpus=$(nproc) \
   --network=name=host,\"driver-opt=network=host\" \
-  --name $MODULE $CROSS \
+  --name $MODULE --platform linux/arm64 \
   -e PNPM_HOME=/tmp/.pnpm-home \
   -e NPM_CONFIG_CACHE=/tmp/.npm-cache \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
-  $MODULE $TEST $SIGNING_KEY
+   $REPO/$MODULE:$rel_date $TEST $SIGNING_KEY
 
 rm -r -f builds/release && mkdir -p builds/release
 $docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -r -f builds/release/linux-*
@@ -60,6 +78,6 @@ if [ "$check_file" = "1" ]; then
   popd
 fi
 
-echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> builds/release/release.sha512sum
-awk '{a[i++]=$0}END{for(j=0;j<i-2;j++)print a[j];print a[i-1];print a[i-2]}' builds/release/release.sha512sum > tmp && mv tmp builds/release/release.sha512sum
-ls -la builds/release/
+echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Results/release.sha512sum
+awk '{a[i++]=$0}END{for(j=0;j<i-2;j++)print a[j];print a[i-1];print a[i-2]}' builds/release/release.sha512sum > tmp && mv tmp Results/release.sha512sum
+ls -la builds/release/ && ls -la Results
