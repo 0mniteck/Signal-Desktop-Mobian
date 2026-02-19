@@ -2,12 +2,11 @@
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-trap '[[ $pid ]] && kill $pid; exit' EXIT
-
 set -e
 
-BUILD_TYPE="$1"
-TEST="$2"
+BUILD_TYPE="public"
+TEST="$1"
+SIGNING_KEY="$2"
 
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
@@ -49,22 +48,10 @@ pushd /Signal-Desktop
     # xvfb-run --auto-servernum pnpm run test-electron
     # xvfb-run --auto-servernum pnpm run test-release
   fi
-  debpath=$(ls /Signal-Desktop/release/signal-desktop_*)
-  if [ ! -f /Signal-Desktop/release/.private.key ]; then
-    echo "Generating New Keypair."
-    npm run ts/updater/generateKeyPair.js -- --key /Signal-Desktop/release/public.key --private /Signal-Desktop/release/.private.key
-    echo "Signing Release."
-    pnpm run sign-release -- --private /Signal-Desktop/release/.private.key --update $debpath
-  else
-    echo "Signing Release."
-    npm run sign-release -- --private /Signal-Desktop/release/.private.key --update $debpath
-    shred /Signal-Desktop/release/.private.key
-    rm -f /Signal-Desktop/release/.private.key
-  fi
   pushd release/
     sha512sum *.deb && sha512sum *.deb >> release.sha512sum
-    echo "# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> release.sha512sum
-    echo "# Source Date Epoch: ${SOURCE_DATE_EPOCH}" >> release.sha512sum
+    echo "# $REPO's Current GPG Key ID: $SIGNING_KEY" >> release.sha512sum
+    echo "# Source Date Epoch: $SOURCE_DATE_EPOCH" >> release.sha512sum
     echo "Build Complete: "$(date -u '+on %D at %R UTC') && echo "# Build Complete: "$(date -u '+on %D at %R UTC') >> release.sha512sum
     echo "# Container Build System: $(uname -o) $(uname -r) $(uname -m) $(lsb_release -ds) $(uname -v)"  >> release.sha512sum
     ls -la
