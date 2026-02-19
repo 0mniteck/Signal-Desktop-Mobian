@@ -41,31 +41,28 @@ buildscript.sh:
   -r {Release-tag: tagname}
   -t {run-Tests: yes/No}
 ```
-A. To build later releases run:
+A. First build and push the upcoming branch:
 
 ```
-sudo su && \
-git clone git@github.com:0mniteck/Signal-Desktop-Reproducible.git && \
+git clone https://github.com/$REPO/Signal-Desktop-Reproducible.git && \
 cd Signal-Desktop-Reproducible && \
-./buildscript.sh -i .01 -p main -r 7.xx.x -d 1751688000
+./buildscript.sh -i'.01' -p'7.xx.x' -d'today'
 ```
 
-B. To build the current release for reproducibility:
+B. Then rebuild the current branch for release:
 
 ```
-sudo su && \
+git clone git@github.com:$REPO/Signal-Desktop-Reproducible.git -b 7.xx.x && \
+cd Signal-Desktop-Reproducible && \
+./buildscript.sh -p'main' -r'7.xx.0'
+```
+
+C. To build a past release for reproducibility:
+
+```
 git clone git@github.com:0mniteck/Signal-Desktop-Reproducible.git -b 7.xx.x && \
 cd Signal-Desktop-Reproducible && \
 ./buildscript.sh
-```
-
-C. To cross compile the current release for reproducibility:
-
-```
-sudo su && \
-git clone git@github.com:0mniteck/Signal-Desktop-Reproducible.git -b 7.xx.x && \
-cd Signal-Desktop-Reproducible && \
-./buildscript.sh -c yes
 ```
 
 ### Usage:
