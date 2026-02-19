@@ -15,7 +15,7 @@ sed -i s/Last_Version_Number=$Last_Version_Number/Last_Version_Number=$Version_N
 echo Version Incremented From v$Last_Version_Number To v$Version_Number
 fi
 
-$docker buildx create \
+docker buildx create \
   --name $MODULE-builder --buildkitd-flags "--oci-worker-rootless=true" \
   --driver docker-container --driver-opt "network=host,default-load=true" --bootstrap --use
 
@@ -29,7 +29,7 @@ popd
 
 if [[ "$last_rel_date" != "$rel_date" ]]; then
   sed -i 's/last_rel_date=$last_rel_date/last_rel_date=$rel_date/' .pinned_ver
-  $docker buildx build $CROSS \
+  docker buildx build $CROSS \
     --push --tag $REPO/$MODULE:$rel_date \
     --metadata-file Results/$MODULE.meta.json \
     --attest "type=provenance,mode=max" \
@@ -40,9 +40,9 @@ if [[ "$last_rel_date" != "$rel_date" ]]; then
     --build-arg NODE_VERSION=$node_ver \
     --build-arg NVM_VERSION=$nvm_ver \
     --build-arg PNPM_VERSION=$pnpm_ver .
-  $docker buildx stop $MODULE-builder && wait
-  $docker buildx rm -f --all-inactive && wait
-  $docker buildx prune -f -a && wait && echo
+  docker buildx stop $MODULE-builder && wait
+  docker buildx rm -f --all-inactive && wait
+  docker buildx prune -f -a && wait && echo
 fi
 
 pushd Results
@@ -58,7 +58,7 @@ pushd Results
   cat $MODULE.image.attested && cat base.image.attested && echo
 popd
 
-$docker run -it --cpus=$(nproc) \
+docker run -it --cpus=$(nproc) \
   --network=name=host,\"driver-opt=network=host\" \
   --name $MODULE --platform linux/arm64 \
   -e PNPM_HOME=/tmp/.pnpm-home \
@@ -67,7 +67,7 @@ $docker run -it --cpus=$(nproc) \
    $REPO/$MODULE:$rel_date $TEST $SIGNING_KEY
 
 rm -r -f builds/release && mkdir -p builds/release
-$docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -r -f builds/release/linux-*
+docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -r -f builds/release/linux-*
 mv builds/release/release.sha512sum Results/release.sha512sum
 
 if [ "$check_file" = "1" ]; then
