@@ -1,16 +1,22 @@
+type -t docker
+
 docker() {
   echd="$@"
   $docker "$echd"
 }
 
+type -t docker
+alias docker="command docker"
+type -t docker
+
 if [ "$INC" != "" ]; then
-Version_Number=$(echo "$Last_Version_Number + $1" | bc -l)
-sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g docs/_layouts/default.html
-sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g docs/README.md
-sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g readme.md
-sed -i s/$(echo $Last_Version_Number)/$(echo $Version_Number)/g Dockerfile
-sed -i s/Last_Version_Number=$Last_Version_Number/Last_Version_Number=$Version_Number/g .pinned_ver
-echo Version Incremented From v$Last_Version_Number To v$Version_Number
+ver_num=$(echo "$last_ver_num + $1" | bc -l)
+sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g docs/_layouts/default.html
+sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g docs/README.md
+sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g readme.md
+sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g Dockerfile
+sed -i s/last_ver_num=$last_ver_num/last_ver_num=$ver_num/g .pinned_ver
+echo Version Incremented From v$last_ver_num To v$ver_num
 fi
 
 docker buildx create \
