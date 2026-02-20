@@ -41,8 +41,6 @@ if [ "$TEST" = "" ]; then
 else
   TEST="yes"
   nulled=/tmp/nulled.log
-  touch $nulled
-  chown $run_as:$run_as $nulled
   debug="set -x"
   
   echo "Cross Compile: $CROSS"
@@ -81,6 +79,11 @@ if [[ "$run_id" == "" ]]; then
     fi
     exit 0
   fi
+fi
+
+if [ "$TEST" = "yes" ]; then
+  touch $nulled
+  chown $run_as:$run_as $nulled
 fi
 
 if [[ "$(cat /lib/udev/rules.d/60-scdaemon.rules | grep $run_as)" != *$run_as* ]]; then
