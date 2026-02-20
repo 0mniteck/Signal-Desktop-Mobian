@@ -127,7 +127,7 @@ _EOF__
 
 quiet() {
   echt="$@"
-  script -a -q -c "$echt" $nulled > $nulled
+  script -a -q -c "$echt" $nulled >> $nulled
 }
 
 clean_most() {
@@ -221,8 +221,8 @@ usermod -aG docker $run_as && wait
 mkdir -p /home/root && sed -i "s|:/root:|:/home/root:|" /etc/passwd
 
 mkdir -p /$plugins_path && wait
-ln -f -s /$snap_path/$plugins_path/docker-buildx /$plugins_path/docker-buildx > $nulled || exit 1
-ln -f -s /$snap_path/$plugins_path/docker-compose /$plugins_path/docker-compose > $nulled || exit 1
+ln -f -s /$snap_path/$plugins_path/docker-buildx /$plugins_path/docker-buildx >> $nulled || exit 1
+ln -f -s /$snap_path/$plugins_path/docker-compose /$plugins_path/docker-compose >> $nulled || exit 1
 
 if [ "$TEST" = "yes" ]; then
   chown $run_as:$run_as $nulled
@@ -378,7 +378,7 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or /Path --select-cataloger
 
 quiet() {
   echt=\"\$@\"
-  script -a -q -c \"\$echt\" $nulled > $nulled
+  script -a -q -c \"\$echt\" $nulled >> $nulled
 }
 
 sys_ctl_common
