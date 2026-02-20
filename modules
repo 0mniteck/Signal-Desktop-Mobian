@@ -5,7 +5,7 @@ sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g docs/README.md
 sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g readme.md
 sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g Dockerfile
 sed -i s/last_ver_num=$last_ver_num/last_ver_num=$ver_num/g .pinned_ver
-echo Version Incremented From v$last_ver_num To v$ver_num
+echo "Version Incremented From v$last_ver_num To v$ver_num" && echo
 fi
 
 docker buildx create \
@@ -60,15 +60,15 @@ docker run -it --cpus=$(nproc) \
    $REPO/$MODULE:$rel_date $TEST $SIGNING_KEY
 
 rm -r -f builds/release && mkdir -p builds/release
-docker cp signal-desktop:/Signal-Desktop/release/ builds/ && rm -r -f builds/release/linux-*
+docker cp $MODULE:/$NAME/release/ builds/ && rm -r -f builds/release/linux-*
+mv builds/release/*.sha*sum Results/
 
-pushd builds/release/
+pushd Results/
 if [ "$check_file" = "1" ]; then
   cp /tmp/release.last.sha512sum release.last.sha512sum
-  sha512sum -c release.last.sha512sum
-  rm -f /tmp/release.last.sha512sum && rm -f release.last.sha512sum
+  sha512sum -c release.last.sha512sum && REP="ly Reproduced" && \
+  rm -f /tmp/release.last.sha512sum && rm -f release.last.sha512sum || exit 1
 fi
-mv release.sha512sum Results/release.sha512sum
 popd
 
 echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Results/release.sha512sum
