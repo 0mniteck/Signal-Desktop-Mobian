@@ -7,7 +7,7 @@ docker() {
 }
 
 type -t docker
-alias docker="command docker"
+docker info
 type -t docker
 
 if [ "$INC" != "" ]; then
