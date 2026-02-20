@@ -454,7 +454,7 @@ source modules
 
 mkdir -p Results && pushd Results
   scan_using_grype ubuntu \"/ --select-catalogers debian\"
-  cat image.digests >> readme.md && cat readme.md && echo
+  cat *image.digest >> readme.md && cat readme.md && echo
 popd
 
 git status && git add -A && git status && read -p 'Press enter to launch pinentry'
