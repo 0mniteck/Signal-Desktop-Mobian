@@ -4,7 +4,7 @@ type -t docker
 docker() {
   echd="$@"
   echo runpath="$@"
-  $docker "$echd"
+  $docker $echd
 }
 
 type -t docker
