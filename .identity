@@ -1,9 +1,9 @@
 export -- REPO=0mniteck
 export -- MODULE=signal-desktop
 export -- NAME=Signal-Desktop
-export -- PROJECT=Signal-Desktop-Reproducible
 export -- USERNAME=0mniteck42
 export -- IDENTITY_FILE=.ssh/$NAME
+export -- PROJECT=Signal-Desktop-Reproducible
 export -- SIGSTORE_USR=tiger-varsity-alto@duck.com
 export -- SIGNING_KEY=42E2DDF1E31B370F8BFFEE03287EE837E6ED2DD3
 git config --global user.email 10482171+0mniteck@users.noreply.github.com
