@@ -391,7 +391,8 @@ systemctl --user status docker.dockerd --all --no-pager -n 150 > $rootless_path/
 source $rootless_path/env-rootless.exp
 
 docker() {
-exec $docker \"\$@\"
+  echt=\"\$@\"
+  $docker \"\$echt\"
 }
 
 quiet \"\$docker info | grep rootless > $rootless_path/rootless.status\"
