@@ -334,7 +334,7 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-cataloge
   if [[ \"\$3\" != \"\" ]]; then
     read -p '🔐 Press enter to start attestation' && echo
     echo 'Starting Syft...'
-    syft_att_run=\"TMPDIR=$docker_data/syft syft attest $CROSS --output spdx-json docker.io/\$REPO/\$1:\$3\"
+    syft_att_run=\"TMPDIR=$docker_data/syft syft attest \$CROSS --output spdx-json docker.io/\$REPO/\$1:\$3\"
 	script -q -c \"\$syft_att_run\" /dev/null || \
     script -q -c \"\$syft_att_run\" /dev/null || exit 1
     echo
@@ -342,7 +342,7 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-cataloge
     echo 'Starting Syft...'
   fi
   touch \$1.syft.tmp && tail -f \$1.syft.tmp & pidd=\$!
-  syft_run=\"TMPDIR=$docker_data/syft syft scan \$2 $CROSS -o spdx-json=\$1.spdx.json\"
+  syft_run=\"TMPDIR=$docker_data/syft syft scan \$2 \$CROSS -o spdx-json=\$1.spdx.json\"
   script -q -c \"\$syft_run\" /dev/null > \$1.syft.tmp || \
   script -q -c \"\$syft_run\" /dev/null > \$1.syft.tmp || exit 1
   kill \$pidd
@@ -351,7 +351,7 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-cataloge
   grype config > $docker_data/.grype.yaml
   touch \$1.grype.tmp && tail -f \$1.grype.tmp & piddd=\$!
   script -q -c \"TMPDIR=$docker_data/grype grype sbom:\$1.spdx.json \
-  -c $docker_data/.grype.yaml $CROSS -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
+  -c $docker_data/.grype.yaml \$CROSS -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
   kill \$piddd
   rm -f -r $docker_data/grype/*
   marker() { # $1 = Name, $2 = Order, $3 = Marker/ID, $4 = syft/grype
