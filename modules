@@ -1,9 +1,3 @@
-#!/bin/bash
-
-if [ "$CROSS" = "yes" ]; then
-  export -- CROSS="--platform linux/arm64,linux/amd64"
-fi
-
 if [ "$INC" != "" ]; then
 Last_Version_Number=7.68
 Version_Number=$(echo "$Last_Version_Number + $1" | bc -l)
