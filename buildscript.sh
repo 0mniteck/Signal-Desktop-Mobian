@@ -224,7 +224,7 @@ if [ "$TEST" = "yes" ]; then
   chown $run_as:$run_as $nulled
 fi
 if [ "$CROSS" = "yes" ]; then
-  export -- CROSS='"-platform linux/arm64,linux/amd64"'
+  export -- CROSS='"--platform linux/arm64,linux/amd64"'
 fi
 
 machinectl shell $run_as@ /bin/bash -c "
