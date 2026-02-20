@@ -310,7 +310,7 @@ DOCKER_CONFIG=$docker_data/.docker
 DOCKER_HOST=unix:///run/user/$run_id/docker.sock
 BUILDX_METADATA_PROVENANCE=max
 BUILDX_METADATA_WARNINGS=1
-BUILDKIT_PROGRESS=plain
+BUILDKIT_PROGRESS=tty
 SOURCE_DATE_EPOCH=\$source_date_epoch
 SYFT_CACHE_DIR=$docker_data/syft
 GRYPE_DB_CACHE_DIR=$docker_data/grype
@@ -335,24 +335,24 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-cataloge
     read -p '🔐 Press enter to start attestation' && echo
     echo 'Starting Syft...'
     syft_att_run=\"TMPDIR=$docker_data/syft syft attest $CROSS --output spdx-json docker.io/\$REPO/\$1:\$3\"
-		script -q -c \"\$syft_att_run\" /dev/null || \
+	script -q -c \"\$syft_att_run\" /dev/null || \
     script -q -c \"\$syft_att_run\" /dev/null || exit 1
     echo
   else
     echo 'Starting Syft...'
   fi
   touch \$1.syft.tmp && tail -f \$1.syft.tmp & pidd=\$!
-	syft_run=\"TMPDIR=$docker_data/syft syft scan \$2 $CROSS -o spdx-json=\$1.spdx.json\"
+  syft_run=\"TMPDIR=$docker_data/syft syft scan \$2 $CROSS -o spdx-json=\$1.spdx.json\"
   script -q -c \"\$syft_run\" /dev/null > \$1.syft.tmp || \
   script -q -c \"\$syft_run\" /dev/null > \$1.syft.tmp || exit 1
-	kill \$pidd
+  kill \$pidd
   rm -f -r $docker_data/syft/*
   echo && echo 'Starting Grype...'
   grype config > $docker_data/.grype.yaml
   touch \$1.grype.tmp && tail -f \$1.grype.tmp & piddd=\$!
   script -q -c \"TMPDIR=$docker_data/grype grype sbom:\$1.spdx.json \
   -c $docker_data/.grype.yaml $CROSS -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
-	kill \$piddd
+  kill \$piddd
   rm -f -r $docker_data/grype/*
   marker() { # $1 = Name, $2 = Order, $3 = Marker/ID, $4 = syft/grype
     unset \"wright\$2\"
@@ -368,6 +368,8 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-cataloge
 		echo \$wright1 > \$1.\$2.status
 		echo \$wright2 >> \$1.\$2.status
 		echo \$wright3 >> \$1.\$2.status
+		echo \$wright4 >> \$1.\$2.status
+		echo \$wright5 >> \$1.\$2.status
 		sed -i 's/[^[:print:]]//g' \$1.\$2.status
 		sed -i 's/\[K//g' \$1.\$2.status
 		sed -i 's/\[2A//g' \$1.\$2.status
@@ -380,9 +382,11 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-cataloge
 		wright \$1 grype
 	}
 	syfted() { # $1 = Name
-		marker \$1 1 \"[]\" syft
-		marker \$1 2 \"[]\" syft
-		marker \$1 3 \"[]\" syft
+		marker \$1 1 \"✔ Cataloged contents\" syft
+		marker \$1 2 \"├── ✔ Packages\" syft
+		marker \$1 3 \"├── ✔ Executables\" syft
+		marker \$1 4 \"├── ✔ File metadata\" syft
+		marker \$1 5 \"└── ✔ File digests\" syft
 		wright \$1 syft
 	}
 	syfted
@@ -431,8 +435,10 @@ ssh -T git@github.com 2> $nulled
 ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l && echo
 
 git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
-git-lfs install && echo \"Starting git fetch...\" && git fetch --unshallow 2> $nulled
+git-lfs install && echo \"Starting git fetch...\"
+echo \"👆 Please confirm presence on security token for git@ssh (multiple times).\"
 
+git fetch --unshallow 2> $nulled
 git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
 git submodule update --init --remote --merge
 git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
