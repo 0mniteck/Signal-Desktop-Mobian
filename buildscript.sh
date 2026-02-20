@@ -66,7 +66,7 @@ if [[ "$run_id" == "" ]]; then
     echo && echo "Pkexec is required for installation steps"
     echo "Using: ~\$ 'pkexec --keep-cwd ./buildscript.sh'" && echo
     runm="exec pkexec --keep-cwd '$0' '$1' '$2' '$3' '$4' '$5' '$6' '$7' "
-    if [[ "$(which asciinema)" == "/usr/bin/asciinema" ]]; then
+    if [[ "$(which asciinema)" != "" ]]; then
       repo=$(cat .identity | grep REPO= | cut -d'=' -f2)
       project=$(cat .identity | grep PROJECT= | cut -d'=' -f2)
       rel_date=$(date -d "$(date)" +%m-%d-%Y)
@@ -83,22 +83,6 @@ if [ "$TEST" = "yes" ]; then
   touch $nulled
   chown root:root $nulled
 fi
-
-if [[ "$(cat /lib/udev/rules.d/60-scdaemon.rules | grep $run_as)" != *$run_as* ]]; then
-  sed -i "s/\"1050\", ATTR{idProduct}==\"040.\", /&MODE=\"0660\", GROUP=\"$run_as\", /g" \
-  /lib/udev/rules.d/60-scdaemon.rules
-  udevadm control --reload-rules && udevadm trigger
-fi
-
-while [[ "$(lsusb | grep Yubikey)" != *Yubikey* ]]; do
-  printf "\r🔐 Please insert yubikey...\033[K"
-done && sleep 1 && echo
-chown $run_as:$run_as /dev/hidraw*
-
-DEVICE=$(lsusb -d 1050:0407 | grep -o Device.... - | grep -o [0-9][0-9][0-9])
-BUS=$(lsusb -d 1050:0407 | grep -o Bus.... - | grep -o [0-9][0-9][0-9])
-set_facl=$(echo "setfacl -m u:$run_as:rw /dev/bus/usb/$BUS/$DEVICE")
-echo $set_facl | bash || echo $set_facl | bash || exit 1
 
 home=/home/$run_as
 run_dir=/run/user/$run_id
@@ -153,7 +137,7 @@ clean_all() {
 clean_all
 
 apt-get -qq update && apt-get -qq upgrade -y
-apt-get -qq install -y bc cosign git-lfs gnupg2 gpg-agent \
+apt-get -qq install -y acl bc cosign git-lfs gnupg2 gpg-agent \
                        jq pkexec rootlesskit scdaemon \
                        slirp4netns snapd systemd-container \
                        systemd-cryptsetup uidmap
@@ -204,6 +188,22 @@ systemctl daemon-reload
 
 clean_most
 
+if [[ "$(cat /lib/udev/rules.d/60-scdaemon.rules | grep $run_as)" != *$run_as* ]]; then
+  sed -i.backup "s/\"1050\", ATTR{idProduct}==\"040.\", /&MODE=\"0660\", GROUP=\"$run_as\", /g" \
+  /lib/udev/rules.d/60-scdaemon.rules
+  udevadm control --reload-rules && udevadm trigger
+fi
+
+while [[ "$(lsusb | grep Yubikey)" != *Yubikey* ]]; do
+  printf "\r🔐 Please insert yubikey...\033[K"
+done && sleep 1 && echo
+chown $run_as:$run_as /dev/hidraw*
+
+DEVICE=$(lsusb -d 1050:0407 | grep -o Device.... - | grep -o [0-9][0-9][0-9])
+BUS=$(lsusb -d 1050:0407 | grep -o Bus.... - | grep -o [0-9][0-9][0-9])
+set_facl=$(echo "setfacl -m u:$run_as:rw /dev/bus/usb/$BUS/$DEVICE")
+quiet $set_facl || quiet $set_facl || exit 1
+
 if [ "$MOUNT" != "" ]; then
   echo && rm -f -r $docker_data/ && mkdir -p $docker_data && chown $run_as:$run_as $docker_data
   systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
@@ -214,7 +214,7 @@ fi
 
 groupadd -f docker && wait
 usermod -aG docker $run_as && wait
-mkdir -p /home/root && sed -i "s|:/root:|:/home/root:|" /etc/passwd
+mkdir -p /home/root && sed -i.backup "s|:/root:|:/home/root:|" /etc/passwd
 
 mkdir -p /$plugins_path && wait
 ln -f -s /$snap_path/$plugins_path/docker-buildx /$plugins_path/docker-buildx >> $nulled || exit 1
@@ -394,9 +394,8 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-cataloge
 	echo '### '\$1' Syft Scan Results - '\$(syft --version) > \$1.contents
 	cat \$1.syft.status >> \$1.contents && rm -f \$1.syft.status
 	echo '### '\$1' Grype Scan Results - '\$(grype --version) >> readme.md
-  cat \$1.grype.status >> readme.md
-  sed -i '1,3s/^/#### /g' readme.md
-  echo '## ' >> readme.md
+	cat \$1.grype.status >> readme.md
+	echo '## ' >> readme.md
 }
 
 quiet() {
@@ -409,6 +408,7 @@ systemctl --user start docker.dockerd && sleep 10
 systemctl --user status docker.dockerd --all --no-pager -n 150 > $rootless_path/rootless.ctl.log
 
 source $rootless_path/env-rootless.exp
+env | sort >> Results/$run_id:$run_id.env
 
 docker() {
   echd=\"\$@\"
@@ -438,7 +438,8 @@ git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT
 git-lfs install && echo \"Starting git fetch...\"
 echo \"👆 Please confirm presence on security token for git@ssh (multiple times).\"
 
-git fetch --unshallow 2> $nulled
+git reset --hard && git clean -xfd && git fetch --unshallow 2> $nulled
+git pull \$(git remote -v | awk '{ print $2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
 git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
 git submodule update --init --remote --merge
 git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
@@ -485,7 +486,7 @@ source modules
 
 mkdir -p Results && pushd Results
   scan_using_grype ubuntu \"/ --select-catalogers directory\"
-  echo '\`\`\`' >> readme.md
+  sed -i 's/^/#### /g' readme.md && echo '\`\`\`' >> readme.md
   cat *.image.digest >> readme.md && cat readme.md && echo
 popd
 
@@ -493,7 +494,7 @@ git status && git add -A && git status && read -p '🔐 Press enter to launch pi
 if [ \"\$BRANCH\" != \"\" ]; then
   git commit -a -S -m \"Successful Build of Release \$date_rel\" && git push --set-upstream origin \$(git rev-parse --abbrev-ref HEAD):\$BRANCH
   if [ \"\$TAG\" != \"\" ]; then
-    git tag -a \"\$TAG\" -s -m \"Tagged Release \$TAG\" && sleep 5 && git push origin \"\$TAG\"
+    git tag -a \"\$TAG\" -s -m \"Tagged Release \$TAG\" && sleep 5 && git push origin \"refs/tags/\$TAG\"
   fi
 fi
 
