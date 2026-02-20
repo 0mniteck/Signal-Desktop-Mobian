@@ -159,7 +159,7 @@ snap install grype --classic && wait
 
 unmount() {
     quiet snap disable docker
-    quiet kill $(lsof -F p $docker_data | cut -d'p' -f2 > $nulled)
+    quiet kill $(lsof -F p $docker_data 2> $nulled | cut -d'p' -f2)
     rm -r -f $docker_data/*
     sync
     quiet umount $docker_data
