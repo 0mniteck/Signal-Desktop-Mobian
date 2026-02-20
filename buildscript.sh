@@ -439,7 +439,7 @@ git-lfs install && echo \"Starting git fetch...\"
 echo \"👆 Please confirm presence on security token for git@ssh (multiple times).\"
 
 git reset --hard && git clean -xfd && git fetch --unshallow 2> $nulled
-git pull \$(git remote -v | awk '{ print $2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
+git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
 git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
 git submodule update --init --remote --merge
 git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
