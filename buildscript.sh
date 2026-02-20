@@ -469,6 +469,10 @@ ssh-add -D && eval \"\$(ssh-agent -k)\"
 clean_some
 sys_ctl_common"
 
+if [ "$TEST" = "yes" ]; then
+  chown root:root $nulled
+fi
+
 quiet systemctl unmask snap.docker.dockerd --runtime
 quiet systemctl unmask snap.docker.nvidia-container-toolkit --runtime
 
