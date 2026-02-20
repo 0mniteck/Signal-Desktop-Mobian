@@ -409,7 +409,7 @@ ssh -T git@github.com 2> $nulled
 ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l && echo
 
 git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
-git-lfs install && echo "Starting git fetch..." && git fetch --unshallow 2> $nulled
+git-lfs install && echo \"Starting git fetch...\" && git fetch --unshallow 2> $nulled
 
 git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
 git submodule update --init --remote --merge && echo
