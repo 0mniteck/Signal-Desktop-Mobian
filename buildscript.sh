@@ -32,9 +32,6 @@ while getopts ":c:i:d:m:p:r:t:" opt; do
   esac
 done
 
-if [ "$BRANCH" = "" ]; then
-  BRANCH="debug"
-fi
 if [ "$TEST" = "" ]; then
   TEST="no"
   nulled=/dev/null
@@ -51,9 +48,14 @@ else
   echo "Tag Release: $TAG"
   echo "Run Tests: $TEST"
 fi
-if [ "$CROSS" = "" ]; then
-  CROSS="no"
+
+if [ "$BRANCH" = "" ]; then
+  BRANCH="debug"
 fi
+if [ "$CROSS" = "" ]; then
+  CROSS="yes"
+fi
+
 $debug
 
 run_id=$PKEXEC_UID
@@ -125,7 +127,7 @@ _EOF__
 
 quiet() {
   echt="$@"
-  script -q -c "$echt" $nulled > $nulled
+  script -a -q -c "$echt" $nulled > $nulled
 }
 
 clean_most() {
@@ -374,7 +376,7 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or /Path --select-cataloger
 
 quiet() {
   echt=\"\$@\"
-  script -q -c \"\$echt\" $nulled > $nulled
+  script -a -q -c \"\$echt\" $nulled > $nulled
 }
 
 sys_ctl_common
