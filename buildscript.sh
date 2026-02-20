@@ -1,57 +1,58 @@
 #!/bin/bash
 
 while getopts ":c:i:d:m:p:r:t:" opt; do
-    case $opt in
-        c) # Cross Compile: yes/No
-            CROSS="$OPTARG"
-            ;;
-        d) # Date: source_date_epoch
-            EPOCH="$OPTARG"
-            ;;
-        i) # Increment: .version
-            INC="$OPTARG"
-            ;;
-        m) # Mount Luks partition: mmcblk1p1
-            MOUNT="$OPTARG"
-            ;;
-        p) # Push-branch: debug
-            BRANCH="$OPTARG"
-            ;;
-        r) # Release-tag: tagname
-            TAG="$OPTARG"
-            ;;
-        t) # run-Tests: yes/No
-            TEST="$OPTARG"
-            ;;
-        \?)
-            echo "Invalid option: -$opt" >&2
-            ;;
-        :)
-            echo "Option -$opt requires an argument." >&2
-            ;;
-    esac
+  case $opt in
+  c) # Cross Compile: yes/No
+    CROSS="$OPTARG"
+    ;;
+  d) # Date: source_date_epoch
+    EPOCH="$OPTARG"
+    ;;
+  i) # Increment: .version
+    INC="$OPTARG"
+    ;;
+  m) # Mount Luks partition: mmcblk1p1
+    MOUNT="$OPTARG"
+    ;;
+  p) # Push-branch: debug
+    BRANCH="$OPTARG"
+    ;;
+  r) # Release-tag: tagname
+    TAG="$OPTARG"
+    ;;
+  t) # run-Tests: yes/No
+    TEST="$OPTARG"
+    ;;
+  \?)
+    echo "Invalid option: -$opt" >&2
+    ;;
+  :)
+    echo "Option -$opt requires an argument." >&2
+    ;;
+  esac
 done
+
 if [ "$BRANCH" = "" ]; then
-    BRANCH="debug"
+  BRANCH="debug"
 fi
 if [ "$TEST" = "" ]; then
-    TEST="no"
-    nulled=/dev/null
+  TEST="no"
+  nulled=/dev/null
 else
-    TEST="yes"
-    nulled=/tmp/nulled.log
-    debug="set -x"
+  TEST="yes"
+  nulled=/tmp/nulled.log
+  debug="set -x"
+  echo "Cross Compile: $CROSS"
+  echo "Increment: $INC"
+  echo "Override Source Epoch: $EPOCH"
+  echo "Mount /dev/: $MOUNT"
+  echo "Push to Branch: $BRANCH"
+  echo "Tag Release: $TAG"
+  echo "Run Tests: $TEST"
 fi
 if [ "$CROSS" = "" ]; then
-    CROSS="no"
+  CROSS="no"
 fi
-echo "Cross Compile: $CROSS"
-echo "Increment: $INC"
-echo "Override Source Epoch: $EPOCH"
-echo "Mount /dev/: $MOUNT"
-echo "Push to Branch: $BRANCH"
-echo "Tag Release: $TAG"
-echo "Run Tests: $TEST"
 $debug
 
 run_id=$PKEXEC_UID
@@ -158,7 +159,7 @@ snap install grype --classic && wait
 
 unmount() {
     quiet snap disable docker
-    quiet kill $(lsof -F p $docker_data | cut -d'p' -f2)
+    quiet kill $(lsof -F p $docker_data | cut -d'p' -f2 > $nulled)
     rm -r -f $docker_data/*
     sync
     quiet umount $docker_data
