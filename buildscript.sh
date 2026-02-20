@@ -391,8 +391,7 @@ exec $docker \"\$@\"
 
 quiet \"\$docker info | grep rootless > $rootless_path/rootless.status\"
 if [[ \"\$(grep root $rootless_path/rootless.status)\" != *rootless* ]]; then
-  echo \"Rootless Docker Failed\" && echo
-  exit 1
+  echo \"Rootless Docker Failed\" && echo && exit 1
 else
   echo \"Rootless Docker Started\" && echo
   echo \"Rootless Docker Started\" > $rootless_path/rootless.status
@@ -491,6 +490,10 @@ snap remove syft --purge
 
 sed -i "s|:/home/root:|:/root:|" /etc/passwd
 delgroup docker
+
+if [ "$TEST" = "yes" ]; then
+  chown $run_as:$run_as $nulled
+fi
 
 clean_all
 systemctl daemon-reload
