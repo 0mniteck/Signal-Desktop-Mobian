@@ -3,6 +3,7 @@ type -t docker
 
 docker() {
   echd="$@"
+  echo runpath="$@"
   $docker "$echd"
 }
 
