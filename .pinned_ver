@@ -8,4 +8,4 @@ export -- node_ver=24.11.1
 export -- nvm_ver=0.40.4
 export -- pnpm_ver=10.18.1
 export -- last_rel_date=02-17-2026
-export -- Last_Version_Number=7.68
+export -- last_ver_num=7.68
