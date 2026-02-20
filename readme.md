@@ -49,7 +49,7 @@ cd Signal-Desktop-Reproducible && \
 ./buildscript.sh -i'.01' -p'7.xx.x' -d'today'
 ```
 
-B. Then rebuild the current branch for release:
+B. Then rebuild the current branch and release:
 
 ```
 git clone --depth 1 git@github.com:$REPO/Signal-Desktop-Reproducible.git -b 7.xx.x && \
@@ -57,7 +57,7 @@ cd Signal-Desktop-Reproducible && \
 ./buildscript.sh -p'main' -r'7.xx.0'
 ```
 
-C. To build a past release for reproducibility:
+C. To build a past release (7.90.0+) for reproducibility:
 
 ```
 git clone --depth 1 git@github.com:0mniteck/Signal-Desktop-Reproducible.git -b 7.xx.x && \
