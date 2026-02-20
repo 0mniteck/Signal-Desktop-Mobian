@@ -91,7 +91,7 @@ if [[ "$(cat /lib/udev/rules.d/60-scdaemon.rules | grep $run_as)" != *$run_as* ]
 fi
 
 while [[ "$(lsusb | grep Yubikey)" != *Yubikey* ]]; do
-  printf "\rPlease insert yubikey...\033[K"
+  printf "\r🔐 Please insert yubikey...\033[K"
 done && sleep 1 && echo
 chown $run_as:$run_as /dev/hidraw*
 
@@ -285,7 +285,7 @@ sys_ctl_common() {
   systemctl --user list-units docker* --all && echo
 }
 
-echo && read -p 'Press enter to start docker login'
+echo && read -p '🔐 Press enter to start docker login'
 clean_some && docker login && mkdir -p $docker_data/.docker && wait && \
 ln -f -s $home/$snap_path/.docker/config.json $docker_data/.docker/config.json || exit 1
 echo && syft login registry-1.docker.io -u \$USERNAME && echo 'Logged in to syft' && echo
@@ -333,7 +333,7 @@ mkdir -p $docker_data/syft && mkdir -p $docker_data/grype
 scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or /Path --select-catalogers debian, $3 = Attest Tag
   grype config > $docker_data/.grype.yaml
   if [[ \"\$3\" != \"\" ]]; then
-    read -p 'Press enter to start attestation' && echo
+    read -p '🔐 Press enter to start attestation' && echo
     echo 'Starting Syft...'
     TMPDIR=$docker_data/syft syft attest --output spdx-json docker.io/\$REPO/\$1:\$3 || \
     TMPDIR=$docker_data/syft syft attest --output spdx-json docker.io/\$REPO/\$1:\$3 || exit 1
@@ -462,7 +462,7 @@ mkdir -p Results && pushd Results
   cat *image.digest >> readme.md && cat readme.md && echo
 popd
 
-git status && git add -A && git status && read -p 'Press enter to launch pinentry'
+git status && git add -A && git status && read -p '🔐 Press enter to launch pinentry'
 if [ \"\$BRANCH\" != \"\" ]; then
   git commit -a -S -m \"Successful Build of Release \$date_rel\" && git push --set-upstream origin \$(git rev-parse --abbrev-ref HEAD):\$BRANCH
   if [ \"\$TAG\" != \"\" ]; then
