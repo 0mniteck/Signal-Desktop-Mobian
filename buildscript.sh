@@ -184,8 +184,8 @@ if [ "$MOUNT" != "" ]; then
 fi
 
 snap remove docker --purge 2> $nulled && wait || echo "Failed to remove Docker"
-apt-get -qq purge -y docker-engine docker docker.io docker-ce docker-ce-cli containerd.io docker.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin
-apt-get -qq autoremove -y --purge docker-engine docker docker.io docker-ce docker-ce-cli containerd.io docker.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin
+quiet apt-get -qq purge -y docker-engine docker docker.io docker-ce docker-ce-cli containerd.io docker.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin
+quiet apt-get -qq autoremove -y --purge docker-engine docker docker.io docker-ce docker-ce-cli containerd.io docker.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin
 quiet networkctl delete docker0
 
 if [[ "$(uname -m)" == "aarch64" ]]; then
@@ -226,6 +226,9 @@ ln -f -s /$snap_path/$plugins_path/docker-compose /$plugins_path/docker-compose 
 
 if [ "$TEST" = "yes" ]; then
   chown $run_as:$run_as $nulled
+fi
+if [ "$CROSS" = "yes" ]; then
+  export -- CROSS="--platform linux/arm64,linux/amd64"
 fi
 
 machinectl shell $run_as@ /bin/bash -c "
