@@ -409,7 +409,7 @@ else
 fi
 
 git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
-git-lfs install && git fetch --unshallow
+git-lfs install && git fetch --unshallow 2> $nulled
 git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
 git submodule update --init --remote --merge && echo
 git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
