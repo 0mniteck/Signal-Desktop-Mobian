@@ -41,7 +41,10 @@ if [ "$TEST" = "" ]; then
 else
   TEST="yes"
   nulled=/tmp/nulled.log
+  touch $nulled
+  chown $run_as:$run_as $nulled
   debug="set -x"
+  
   echo "Cross Compile: $CROSS"
   echo "Increment: $INC"
   echo "Override Source Epoch: $EPOCH"
