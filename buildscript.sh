@@ -264,7 +264,7 @@ else
     echo \"Setting SOURCE_DATE_EPOCH from release.sha512sum: \$(cat Results/release.sha512sum | grep Epoch | cut -d ' ' -f5)\"
     source_date_epoch=\$((timestamp))
     check_file=1
-    cp builds/release/release.sha512sum /tmp/release.last.sha512sum
+    cp Results/release.sha512sum /tmp/release.last.sha512sum
   else
     echo \"Can't get latest commit timestamp. Defaulting to 1.\"
     source_date_epoch=1
