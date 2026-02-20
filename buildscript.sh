@@ -137,8 +137,8 @@ clean_all() {
 clean_all
 
 apt-get -qq update && apt-get -qq upgrade -y
-apt-get -qq install -y acl bc cosign git-lfs gnupg2 gpg-agent \
-                       jq pkexec rootlesskit scdaemon \
+apt-get -qq install -y acl bc cosign dosfstools git-lfs gnupg2 gpg-agent \
+                       jq parted pkexec rootlesskit scdaemon \
                        slirp4netns snapd systemd-container \
                        systemd-cryptsetup uidmap
 
