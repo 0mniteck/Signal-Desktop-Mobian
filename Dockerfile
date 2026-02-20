@@ -32,8 +32,6 @@ ENV CI=true
 RUN npm install --location=global pnpm@$PNPM_VERSION
 RUN git config --global --add safe.directory /project
 
-COPY .private.key /Signal-Desktop/release/
-COPY builds/release/public.key /Signal-Desktop/release/
 COPY signal-buildscript.sh /usr/local/bin/
 ENTRYPOINT ["signal-buildscript.sh"]
 CMD ["public"]
