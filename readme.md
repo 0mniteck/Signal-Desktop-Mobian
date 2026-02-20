@@ -29,9 +29,29 @@ Docker SBOM: [`builds/release/signal.spdx.json`](https://github.com/0mniteck/Sig
 
 ## Build Instructions/Usage:
 
+### Usage:
+
+> Installation:
+> 1. [Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Reproducible/raw/7.68.x/builds/release/signal-desktop_7.68.0_arm64.deb) to your device
+> 2. verify the sha512sum
+> [[Current sha512sum]](https://github.com/0mniteck/Signal-Desktop-Reproducible/blob/7.68.x/builds/release/release.sha512sum#L2)
+> (https://github.com/0mniteck/Signal-Desktop-Reproducible/blob/708b3a5e538546e7c23cd26c5fa3d1260ce7d42d/builds/release/release.sha512sum#L2)
+> - ```sha512sum signal-desktop_7.68.0_arm64.deb```
+> 3. install:
+> - ```pkexec apt install ./signal-desktop_7.68.0_arm64.deb```
+
+### Optional Installer/Updater:
+
+Install updater `auto-update-cron.sh` by running:
+
+```
+sudo su && \
+curl -sSL https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Reproducible/master/auto-update-cron.sh | bash
+```
+
 ### Build:
 
-> buildscript.sh:
+>  buildscript.sh:
 >  - -c {Cross Compile: <ins>Y</ins>es/no}
 >  - -d {Date: <ins>S</ins>ource_date_epoch/today}
 >  - -i {Increment: .version}
@@ -47,6 +67,7 @@ git clone --depth 1 https://github.com/$REPO/Signal-Desktop-Reproducible.git && 
 cd Signal-Desktop-Reproducible && \
 ./buildscript.sh -i'.01' -p'7.xx.x' -d'today'
 ```
+---
 
 B. Then rebuild the current branch and release:
 
@@ -55,6 +76,7 @@ git clone --depth 1 git@github.com:$REPO/Signal-Desktop-Reproducible.git -b 7.xx
 cd Signal-Desktop-Reproducible && \
 ./buildscript.sh -p'main' -r'7.xx.0'
 ```
+---
 
 C. To build a past release (7.90.0+) for reproducibility:
 
@@ -62,26 +84,6 @@ C. To build a past release (7.90.0+) for reproducibility:
 git clone --depth 1 git@github.com:0mniteck/Signal-Desktop-Reproducible.git -b 7.xx.x && \
 cd Signal-Desktop-Reproducible && \
 ./buildscript.sh
-```
-
-### Usage:
-
-[Download the `.deb`](https://github.com/0mniteck/Signal-Desktop-Reproducible/raw/7.68.x/builds/release/signal-desktop_7.68.0_arm64.deb) to your device, verify the sha512sum, then install:
-
-[[Current Sha512sum]](https://github.com/0mniteck/Signal-Desktop-Reproducible/blob/7.68.x/builds/release/release.sha512sum#L2)
-(https://github.com/0mniteck/Signal-Desktop-Reproducible/blob/708b3a5e538546e7c23cd26c5fa3d1260ce7d42d/builds/release/release.sha512sum#L2)
-
-```sha512sum signal-desktop_7.68.0_arm64.deb```
-
-```sudo apt install ./signal-desktop_7.68.0_arm64.deb```
-
-### Optional Installer/Updater:
-
-Install updater `auto-update-cron.sh` by running:
-
-```
-sudo su && \
-curl -sSL https://raw.githubusercontent.com/0mniteck/Signal-Desktop-Reproducible/master/auto-update-cron.sh | bash
 ```
 
 ## Current Status:‎‎‏‏‎‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎[![CI](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml/badge.svg?branch=7.68.x)](https://github.com/signalapp/Signal-Desktop/actions/workflows/ci.yml)<sub><sup> signalapp/Signal-Desktop</sup></sub>
