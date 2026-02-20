@@ -1,3 +1,5 @@
+set -x
+
 if [ "$INC" != "" ]; then
 Last_Version_Number=7.68
 Version_Number=$(echo "$Last_Version_Number + $1" | bc -l)
