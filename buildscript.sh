@@ -330,49 +330,69 @@ sed -i \"s|EnvironmentFile.*|EnvironmentFile=-$rootless_path/env-rootless|\" $sy
 sed -i \"s|ExecStart.*|ExecStart=/bin/bash -c \'$data_dir/rootless.sh\'|\" $sysusr_service
 
 mkdir -p $docker_data/syft && mkdir -p $docker_data/grype
-scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or /Path --select-catalogers debian, $3 = Attest Tag
-  grype config > $docker_data/.grype.yaml
+scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-catalogers directory', $3 = Attest Tag
   if [[ \"\$3\" != \"\" ]]; then
     read -p '🔐 Press enter to start attestation' && echo
     echo 'Starting Syft...'
-    TMPDIR=$docker_data/syft syft attest --output spdx-json docker.io/\$REPO/\$1:\$3 || \
-    TMPDIR=$docker_data/syft syft attest --output spdx-json docker.io/\$REPO/\$1:\$3 || exit 1
+    syft_att_run=\"TMPDIR=$docker_data/syft syft attest $CROSS --output spdx-json docker.io/\$REPO/\$1:\$3\"
+		script -q -c \"\$syft_att_run\" /dev/null || \
+    script -q -c \"\$syft_att_run\" /dev/null || exit 1
     echo
   else
     echo 'Starting Syft...'
   fi
-  TMPDIR=$docker_data/syft syft scan \$2 -o spdx-json=\$1.spdx.json || \
-  TMPDIR=$docker_data/syft syft scan \$2 -o spdx-json=\$1.spdx.json || exit 1
+  touch \$1.syft.tmp && tail -f \$1.syft.tmp & pidd=\$!
+	syft_run=\"TMPDIR=$docker_data/syft syft scan \$2 $CROSS -o spdx-json=\$1.spdx.json\"
+  script -q -c \"\$syft_run\" /dev/null > \$1.syft.tmp || \
+  script -q -c \"\$syft_run\" /dev/null > \$1.syft.tmp || exit 1
+	kill \$pidd
   rm -f -r $docker_data/syft/*
   echo && echo 'Starting Grype...'
+  grype config > $docker_data/.grype.yaml
+  touch \$1.grype.tmp && tail -f \$1.grype.tmp & piddd=\$!
   script -q -c \"TMPDIR=$docker_data/grype grype sbom:\$1.spdx.json \
-  -c $docker_data/.grype.yaml -o json > \$1.grype.json\" \$1.grype.tmp.tmp > \$1.grype.tmp
+  -c $docker_data/.grype.yaml $CROSS -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
+	kill \$piddd
   rm -f -r $docker_data/grype/*
-  marker() { # $1 = Name, $2 = Order, $3 = Marker/ID
+  marker() { # $1 = Name, $2 = Order, $3 = Marker/ID, $4 = syft/grype
     unset \"wright\$2\"
-    grep \"\$3\" \$1.grype.tmp | tail -n 1 > \$1.grype.status.\$2
-    tr -d '\000-\037\177' < \$1.grype.status.\$2 | sed '/^$/d' > \$1.grype.status.\$2.tmp
-    line1=\$(cat \$1.grype.status.\$2)
+    grep \"\$3\" \$1.\$4.tmp | tail -n 1 > \$1.\$4.status.\$2
+    line1=\$(cat \$1.\$4.status.\$2)
     if [[ \"\$line1\" == *\$3* ]]; then
       export \"wright\$2\"=\"\$line1\"
     fi
+		rm -f \$1.\$4.tmp*
+		rm -f \$1.\$4.status.*
   }
-  marker \$1 1 \"✔ Scanned for vulnerabilities\"
-  marker \$1 2 \"├── by severity:\"
-  marker \$1 3 \"└── by status:\"
-  echo \$wright1 > \$1.grype.status
-  echo \$wright2 >> \$1.grype.status
-  echo \$wright3 >> \$1.grype.status
-  sed -i 's/[^[:print:]]//g' \$1.grype.status
-  sed -i 's/\[K//g' \$1.grype.status
-  sed -i 's/\[2A//g' \$1.grype.status
-  sed -i 's/\[3A//g' \$1.grype.status
-  rm -f \$1.grype.tmp*
-  rm -f \$1.grype.status.*
-  cp \$1.grype.status readme.md
+  wright() { # $1 = Name, $2 = syft/grype
+		echo \$wright1 > \$1.\$2.status
+		echo \$wright2 >> \$1.\$2.status
+		echo \$wright3 >> \$1.\$2.status
+		sed -i 's/[^[:print:]]//g' \$1.\$2.status
+		sed -i 's/\[K//g' \$1.\$2.status
+		sed -i 's/\[2A//g' \$1.\$2.status
+		sed -i 's/\[3A//g' \$1.\$2.status
+	}
+	gryped() { # $1 = Name
+		marker \$1 1 \"✔ Scanned for vulnerabilities\" grype
+		marker \$1 2 \"├── by severity:\" grype
+		marker \$1 3 \"└── by status:\" grype
+		wright \$1 grype
+	}
+	syfted() { # $1 = Name
+		marker \$1 1 \"[]\" syft
+		marker \$1 2 \"[]\" syft
+		marker \$1 3 \"[]\" syft
+		wright \$1 syft
+	}
+	syfted
+	gryped
+	echo '### '\$1' Syft Scan Results - '\$(syft --version) > \$1.contents
+	cat \$1.syft.status >> \$1.contents && rm -f \$1.syft.status
+	echo '### '\$1' Grype Scan Results - '\$(grype --version) >> readme.md
+  cat \$1.grype.status >> readme.md
   sed -i '1,3s/^/#### /g' readme.md
   echo '## ' >> readme.md
-  echo '\`\`\`' >> readme.md
 }
 
 quiet() {
@@ -388,7 +408,7 @@ source $rootless_path/env-rootless.exp
 
 docker() {
   echd=\"\$@\"
-  $docker $echd
+  $docker \$echd
 }
 
 quiet \"\$docker info | grep rootless > $rootless_path/rootless.status\"
@@ -445,10 +465,10 @@ else
 fi
 
 if [[ \"\$(uname -m)\" == \"aarch64\" ]]; then
-  $docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-59 --install amd64
+  docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-59 --install amd64
   echo
 elif [[ \"\$(uname -m)\" == \"x86_64\" ]]; then
-  $docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-59 --install arm64
+  docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-59 --install arm64
   echo
 else
   echo 'Unknown Architecture '\$(uname -m)
@@ -458,8 +478,9 @@ fi
 source modules
 
 mkdir -p Results && pushd Results
-  scan_using_grype ubuntu \"/ --select-catalogers debian\"
-  cat *image.digest >> readme.md && cat readme.md && echo
+  scan_using_grype ubuntu \"/ --select-catalogers directory\"
+  echo '\`\`\`' >> readme.md
+  cat *.image.digest >> readme.md && cat readme.md && echo
 popd
 
 git status && git add -A && git status && read -p '🔐 Press enter to launch pinentry'
