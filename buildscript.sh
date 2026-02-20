@@ -407,7 +407,14 @@ Host \$PROJECT
 fi
 eval \"\$(ssh-agent -s)\" && wait
 ssh -T git@github.com 2> $nulled
-ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l
+ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l && echo
+
+git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
+git-lfs install && echo "Starting git fetch..." && git fetch --unshallow 2> $nulled
+
+git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
+git submodule update --init --remote --merge && echo
+git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
 
 if [[ \"\$(gpg-card list - openpgp)\" == *\$SIGNING_KEY* ]]; then
   echo && echo \"Signing key present\" && echo
@@ -419,12 +426,6 @@ else
   ls -la $home/.gnupg
   exit 1
 fi
-
-git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
-git-lfs install && git fetch --unshallow 2> $nulled
-git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
-git submodule update --init --remote --merge && echo
-git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
 
 unset rel_date date_rel rel_ver sub_ver
 rel_date=\$(date -d \"\$(date)\" +\"%m-%d-%Y\")
