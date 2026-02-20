@@ -201,7 +201,7 @@ chown $run_as:$run_as /dev/hidraw*
 
 DEVICE=$(lsusb -d 1050:0407 | grep -o Device.... - | grep -o [0-9][0-9][0-9])
 BUS=$(lsusb -d 1050:0407 | grep -o Bus.... - | grep -o [0-9][0-9][0-9])
-set_facl=$(echo "setfacl -m u:$run_as:rw /dev/bus/usb/$BUS/$DEVICE")
+set_facl="setfacl -m u:$run_as:rw /dev/bus/usb/$BUS/$DEVICE"
 quiet $set_facl || quiet $set_facl || exit 1
 
 if [ "$MOUNT" != "" ]; then
