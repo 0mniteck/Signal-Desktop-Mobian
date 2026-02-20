@@ -44,7 +44,7 @@ buildscript.sh:
 A. First build and push the upcoming branch:
 
 ```
-git clone https://github.com/$REPO/Signal-Desktop-Reproducible.git && \
+git clone --depth 1 https://github.com/$REPO/Signal-Desktop-Reproducible.git && \
 cd Signal-Desktop-Reproducible && \
 ./buildscript.sh -i'.01' -p'7.xx.x' -d'today'
 ```
@@ -52,7 +52,7 @@ cd Signal-Desktop-Reproducible && \
 B. Then rebuild the current branch for release:
 
 ```
-git clone git@github.com:$REPO/Signal-Desktop-Reproducible.git -b 7.xx.x && \
+git clone --depth 1 git@github.com:$REPO/Signal-Desktop-Reproducible.git -b 7.xx.x && \
 cd Signal-Desktop-Reproducible && \
 ./buildscript.sh -p'main' -r'7.xx.0'
 ```
@@ -60,7 +60,7 @@ cd Signal-Desktop-Reproducible && \
 C. To build a past release for reproducibility:
 
 ```
-git clone git@github.com:0mniteck/Signal-Desktop-Reproducible.git -b 7.xx.x && \
+git clone --depth 1 git@github.com:0mniteck/Signal-Desktop-Reproducible.git -b 7.xx.x && \
 cd Signal-Desktop-Reproducible && \
 ./buildscript.sh
 ```
