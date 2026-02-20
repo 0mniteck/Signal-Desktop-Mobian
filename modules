@@ -1,18 +1,5 @@
-$docker info
-type -t docker
-
-docker() {
-  echd="$@"
-  echo runpath="$@"
-  $docker $echd
-}
-
-type -t docker
-docker info
-type -t docker
-
 if [ "$INC" != "" ]; then
-ver_num=$(echo "$last_ver_num + $1" | bc -l)
+ver_num=$(echo "$last_ver_num + $INC" | bc -l)
 sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g docs/_layouts/default.html
 sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g docs/README.md
 sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g readme.md
