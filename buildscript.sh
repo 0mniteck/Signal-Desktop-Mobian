@@ -48,10 +48,6 @@ else
   echo "Tag Release: $TAG"
   echo "Run Tests: $TEST"
 fi
-
-if [ "$BRANCH" = "" ]; then
-  BRANCH="debug"
-fi
 if [ "$CROSS" = "" ]; then
   CROSS="yes"
 fi
@@ -391,8 +387,8 @@ systemctl --user status docker.dockerd --all --no-pager -n 150 > $rootless_path/
 source $rootless_path/env-rootless.exp
 
 docker() {
-  echt=\"\$@\"
-  $docker \"\$echt\"
+  echd=\"\$@\"
+  $docker \"\$echd\"
 }
 
 quiet \"\$docker info | grep rootless > $rootless_path/rootless.status\"
@@ -468,9 +464,11 @@ mkdir -p Results && pushd Results
 popd
 
 git status && git add -A && git status && read -p 'Press enter to launch pinentry'
-git commit -a -S -m \"Successful Build of Release \$date_rel\" && git push --set-upstream origin \$(git rev-parse --abbrev-ref HEAD):\$BRANCH
-if [ \"\$TAG\" != \"\" ]; then
-  git tag -a \"\$TAG\" -s -m \"Tagged Release \$TAG\" && sleep 5 && git push origin \"\$TAG\"
+if [ \"\$BRANCH\" != \"\" ]; then
+  git commit -a -S -m \"Successful Build of Release \$date_rel\" && git push --set-upstream origin \$(git rev-parse --abbrev-ref HEAD):\$BRANCH
+  if [ \"\$TAG\" != \"\" ]; then
+    git tag -a \"\$TAG\" -s -m \"Tagged Release \$TAG\" && sleep 5 && git push origin \"\$TAG\"
+  fi
 fi
 
 ssh-add -D && eval \"\$(ssh-agent -k)\"
@@ -480,13 +478,12 @@ sys_ctl_common"
 if [ "$TEST" = "yes" ]; then
   chown root:root $nulled
 fi
-
-quiet systemctl unmask snap.docker.dockerd --runtime
-quiet systemctl unmask snap.docker.nvidia-container-toolkit --runtime
-
 if [ "$MOUNT" != "" ]; then
     unmount
 fi
+
+quiet systemctl unmask snap.docker.dockerd --runtime
+quiet systemctl unmask snap.docker.nvidia-container-toolkit --runtime
 
 snap remove docker --purge || echo "Failed to remove Docker"
 quiet networkctl delete docker0
