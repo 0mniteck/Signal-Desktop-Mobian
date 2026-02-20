@@ -83,7 +83,7 @@ fi
 
 if [ "$TEST" = "yes" ]; then
   touch $nulled
-  chown $run_as:$run_as $nulled
+  chown root:root $nulled
 fi
 
 if [[ "$(cat /lib/udev/rules.d/60-scdaemon.rules | grep $run_as)" != *$run_as* ]]; then
@@ -219,6 +219,10 @@ mkdir -p /home/root && sed -i "s|:/root:|:/home/root:|" /etc/passwd
 mkdir -p /$plugins_path && wait
 ln -f -s /$snap_path/$plugins_path/docker-buildx /$plugins_path/docker-buildx > $nulled || exit 1
 ln -f -s /$snap_path/$plugins_path/docker-compose /$plugins_path/docker-compose > $nulled || exit 1
+
+if [ "$TEST" = "yes" ]; then
+  chown $run_as:$run_as $nulled
+fi
 
 machinectl shell $run_as@ /bin/bash -c "
 $debug
