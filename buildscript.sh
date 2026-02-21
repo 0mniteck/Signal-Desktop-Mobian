@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env -S - bash --norc --noprofile
 
 while getopts ":c:i:d:m:p:r:t:" opt; do
   case $opt in
@@ -226,10 +226,10 @@ ln -f -s /$snap_path/$plugins_path/docker-compose /$plugins_path/docker-compose 
 if [ "$TEST" = "yes" ]; then
   chown $run_as:$run_as $nulled
 else
-  exort -- PUSH='"--push"'
+  declare -- PUSH='"--push"'
 fi
 if [ "$CROSS" = "yes" ]; then
-  export -- CROSS='"--platform linux/arm64,linux/amd64"'
+  declare -- CROSS='"--platform linux/arm64,linux/amd64"'
 fi
 
 machinectl shell $run_as@ /bin/bash -c "
@@ -373,7 +373,7 @@ scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalo
     grep \"\$3\" \$1.\$4.tmp | tail -n 1 > \$1.\$4.status.\$2
     line1=\$(cat \$1.\$4.status.\$2)
     if [[ \"\$line1\" == *\$3* ]]; then
-      export \"wright\$2\"=\"\$line1\"
+      declare -- \"wright\$2\"=\"\$line1\"
     fi
 		rm -f \$1.\$4.tmp*
 		rm -f \$1.\$4.status.*
@@ -458,17 +458,17 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
   git submodule update --init --remote --merge
   git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
-fi
 
-if [[ \"\$(gpg-card list - openpgp)\" == *\$SIGNING_KEY* ]]; then
-  echo && echo \"Signing key present\" && echo
-else
-  echo && echo \"Signing key \$SIGNING_KEY missing\"
-  echo \"Check Yubikey and .identity file\" && echo
-  lsusb && ls -la /dev/hid* && gpg-card list - openpgp
-  systemctl --user status gpg-agent* --all --no-pager
-  ls -la $home/.gnupg
-  exit 1
+  if [[ \"\$(gpg-card list - openpgp)\" == *\$SIGNING_KEY* ]]; then
+    echo && echo \"Signing key present\" && echo
+  else
+    echo && echo \"Signing key \$SIGNING_KEY missing\"
+    echo \"Check Yubikey and .identity file\" && echo
+    lsusb && ls -la /dev/hid* && gpg-card list - openpgp
+    systemctl --user status gpg-agent* --all --no-pager
+    ls -la $home/.gnupg
+    exit 1
+  fi
 fi
 
 unset rel_date date_rel rel_ver sub_ver
@@ -507,7 +507,11 @@ drop_down() {
     PROMPT_COMMAND='echo;echo Rootless~Docker:~\$'\")
 }
 
-mkdir -p Results && env | sort > Results/$run_id:$run_id.env
+mkdir -p Results
+env | sort > Results/$run_id:$run_id.env
+declare | sort > Results/$run_id:$run_id.dec
+set | sort > Results/$run_id:$run_id.set
+
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   source modules || drop_down
 else
