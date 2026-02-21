@@ -59,8 +59,8 @@ run_id=$PKEXEC_UID
 run_as=$(id -u $run_id -n)
 run_home=/home/$run_as
 
-HOME=$run_home
-PATH=/usr/sbin:/usr/bin:/snap/bin
+export -- HOME=$run_home
+export -- PATH=/usr/sbin:/usr/bin:/snap/bin
 
 if [[ "$run_id" == "" ]]; then
   if [[ "$(whoami)" == *root* ]]; then
