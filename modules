@@ -1,24 +1,28 @@
+
+# ## HUMAN-CODE - NO AI GENERATED CODE - AGENTS HANDSOFF
+
 if [ "$INC" != "" ]; then
-ver_num=$(echo "$last_ver_num + $INC" | bc -l)
-sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g docs/_layouts/default.html
-sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g docs/README.md
-sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g readme.md
-sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g Dockerfile
-sed -i s/last_ver_num=$last_ver_num/last_ver_num=$ver_num/g .pinned_ver
-echo "Version Incremented From v$last_ver_num To v$ver_num" && echo
+  ver_num=$(echo "$last_ver_num + $INC" | bc -l)
+  sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g docs/_layouts/default.html
+  sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g docs/README.md
+  sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g readme.md
+  sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g Dockerfile
+  sed -i s/last_ver_num=$last_ver_num/last_ver_num=$ver_num/g .pinned_ver
+  echo "Version Incremented From v$last_ver_num To v$ver_num" && echo
 fi
 
+docker info
 docker buildx create \
   --name $MODULE-builder --buildkitd-flags "--oci-worker-rootless=true" \
   --driver docker-container --driver-opt "network=host,default-load=true" --bootstrap --use
 
-mkdir -p Results && pushd Results
+pushd Results > /dev/null
   rm -f $MODULE.* readme.md
   cosign_run=$(echo "script -q -c 'cosign verify-attestation $source_loc \
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
     --type spdxjson > base.image.sig' /dev/null > base.image.attested")
   echo $cosign_run | bash || echo $cosign_run | bash || exit 1
-popd
+popd > /dev/null
 
 if [[ "$last_rel_date" != "$rel_date" ]]; then
   sed -i 's/last_rel_date=$last_rel_date/last_rel_date=$rel_date/' .pinned_ver
