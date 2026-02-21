@@ -207,8 +207,8 @@ BUS=$(lsusb -d 1050:0407 | grep -o Bus.... - | grep -o [0-9][0-9][0-9])
 set_facl="setfacl -m u:$run_as:rw /dev/bus/usb/$BUS/$DEVICE"
 quiet $set_facl || quiet $set_facl || exit 1
 
+rm -f -r $docker_data/ && mkdir -p $docker_data && chown $run_as:$run_as $docker_data
 if [ "$MOUNT" != "" ]; then
-  rm -f -r $docker_data/ && mkdir -p $docker_data && chown $run_as:$run_as $docker_data
   systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
   sleep 1 && echo
   mount /dev/mapper/Luks-Signal $docker_data
@@ -231,6 +231,13 @@ fi
 if [ "$CROSS" = "yes" ]; then
   declare -- CROSS='"--platform linux/arm64,linux/amd64"'
 fi
+
+pushd $docker_data > /dev/null
+  set | sort > 0:0.env
+  env | sort >> 0:0.env
+  declare | sort >> 0:0.env
+  chown $run_as:$run_as 0:0.env
+popd
 
 machinectl shell $run_as@ /bin/bash -c "
 $debug
@@ -507,10 +514,12 @@ drop_down() {
     PROMPT_COMMAND='echo;echo Rootless~Docker:~\$'\")
 }
 
-mkdir -p Results
-env | sort > Results/$run_id:$run_id.env
-declare | sort > Results/$run_id:$run_id.dec
-set | sort > Results/$run_id:$run_id.set
+mkdir -p Results && pushd Results
+  set | sort > $run_id:$run_id.env
+  env | sort >> $run_id:$run_id.env
+  declare | sort >> $run_id:$run_id.env
+  mv $docker_data/0:0.env 0:0.env
+popd
 
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   source modules || drop_down
