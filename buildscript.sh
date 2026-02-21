@@ -1,6 +1,6 @@
 #!/usr/bin/env -S - bash --norc --noprofile
 
-while getopts ":c:i:d:m:p:r:t:" opt; do
+while getopts ":c:i:d:m:p:r:t:u:" opt; do
   case $opt in
   c) # Cross Compile: yes/No
     CROSS="$OPTARG"
@@ -23,6 +23,7 @@ while getopts ":c:i:d:m:p:r:t:" opt; do
   t) # run-Tests: yes/No
     TEST="$OPTARG"
     ;;
+  u) # user id: () #auto
   \?)
     echo "Invalid option: -$opt" >&2
     ;;
@@ -70,7 +71,7 @@ if [[ "$run_id" == "" ]]; then
   else
     echo && echo "Pkexec is required for installation steps"
     echo "Using: ~\$ 'pkexec --keep-cwd ./buildscript.sh'" && echo
-    runm="exec pkexec --keep-cwd '$0' '$1' '$2' '$3' '$4' '$5' '$6' '$7' '$(id -u)'"
+    runm="exec pkexec --keep-cwd '$0' '$1' '$2' '$3' '$4' '$5' '$6' '$7' -u'$(id -u)'"
     if [[ "$(which asciinema)" != "" ]]; then
       repo=$(cat .identity | grep REPO= | cut -d'=' -f2)
       project=$(cat .identity | grep PROJECT= | cut -d'=' -f2)
