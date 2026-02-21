@@ -161,7 +161,6 @@ unmount() {
     sleep 1
     quiet dmsetup remove /dev/mapper/Luks-Signal
     sleep 1 && rm -r -f $docker_data/
-    quiet snap enable docker
 }
 
 if [ "$MOUNT" != "" ]; then
