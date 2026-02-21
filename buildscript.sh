@@ -205,7 +205,7 @@ set_facl="setfacl -m u:$run_as:rw /dev/bus/usb/$BUS/$DEVICE"
 quiet $set_facl || quiet $set_facl || exit 1
 
 if [ "$MOUNT" != "" ]; then
-  echo && rm -f -r $docker_data/ && mkdir -p $docker_data && chown $run_as:$run_as $docker_data
+  rm -f -r $docker_data/ && mkdir -p $docker_data && chown $run_as:$run_as $docker_data
   systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
   sleep 1 && echo
   mount /dev/mapper/Luks-Signal $docker_data
@@ -408,7 +408,6 @@ systemctl --user start docker.dockerd && sleep 10
 systemctl --user status docker.dockerd --all --no-pager -n 150 > $rootless_path/rootless.ctl.log
 
 source $rootless_path/env-rootless.exp
-env | sort >> Results/$run_id:$run_id.env
 
 docker() {
   echd=\"\$@\"
@@ -482,9 +481,10 @@ else
   exit 1
 fi
 
+mkdir -p Results && env | sort > Results/$run_id:$run_id.env
 source modules
 
-mkdir -p Results && pushd Results
+pushd Results
   scan_using_grype ubuntu \"/ --select-catalogers directory\"
   sed -i 's/^/#### /g' readme.md && echo '\`\`\`' >> readme.md
   cat *.image.digest >> readme.md && cat readme.md && echo
