@@ -24,6 +24,8 @@ while getopts ":c:i:d:m:p:r:t:u:" opt; do
     TEST="$OPTARG"
     ;;
   u) # user id: () #auto
+  	run_id="$OPTARG"
+  	;;
   \?)
     echo "Invalid option: -$opt" >&2
     ;;
@@ -56,7 +58,6 @@ fi
 
 $debug
 
-run_id=$8
 run_as=$(id -u $run_id -n)
 run_home=/home/$run_as
 
