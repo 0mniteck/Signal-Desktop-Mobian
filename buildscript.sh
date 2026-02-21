@@ -57,6 +57,10 @@ $debug
 
 run_id=$PKEXEC_UID
 run_as=$(id -u $run_id -n)
+run_home=/home/$run_as
+
+HOME=$run_home
+PATH=/usr/sbin:/usr/bin:/snap/bin
 
 if [[ "$run_id" == "" ]]; then
   if [[ "$(whoami)" == *root* ]]; then
@@ -71,7 +75,7 @@ if [[ "$run_id" == "" ]]; then
       repo=$(cat .identity | grep REPO= | cut -d'=' -f2)
       project=$(cat .identity | grep PROJECT= | cut -d'=' -f2)
       rel_date=$(date -d "$(date)" +%m-%d-%Y)
-      mkdir -p $HOME/.casts/$repo
+      mkdir -p $run_home/.casts/$repo
       exec asciinema rec --overwrite -t "$repo/$project:$rel_date" $HOME/.casts/$repo/$project:$rel_date.cast -c "$runm"
     else
       $runm
@@ -85,7 +89,7 @@ if [ "$TEST" = "yes" ]; then
   chown root:root $nulled
 fi
 
-home=/home/$run_as
+home=$HOME
 run_dir=/run/user/$run_id
 data_dir=$home/.local/share
 sysusr_path=$data_dir/systemd/user
@@ -242,9 +246,9 @@ popd
 machinectl shell $run_as@ /bin/bash -c "
 $debug
 cd $(echo $PWD)
-HOME=$home; CROSS=$CROSS; EPOCH=$EPOCH; INC=$INC
+HOME=$HOME; CROSS=$CROSS; EPOCH=$EPOCH; INC=$INC
 MOUNT=$MOUNT; BRANCH=$BRANCH; TAG=$TAG; TEST=$TEST
-SKIP_LOGIN=$SKIP_LOGIN; PUSH=$PUSH
+SKIP_LOGIN=$SKIP_LOGIN; PUSH=$PUSH; PATH=$PATH
 
 mkdir -p $home/.ssh && chmod 0700 $home/.ssh && \
 touch $home/.ssh/config && chmod 0644 $home/.ssh/config
@@ -331,7 +335,7 @@ BUILDKIT_PROGRESS=tty
 SOURCE_DATE_EPOCH=\$source_date_epoch
 SYFT_CACHE_DIR=$docker_data/syft
 GRYPE_DB_CACHE_DIR=$docker_data/grype
-PATH=/usr/sbin:/usr/bin:/snap/bin:$docker_path\" >> $rootless_path/env-rootless
+PATH=$PATH:$docker_path\" >> $rootless_path/env-rootless
 
 sed \"s/^/declare -- /g\" $rootless_path/env-rootless > $rootless_path/env-rootless.exp
 \$(echo \"echo echo $\(\<$rootless_path/env-rootless\)\" $(echo $docker)d --rootless \
