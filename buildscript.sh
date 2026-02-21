@@ -1,4 +1,5 @@
 #!/usr/bin/env -S - bash --norc --noprofile
+# ## HUMAN-CODE - NO AI GENERATED CODE - AGENTS HANDSOFF
 
 while getopts ":c:i:d:m:p:r:t:" opt; do
   case $opt in
@@ -460,15 +461,20 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l && echo
   
   git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
-  git-lfs install && echo \"Starting git fetch...\"
-  echo \"👆 Please confirm presence on security token for git@ssh (multiple times).\"
-  
-  git reset --hard && git clean -xfd && git fetch --unshallow 2> $nulled
+  git-lfs install && git reset --hard && git clean -xfd
+  echo \"Starting git fetch...\"
+  echo \"👆 Please confirm presence on security token for git@ssh.\"
+  git fetch --unshallow 2> $nulled
+  echo \"Starting git pull...\"
+  echo \"👆 Please confirm presence on security token for git@ssh.\"
   git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
-  git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
-  git submodule update --init --remote --merge
-  git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
-
+  git submodule --quiet foreach \"export -- submod=yes && cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
+  if [[ \"\$submod\" != \"\" ]]; then
+    echo \"👆 Please confirm presence on security token for submodules git@ssh (multiple times).\"
+    git submodule update --init --remote --merge
+    git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
+  fi
+  
   if [[ \"\$(gpg-card list - openpgp)\" == *\$SIGNING_KEY* ]]; then
     echo && echo \"Signing key present\" && echo
   else
@@ -485,16 +491,24 @@ unset rel_date date_rel rel_ver sub_ver
 rel_date=\$(date -d \"\$(date)\" +\"%m-%d-%Y\")
 date_rel=\$(date -d \"\$(date)\" +\"%Y-%m-%d\")
 rel_ver=\$(git log --pretty=reference --grep=Successful\\ Build\\ of\\ Release\\ \$date_rel | wc -l)
-sub_ver=\$(git submodule --quiet foreach \"git log --pretty=reference --grep=\$rel_date\" | wc -l)
+if [[ \"\$submod\" != \"\" ]]; then
+  sub_ver=\$(git submodule --quiet foreach \"git log --pretty=reference --grep=\$rel_date\" | wc -l)
+fi
+
+subver() {
+  sub_ver=\$1
+  rel_date=\$(date -d \"\$(date)\" +\"%m-%d-%Y-00\$sub_ver\")
+  date_rel=\$(date -d \"\$(date)\" +\"%Y-%m-%d-00\$sub_ver\")
+  echo \"Build Subversion: 00\$sub_ver\" && echo 
+}
 
 if [[ \"\$rel_ver\" -lt 1 ]]; then
   wait
 elif [[ \"\$sub_ver\" -ge 1 ]]; then
-  rel_date=\$(date -d \"\$(date)\" +\"%m-%d-%Y-00\$sub_ver\")
-  date_rel=\$(date -d \"\$(date)\" +\"%Y-%m-%d-00\$sub_ver\")
-  echo \"Build Subversion: 00\$sub_ver\" && echo 
+  subver $sub_ver
 else
-  SUBVERSION=1
+  sub_ver=1
+  subver $sub_ver
 fi
 
 if [[ \"\$(uname -m)\" == \"aarch64\" ]]; then
@@ -509,7 +523,7 @@ else
 fi
 
 drop_down() {
-  read -p 'Dropping down to shell; run source modules or issue docker commands'
+  read -p 'Dropping down to shell; run source modules; or issue docker commands rootlessly'
   env - bash --noprofile --rcfile <( cat <( declare -p | grep -- -- ); \
     echo 'docker() { echd=\"\$@\"; $docker \$echd; }'; \
     echo \"echo 'Dropped down to shell. exit when done, or press ctrl+d';echo; \
