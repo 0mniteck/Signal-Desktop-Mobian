@@ -37,6 +37,7 @@ if [ "$TEST" = "" ]; then
   nulled=/dev/null
 else
   TEST="yes"
+  SKIP_LOGIN="yes"
   nulled=/tmp/nulled.log
   debug="set -x"
   
@@ -194,10 +195,12 @@ if [[ "$(cat /lib/udev/rules.d/60-scdaemon.rules | grep $run_as)" != *$run_as* ]
   udevadm control --reload-rules && udevadm trigger
 fi
 
-while [[ "$(lsusb | grep Yubikey)" != *Yubikey* ]]; do
-  printf "\r🔐 Please insert yubikey...\033[K"
-done && sleep 1 && echo
-chown $run_as:$run_as /dev/hidraw*
+if [[ "$SKIP_LOGIN" == "" ]]; then
+  while [[ "$(lsusb | grep Yubikey)" != *Yubikey* ]]; do
+    printf "\r🔐 Please insert yubikey...\033[K"
+  done && sleep 1 && echo
+fi
+quiet chown $run_as:$run_as /dev/hidraw*
 
 DEVICE=$(lsusb -d 1050:0407 | grep -o Device.... - | grep -o [0-9][0-9][0-9])
 BUS=$(lsusb -d 1050:0407 | grep -o Bus.... - | grep -o [0-9][0-9][0-9])
@@ -222,6 +225,8 @@ ln -f -s /$snap_path/$plugins_path/docker-compose /$plugins_path/docker-compose 
 
 if [ "$TEST" = "yes" ]; then
   chown $run_as:$run_as $nulled
+else
+  exort -- PUSH='"--push"'
 fi
 if [ "$CROSS" = "yes" ]; then
   export -- CROSS='"--platform linux/arm64,linux/amd64"'
@@ -232,6 +237,7 @@ $debug
 cd $(echo $PWD)
 HOME=$home; CROSS=$CROSS; EPOCH=$EPOCH; INC=$INC
 MOUNT=$MOUNT; BRANCH=$BRANCH; TAG=$TAG; TEST=$TEST
+SKIP_LOGIN=$SKIP_LOGIN; PUSH=$PUSH
 
 mkdir -p $home/.ssh && chmod 0700 $home/.ssh && \
 touch $home/.ssh/config && chmod 0644 $home/.ssh/config
@@ -285,10 +291,14 @@ sys_ctl_common() {
   systemctl --user list-units docker* --all && echo
 }
 
-echo && read -p '🔐 Press enter to start docker login'
-clean_some && docker login && mkdir -p $docker_data/.docker && wait && \
-ln -f -s $home/$snap_path/.docker/config.json $docker_data/.docker/config.json || exit 1
-echo && syft login registry-1.docker.io -u \$USERNAME && echo 'Logged in to syft' && echo
+clean_some
+
+if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
+  echo && read -p '🔐 Press enter to start docker login'
+  docker login && mkdir -p $docker_data/.docker && wait && \
+  ln -f -s $home/$snap_path/.docker/config.json $docker_data/.docker/config.json || exit 1
+  echo && syft login registry-1.docker.io -u \$USERNAME && echo 'Logged in to syft' && echo
+fi
 
 mkdir -p $rootless_path/tmp && wait
 > $rootless_path.sh && > $rootless_path/env-docker && > $rootless_path/env-rootless && chmod +x $rootless_path.sh && wait
@@ -316,7 +326,7 @@ SYFT_CACHE_DIR=$docker_data/syft
 GRYPE_DB_CACHE_DIR=$docker_data/grype
 PATH=/usr/sbin:/usr/bin:/snap/bin:$docker_path\" >> $rootless_path/env-rootless
 
-sed \"s/^/export -- /g\" $rootless_path/env-rootless > $rootless_path/env-rootless.exp
+sed \"s/^/declare -- /g\" $rootless_path/env-rootless > $rootless_path/env-rootless.exp
 \$(echo \"echo echo $\(\<$rootless_path/env-rootless\)\" $(echo $docker)d --rootless \
 --userland-proxy-path=$docker_path/docker-proxy --init-path=$docker_path/docker-init \
 --feature cdi=false --group docker) | /bin/bash | /bin/bash 2>> $rootless_path/rootless.log'
@@ -330,14 +340,18 @@ sed -i \"s|EnvironmentFile.*|EnvironmentFile=-$rootless_path/env-rootless|\" $sy
 sed -i \"s|ExecStart.*|ExecStart=/bin/bash -c \'$data_dir/rootless.sh\'|\" $sysusr_service
 
 mkdir -p $docker_data/syft && mkdir -p $docker_data/grype
-scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-catalogers directory', $3 = Attest Tag
+scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalogers directory', \$3 = Attest Tag
   if [[ \"\$3\" != \"\" ]]; then
-    read -p '🔐 Press enter to start attestation' && echo
-    echo 'Starting Syft...'
-    syft_att_run=\"TMPDIR=$docker_data/syft syft attest \$CROSS --output spdx-json docker.io/\$REPO/\$1:\$3\"
-	script -q -c \"\$syft_att_run\" /dev/null || \
-    script -q -c \"\$syft_att_run\" /dev/null || exit 1
-    echo
+    if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
+      read -p '🔐 Press enter to start attestation' && echo
+      echo 'Starting Syft...'
+      syft_att_run=\"TMPDIR=$docker_data/syft syft attest \$CROSS --output spdx-json docker.io/\$REPO/\$1:\$3\"
+  	  script -q -c \"\$syft_att_run\" /dev/null || \
+      script -q -c \"\$syft_att_run\" /dev/null || exit 1
+      echo
+    else
+      echo 'Skipping attestation: not logged in'
+    fi
   else
     echo 'Starting Syft...'
   fi
@@ -354,7 +368,7 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-cataloge
   -c $docker_data/.grype.yaml \$CROSS -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
   kill \$piddd
   rm -f -r $docker_data/grype/*
-  marker() { # $1 = Name, $2 = Order, $3 = Marker/ID, $4 = syft/grype
+  marker() { # \$1 = Name, \$2 = Order, \$3 = Marker/ID, \$4 = syft/grype
     unset \"wright\$2\"
     grep \"\$3\" \$1.\$4.tmp | tail -n 1 > \$1.\$4.status.\$2
     line1=\$(cat \$1.\$4.status.\$2)
@@ -364,7 +378,7 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-cataloge
 		rm -f \$1.\$4.tmp*
 		rm -f \$1.\$4.status.*
   }
-  wright() { # $1 = Name, $2 = syft/grype
+  wright() { # \$1 = Name, \$2 = syft/grype
 		echo \$wright1 > \$1.\$2.status
 		echo \$wright2 >> \$1.\$2.status
 		echo \$wright3 >> \$1.\$2.status
@@ -375,13 +389,13 @@ scan_using_grype() { # $1 = Name, $2 = Repo/Name:tag or '/Path --select-cataloge
 		sed -i 's/\[2A//g' \$1.\$2.status
 		sed -i 's/\[3A//g' \$1.\$2.status
 	}
-	gryped() { # $1 = Name
+	gryped() { # \$1 = Name
 		marker \$1 1 \"✔ Scanned for vulnerabilities\" grype
 		marker \$1 2 \"├── by severity:\" grype
 		marker \$1 3 \"└── by status:\" grype
 		wright \$1 grype
 	}
-	syfted() { # $1 = Name
+	syfted() { # \$1 = Name
 		marker \$1 1 \"✔ Cataloged contents\" syft
 		marker \$1 2 \"├── ✔ Packages\" syft
 		marker \$1 3 \"├── ✔ Executables\" syft
@@ -429,19 +443,22 @@ Host \$PROJECT
   IdentityFile $home/\$IDENTITY_FILE
   IdentitiesOnly yes\" >> $home/.ssh/config
 fi
-eval \"\$(ssh-agent -s)\" && wait
-ssh -T git@github.com 2> $nulled
-ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l && echo
 
-git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
-git-lfs install && echo \"Starting git fetch...\"
-echo \"👆 Please confirm presence on security token for git@ssh (multiple times).\"
-
-git reset --hard && git clean -xfd && git fetch --unshallow 2> $nulled
-git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
-git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
-git submodule update --init --remote --merge
-git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
+if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
+  eval \"\$(ssh-agent -s)\" && wait
+  ssh -T git@github.com 2> $nulled
+  ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l && echo
+  
+  git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
+  git-lfs install && echo \"Starting git fetch...\"
+  echo \"👆 Please confirm presence on security token for git@ssh (multiple times).\"
+  
+  git reset --hard && git clean -xfd && git fetch --unshallow 2> $nulled
+  git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
+  git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
+  git submodule update --init --remote --merge
+  git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
+fi
 
 if [[ \"\$(gpg-card list - openpgp)\" == *\$SIGNING_KEY* ]]; then
   echo && echo \"Signing key present\" && echo
@@ -481,8 +498,21 @@ else
   exit 1
 fi
 
+drop_down() {
+  read -p 'Dropping down to shell; run source modules or issue docker commands'
+  env - bash --noprofile --rcfile <( cat <( declare -p | grep -- -- ); \
+    echo 'docker() { echd=\"\$@\"; $docker \$echd; }'; \
+    echo \"echo 'Dropped down to shell. exit when done, or press ctrl+d';echo; \
+    PS1=\$PS1; declare -p | grep TEST; declare -p | grep SKIP; \
+    PROMPT_COMMAND='echo;echo Rootless~Docker:~\$'\")
+}
+
 mkdir -p Results && env | sort > Results/$run_id:$run_id.env
-source modules
+if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
+  source modules || drop_down
+else
+  drop_down
+fi
 
 pushd Results
   scan_using_grype ubuntu \"/ --select-catalogers directory\"
@@ -490,11 +520,13 @@ pushd Results
   cat *.image.digest >> readme.md && cat readme.md && echo
 popd
 
-git status && git add -A && git status && read -p '🔐 Press enter to launch pinentry'
-if [ \"\$BRANCH\" != \"\" ]; then
-  git commit -a -S -m \"Successful Build of Release \$date_rel\" && git push --set-upstream origin \$(git rev-parse --abbrev-ref HEAD):\$BRANCH
-  if [ \"\$TAG\" != \"\" ]; then
-    git tag -a \"\$TAG\" -s -m \"Tagged Release \$TAG\" && sleep 5 && git push origin \"refs/tags/\$TAG\"
+if [[ \"$SKIP_LOGIN\" == \"\" ]]; then
+  git status && git add -A && git status && read -p '🔐 Press enter to launch pinentry'
+  if [ \"\$BRANCH\" != \"\" ]; then
+    git commit -a -S -m \"Successful Build of Release \$date_rel\" && git push --set-upstream origin \$(git rev-parse --abbrev-ref HEAD):\$BRANCH
+    if [ \"\$TAG\" != \"\" ]; then
+      git tag -a \"\$TAG\" -s -m \"Tagged Release \$TAG\" && sleep 5 && git push origin \"refs/tags/\$TAG\"
+    fi
   fi
 fi
 
