@@ -337,7 +337,7 @@ SYFT_CACHE_DIR=$docker_data/syft
 GRYPE_DB_CACHE_DIR=$docker_data/grype
 PATH=$PATH:$docker_path\" >> $rootless_path/env-rootless
 
-sed \"s/^/declare -- /g\" $rootless_path/env-rootless > $rootless_path/env-rootless.exp
+sed \"s/^/export -- /g\" $rootless_path/env-rootless > $rootless_path/env-rootless.exp
 \$(echo \"echo echo $\(\<$rootless_path/env-rootless\)\" $(echo $docker)d --rootless \
 --userland-proxy-path=$docker_path/docker-proxy --init-path=$docker_path/docker-init \
 --feature cdi=false --group docker) | /bin/bash | /bin/bash 2>> $rootless_path/rootless.log'
