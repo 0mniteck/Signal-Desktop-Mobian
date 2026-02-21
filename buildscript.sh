@@ -55,7 +55,7 @@ fi
 
 $debug
 
-run_id=$PKEXEC_UID
+run_id=$8
 run_as=$(id -u $run_id -n)
 run_home=/home/$run_as
 
@@ -64,13 +64,13 @@ export -- PATH=/usr/sbin:/usr/bin:/snap/bin
 
 if [[ "$run_id" == "" ]]; then
   if [[ "$(whoami)" == *root* ]]; then
-    echo && echo "DO NOT run with sudo or su root"
-    echo "Instead Use: ~\$ 'pkexec --keep-cwd ./buildscript.sh'" && echo
+    echo && echo "DO NOT run with escalated priviledges!"
+    echo "Script will Use: ~\$ 'pkexec --keep-cwd ./buildscript.sh'" && echo
     exit 1
   else
     echo && echo "Pkexec is required for installation steps"
     echo "Using: ~\$ 'pkexec --keep-cwd ./buildscript.sh'" && echo
-    runm="exec pkexec --keep-cwd '$0' '$1' '$2' '$3' '$4' '$5' '$6' '$7' "
+    runm="exec pkexec --keep-cwd '$0' '$1' '$2' '$3' '$4' '$5' '$6' '$7' '$(id -u)'"
     if [[ "$(which asciinema)" != "" ]]; then
       repo=$(cat .identity | grep REPO= | cut -d'=' -f2)
       project=$(cat .identity | grep PROJECT= | cut -d'=' -f2)
