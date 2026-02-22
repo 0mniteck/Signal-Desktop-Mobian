@@ -307,6 +307,7 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   docker login && \
   ln -f -s $home/$snap_path/.docker/config.json $docker_data/.docker/config.json || exit 1
   echo && syft login registry-1.docker.io -u \$USERNAME && echo 'Logged in to syft' && echo
+  echo && grype login registry-1.docker.io -u \$USERNAME && echo 'Logged in to grype' && echo
 fi
 
 mkdir -p $rootless_path/tmp && wait
