@@ -143,10 +143,12 @@ clean_all() {
 clean_all
 
 apt-get -qq update && apt-get -qq upgrade -y
-apt-get -q upgrade --install -y acl bc cosign dosfstools git-lfs gnupg2 gpg-agent \
-                      jq parted pkexec rootlesskit scdaemon \
-                      slirp4netns snapd systemd-container \
-                      systemd-cryptsetup uidmap
+apt-get -qq install --purge --autoremove -u acl+ bc+ cosign+ dosfstools+ git-lfs+ gnupg2+ gpg-agent+ \
+																				   jq+ parted+ pkexec+ rootlesskit+ scdaemon+ \
+																				   slirp4netns+ snapd+ systemd-container+ \
+																				   systemd-cryptsetup+ uidmap+ \
+																					 \
+																					 docker- docker.io- docker-ce- docker-ce-cli-
 
 snap install syft --classic && wait
 snap install grype --classic && wait
@@ -166,8 +168,6 @@ if [ "$MOUNT" != "" ]; then
 fi
 
 snap remove docker --purge 2>> $nulled && wait || echo "Failed to remove Docker"
-quiet apt-get -qq purge -y docker-engine docker docker.io docker-ce docker-ce-cli containerd.io docker.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin
-quiet apt-get -qq autoremove -y --purge docker-engine docker docker.io docker-ce docker-ce-cli containerd.io docker.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin
 quiet networkctl delete docker0
 
 if [[ "$(uname -m)" == "aarch64" ]]; then
