@@ -236,7 +236,7 @@ pushd $docker_data > /dev/null
   env | sort >> 0:0.env
   declare | sort >> 0:0.env
   chown $run_as:$run_as 0:0.env
-popd
+popd > /dev/null
 
 machinectl shell $run_as@ /bin/bash --norc --noprofile -c "
 $debug
