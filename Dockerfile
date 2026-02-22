@@ -23,7 +23,6 @@ RUN echo "56c9800d0388dd20a85ad917a75a0dc96aa0de95db560e586b540e657a7a10ec8ef975
 RUN mv fficonfig.h /usr/include/aarch64-linux-gnu/fficonfig.h
 
 ADD --link --keep-git-dir=true https://github.com/signalapp/Signal-Desktop.git?branch=$BRANCH.x&checksum=$COMMIT /Signal-Desktop
-RUN cd /Signal-Desktop
 RUN mkdir -p /Signal-Desktop/artifacts/linux/logs
 
 ENV SIGNAL_ENV=production
