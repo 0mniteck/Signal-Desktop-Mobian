@@ -296,8 +296,7 @@ clean_some
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   mkdir -p $docker_data/.docker && wait 
   if [[ \"\$(which docker-credential-secretservice)\" == \"\" ]]; then
-    wget \"\$cred_helper\" && echo \"\$cred_helper_sha  \
-    \$cred_helper_name\" | sha512sum -c || exit 1
+    wget \"\$cred_helper\" && echo \"\$cred_helper_sha  \$cred_helper_name\" | sha512sum -c || exit 1
     mkdir -p $home/bin && mv $cred_helper_name $home/bin/docker-credential-secretservice
   fi
   echo '{
