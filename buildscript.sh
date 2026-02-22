@@ -240,7 +240,7 @@ pushd $docker_data > /dev/null
   chown $run_as:$run_as 0:0.env
 popd
 
-machinectl shell $run_as@ /bin/bash -c "
+machinectl shell $run_as@ /bin/bash --norc --noprofile -c "
 $debug
 cd $(echo $PWD)
 HOME=$HOME; CROSS=$CROSS; EPOCH=$EPOCH; INC=$INC
