@@ -149,7 +149,6 @@ apt-get -qq install --purge --autoremove -u acl+ bc+ cosign+ dosfstools+ git-lfs
 																				   systemd-cryptsetup+ uidmap+ \
 																					 \
 																					 docker- docker.io- docker-ce- docker-ce-cli-
-
 snap install syft --classic && wait
 snap install grype --classic && wait
 
@@ -450,18 +449,21 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   eval \"\$(ssh-agent -s)\" && wait
   ssh -T git@github.com 2>> $nulled
   ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l && echo
+
+  confirm() { # \$1 = submod, \$2 = times
+    echo \"👆 Please confirm presence on security token for$1 git@ssh$2.\"
+  }
   
   git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
   git-lfs install && git reset --hard && git clean -xfd
-  echo \"Starting Git fetch...\"
-  echo \"👆 Please confirm presence on security token for git@ssh (twice).\"
+  echo \"Starting Git fetch...\" && confirm
   git fetch --unshallow 2>> $nulled
-  echo \"Starting Git pull...\"
-  echo \"👆 Please confirm presence on security token for git@ssh.\"
+  echo \"Starting Git pull...\" $$ confirm
   git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
   git submodule --quiet foreach \"export -- submod=yes && cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
+  
   if [[ \"\$submod\" != \"\" ]]; then
-    echo \"👆 Please confirm presence on security token for submodules git@ssh (multiple times).\"
+    confirm \" submodules\" \" (multiple times).\"
     git submodule update --init --remote --merge
     git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
   fi
