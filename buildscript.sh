@@ -41,7 +41,6 @@ else
   SKIP_LOGIN="yes"
   nulled=/tmp/nulled.log
   debug="set -x"
-  
   echo "Cross Compile: $CROSS"
   echo "Increment: $INC"
   echo "Override Source Epoch: $EPOCH"
@@ -203,7 +202,6 @@ if [[ "$SKIP_LOGIN" == "" ]]; then
   done && sleep 1 && echo
 fi
 quiet chown $run_as:$run_as /dev/hidraw*
-
 DEVICE=$(lsusb -d 1050:0407 | grep -o Device.... - | grep -o [0-9][0-9][0-9])
 BUS=$(lsusb -d 1050:0407 | grep -o Bus.... - | grep -o [0-9][0-9][0-9])
 set_facl="setfacl -m u:$run_as:rw /dev/bus/usb/$BUS/$DEVICE"
