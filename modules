@@ -13,9 +13,9 @@ fi
 
 pushd Results > /dev/null
   rm -f $MODULE.* readme.md && echo 'Starting cosign...' && echo
-  cosign_run_b=$(echo "script -q -c 'cosign verify-attestation $source_loc \
+  cosign_run_b="script -q -c 'cosign verify-attestation $source_loc \
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
-    --type spdxjson > base.image.sig' /dev/null > base.image.attested")
+    --type spdxjson > base.image.sig' /dev/null > base.image.attested"
   quiet $cosign_run_b || quiet $cosign_run_b || exit 1
   cat base.image.attested && echo
 popd > /dev/null
