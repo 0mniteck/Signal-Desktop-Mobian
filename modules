@@ -12,7 +12,6 @@ if [ "$INC" != "" ]; then
 fi
 
 pushd Results > /dev/null
-  touch release.sha512sum
   rm -f $MODULE.* readme.md && echo && echo 'Starting cosign...'
   cosign_run_b="script -q -c 'cosign verify-attestation $source_loc \
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
