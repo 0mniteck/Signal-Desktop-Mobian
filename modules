@@ -12,6 +12,7 @@ if [ "$INC" != "" ]; then
 fi
 
 pushd Results > /dev/null
+  touch release.sha512sum
   rm -f $MODULE.* readme.md && echo && echo 'Starting cosign...'
   cosign_run_b="script -q -c 'cosign verify-attestation $source_loc \
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
@@ -45,7 +46,9 @@ if [[ "$last_rel_date" != "$rel_date" ]]; then
 fi
 
 pushd Results > /dev/null
-  scan_using_grype $MODULE $REPO/$MODULE:$rel_date $rel_date
+  for a in arm64 amd64; do
+    scan_using_grype $MODULE $REPO/$MODULE:$rel_date $a $rel_date
+  done
   echo '# '$REPO/$MODULE:$rel_date > $MODULE.image.digest
   cat $MODULE.meta.json | jq .[] | tail -n 2 | grep sha256 | sed 's/\"//g' >> $MODULE.image.digest
   cat $MODULE.image.digest >> readme.md && cat readme.md && echo && echo 'Starting cosign...'
