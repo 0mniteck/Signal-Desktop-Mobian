@@ -12,6 +12,7 @@ SIGNING_KEY="$2"
 
 echo "Entering /Signal-Desktop"
 pushd /Signal-Desktop
+  mkdir -p release
   echo "Starting Build "$(date -u '+on %D at %R UTC') && echo "# Starting Build "$(date -u '+on %D at %R UTC') > release/release.sha512sum
   echo "RUN_TESTS: ${TEST}"
   echo "BUILD_TYPE: ${BUILD_TYPE}"
