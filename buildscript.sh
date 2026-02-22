@@ -143,10 +143,10 @@ clean_all() {
 clean_all
 
 apt-get -qq update && apt-get -qq upgrade -y
-apt-get -q install -y acl bc cosign dosfstools git-lfs gnupg2 gpg-agent \
-                       jq parted pkexec rootlesskit scdaemon \
-                       slirp4netns snapd systemd-container \
-                       systemd-cryptsetup uidmap
+apt-get -q upgrade --install -y acl bc cosign dosfstools git-lfs gnupg2 gpg-agent \
+                      jq parted pkexec rootlesskit scdaemon \
+                      slirp4netns snapd systemd-container \
+                      systemd-cryptsetup uidmap
 
 snap install syft --classic && wait
 snap install grype --classic && wait
