@@ -61,7 +61,8 @@ run_as=$(id -u $run_id -n)
 run_home=/home/$run_as
 
 export -- HOME=$run_home
-export -- path=/usr/sbin:/usr/bin:/snap/bin
+export -- PATH=/usr/sbin:/usr/bin:/snap/bin
+path=$PATH
 
 if [[ "$run_id" == "" ]]; then
   if [[ "$(whoami)" == *root* ]]; then
