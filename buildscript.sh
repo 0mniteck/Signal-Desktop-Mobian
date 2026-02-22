@@ -350,24 +350,25 @@ scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalo
     if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
       read -p '🔐 Press enter to start attestation' && echo
       echo 'Starting Syft...'
-      syft_att_run=\"TMPDIR=$docker_data/syft syft attest \$CROSS --output spdx-json docker.io/\$REPO/\$1:\$3\"
+      syft_att_run=\"TMPDIR=$docker_data/syft syft attest --platform arm64 --platform amd64 --output spdx-json docker.io/\$REPO/\$1:\$3\"
   	  quiet \$syft_att_run || quiet \$syft_att_run || exit 1
       echo
     else
       echo 'Skipping attestation: not logged in'
     fi
   else
-    echo 'Starting Syft...'
+    echo 'Starting Syft...'curl -o /tmp/warp.status -s --pinnedpubkey "sha256//$(</home/shant/.pki/www.cloudflare.com.pubkey)" \
+--tlsv1.3 --proto -all,+https --remove-on-error --no-insecure https://www.cloudflare.com/cdn-cgi/trace
   fi
   touch \$1.syft.tmp && tail -f \$1.syft.tmp & pidd=\$!
-  syft_run=\"script -q -c 'TMPDIR=$docker_data/syft syft scan \$2 \$CROSS -o spdx-json=\$1.spdx.json' /dev/null > \$1.syft.tmp\"
+  syft_run=\"script -q -c 'TMPDIR=$docker_data/syft syft scan \$2 --platform arm64 --platform amd64 -o spdx-json=\$1.spdx.json' /dev/null > \$1.syft.tmp\"
   quiet \$syft_run || quiet \$syft_run || exit 1
   kill \$pidd && rm -f -r $docker_data/syft/*
   echo && echo 'Starting Grype...'
   grype config > $docker_data/.grype.yaml
   touch \$1.grype.tmp && tail -f \$1.grype.tmp & piddd=\$!
   script -q -c \"TMPDIR=$docker_data/grype grype sbom:\$1.spdx.json \
-  -c $docker_data/.grype.yaml \$CROSS -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
+  -c $docker_data/.grype.yaml --platform arm64 --platform amd64 -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
   kill \$piddd && rm -f -r $docker_data/grype/*
   marker() { # \$1 = Name, \$2 = Order, \$3 = Marker/ID, \$4 = syft/grype
     unset \"wright\$2\"
