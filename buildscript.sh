@@ -154,7 +154,7 @@ snap install grype --classic && wait
 
 unmount() {
     quiet snap disable docker
-    quiet kill $(lsof -F p $docker_data 2> $nulled | cut -d'p' -f2)
+    quiet kill $(lsof -F p $docker_data 2>> $nulled | cut -d'p' -f2)
     rm -r -f $docker_data/* && sync
     quiet umount $docker_data && sleep 1
     quiet systemd-cryptsetup detach Luks-Signal && sleep 1
@@ -166,7 +166,7 @@ if [ "$MOUNT" != "" ]; then
     unmount
 fi
 
-snap remove docker --purge 2> $nulled && wait || echo "Failed to remove Docker"
+snap remove docker --purge 2>> $nulled && wait || echo "Failed to remove Docker"
 quiet apt-get -qq purge -y docker-engine docker docker.io docker-ce docker-ce-cli containerd.io docker.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin
 quiet apt-get -qq autoremove -y --purge docker-engine docker docker.io docker-ce docker-ce-cli containerd.io docker.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin
 quiet networkctl delete docker0
@@ -452,14 +452,14 @@ fi
 
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   eval \"\$(ssh-agent -s)\" && wait
-  ssh -T git@github.com 2> $nulled
+  ssh -T git@github.com 2>> $nulled
   ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l && echo
   
   git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
   git-lfs install && git reset --hard && git clean -xfd
   echo \"Starting git fetch...\"
   echo \"👆 Please confirm presence on security token for git@ssh.\"
-  git fetch --unshallow 2> $nulled
+  git fetch --unshallow 2>> $nulled
   echo \"Starting git pull...\"
   echo \"👆 Please confirm presence on security token for git@ssh.\"
   git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
