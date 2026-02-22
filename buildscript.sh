@@ -155,14 +155,11 @@ snap install grype --classic && wait
 unmount() {
     quiet snap disable docker
     quiet kill $(lsof -F p $docker_data 2> $nulled | cut -d'p' -f2)
-    rm -r -f $docker_data/*
-    sync
-    quiet umount $docker_data
-    sleep 1
-    quiet systemd-cryptsetup detach Luks-Signal
-    sleep 1
-    quiet dmsetup remove /dev/mapper/Luks-Signal
-    sleep 1 && rm -r -f $docker_data/
+    rm -r -f $docker_data/* && sync
+    quiet umount $docker_data && sleep 1
+    quiet systemd-cryptsetup detach Luks-Signal && sleep 1
+    quiet dmsetup remove /dev/mapper/Luks-Signal && sleep 1
+    rm -r -f $docker_data/
 }
 
 if [ "$MOUNT" != "" ]; then
@@ -214,10 +211,9 @@ quiet $set_facl || quiet $set_facl || exit 1
 
 rm -f -r $docker_data/ && mkdir -p $docker_data && chown $run_as:$run_as $docker_data
 if [ "$MOUNT" != "" ]; then
-  systemd-cryptsetup attach Luks-Signal /dev/$MOUNT
-  sleep 1 && echo
-  mount /dev/mapper/Luks-Signal $docker_data
-  sleep 1 && rm -f -r $docker_data/* && chown $run_as:$run_as $docker_data
+  systemd-cryptsetup attach Luks-Signal /dev/$MOUNT && sleep 1 && echo
+  mount /dev/mapper/Luks-Signal $docker_data && sleep 1
+  rm -f -r $docker_data/* && chown $run_as:$run_as $docker_data
 fi
 
 groupadd -f docker && wait
@@ -306,7 +302,7 @@ sys_ctl_common() {
 clean_some
 
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
-  echo && read -p '🔐 Press enter to start docker login'
+  echo && read -p '🔐 Press enter to start docker login.'
   docker login && mkdir -p $docker_data/.docker && wait && \
   ln -f -s $home/$snap_path/.docker/config.json $docker_data/.docker/config.json || exit 1
   echo && syft login registry-1.docker.io -u \$USERNAME && echo 'Logged in to syft' && echo
@@ -371,15 +367,13 @@ scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalo
   syft_run=\"TMPDIR=$docker_data/syft syft scan \$2 \$CROSS -o spdx-json=\$1.spdx.json\"
   script -q -c \"\$syft_run\" /dev/null > \$1.syft.tmp || \
   script -q -c \"\$syft_run\" /dev/null > \$1.syft.tmp || exit 1
-  kill \$pidd
-  rm -f -r $docker_data/syft/*
+  kill \$pidd && rm -f -r $docker_data/syft/*
   echo && echo 'Starting Grype...'
   grype config > $docker_data/.grype.yaml
   touch \$1.grype.tmp && tail -f \$1.grype.tmp & piddd=\$!
   script -q -c \"TMPDIR=$docker_data/grype grype sbom:\$1.spdx.json \
   -c $docker_data/.grype.yaml \$CROSS -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
-  kill \$piddd
-  rm -f -r $docker_data/grype/*
+  kill \$piddd && rm -f -r $docker_data/grype/*
   marker() { # \$1 = Name, \$2 = Order, \$3 = Marker/ID, \$4 = syft/grype
     unset \"wright\$2\"
     grep \"\$3\" \$1.\$4.tmp | tail -n 1 > \$1.\$4.status.\$2
