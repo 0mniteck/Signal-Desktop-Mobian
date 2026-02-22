@@ -8,7 +8,7 @@ if [ "$INC" != "" ]; then
   sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g readme.md
   sed -i s/$(echo $last_ver_num)/$(echo $ver_num)/g Dockerfile
   sed -i s/last_ver_num=$last_ver_num/last_ver_num=$ver_num/g .pinned_ver
-  echo "Version Incremented From v$last_ver_num To v$ver_num" && echo
+  echo "Version Incremented From v$last_ver_num To v$ver_num"
 fi
 
 pushd Results > /dev/null
@@ -17,10 +17,9 @@ pushd Results > /dev/null
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
     --type spdxjson > base.image.sig' /dev/null > base.image.attested")
   echo $cosign_run | bash || echo $cosign_run | bash || exit 1
-  cat base.image.attested
+  cat base.image.attested && echo
 popd > /dev/null
 
-docker info && echo
 docker buildx create \
   --name $MODULE-builder --buildkitd-flags "--oci-worker-rootless=true" \
   --driver docker-container --driver-opt "network=host,default-load=true" --bootstrap --use
