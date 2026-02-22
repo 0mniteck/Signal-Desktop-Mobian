@@ -451,7 +451,7 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l && echo
 
   confirm() { # \$1 = submod, \$2 = times
-    echo \"👆 Please confirm presence on security token for\$1 git@ssh\$2.\"
+    read -p \"Press enter then 👆 please confirm presence on security token for\$1 git@ssh\$2.\"
   }
   
   git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
