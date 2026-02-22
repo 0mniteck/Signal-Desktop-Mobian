@@ -357,8 +357,7 @@ scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalo
       echo 'Skipping attestation: not logged in'
     fi
   else
-    echo 'Starting Syft...'curl -o /tmp/warp.status -s --pinnedpubkey "sha256//$(</home/shant/.pki/www.cloudflare.com.pubkey)" \
---tlsv1.3 --proto -all,+https --remove-on-error --no-insecure https://www.cloudflare.com/cdn-cgi/trace
+    echo 'Starting Syft...'
   fi
   touch \$1.syft.tmp && tail -f \$1.syft.tmp & pidd=\$!
   syft_run=\"script -q -c 'TMPDIR=$docker_data/syft syft scan \$2 --platform arm64 --platform amd64 -o spdx-json=\$1.spdx.json' /dev/null > \$1.syft.tmp\"
