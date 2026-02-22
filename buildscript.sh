@@ -339,39 +339,48 @@ sed -i \"s|EnvironmentFile.*|EnvironmentFile=-$rootless_path/env-rootless|\" $sy
 sed -i \"s|ExecStart.*|ExecStart=/bin/bash -c \'$data_dir/rootless.sh\'|\" $sysusr_service
 
 mkdir -p $docker_data/syft && mkdir -p $docker_data/grype
-scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalogers directory', \$3 = Attest Tag
+scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalogers directory', \$3 = Platform(amd64/arm64), \$4 = Attest Tag
+  src=\"--source-name \$1 --source-supplier 0mniteck42 --source-version \$(date +%s)\"
   if [[ \"\$3\" != \"\" ]]; then
-    if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
-      read -p '🔐 Press enter to start attestation' && echo
-      echo 'Starting Syft...'
-      syft_att_run=\"script -q -c 'TMPDIR=$docker_data/syft syft attest -o spdx-json docker.io/\$REPO/\$1:\$3' /dev/null\"
-  	  echo \$syft_att_run | bash || echo \$syft_att_run | bash || exit 1
-      echo
+    mkdir -p \$3 && pushd \$3
+    arch=--platform\ \$3
+    if [[ \"\$4\" != \"\" ]]; then
+      if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
+        read -p '🔐 Press enter to start attestation for \$3' && echo
+        echo 'Starting Syft...'
+        touch .pager && tail -f .pager & pid=\$!
+        syft_att_run=\"script -q -c 'TMPDIR=$docker_data/syft syft attest \$arch -o spdx-json docker.io/\$REPO/\$1:\$4' /dev/null > .pager\"
+    	  quiet \$syft_att_run || quiet \$syft_att_run || exit 1
+        kill \$pid && rm -f .pager
+        echo
+      else
+        echo 'Skipping attestation: not logged in'
+      fi
     else
-      echo 'Skipping attestation: not logged in'
+      echo 'Starting Syft...'
     fi
   else
-    echo 'Starting Syft...'
+    pushd .
   fi
   touch \$1.syft.tmp && tail -f \$1.syft.tmp & pidd=\$!
-  syft_run=\"script -q -c 'TMPDIR=$docker_data/syft syft scan \$2 --platform \$ARCH -o spdx-json=\$1.spdx.json' /dev/null > \$1.syft.tmp\"
+  syft_run=\"script -q -c 'TMPDIR=$docker_data/syft syft scan \$2 \$src \$arch -o spdx-json=\$1.spdx.json' /dev/null > \$1.syft.tmp\"
   quiet \$syft_run || quiet \$syft_run || exit 1
   kill \$pidd && rm -f -r $docker_data/syft/*
   echo && echo 'Starting Grype...'
   grype config > $docker_data/.grype.yaml
   touch \$1.grype.tmp && tail -f \$1.grype.tmp & piddd=\$!
   script -q -c \"TMPDIR=$docker_data/grype grype sbom:\$1.spdx.json \
-  -c $docker_data/.grype.yaml --platform \$ARCH -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
+  -c $docker_data/.grype.yaml \$arch -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
   kill \$piddd && rm -f -r $docker_data/grype/*
-  marker() { # \$1 = Name, \$2 = Order, \$3 = Marker/ID, \$4 = syft/grype
+  marker() { # \$1 = Name, \$2 = Order, \$4 = Marker/ID, \$3 = syft/grype
     unset \"wright\$2\"
-    grep \"\$3\" \$1.\$4.tmp | tail -n 1 > \$1.\$4.status.\$2
-    line1=\$(cat \$1.\$4.status.\$2)
-    if [[ \"\$line1\" == *\$3* ]]; then
-      declare -- \"wright\$2\"=\"\$line1\"
+    grep \"\$4\" \$1.\$3.tmp | tail -n 1 > \$1.\$3.status.\$2
+    line1=\$(cat \$1.\$3.status.\$2)
+    if [[ \"\$line1\" == *\$4* ]]; then
+      export -- \"wright\$2\"=\"\$line1\"
     fi
-		rm -f \$1.\$4.tmp*
-		rm -f \$1.\$4.status.*
+		rm -f \$1.\$3.tmp*
+		rm -f \$1.\$3.status.*
   }
   wright() { # \$1 = Name, \$2 = syft/grype
 		echo \$wright1 > \$1.\$2.status
@@ -385,26 +394,26 @@ scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalo
 		sed -i 's/\[3A//g' \$1.\$2.status
 	}
 	gryped() { # \$1 = Name
-		marker \$1 1 \"✔ Scanned for vulnerabilities\" grype
-		marker \$1 2 \"├── by severity:\" grype
-		marker \$1 3 \"└── by status:\" grype
+		marker \$1 1 grype \"✔ Scanned for vulnerabilities\"
+		marker \$1 2 grype \"├── by severity:\"
+		marker \$1 3 grype \"└── by status:\"
 		wright \$1 grype
 	}
 	syfted() { # \$1 = Name
-		marker \$1 1 \"✔ Cataloged contents\" syft
-		marker \$1 2 \"├── ✔ Packages\" syft
-		marker \$1 3 \"├── ✔ Executables\" syft
-		marker \$1 4 \"├── ✔ File metadata\" syft
-		marker \$1 5 \"└── ✔ File digests\" syft
+		marker \$1 1 syft \"✔ Cataloged contents\"
+		marker \$1 2 syft \"├── ✔ Packages\"
+		marker \$1 3 syft \"├── ✔ Executables\"
+		marker \$1 4 syft \"├── ✔ File metadata\"
+		marker \$1 5 syft \"└── ✔ File digests\"
 		wright \$1 syft
 	}
-	syfted
-	gryped
+	syfted &&	gryped
 	echo '### '\$1' Syft Scan Results - '\$(syft --version) > \$1.contents
 	cat \$1.syft.status >> \$1.contents && rm -f \$1.syft.status
 	echo '### '\$1' Grype Scan Results - '\$(grype --version) >> readme.md
 	cat \$1.grype.status >> readme.md
 	echo '## ' >> readme.md
+  popd
 }
 
 quiet() {
@@ -500,10 +509,10 @@ fi
 
 if [[ \"\$(uname -m)\" == \"aarch64\" ]]; then
   docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-59 --install amd64
-  ARCH=amd64 && echo
+  echo
 elif [[ \"\$(uname -m)\" == \"x86_64\" ]]; then
   docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-59 --install arm64
-  ARCH=arm64 && echo
+  echo
 else
   echo 'Unknown Architecture '\$(uname -m)
   exit 1
