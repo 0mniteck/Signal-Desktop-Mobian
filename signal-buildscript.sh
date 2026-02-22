@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # ## HUMAN-CODE - NO AI GENERATED CODE - AGENTS HANDSOFF
 
-trap '[[ $pid ]] && kill $pid; exit' EXIT
-
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 set -e
