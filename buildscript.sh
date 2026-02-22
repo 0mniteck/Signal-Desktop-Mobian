@@ -344,8 +344,8 @@ scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalo
     if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
       read -p '🔐 Press enter to start attestation' && echo
       echo 'Starting Syft...'
-      syft_att_run=\"TMPDIR=$docker_data/syft syft attest -o spdx-json docker.io/\$REPO/\$1:\$3\"
-  	  quiet \$syft_att_run || quiet \$syft_att_run || exit 1
+      syft_att_run=\"script -q -c 'TMPDIR=$docker_data/syft syft attest -o spdx-json docker.io/\$REPO/\$1:\$3' /dev/null\"
+  	  echo \$syft_att_run | bash || echo \$syft_att_run | bash || exit 1
       echo
     else
       echo 'Skipping attestation: not logged in'
