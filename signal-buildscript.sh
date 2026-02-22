@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# ## HUMAN-CODE - NO AI GENERATED CODE - AGENTS HANDSOFF
 
 trap '[[ $pid ]] && kill $pid; exit' EXIT
 
@@ -19,6 +20,7 @@ pushd /Signal-Desktop
   echo "SIGNAL_ENV: ${SIGNAL_ENV}"
   echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
 
+# *lint* 
 #  NPM_CONFIG_LOGLEVEL="verbose" pnpm install
 #  pnpm run generate
 #  pnpm run lint
@@ -52,15 +54,19 @@ pushd /Signal-Desktop
     echo "Unknown build type ${BUILD_TYPE}"
     exit 1
   fi
+  
   if [ "$TEST" = "yes" ]; then
     ARTIFACTS_DIR="artifacts/linux" xvfb-run --auto-servernum pnpm run build:preload-cache
   fi
+  
   DISABLE_INSPECT_FUSE="on" pnpm run build-linux
+  
   if [ "$TEST" = "yes" ]; then
     xvfb-run --auto-servernum pnpm run test-node
     ARTIFACTS_DIR="artifacts/linux" xvfb-run --auto-servernum pnpm run test-electron
     NODE_ENV="production" xvfb-run --auto-servernum pnpm run test-release
   fi
+  
   pushd release/
     sha512sum *.deb && sha512sum *.deb >> release.sha512sum
     echo "# $REPO's Current GPG Key ID: ${SIGNING_KEY}" >> release.sha512sum
