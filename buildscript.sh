@@ -531,12 +531,12 @@ drop_down() {
     PROMPT_COMMAND='echo;echo Rootless~Docker:~\$'\")
 }
 
-mkdir -p Results && pushd Results
+mkdir -p Results && pushd Results > /dev/null
   set | sort > $run_id:$run_id.env
   env | sort >> $run_id:$run_id.env
   declare | sort >> $run_id:$run_id.env
   mv $docker_data/0:0.env 0:0.env
-popd
+popd > /dev/null
 
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   source modules || drop_down
@@ -544,11 +544,11 @@ else
   drop_down
 fi
 
-pushd Results
+pushd Results > /dev/null
   scan_using_grype ubuntu \"/ --select-catalogers directory\"
   sed -i 's/^/#### /g' readme.md && echo '\`\`\`' >> readme.md
   cat *.image.digest >> readme.md && cat readme.md && echo
-popd
+popd > /dev/null
 
 if [[ \"$SKIP_LOGIN\" == \"\" ]]; then
   git status && git add -A && git status && read -p '🔐 Press enter to launch pinentry'
