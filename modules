@@ -12,7 +12,7 @@ if [ "$INC" != "" ]; then
 fi
 
 pushd Results > /dev/null
-  rm -f $MODULE.* readme.md
+  rm -f $MODULE.* readme.md && echo 'Starting cosign...' && echo
   cosign_run=$(echo "script -q -c 'cosign verify-attestation $source_loc \
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
     --type spdxjson > base.image.sig' /dev/null > base.image.attested")
@@ -46,8 +46,7 @@ pushd Results > /dev/null
   scan_using_grype $MODULE $REPO/$MODULE:$rel_date $rel_date
   echo '# '$REPO/$MODULE:$rel_date > $MODULE.image.digest
   cat $MODULE.meta.json | jq .[] | tail -n 2 | grep sha256 | sed 's/\"//g' >> $MODULE.image.digest
-  cat $MODULE.image.digest >> readme.md && cat readme.md
-
+  cat $MODULE.image.digest >> readme.md && cat readme.md && echo 'Starting cosign...' && echo
   cosign_run=$(echo "script -q -c 'cosign verify-attestation docker.io/$REPO/$MODULE:$rel_date \
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
     --type spdxjson > $MODULE.image.sig' /dev/null > $MODULE.image.attested")
