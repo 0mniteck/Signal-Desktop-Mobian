@@ -13,10 +13,10 @@ fi
 
 pushd Results > /dev/null
   rm -f $MODULE.* readme.md && echo 'Starting cosign...' && echo
-  cosign_run=$(echo "script -q -c 'cosign verify-attestation $source_loc \
+  cosign_run_b=$(echo "script -q -c 'cosign verify-attestation $source_loc \
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
     --type spdxjson > base.image.sig' /dev/null > base.image.attested")
-  echo $cosign_run | bash || echo $cosign_run | bash || exit 1
+  quiet $cosign_run_b || quiet $cosign_run_b || exit 1
   cat base.image.attested && echo
 popd > /dev/null
 
@@ -47,10 +47,10 @@ pushd Results > /dev/null
   echo '# '$REPO/$MODULE:$rel_date > $MODULE.image.digest
   cat $MODULE.meta.json | jq .[] | tail -n 2 | grep sha256 | sed 's/\"//g' >> $MODULE.image.digest
   cat $MODULE.image.digest >> readme.md && cat readme.md && echo 'Starting cosign...' && echo
-  cosign_run=$(echo "script -q -c 'cosign verify-attestation docker.io/$REPO/$MODULE:$rel_date \
+  cosign_run="script -q -c 'cosign verify-attestation docker.io/$REPO/$MODULE:$rel_date \
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
-    --type spdxjson > $MODULE.image.sig' /dev/null > $MODULE.image.attested")
-  echo $cosign_run | bash || echo $cosign_run | bash || exit 1
+    --type spdxjson > $MODULE.image.sig' /dev/null > $MODULE.image.attested"
+  quiet $cosign_run || quiet $cosign_run || exit 1
   cat $MODULE.image.attested && echo
 popd > /dev/null
 
