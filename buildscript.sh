@@ -456,9 +456,9 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   
   git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
   git-lfs install && git reset --hard && git clean -xfd
-  confirn echo \"Starting Git fetch...\"
+  confirn ' git fetch' echo 'Starting Git fetch...'
   git fetch --unshallow 2>> $nulled
-  confirm & echo \"Starting Git pull...\"
+  confirm ' git pull' & echo 'Starting Git pull...'
   git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
   git submodule --quiet foreach \"export -- submod=yes && cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
   
