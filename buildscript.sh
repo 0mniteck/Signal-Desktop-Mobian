@@ -61,7 +61,7 @@ run_as=$(id -u $run_id -n)
 run_home=/home/$run_as
 
 export -- HOME=$run_home
-export -- PATH=/usr/sbin:/usr/bin:/snap/bin
+export -- path=/usr/sbin:/usr/bin:/snap/bin
 
 if [[ "$run_id" == "" ]]; then
   if [[ "$(whoami)" == *root* ]]; then
@@ -248,7 +248,7 @@ $debug
 cd $(echo $PWD)
 HOME=$HOME; CROSS=$CROSS; EPOCH=$EPOCH; INC=$INC
 MOUNT=$MOUNT; BRANCH=$BRANCH; TAG=$TAG; TEST=$TEST
-SKIP_LOGIN=$SKIP_LOGIN; PUSH=$PUSH; PATH=$PATH
+SKIP_LOGIN=$SKIP_LOGIN; PUSH=$PUSH; PATH=$path
 
 mkdir -p $home/.ssh && chmod 0700 $home/.ssh && \
 touch $home/.ssh/config && chmod 0644 $home/.ssh/config
@@ -335,7 +335,7 @@ BUILDKIT_PROGRESS=tty
 SOURCE_DATE_EPOCH=\$source_date_epoch
 SYFT_CACHE_DIR=$docker_data/syft
 GRYPE_DB_CACHE_DIR=$docker_data/grype
-PATH=$PATH:$docker_path\" >> $rootless_path/env-rootless
+PATH=\$PATH:$docker_path\" >> $rootless_path/env-rootless
 
 sed \"s/^/export -- /g\" $rootless_path/env-rootless > $rootless_path/env-rootless.exp
 \$(echo \"echo echo $\(\<$rootless_path/env-rootless\)\" $(echo $docker)d --rootless \
