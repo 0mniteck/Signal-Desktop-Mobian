@@ -532,6 +532,7 @@ mkdir -p Results && pushd Results > /dev/null
 popd > /dev/null
 
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
+  chmod -x modules
   source modules || drop_down
 else
   drop_down
