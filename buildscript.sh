@@ -54,7 +54,7 @@ run_as=$(id -u $run_id -n)
 run_home=/home/$run_as
 
 export -- HOME=$run_home
-export -- PATH=/usr/sbin:/usr/bin:/snap/bin
+export -- PATH=/usr/sbin:/usr/bin:/snap/bin:$HOME/bin
 path=$PATH
 
 if [[ "$run_id" == "" ]]; then
@@ -137,12 +137,13 @@ clean_all() {
 clean_all
 
 apt-get -qq update && apt-get -qq upgrade -y
-apt-get -qq install --purge --autoremove -u acl+ bc+ cosign+ dosfstools+ git-lfs+ gnupg2+ gpg-agent+ \
-																				   jq+ parted+ pkexec+ rootlesskit+ scdaemon+ \
-																				   slirp4netns+ snapd+ systemd-container+ \
-																				   systemd-cryptsetup+ uidmap+ \
-																					 \
-																					 docker- docker.io- docker-ce- docker-ce-cli-
+apt-get -qq install --no-install-recommends --purge --autoremove -u acl+ bc+ cosign+ dosfstools+ git-lfs+ gnupg2+ gpg-agent+ \
+                                                                    jq+ libsecret-1-0+ libsecret-common+ libsecret-tools+ \
+                                                                    parted+ pkexec+ rootlesskit+ scdaemon+ \
+                                                                    slirp4netns+ snapd+ systemd-container+ \
+                                                                    systemd-cryptsetup+ uidmap+ \
+                                                                    \
+                                                                    docker- docker.io- docker-ce- docker-ce-cli-
 snap install syft --classic && wait
 snap install grype --classic && wait
 
@@ -293,8 +294,17 @@ sys_ctl_common() {
 clean_some
 
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
+  mkdir -p $docker_data/.docker && wait 
+  if [[ \"\$(which docker-credential-secretservice)\" == \"\" ]]; then
+    wget \"\$cred_helper\" && echo \"\$cred_helper_sha  \
+    \$cred_helper_name\" | sha512sum -c || exit 1
+    mkdir -p $home/bin && mv $cred_helper_name $home/bin/docker-credential-secretservice
+  fi
+  echo '{
+  \"credsStore\": \"secretservice\"
+}' > $home/$snap_path/.docker/config.json
   echo && read -p '🔐 Press enter to start docker login.'
-  docker login && mkdir -p $docker_data/.docker && wait && \
+  docker login && \
   ln -f -s $home/$snap_path/.docker/config.json $docker_data/.docker/config.json || exit 1
   echo && syft login registry-1.docker.io -u \$USERNAME && echo 'Logged in to syft' && echo
 fi
