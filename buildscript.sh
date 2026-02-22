@@ -24,12 +24,6 @@ while getopts ":c:i:d:m:p:r:t:" opt; do
   t) # run-Tests: yes/No
     TEST="$OPTARG"
     ;;
-  \?)
-    echo "Invalid option: -$opt" >&2
-    ;;
-  :)
-    echo "Option -$opt requires an argument." >&2
-    ;;
   esac
 done
 
@@ -350,7 +344,7 @@ scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalo
     if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
       read -p '🔐 Press enter to start attestation' && echo
       echo 'Starting Syft...'
-      syft_att_run=\"TMPDIR=$docker_data/syft syft attest --platform arm64 --platform amd64 --output spdx-json docker.io/\$REPO/\$1:\$3\"
+      syft_att_run=\"TMPDIR=$docker_data/syft syft attest -o spdx-json docker.io/\$REPO/\$1:\$3\"
   	  quiet \$syft_att_run || quiet \$syft_att_run || exit 1
       echo
     else
@@ -360,14 +354,14 @@ scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalo
     echo 'Starting Syft...'
   fi
   touch \$1.syft.tmp && tail -f \$1.syft.tmp & pidd=\$!
-  syft_run=\"script -q -c 'TMPDIR=$docker_data/syft syft scan \$2 --platform arm64 --platform amd64 -o spdx-json=\$1.spdx.json' /dev/null > \$1.syft.tmp\"
+  syft_run=\"script -q -c 'TMPDIR=$docker_data/syft syft scan \$2 --platform \$ARCH -o spdx-json=\$1.spdx.json' /dev/null > \$1.syft.tmp\"
   quiet \$syft_run || quiet \$syft_run || exit 1
   kill \$pidd && rm -f -r $docker_data/syft/*
   echo && echo 'Starting Grype...'
   grype config > $docker_data/.grype.yaml
   touch \$1.grype.tmp && tail -f \$1.grype.tmp & piddd=\$!
   script -q -c \"TMPDIR=$docker_data/grype grype sbom:\$1.spdx.json \
-  -c $docker_data/.grype.yaml --platform arm64 --platform amd64 -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
+  -c $docker_data/.grype.yaml --platform \$ARCH -o json --file \$1.grype.json\" /dev/null > \$1.grype.tmp
   kill \$piddd && rm -f -r $docker_data/grype/*
   marker() { # \$1 = Name, \$2 = Order, \$3 = Marker/ID, \$4 = syft/grype
     unset \"wright\$2\"
@@ -506,10 +500,10 @@ fi
 
 if [[ \"\$(uname -m)\" == \"aarch64\" ]]; then
   docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-59 --install amd64
-  echo
+  ARCH=amd64 && echo
 elif [[ \"\$(uname -m)\" == \"x86_64\" ]]; then
   docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-59 --install arm64
-  echo
+  ARCH=arm64 && echo
 else
   echo 'Unknown Architecture '\$(uname -m)
   exit 1
