@@ -11,18 +11,19 @@ if [ "$INC" != "" ]; then
   echo "Version Incremented From v$last_ver_num To v$ver_num" && echo
 fi
 
-docker info
-docker buildx create \
-  --name $MODULE-builder --buildkitd-flags "--oci-worker-rootless=true" \
-  --driver docker-container --driver-opt "network=host,default-load=true" --bootstrap --use
-
 pushd Results > /dev/null
   rm -f $MODULE.* readme.md
   cosign_run=$(echo "script -q -c 'cosign verify-attestation $source_loc \
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
     --type spdxjson > base.image.sig' /dev/null > base.image.attested")
   echo $cosign_run | bash || echo $cosign_run | bash || exit 1
+  cat base.image.attested
 popd > /dev/null
+
+docker info && echo
+docker buildx create \
+  --name $MODULE-builder --buildkitd-flags "--oci-worker-rootless=true" \
+  --driver docker-container --driver-opt "network=host,default-load=true" --bootstrap --use
 
 if [[ "$last_rel_date" != "$rel_date" ]]; then
   sed -i 's/last_rel_date=$last_rel_date/last_rel_date=$rel_date/' .pinned_ver
@@ -42,7 +43,7 @@ if [[ "$last_rel_date" != "$rel_date" ]]; then
   docker buildx prune -f -a && wait && echo
 fi
 
-pushd Results
+pushd Results > /dev/null
   scan_using_grype $MODULE $REPO/$MODULE:$rel_date $rel_date
   echo '# '$REPO/$MODULE:$rel_date > $MODULE.image.digest
   cat $MODULE.meta.json | jq .[] | tail -n 2 | grep sha256 | sed 's/\"//g' >> $MODULE.image.digest
@@ -52,8 +53,8 @@ pushd Results
     --certificate-oidc-issuer https://github.com/login/oauth --certificate-identity $SIGSTORE_USR \
     --type spdxjson > $MODULE.image.sig' /dev/null > $MODULE.image.attested")
   echo $cosign_run | bash || echo $cosign_run | bash || exit 1
-  cat $MODULE.image.attested && cat base.image.attested && echo
-popd
+  cat $MODULE.image.attested && echo
+popd > /dev/null
 
 docker run -it --cpus=$(nproc) \
   --network=name=host,\"driver-opt=network=host\" \
@@ -67,13 +68,14 @@ rm -r -f builds/release && mkdir -p builds/release
 docker cp $MODULE:/$NAME/release/ builds/ && rm -r -f builds/release/linux-*
 mv builds/release/*.sha*sum Results/
 
-pushd Results/
-if [ "$check_file" = "1" ]; then
-  cp /tmp/release.last.sha512sum release.last.sha512sum
-  sha512sum -c release.last.sha512sum && REP="ly Reproduced" && \
-  rm -f /tmp/release.last.sha512sum && rm -f release.last.sha512sum || exit 1
-fi
-popd
+pushd Results/ > /dev/null
+  if [ "$check_file" = "1" ]; then
+    cp /tmp/release.last.sha512sum release.last.sha512sum
+    sha512sum -c release.last.sha512sum && REP="ly Reproduced" && \
+    rm -f /tmp/release.last.sha512sum && rm -f release.last.sha512sum || exit 1
+  fi
+  echo "Successful$REP Build"
+popd > /dev/null
 
 echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Results/release.sha512sum
 awk '{a[i++]=$0}END{for(j=0;j<i-2;j++)print a[j];print a[i-1];print a[i-2]}' Results/release.sha512sum > tmp && mv tmp Results/release.sha512sum
