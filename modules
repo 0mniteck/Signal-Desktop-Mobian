@@ -36,7 +36,9 @@ if [[ "$last_rel_date" != "$rel_date" ]]; then
     --build-arg SOURCE=$source \
     --build-arg NODE_VERSION=$node_ver \
     --build-arg NVM_VERSION=$nvm_ver \
-    --build-arg PNPM_VERSION=$pnpm_ver .
+    --build-arg PNPM_VERSION=$pnpm_ver \
+    --build-arg BRANCH=$ver_num \
+    --build-arg COMMIT=$commit .
   docker buildx stop $MODULE-builder && wait
   docker buildx rm -f --all-inactive && wait
   docker buildx prune -f -a && wait && echo
