@@ -75,6 +75,6 @@ pushd Results/ > /dev/null
   echo "Successful$REP Build"
 popd > /dev/null
 
-echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Results/release.sha512sum
+echo "# Base Build System: $(uname -o) $(uname -m) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Results/release.sha512sum
 awk '{a[i++]=$0}END{for(j=0;j<i-2;j++)print a[j];print a[i-1];print a[i-2]}' Results/release.sha512sum > tmp && mv tmp Results/release.sha512sum
 ls -la builds/release/ && ls -la Results
