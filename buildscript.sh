@@ -248,35 +248,61 @@ export GPG_TTY=\$(tty)
 
 source .identity
 source .pinned_ver
+chmod 0600 $home/\$PKI_ID_FILE && chmod 0644 $home/\$PKI_ID_FILE.pub
 chmod 0600 $home/\$IDENTITY_FILE && chmod 0644 $home/\$IDENTITY_FILE.pub
 
-echo
-source_date_epoch=1
-if [[ \"\$EPOCH\" = *today* ]]; then
-  timestamp=\$(date -d \$(date +%D) +%s);
-  if [[ \"\$timestamp\" != \"\" ]]; then
-    echo \"Setting SOURCE_DATE_EPOCH from today's date: \$(date +%D) = @\$timestamp\";
-    source_date_epoch=\$((timestamp));
-  else
-    echo \"Can't get timestamp. Defaulting to 1.\";
-    source_date_epoch=1;
+if [[ \"\$ssh_conf\" != *.pki* ]]; then
+  echo \"
+Host .pki
+  Hostname github.com
+  IdentityFile $home/\$PKI_ID_FILE
+  IdentitiesOnly yes\" >> $home/.ssh/config
+fi
+
+if [[ \"\$ssh_conf\" != *\$PROJECT* ]]; then
+  echo \"
+Host \$PROJECT
+  Hostname github.com
+  IdentityFile $home/\$IDENTITY_FILE
+  IdentitiesOnly yes\" >> $home/.ssh/config
+fi
+
+if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
+  eval \"\$(ssh-agent -s)\" && wait
+  ssh -T git@github.com 2>> $nulled
+  ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE
+  ssh-add -t 1D -h git@github.com $home/\$PKI_ID_FILE
+  ssh-add -l && echo
+
+  confirm() { # \$1 = submod, \$2 = times
+    read -p \"Press enter then 👆 please confirm presence on security token for\$1 git@ssh\$2.\"
+  }
+  
+  git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
+  git-lfs install && git reset --hard && git clean -xfd
+  confirm ' git fetch' && echo 'Starting Git fetch...'
+  git fetch --unshallow 2>> $nulled
+  confirm ' git pull' && echo 'Starting Git pull...'
+  git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
+  git submodule --quiet foreach \"export -- submod=yes && cd .. && git config submodule.\$name.url git@\$name:\$REPO/\$name.git\"
+  
+  if [[ \"\$submod\" != \"\" ]]; then
+    confirm \" submodules\" \" (multiple times).\"
+    git submodule update --init --remote --merge
+    git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$name:\$REPO/\$name.git\"
   fi
-elif [[ \"\$EPOCH\" != 0 ]]; then
-  echo \"Using override timestamp \$EPOCH for SOURCE_DATE_EPOCH.\"
-  source_date_epoch=\$((\$EPOCH))
-else
-  timestamp=\$(cat Results/release.sha512sum | grep Epoch | cut -d ' ' -f5)
-  if [[ \"\$timestamp\" != \"\" ]]; then
-    echo \"Setting SOURCE_DATE_EPOCH from release.sha512sum: \$(cat Results/release.sha512sum | grep Epoch | cut -d ' ' -f5)\"
-    source_date_epoch=\$((timestamp))
-    check_file=1
-    cp Results/release.sha512sum /tmp/release.last.sha512sum
+  
+  if [[ \"\$(gpg-card list - openpgp)\" == *\$SIGNING_KEY* ]]; then
+    echo && echo \"Signing key present\" && echo
   else
-    echo \"Can't get latest commit timestamp. Defaulting to 1.\"
-    source_date_epoch=1
+    echo && echo \"Signing key \$SIGNING_KEY missing\"
+    echo \"Check Yubikey and .identity file\" && echo
+    lsusb && ls -la /dev/hid* && gpg-card list - openpgp
+    systemctl --user status gpg-agent* --all --no-pager
+    ls -la $home/.gnupg
+    exit 1
   fi
 fi
-SOURCE_DATE_EPOCH=\$source_date_epoch
 
 clean_some() {
   rm -r -f /home/$run_as/.docker/
@@ -284,29 +310,7 @@ clean_some() {
   rm -r -f /home/$run_as/.local/share/systemd/
 }
 
-sys_ctl_common() {
-  systemctl --user daemon-reload && wait
-  systemctl --user reset-failed && wait
-  systemctl --user stop docker* --all && wait
-  systemctl --user list-units docker* --all && echo
-}
-
 clean_some
-
-if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
-  mkdir -p $docker_data/.docker && mkdir -p $home/$snap_path/.docker && wait 
-  if [[ \"\$(which docker-credential-secretservice)\" == \"\" ]]; then
-    wget \"\$cred_helper\" > $nulled && echo \"\$cred_helper_sha  \$cred_helper_name\" | sha512sum -c || exit 1
-    mkdir -p $home/bin && mv $cred_helper_name $home/bin/docker-credential-secretservice
-  fi
-  echo '{
-  \"credsStore\": \"secretservice\"
-}' > $home/$snap_path/.docker/config.json
-  echo && read -p '🔐 Press enter to start docker login.' && docker login && \
-  ln -f -s $home/$snap_path/.docker/config.json $docker_data/.docker/config.json || exit 1
-  echo && syft login registry-1.docker.io -u \$USERNAME && echo 'Logged in to syft' && echo
-  echo && grype login registry-1.docker.io -u \$USERNAME && echo 'Logged in to grype' && echo
-fi
 
 mkdir -p $rootless_path/tmp && wait
 > $rootless_path.sh && > $rootless_path/env-docker && > $rootless_path/env-rootless && chmod +x $rootless_path.sh && wait
@@ -425,10 +429,44 @@ scan_using_grype() { # \$1 = Name, \$2 = Repo/Name:tag or '/Path --select-catalo
   popd
 }
 
+sys_ctl_common() {
+  systemctl --user daemon-reload && wait
+  systemctl --user reset-failed && wait
+  systemctl --user stop docker* --all && wait
+  systemctl --user list-units docker* --all && echo
+}
+
 quiet() {
   echt=\"\$@\"
   script -a -q -c \"\$echt\" $nulled >> $nulled
 }
+
+validate.with.pki() { # \$1 = domain/FQDN, # \$2 = filename, # \$3 = full_url
+  fetch.with.pki() {
+    curl -s --pinnedpubkey \"sha256//\$(<.pki/registry/\$1.pubkey)\" \
+    --tlsv1.3 --proto -all,+https --remove-on-error --no-insecure https://\$3 > \$2 || exit 1
+  }
+  curl -s --pinnedpubkey \"sha256//\$(<.pki/registry/\$1.pubkey)\" \
+  --tlsv1.3 --proto -all,+https --remove-on-error --no-insecure https://\$1 > /dev/null || exit 1
+  fetch.with.pki \$1 \$2 \$3 || exit 1
+}
+
+if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
+  mkdir -p $docker_data/.docker && mkdir -p $home/$snap_path/.docker && wait 
+  if [[ \"\$(which docker-credential-secretservice)\" == \"\" ]]; then
+    validate.with.pki github.com \"\$cred_helper_name\" \"\$cred_helper\" && echo \"\$cred_helper_sha  \$cred_helper_name\" | sha512sum -c || exit 1
+    mkdir -p $home/bin && mv $cred_helper_name $home/bin/docker-credential-secretservice
+  fi
+  
+  echo '{
+  \"credsStore\": \"secretservice\"
+}' > $home/$snap_path/.docker/config.json
+
+  echo && read -p '🔐 Press enter to start docker login.' && docker login && \
+  ln -f -s $home/$snap_path/.docker/config.json $docker_data/.docker/config.json || exit 1
+  echo && syft login registry-1.docker.io -u \$USERNAME && echo 'Logged in to syft' && echo
+  echo && grype login registry-1.docker.io -u \$USERNAME && echo 'Logged in to grype' && echo
+fi
 
 sys_ctl_common
 systemctl --user start docker.dockerd && sleep 10
@@ -436,61 +474,40 @@ systemctl --user status docker.dockerd --all --no-pager -n 150 > $rootless_path/
 
 source $rootless_path/env-rootless.exp
 
-docker() {
-  echd=\"\$@\"
-  $docker \$echd
-}
-
 quiet \"\$docker info | grep rootless > $rootless_path/rootless.status\"
 if [[ \"\$(grep root $rootless_path/rootless.status)\" != *rootless* ]]; then
   echo \"Rootless Docker Failed\" && echo && exit 1
 else
-  echo \"Rootless Docker Started\" && echo
+  echo \"Rootless Docker Started\" && echo && sleep 5
   echo \"Rootless Docker Started\" > $rootless_path/rootless.status
 fi
 
-if [[ \"\$ssh_conf\" != *\$PROJECT* ]]; then
-  echo \"
-Host \$PROJECT
-  Hostname github.com
-  IdentityFile $home/\$IDENTITY_FILE
-  IdentitiesOnly yes\" >> $home/.ssh/config
-fi
-
-if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
-  eval \"\$(ssh-agent -s)\" && wait
-  ssh -T git@github.com 2>> $nulled
-  ssh-add -t 1D -h git@github.com $home/\$IDENTITY_FILE && ssh-add -l && echo
-
-  confirm() { # \$1 = submod, \$2 = times
-    read -p \"Press enter then 👆 please confirm presence on security token for\$1 git@ssh\$2.\"
-  }
-  
-  git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
-  git-lfs install && git reset --hard && git clean -xfd
-  confirm ' git fetch' && echo 'Starting Git fetch...'
-  git fetch --unshallow 2>> $nulled
-  confirm ' git pull' && echo 'Starting Git pull...'
-  git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
-  git submodule --quiet foreach \"export -- submod=yes && cd .. && git config submodule.\$name.url git@\$PROJECT:\$REPO/\$PROJECT.git\"
-  
-  if [[ \"\$submod\" != \"\" ]]; then
-    confirm \" submodules\" \" (multiple times).\"
-    git submodule update --init --remote --merge
-    git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git\"
-  fi
-  
-  if [[ \"\$(gpg-card list - openpgp)\" == *\$SIGNING_KEY* ]]; then
-    echo && echo \"Signing key present\" && echo
+source_date_epoch=1
+if [[ \"\$EPOCH\" = *today* ]]; then
+  timestamp=\$(date -d \$(date +%D) +%s);
+  if [[ \"\$timestamp\" != \"\" ]]; then
+    echo \"Setting SOURCE_DATE_EPOCH from today's date: \$(date +%D) = @\$timestamp\";
+    source_date_epoch=\$((timestamp));
   else
-    echo && echo \"Signing key \$SIGNING_KEY missing\"
-    echo \"Check Yubikey and .identity file\" && echo
-    lsusb && ls -la /dev/hid* && gpg-card list - openpgp
-    systemctl --user status gpg-agent* --all --no-pager
-    ls -la $home/.gnupg
-    exit 1
+    echo \"Can't get timestamp. Defaulting to 1.\";
+    source_date_epoch=1;
+  fi
+elif [[ \"\$EPOCH\" != 0 ]]; then
+  echo \"Using override timestamp \$EPOCH for SOURCE_DATE_EPOCH.\"
+  source_date_epoch=\$((\$EPOCH))
+else
+  timestamp=\$(cat Results/release.sha512sum | grep Epoch | cut -d ' ' -f5)
+  if [[ \"\$timestamp\" != \"\" ]]; then
+    echo \"Setting SOURCE_DATE_EPOCH from release.sha512sum: \$(cat Results/release.sha512sum | grep Epoch | cut -d ' ' -f5)\"
+    source_date_epoch=\$((timestamp))
+    check_file=1
+    cp Results/release.sha512sum /tmp/release.last.sha512sum
+  else
+    echo \"Can't get latest commit timestamp. Defaulting to 1.\"
+    source_date_epoch=1
   fi
 fi
+SOURCE_DATE_EPOCH=\$source_date_epoch
 
 unset rel_date date_rel rel_ver sub_ver
 rel_date=\$(date -d \"\$(date)\" +\"%m-%d-%Y\")
@@ -515,6 +532,11 @@ else
   sub_ver=1
   subver $sub_ver
 fi
+
+docker() {
+  echd=\"\$@\"
+  $docker \$echd
+}
 
 if [[ \"\$(uname -m)\" == \"aarch64\" ]]; then
   docker run --privileged --rm tonistiigi/binfmt:qemu-v10.0.4-59 --install amd64
