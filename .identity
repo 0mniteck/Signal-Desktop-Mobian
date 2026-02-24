@@ -3,6 +3,7 @@ declare -- MODULE=signal-desktop
 declare -- NAME=Signal-Desktop
 declare -- USERNAME=0mniteck42
 declare -- IDENTITY_FILE=.ssh/$NAME
+declare -- PKI_ID_FILE=.ssh/.pki
 declare -- PROJECT=Signal-Desktop-Reproducible
 declare -- SIGSTORE_USR=tiger-varsity-alto@duck.com
 declare -- SIGNING_KEY=42E2DDF1E31B370F8BFFEE03287EE837E6ED2DD3
@@ -10,6 +11,7 @@ git config --global user.email 10482171+0mniteck@users.noreply.github.com
 git config --global user.name 'Shant Patrick Tchatalbachian'
 git config --global user.signingkey $SIGNING_KEY
 if [[ "$SKIP_LOGIN" == "" ]]; then
+
 echo '-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQENBGUR6+QBCADbwEILdDDXamhAQbL7KlgFzoP3NI8+I2bCHHAUPYbpaCax0plM
@@ -70,6 +72,24 @@ EOF_
 
 cat > $HOME/$IDENTITY_FILE.pub << EOF__
 sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBEiJX2WvxTA7Gp495GWRltxXF/eUPRTa2n9/ogCivBY7GvmCgTVVduoJViFr9asthMicIx75OY/NgCRP3T4UvrYAAAAEc3NoOg== root@rock1
+EOF__
+
+cat > $HOME/$PKI_ID_FILE << EOF_
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABCVWQQxLa
+TQoTf0hqNZb3+rAAAAEAAAAAEAAAB/AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3Bl
+bnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBFSYF482ViHeITZTnymrZRYukYvzCrtxoNn/KV
+mZEX+uZ27WAkXVp2XA9GTo7DVHWrs1TSP+VzDpABqPQ1tGQMYAAAAEc3NoOgAAAODZMMKP
+Mj3U2Y99WtZqlMLN79QXLAMX93oXqmSqO2eYcKfNZVIO03jNABYrZvSADJTtrrOZarFzK4
+mBu7HzxxiPhkONrJ3HNsLlsBmMvbj/Mt3ehyymSLIy+2vSMmkFGQOsM5tWTjv97dRoxdKy
+9F+jOiPipnuGaGMSPIWQWs05gxKiyjyfjezq/TM6n1hT2A/N9EfqGunLzqdPKswHRFcmkg
+5m76LgzhS8ytto8SKPYbV06M/c7mgfXankk7ENY1VCvA21JdErPRiOzwAqvDPOUpMOUOO3
+47dMgiDCQFwDQQ==
+-----END OPENSSH PRIVATE KEY-----
+EOF_
+
+cat > $HOME/$PKI_ID_FILE.pub << EOF__
+sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBFSYF482ViHeITZTnymrZRYukYvzCrtxoNn/KVmZEX+uZ27WAkXVp2XA9GTo7DVHWrs1TSP+VzDpABqPQ1tGQMYAAAAEc3NoOg== root@rock1
 EOF__
 
 fi
