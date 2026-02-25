@@ -288,13 +288,14 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   confirm ' git pull' && echo 'Starting Git pull...'
   git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
   git submodule --quiet foreach \"export -- submod=yes && cd .. && git config submodule.\$name.url git@\$name:\$REPO/\$name.git\"
-  gh auth login
 
   if [[ \"\$submod\" != \"\" ]]; then
     confirm \" submodules\" \" (multiple times).\"
     git submodule update --init --remote --merge
     git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$name:\$REPO/\$name.git\"
   fi
+  
+  echo && read -p '🔐 Press enter to start Github CLI login.' && gh auth login || exit 1
   
   if [[ \"\$(gpg-card list - openpgp)\" == *\$SIGNING_KEY* ]]; then
     echo && echo \"Signing key present\" && echo
@@ -454,7 +455,7 @@ validate.with.pki() { # \$1 = domain/FQDN, # \$2 = filename, # \$3 = full_url
     curl -s --pinnedpubkey \"sha256//\$(<.pki/registry/\$1.pubkey)\" \
     --tlsv1.3 --proto -all,+https --remove-on-error --no-insecure https://\$3 > \$2 || exit 1
   }
-  attest.with.gh || exit 1
+  attest.with.gh \$1 || exit 1
   popd > /dev/null
   curl -s --pinnedpubkey \"sha256//\$(<.pki/registry/\$1.pubkey)\" \
   --tlsv1.3 --proto -all,+https --remove-on-error --no-insecure https://\$1 > /dev/null || exit 1
@@ -575,6 +576,8 @@ mkdir -p Results && pushd Results > /dev/null
   env | sort >> $run_id:$run_id.env
   declare | sort >> $run_id:$run_id.env
   mv $docker_data/0:0.env 0:0.env
+  docker version > docker.info
+  docker info >> docker.info 
 popd > /dev/null
 
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
