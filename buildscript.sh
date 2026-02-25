@@ -175,6 +175,10 @@ else
 fi
 echo
 
+snap disconnect docker:privileged
+snap disconnect docker:docker-daemon
+snap disconnect docker:firewall-control
+
 snap stop docker && wait
 systemctl reset-failed && wait
 systemctl stop snap.docker.* --all && wait
@@ -277,7 +281,6 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   confirm() { # \$1 = submod, \$2 = times
     read -p \"Press enter then 👆 please confirm presence on security token for\$1 git@ssh\$2.\"
   }
-  
   git remote remove origin && git remote add origin git@\$PROJECT:\$REPO/\$PROJECT.git
   git-lfs install && git reset --hard && git clean -xfd
   confirm ' git fetch' && echo 'Starting Git fetch...'
@@ -285,7 +288,8 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   confirm ' git pull' && echo 'Starting Git pull...'
   git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
   git submodule --quiet foreach \"export -- submod=yes && cd .. && git config submodule.\$name.url git@\$name:\$REPO/\$name.git\"
-  
+  gh auth login
+
   if [[ \"\$submod\" != \"\" ]]; then
     confirm \" submodules\" \" (multiple times).\"
     git submodule update --init --remote --merge
@@ -442,6 +446,9 @@ quiet() {
 }
 
 validate.with.pki() { # \$1 = domain/FQDN, # \$2 = filename, # \$3 = full_url
+  attest.with.gh() {
+	  gh attestation verify || exit 1
+  }
   fetch.with.pki() {
     curl -s --pinnedpubkey \"sha256//\$(<.pki/registry/\$1.pubkey)\" \
     --tlsv1.3 --proto -all,+https --remove-on-error --no-insecure https://\$3 > \$2 || exit 1
