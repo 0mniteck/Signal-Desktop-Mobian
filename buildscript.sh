@@ -137,7 +137,7 @@ clean_all() {
 clean_all
 
 apt-get -qq update && apt-get -qq upgrade -y
-apt-get -qq install --no-install-recommends --purge --autoremove -u acl+ bc+ cosign+ dosfstools+ git-lfs+ gnupg2+ gpg-agent+ \
+apt-get -qq install --no-install-recommends --purge --autoremove -u acl+ bc+ cosign+ dosfstools+ gh+ git-lfs+ gnupg2+ gpg-agent+ \
                                                                     jq+ libsecret-1-0+ libsecret-common+ libsecret-tools+ \
                                                                     parted+ pkexec+ rootlesskit+ scdaemon+ \
                                                                     slirp4netns+ snapd+ systemd-container+ \
@@ -447,12 +447,15 @@ quiet() {
 
 validate.with.pki() { # \$1 = domain/FQDN, # \$2 = filename, # \$3 = full_url
   attest.with.gh() {
-	  gh attestation verify || exit 1
+    echo "\Attesting \$1.pubkey\"
+	  pushd .pki/ > /dev/null && gh attestation verify || exit 1
   }
   fetch.with.pki() {
     curl -s --pinnedpubkey \"sha256//\$(<.pki/registry/\$1.pubkey)\" \
     --tlsv1.3 --proto -all,+https --remove-on-error --no-insecure https://\$3 > \$2 || exit 1
   }
+  attest.with.gh || exit 1
+  popd > /dev/null
   curl -s --pinnedpubkey \"sha256//\$(<.pki/registry/\$1.pubkey)\" \
   --tlsv1.3 --proto -all,+https --remove-on-error --no-insecure https://\$1 > /dev/null || exit 1
   fetch.with.pki \$1 \$2 \$3 || exit 1
@@ -461,7 +464,8 @@ validate.with.pki() { # \$1 = domain/FQDN, # \$2 = filename, # \$3 = full_url
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   mkdir -p $docker_data/.docker && mkdir -p $home/$snap_path/.docker && wait 
   if [[ \"\$(which docker-credential-secretservice)\" == \"\" ]]; then
-    validate.with.pki github.com \"\$cred_helper_name\" \"\$cred_helper\" && echo \"\$cred_helper_sha  \$cred_helper_name\" | sha512sum -c || exit 1
+    validate.with.pki github.com \"\$cred_helper_name\" \"\$cred_helper\" || exit 1
+    echo \"\$cred_helper_sha  \$cred_helper_name\" | sha512sum -c || exit 1
     mkdir -p $home/bin && mv $cred_helper_name $home/bin/docker-credential-secretservice
   fi
   
