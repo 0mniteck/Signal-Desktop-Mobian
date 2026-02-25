@@ -449,7 +449,11 @@ quiet() {
 validate.with.pki() { # \$1 = domain/FQDN, # \$2 = filename, # \$3 = full_url
   attest.with.gh() {
     echo \"Attesting \$1.pubkey\"
-	  pushd .pki/ > /dev/null && gh attestation verify || exit 1
+	  pushd .pki/ > /dev/null
+    for I in .pki/registry/*; do
+	    gh attestation verify $I --repo 0mniteck/.pki || exit 1;
+      echo \"\$1.pubkey Attested\";
+    done;
   }
   fetch.with.pki() {
     curl -s --pinnedpubkey \"sha256//\$(<.pki/registry/\$1.pubkey)\" \
