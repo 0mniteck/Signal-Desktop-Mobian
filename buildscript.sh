@@ -226,7 +226,7 @@ else
   declare -- PUSH='"--push"'
 fi
 if [ "$CROSS" = "yes" ]; then
-  declare -- CROSS='"--platform linux/arm64,linux/amd64"'
+  declare -- CROSS='"--platform linux/arm64,linux/amd64 -t multi-platform"'
 fi
 
 pushd $docker_data > /dev/null
