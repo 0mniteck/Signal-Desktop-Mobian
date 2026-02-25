@@ -447,7 +447,7 @@ quiet() {
 
 validate.with.pki() { # \$1 = domain/FQDN, # \$2 = filename, # \$3 = full_url
   attest.with.gh() {
-    echo "\Attesting \$1.pubkey\"
+    echo \"Attesting \$1.pubkey\"
 	  pushd .pki/ > /dev/null && gh attestation verify || exit 1
   }
   fetch.with.pki() {
@@ -459,6 +459,7 @@ validate.with.pki() { # \$1 = domain/FQDN, # \$2 = filename, # \$3 = full_url
   curl -s --pinnedpubkey \"sha256//\$(<.pki/registry/\$1.pubkey)\" \
   --tlsv1.3 --proto -all,+https --remove-on-error --no-insecure https://\$1 > /dev/null || exit 1
   fetch.with.pki \$1 \$2 \$3 || exit 1
+  echo \"\$1.pubkey is valid, fetched \$2.\"
 }
 
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
