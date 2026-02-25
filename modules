@@ -60,7 +60,7 @@ popd > /dev/null
 
 docker run -it --cpus=$(nproc) \
   --network=name=host,\"driver-opt=network=host\" \
-  --name $MODULE -t multi-platform \
+  --name $MODULE --platform linux/arm64 \
   -e PNPM_HOME=/tmp/.pnpm-home \
   -e NPM_CONFIG_CACHE=/tmp/.npm-cache \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
