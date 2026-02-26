@@ -447,10 +447,10 @@ quiet() {
 }
 
 validate.with.pki() { # \$1 = full_url.TDL/.../[file]
-  pushd .pki
+  pushd .pki > /dev/null
     chmod +x local.sh
-    local.sh \$1
-  popd
+    local.sh \$1 || exit 1
+  popd > /dev/null
 }
 
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
