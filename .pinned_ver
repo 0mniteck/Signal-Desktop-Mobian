@@ -1,13 +1,13 @@
 declare -- cred_helper_sha=2e823ee60c554efc715431bd77180df7de0fb27e6662322bc598d079feddd0d4859de604c038775ba2263a8d29b7ba0a1653991b0b287e72818ec9921fffc121
 declare -- cred_helper_name=docker-credential-secretservice-v0.9.5.linux-arm64
-declare -- cred_helper="https://github.com/docker/docker-credential-helpers/releases/download/v0.9.5/$cred_helper_name"
+declare -- cred_helper="github.com/docker/docker-credential-helpers/releases/download/v0.9.5/$cred_helper_name"
 declare -- docker_snap_arm64_ver=3380
 declare -- docker_snap_amd64_ver=3377
 declare -- source_tag=02-18-2026
 declare -- source_img=0mniteck/debian-slim:$source_tag
 declare -- source_loc=docker.io/$source_img
 declare -- source=$source_img@sha256:13b15f452474e3f662cb3c2c76d2b480f90c2e6318f3905ae9b4711fd6c7b10b
-declare -- node_ver=24.11.1
+declare -- node_ver=24.13.0
 declare -- nvm_ver=0.40.4
 declare -- pnpm_ver=10.18.1
 declare -- last_rel_date=02-17-2026
