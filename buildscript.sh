@@ -295,7 +295,7 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
     git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$name:\$REPO/\$name.git\"
   fi
   
-  echo && read -p '🔐 Press enter to start Github CLI login.' && gh auth login || exit 1
+  # echo && read -p '🔐 Press enter to start Github CLI login.' && gh auth login || exit 1
   
   if [[ \"\$(gpg-card list - openpgp)\" == *\$SIGNING_KEY* ]]; then
     echo && echo \"Signing key present\" && echo
@@ -447,10 +447,8 @@ quiet() {
 }
 
 validate.with.pki() { # \$1 = full_url.TDL/.../[file]
-  pushd .pki > /dev/null
-    chmod +x local.sh
-    local.sh \$1 || exit 1
-  popd > /dev/null
+    chmod +x .pki/local.sh
+    .pki/local.sh \$1 || exit 1
 }
 
 if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
