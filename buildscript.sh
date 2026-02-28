@@ -287,8 +287,8 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   git fetch --unshallow 2>> $nulled
   confirm ' git pull' && echo 'Starting Git pull...'
   git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
-  confirm ' git init' && echo 'Starting Git init...'
-  git submodule init
+  confirm ' git submodules' && echo 'Starting Git submodules...'
+  git submodule add git@.pki:\$REPO/.pki.git
   git submodule --quiet foreach \"export -- submod=yes && cd .. && git config submodule.\$name.url git@\$name:\$REPO/\$name.git\"
 
   if [[ \"\$submod\" != \"\" ]]; then
