@@ -119,6 +119,7 @@ clean_most() {
   rm -r -f /run/runc/
   rm -r -f /usr/libexec/docker/
   rm -r -f /var/lib/snapd/cache/*
+  rm -r -f $home/$snap_path/*
   rm -r -f $run_dir/containerd/
   rm -r -f $run_dir/docker*
   rm -r -f $run_dir/runc/
@@ -606,6 +607,7 @@ fi
 
 quiet systemctl unmask snap.docker.dockerd --runtime
 quiet systemctl unmask snap.docker.nvidia-container-toolkit --runtime
+clean_most
 
 snap remove docker --purge || echo "Failed to remove Docker"
 quiet networkctl delete docker0
