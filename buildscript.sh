@@ -176,9 +176,9 @@ else
 fi
 echo
 
-snap disconnect docker:privileged
-snap disconnect docker:docker-daemon
-snap disconnect docker:firewall-control
+snap disconnect docker:privileged >> $nulled
+snap disconnect docker:docker-daemon >> $nulled
+snap disconnect docker:firewall-control >> $nulled
 
 snap stop docker && wait
 systemctl reset-failed && wait
