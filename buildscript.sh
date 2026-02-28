@@ -290,13 +290,9 @@ if [[ \"\$SKIP_LOGIN\" == \"\" ]]; then
   git pull \$(git remote -v | awk '{ print \$2 }' | tail -n 1) \$(git rev-parse --abbrev-ref HEAD)
   confirm ' git submodules' && echo 'Starting Git submodules...'
   git submodule add git@.pki:\$REPO/.pki.git
-  git submodule --quiet foreach \"export -- submod=yes && cd .. && git config submodule.\$name.url git@\$name:\$REPO/\$name.git\"
-
-  if [[ \"\$submod\" != \"\" ]]; then
-    confirm \" submodules\" \" (multiple times).\"
-    git submodule update --init --remote --merge
-    git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$name:\$REPO/\$name.git\"
-  fi
+  git submodule --quiet foreach \"cd .. && git config submodule.\$name.url git@\$name:\$REPO/\$name.git\"
+  git submodule update --init --remote --merge
+  git submodule --quiet foreach \"git remote remove origin && git remote add origin git@\$name:\$REPO/\$name.git\"
   
   # echo && read -p '🔐 Press enter to start Github CLI login.' && gh auth login || exit 1
   
